@@ -1,0 +1,14 @@
+CXXFLAGS=-O3 -I../core -I../VigasocoSDL/ -IC:\MinGW\SDL-1.2.14\include\SDL
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
+
+OBJECTS = SDLDrawPlugin.o SDLVideoPlugins.o SDLDrawPlugin8bpp.o SDLDrawPlugin24bpp.o SDLDrawPluginPaletaGrises8bpp.o PluginMain.o
+
+../VigasocoSDL/video/libVigasocoSDLDrawPlugin.so: $(OBJECTS) 
+	$(CXX) -shared $(OBJECTS) -LC:\MinGW\SDL-1.2.14\lib -lSDL -o $@
+
+# para comprobar que no le faltan dependencias por resolver a la libreria
+test: test.o
+	$(CXX) -g test.o -o test -L ../VigasocoSDL/video/ -l VigasocoSDLDrawPlugin -LC:\MinGW\SDL-1.2.14\lib -lmingw32 -lsdlmain -lSDL
+
+clean:
+	rm -f $(OBJECTS) ../VigasocoSDL/video/libVigasocoSDLDrawPlugin.so test test.o

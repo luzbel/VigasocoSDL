@@ -1,0 +1,4 @@
+Incidencia abierta en Chromium http://code.google.com/p/chromium/issues/detail?id=356103
+ya que no funcionaba la grabación de partidas en Windows y Mac con Chrome 33
+
+Se aportó código de ejemplo para reproducir el problema

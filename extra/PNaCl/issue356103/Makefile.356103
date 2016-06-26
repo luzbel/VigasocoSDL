@@ -1,0 +1,17 @@
+TOOLCHAIN=pnacl
+NACL_ARCH=pnacl
+NACL_CFLAGS=
+NACL_SDK_ROOT=/home/vigasocosdl/nacl_sdk/pepper_canary/
+CXX=/home/vigasocosdl/nacl_sdk/pepper_canary/toolchain/linux_pnacl/bin/pnacl-clang++
+AR=/home/vigasocosdl/nacl_sdk/pepper_canary/toolchain/linux_pnacl/bin/pnacl-ar
+CXXFLAGS=-O3 -I /home/vigasocosdl/nacl_sdk/pepper_canary/include -I /home/vigasocosdl/nacl_sdk/pepper_canary/include/pnacl
+PNACL_LDFLAGS=-lnacl_io -lppapi -lnosys -L /home/vigasocosdl/nacl_sdk/pepper_canary/lib/pnacl/Release -lppapi_cpp
+
+OBJECTS = 356103.o
+
+356103.pexe: $(OBJECTS) 
+	$(CXX) -static $(OBJECTS) $(PNACL_LDFLAGS) -o 356103.pexe
+	/home/vigasocosdl/nacl_sdk/pepper_canary/toolchain/linux_pnacl/bin/pnacl-finalize 356103.pexe
+
+clean:
+	rm -f $(OBJECTS) 356103.pexe

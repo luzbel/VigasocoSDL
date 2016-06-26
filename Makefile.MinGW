@@ -1,0 +1,12 @@
+all:
+	cd SDLInputKeyboardPlugin && "C:\mingw\bin\mingw32-make.exe" -f Makefile.MinGW
+	cd SDLVideoPlugins && "C:\mingw\bin\mingw32-make.exe" -f Makefile.MinGW
+	cd SDLAudioPlugin && "C:\mingw\bin\mingw32-make.exe" -f Makefile.MinGW
+	cd VigasocoSDL && "C:\mingw\bin\mingw32-make.exe" -f Makefile.MinGW
+
+clean:
+	cd SDLInputKeyboardPlugin && "C:\mingw\bin\mingw32-make.exe" -f Makefile.MinGW clean
+	cd SDLVideoPlugins && "C:\mingw\bin\mingw32-make.exe" -f Makefile.MinGW clean
+	cd SDLAudioPlugin && "C:\mingw\bin\mingw32-make.exe" -f Makefile.MinGW clean
+	cd VigasocoSDL && "C:\mingw\bin\mingw32-make.exe" -f Makefile.MinGW clean
+	

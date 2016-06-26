@@ -1,0 +1,49 @@
+<html>
+<head>
+  <title>356103</title>
+</head>
+
+<body>
+
+  <h1>356103</h1>
+  <p>Status: <code id="status">Loading</code></p>
+
+  <div id="listener">
+    <embed id="nacl_module" name="356103" path="/" src="356103.nmf"
+           type="application/x-pnacl" 
+           width=640 height=480 />
+  </div>
+
+  <script>
+
+navigator.webkitPersistentStorage.requestQuota(20480 ,
+      function(bytes) {
+	    window.webkitRequestFileSystem(PERSISTENT,bytes,
+		function(fs) { console.log("init fs "+fs.name); } , 
+		function() { console.log("error handler"); }
+		);
+            console.log('Obtenidos ' + bytes + ' bytes para almacenar la partida.');
+      },
+      function(e) { console.log('Fallo al obtener espacio para almacenar la partida'); 
+ });
+
+listenerDiv = document.getElementById("listener")
+nacl_module = document.getElementById("nacl_module")
+
+function updateStatus(message) {
+  document.getElementById("status").innerHTML = message
+}
+
+function handleCrash(event) {
+  updateStatus("Crashed/exited with status: " + nacl_module.exitStatus)
+}
+
+function handleLoad(event) {
+  updateStatus("Loaded")
+}
+
+listenerDiv.addEventListener("load", handleLoad, true);
+listenerDiv.addEventListener("crash", handleCrash, true);
+  </script>
+</body>
+</html>

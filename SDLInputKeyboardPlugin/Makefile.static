@@ -1,0 +1,12 @@
+CXXFLAGS=-g -D__VIGASOCO_SDL_STATIC__ -O3 -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
+VPATH=.:../core:../core/abadia:../core/util:../core/systems:
+
+all: ../VigasocoSDL/input/libVigasocoSDLInputPlugin.a
+
+OBJECTS = SDLInputKeyboardPlugin.o PluginMain.o
+
+../VigasocoSDL/input/libVigasocoSDLInputPlugin.a: $(OBJECTS)
+	$(AR) cru $@ $(OBJECTS)
+
+clean:
+	rm -f $(OBJECTS) ../VigasocoSDL/input/libVigasocoSDLInputPlugin.a

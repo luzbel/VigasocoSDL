@@ -1,0 +1,22 @@
+EE_PREFIX = ee-
+CC = $(EE_PREFIX)gcc
+CXX= $(EE_PREFIX)g++
+AS = $(EE_PREFIX)as
+LD = $(EE_PREFIX)ld
+AR = $(EE_PREFIX)ar
+OBJCOPY = $(EE_PREFIX)objcopy
+STRIP = $(EE_PREFIX)strip
+
+PS2SDK=/mnt/hda1/ps2sdk
+
+CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -G 0 -I../core -I$(PS2SDK)/ports/include/SDL -D_EE -O2 -c -fno-rtti -fno-builtin -ffreestanding -fno-exceptions -fsingle-precision-constant -ansi -Wno-long-long -I$(PS2SDK)/ee/include -I$(PS2SDK)/common/include -I$(PS2SDK)/ports/include -I. 
+
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
+
+OBJECTS = SDLDrawPlugin.o SDLVideoPlugins.o SDLDrawPlugin8bpp.o SDLDrawPlugin24bpp.o SDLDrawPluginPaletaGrises8bpp.o PluginMain.o
+
+../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a: $(OBJECTS) 
+	$(AR) cru ../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a $(OBJECTS)
+	 
+clean:
+	rm -f $(OBJECTS) ../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a 

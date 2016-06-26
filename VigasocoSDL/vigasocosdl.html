@@ -1,0 +1,65 @@
+<html>
+<head>
+  <title>VigasocoSDL: La abad&iacute;a del crimen (Beta Portable Native Client)</title>
+  <meta name="Description" content="Permite jugar a La abad&iacute;a del crimen desde un navegador Google Chrome con Portable Native Client">
+</head>
+<body>
+  <h1>VigasocoSDL: La abad&iacute;a del crimen (Beta Portable Native Client)</h1>
+  <p>Se requiere Google Chrome 31 o superior con Portable Native Client activado.</p>
+<p> Consulta el soporte y los flags escribiendo en la barra de direcci&oacute;n chrome://nacl y chrome://flags</p>
+  <p>Status: <code id="status">Loading</code></p>
+
+  <div id="listener">
+    <embed id="nacl_module" name="vigasocosdl" path="/" src="vigasocosdl.nmf"
+           type="application/x-pnacl" 
+           width=640 height=480 />
+  </div>
+
+  <script>
+var pnaclmimetype='application/x-pnacl';
+var soporta_pnacl=(navigator.mimeTypes[pnaclmimetype] !== undefined);
+if (!soporta_pnacl) alert("Se necesita un navegador compatible con Portable Native Client. Prueba con Chrome version 31 o superior y revisa los flags relativos a Native Client en chrome://nacl y chrome://flags");
+
+listenerDiv = document.getElementById("listener")
+nacl_module = document.getElementById("nacl_module")
+
+function updateStatus(message) {
+  document.getElementById("status").innerHTML = message
+}
+
+function handleCrash(event) {
+  updateStatus("Crashed/exited with status: " + nacl_module.exitStatus)
+}
+
+function handleLoad(event) {
+  updateStatus("Loaded")
+}
+
+listenerDiv.addEventListener("load", handleLoad, true);
+listenerDiv.addEventListener("crash", handleCrash, true);
+  </script>
+<ul style="list-style: none;">
+<li>
+'No sig&aacute;is varias y extra&ntilde;as doctrinas sof&iacute;sticas que esparcen pest&iacute;fera semilla' escrib&iacute;a el mism&iacute;simo Clemente VI en el a&ntilde;o 1346 a los maestros y alumnos de la Universidad de Par&iacute;s. El Pont&iacute;fice se refer&iacute;a en aquella carta a las doctrinas de un ilustre monje franciscano de origen ingl&eacute;s, llamado Guillermo de Occam, huido varios a&ntilde;os antes de las c&aacute;rceles de Avignon acusado de herej&iacute;a. Durante cuatro a&ntilde;os hab&iacute;a estado retenido, hasta que logr&oacute; fugarse y pedir asilo en la corte del Emperador Luis de Baviera, por entonces enemistado con el Papa Juan XXII. Muerto el Emperador, Guillermo quiso volver a la misi&oacute;n con su orden y con la Iglesia, motivo por el que viaj&oacute; a Italia acompa&ntilde;ado de su joven novicio para entrevistarse con Bernardo G&uuml;i, entonces m&aacute;ximo responsable de la Inquisici&oacute;n en aquella zona y representante, en definitiva, del Pont&iacute;fice.
+</li>
+<li> <br></li>
+<li>No consta, sin embargo, con certeza, si en realidad Guillermo consigui&oacute; su objetivo. Tan s&oacute;lo el testimonio dejado por su disc&iacute;pulo muchos a&ntilde;os m&aacute;s tarde en una colecci&oacute;n de pergaminos, donde se relatan los hechos asombrosos y terribles que acontecieron durante la semana que permanecieron en la Abad&iacute;a en la que deber&iacute;a celebrarse aquella entrevista.</li>
+<li> <br></li>
+<li>El testimonio de la historia que ahora vas a revivir...</li>
+<li> <br></li>
+<li>MANEJO DEL TECLADO</li>
+<ul>
+<li>Cursor arriba: Mover a Guillermo</li>
+<li>Cursor abajo: Mover a Adso</li>
+<li>Cursor izquierda: Girar a la izquierda</li>
+<li>Cursor derecha: Girar a la derecha</li>
+<li>Espacio: Dejar objetos</li>
+</ul>
+<li> <br></li>
+<li>Su novicio puede ser manejado, aunque todo dentro de la pantalla en la que se encuentra Guillermo, con la tecla cursor abajo. Mientras se pulse esta tecla, el novicio se dirigir&aacute; a la misma direcci&oacute;n a la que mire Guillermo, a menos que se encuentre un obst&aacute;culo.</li>
+<li> </li>
+<li>Para coger objetos, basta con colocarse enfrente de &eacute;stos. Guillermo puede coger 6 objetos y su novicio otros dos distintos. Para dejar los objetos se puede pulsar (Espacio), dej&aacute;ndose siempre el objeto que aparace m&aacute;s a la izquierda del marcador, en el que s&oacute;lo aparecen los objetos que lleva Guillermo y son los &uacute;nicos que se pueden dejar.</li>
+<li> <br></li>
+</ul>
+</body>
+</html>
