@@ -3,7 +3,7 @@ CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -O3 -I../core -I../VigasocoSDL/ `sdl-config -
 #CXXFLAGS=-Os -D__VIGASOCO_SDL_STATIC__ -I../core -I../VigasocoSDL/ `sdl-config --cflags`
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
-OBJECTS = SDLAudioPlugin.o PluginMain.o
+OBJECTS = SDLAudioPlugin.o NULLAudioPlugin.o PluginMain.o
 
 ../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a: $(OBJECTS)
 	$(AR) cru $@ $(OBJECTS)

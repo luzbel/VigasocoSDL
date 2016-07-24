@@ -27,14 +27,20 @@ std::string g_game("abadia");
 std::string g_drawPluginsDLL("libVigasocoSDLDrawPlugin.so");
 std::string g_drawPlugin("win8");
 
-//std::string g_audioPluginsDLL("libVigasocoSDLAudioPlugin.so");
-//std::string g_audioPlugin("SDLAudioPlugin");
-// Pruebas forzando el plugin NULLAudio sin salida de sonido
+// Se añade plugin NULLAudio sin salida de sonido
 // para poder compilar en Windows Services for Linux que no tiene soporte ALSA
 // "Audio isnt supported at this time. Were currently focusing on supporting developer scenarios."
 // https://blogs.msdn.microsoft.com/commandline/2016/04/06/bash-on-ubuntu-on-windows-download-now-3/
-std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
-std::string g_audioPlugin("NULLAudioPlugin");
+// NULLAudio existe como un plugin dentro de la libreria dinámica SDLAudioPlugin
+// o como libreria independiente sin ninguna dependencia con SDL
+// Ejemplos invocaciones cambiado plugins
+// ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin
+// ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,wingris8 -audio:libVigasocoSDLAudioPlugin.so,SDLAudioPlugin
+// ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoNULLAudioPlugin.so,NULLAudioPlugin
+std::string g_audioPluginsDLL("libVigasocoSDLAudioPlugin.so");
+std::string g_audioPlugin("SDLAudioPlugin");
+//std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
+//std::string g_audioPlugin("NULLAudioPlugin");
 
 Strings g_inputPluginsDLLs;
 Strings g_inputPlugins;
@@ -203,6 +209,26 @@ bool parseVideo(Strings &params)
 	return true;
 }
 
+bool parseAudio(Strings &params)
+{
+	for (std::string::size_type i = 1; i < params.size(); i++){
+		Strings subParams;
+
+		// split parameter in DLL and plugin
+		split(params[i], ',', &subParams);
+
+		if (subParams.size() != 2){
+			return false;
+		}
+
+		// save DLL and plugin
+		g_audioPluginsDLL = subParams[0];
+		g_audioPlugin = subParams[1];
+	}
+
+	return true;
+}
+
 bool parseInputs(Strings &params)
 {
 	for (std::string::size_type i = 1; i < params.size(); i++){
@@ -255,6 +281,8 @@ bool parseCommands(Strings &params)
 			if (!parseVideo(subParams))	return false;
 		} else if (subParams[0] == "-input"){
 			if (!parseInputs(subParams))	return false;
+		} else if (subParams[0] == "-audio"){
+			if (!parseAudio(subParams))	return false;
 		} else if (subParams[0] == "-path"){
 			if (!parsePaths(subParams))	return false;
 		} else {	// error

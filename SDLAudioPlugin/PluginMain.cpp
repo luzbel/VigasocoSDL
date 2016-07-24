@@ -3,13 +3,15 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "SDLAudioPlugin.h"
+#include "NULLAudioPlugin.h"
 
 #include "SDL.h"
 
-static const char * const description = "VIGASOCO SDL Audio Plugin v1.1";
+static const char * const description = "VIGASOCO SDL Audio Plugin v1.2";
 
 static const char *plugins[] = {
-	 "SDLAudioPlugin"  
+	 "SDLAudioPlugin" ,
+	 "NULLAudioPlugin"
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -25,6 +27,8 @@ void createPlugin(const char *name,void**plugin)
 {
 	if (strcmp(name, plugins[0]) == 0){
 		*plugin=new SDLAudioPlugin(); 
+	} else if (strcmp(name, plugins[1]) == 0){
+		*plugin=new NULLAudioPlugin();
 	} else {
 		*plugin=NULL;
 	}

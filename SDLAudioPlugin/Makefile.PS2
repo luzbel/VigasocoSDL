@@ -13,7 +13,7 @@ CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -G 0 -I../core -I$(PS2SDK)/ports/include/SDL 
 
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
-OBJECTS = SDLDrawPlugin.o SDLVideoPlugins.o SDLDrawPlugin8bpp.o SDLDrawPlugin24bpp.o SDLDrawPluginPaletaGrises8bpp.o PluginMain.o
+OBJECTS = SDLAudioPlugin.o NULLAudioPlugin.o PluginMain.o
 
 ../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a: $(OBJECTS) 
 	$(AR) cru ../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a $(OBJECTS)
