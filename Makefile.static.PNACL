@@ -13,11 +13,13 @@ all:
 	cd SDLInputKeyboardPlugin && make -f Makefile.static.PNACL
 	cd SDLVideoPlugins && make -f Makefile.static.PNACL
 	cd SDLAudioPlugin && make -f Makefile.static.PNACL
+	cd NULLAudioPlugin && make -f Makefile.static.PNACL
 	cd VigasocoSDL && make -f Makefile.static.PNACL
 
 clean:
 	cd SDLInputKeyboardPlugin && make -f Makefile.static.PNACL clean
 	cd SDLVideoPlugins && make -f Makefile.static.PNACL clean
 	cd SDLAudioPlugin && make -f Makefile.static.PNACL clean
+	cd NULLAudioPlugin && make -f Makefile.static.PNACL clean
 	cd VigasocoSDL && make -f Makefile.static.PNACL clean
 	

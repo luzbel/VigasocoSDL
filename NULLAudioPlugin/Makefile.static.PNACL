@@ -1,0 +1,17 @@
+CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -O3 -I../core -I../VigasocoSDL/ -I /home/vigasocosdl/nacl_sdk/pepper_canary/toolchain/linux_pnacl/usr/local/include/SDL
+#CXXFLAGS=-g -D__VIGASOCO_SDL_STATIC__ -O3 -I../core -I../VigasocoSDL/ 
+#CXXFLAGS=-Os -D__VIGASOCO_SDL_STATIC__ -I../core -I../VigasocoSDL/ 
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
+
+OBJECTS = NULLAudioPlugin.o PluginMain.o
+
+../VigasocoSDL/audio/libVigasocoNULLAudioPlugin.a: $(OBJECTS)
+	echo $(CXX)
+	$(AR) cru $@ $(OBJECTS)
+
+# para comprobar que no le faltan dependencias por resolver a la libreria
+test: test.o
+	$(CXX) -g test.o -o test -l../VigasocoSDL/audio/libVigasocoNULLAudioPlugin.a `sdl-config --libs`
+
+clean:
+	rm -f $(OBJECTS) ../VigasocoSDL/audio/libVigasocoNULLAudioPlugin.a test test.o

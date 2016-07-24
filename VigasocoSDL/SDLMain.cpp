@@ -27,8 +27,14 @@ std::string g_game("abadia");
 std::string g_drawPluginsDLL("libVigasocoSDLDrawPlugin.so");
 std::string g_drawPlugin("win8");
 
-std::string g_audioPluginsDLL("libVigasocoSDLAudioPlugin.so");
-std::string g_audioPlugin("SDLAudioPlugin");
+//std::string g_audioPluginsDLL("libVigasocoSDLAudioPlugin.so");
+//std::string g_audioPlugin("SDLAudioPlugin");
+// Pruebas forzando el plugin NULLAudio sin salida de sonido
+// para poder compilar en Windows Services for Linux que no tiene soporte ALSA
+// "Audio isnt supported at this time. Were currently focusing on supporting developer scenarios."
+// https://blogs.msdn.microsoft.com/commandline/2016/04/06/bash-on-ubuntu-on-windows-download-now-3/
+std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
+std::string g_audioPlugin("NULLAudioPlugin");
 
 Strings g_inputPluginsDLLs;
 Strings g_inputPlugins;
