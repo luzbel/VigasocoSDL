@@ -19,7 +19,7 @@ protected:
 
 	UINT8 _keys[256];							// keys state
 
-	static SDLKey g_keyMapping[END_OF_INPUTS];	// VIGASOCO input to DirectInput mapping
+	static SDL_Scancode g_keyMapping[END_OF_INPUTS];	// VIGASOCO input to DirectInput mapping
 #if defined _EE || defined _PS3
 	SDL_Joystick *joy;
 #endif

@@ -24,7 +24,12 @@ protected:
 	bool **updated_rect;
 	int xrects,yrects;
 
-        SDL_Surface *screen;
+//        SDL_Surface *screen;
+
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+	SDL_Texture* texture;
+	Uint32 myPixels[640*480]; // 666 TODO SDL2 quitar valor a fuego
 	
 	bool _isInitialized;
 	UINT32 _flags;
@@ -33,7 +38,7 @@ protected:
 private:
 	IPalette *_originalPalette;
 public:
-	SDLBasicDrawPlugin(){ screen = NULL; _isInitialized=false; _flags = DEFAULT::flags; _bpp = DEFAULT::bpp ; _palette = NULL; _originalPalette=NULL; }
+	SDLBasicDrawPlugin(){ window = NULL; renderer=NULL; texture=NULL; _isInitialized=false; _flags = DEFAULT::flags; _bpp = DEFAULT::bpp ; _palette = NULL; _originalPalette=NULL; }
 	virtual ~SDLBasicDrawPlugin(){ }
 	virtual bool init(const VideoInfo *vi, IPalette *pal);
 	virtual void end(void);
@@ -80,9 +85,19 @@ public:
 	 virtual const int *getPropertiesType() const {};
 	 virtual void setProperty(std::string prop, int data) {
 		std::string ToggleFullScreen("ToggleFullScreen");
+		std::string ToggleFullScreenDesktop("ToggleFullScreenDesktop");
+		std::string ToggleWindowedMode("ToggleWindowedMode");
 		if ( prop == ToggleFullScreen )
 		{
-			SDL_WM_ToggleFullScreen(screen);
+			SDL_SetWindowFullscreen(window,SDL_WINDOW_FULLSCREEN);
+		} else 
+		if ( prop == ToggleFullScreenDesktop )
+		{
+			SDL_SetWindowFullscreen(window,SDL_WINDOW_FULLSCREEN_DESKTOP);
+		} else
+		if ( prop == ToggleWindowedMode)
+		{
+			SDL_SetWindowFullscreen(window,0);
 		}
 	};
 	 virtual void setProperty(std::string prop, int index, int data) {};

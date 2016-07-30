@@ -207,8 +207,10 @@ void VigasocoSDL::createAsyncThread()
 
 void VigasocoSDL::initCompleted()
 {
-	std::string titulo_ventana = "VigasocoSDL v0.094: " + _driver->getFullName();
-	SDL_WM_SetCaption(titulo_ventana.c_str(),titulo_ventana.c_str());
+	//666 TODO SDL2 ahora el titulo se pone en SDL_CreateWindow
+	// o con SDL_SetWindowTitle pero necesitariamos aqui la info de la window creada
+	// std::string titulo_ventana = "VigasocoSDL v0.094: " + _driver->getFullName();
+	// SDL_WM_SetCaption(titulo_ventana.c_str(),titulo_ventana.c_str());
 	SDL_ShowCursor(SDL_DISABLE);
 }
 

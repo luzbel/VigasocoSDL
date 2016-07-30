@@ -6,7 +6,7 @@
 
 #include "SDL.h"
 
-static const char * const description = "VIGASOCO SDL Video Plugins v1.1";
+static const char * const description = "VIGASOCO SDL2 Video Plugins v1.0";
 
 static const char *plugins[] = {
 	 "win8"  , "win16" , "win24"  , "win32"  , "wingris8" ,

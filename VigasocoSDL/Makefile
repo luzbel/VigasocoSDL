@@ -1,5 +1,5 @@
-#CXXFLAGS=-O3 -I../core `sdl-config --cflags` 
-CXXFLAGS=-g -I../core `sdl-config --cflags` 
+#CXXFLAGS=-O3 -I../core `sdl2-config --cflags` 
+CXXFLAGS=-g -I../core `sdl2-config --cflags` 
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 # en OBJECTS_CORE falta Operations.o ??
@@ -12,7 +12,7 @@ OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLTh
 OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
 
 VigasocoSDL: $(OBJECTS)
-	$(CXX) -g $(OBJECTS) `sdl-config --libs` -o VigasocoSDL
+	$(CXX) -g $(OBJECTS) `sdl2-config --libs` -o VigasocoSDL
 	#strip VigasocoSDL
 
 clean:

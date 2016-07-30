@@ -38,7 +38,7 @@ bool SDLThread::start()
 	}
 
 	// creates the thread
-	_handle = SDL_CreateThread((int (*)(void*))ThreadProc, this);
+	_handle = SDL_CreateThread((int (*)(void*))ThreadProc, "Async", this);
 
 	if (_handle == NULL){
 		// error creating the thread
@@ -56,7 +56,8 @@ void SDLThread::end()
 		_isRunning = false;
 
 		// kill the thread
-		SDL_KillThread(_handle);
+		// 666 FIXME TODO SDL2 pending
+		//SDL_KillThread(_handle);
 
 		_handle = NULL;
 	}

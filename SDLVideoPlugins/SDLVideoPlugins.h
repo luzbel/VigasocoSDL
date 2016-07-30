@@ -22,7 +22,9 @@ class SDLDrawPlugin8bpp : public SDLBasicDrawPlugin<UINT8>
 		virtual void updateFullPalette(IPalette *palette);
 };
 
+//666 TODO SDL2
 class SDLDrawPlugin16bpp : public SDLBasicDrawPlugin<UINT16>
+//class SDLDrawPlugin16bpp : public SDLBasicDrawPlugin<UINT32>
 {
 	public:
 		SDLDrawPlugin16bpp() { _bpp = 16; }
@@ -58,7 +60,7 @@ template <class T>
 class SDLDrawPluginFullScreen: public T
 {
 	public:
-		SDLDrawPluginFullScreen() { T::_flags|=SDL_FULLSCREEN; }
+		SDLDrawPluginFullScreen() { T::_flags|=SDL_WINDOW_FULLSCREEN_DESKTOP; }
 };
 
 typedef SDLDrawPluginFullScreen<SDLDrawPlugin8bpp> SDLDrawPluginFullScreen8bpp;

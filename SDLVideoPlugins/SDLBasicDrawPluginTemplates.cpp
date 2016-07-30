@@ -18,15 +18,44 @@ bool SDLBasicDrawPlugin<T>::init(const VideoInfo *vi, IPalette *pal)
 		return false;
 	}
 
-	screen = SDL_SetVideoMode(vi->width, vi->height, _bpp, _flags);
-//	screen = SDL_SetVideoMode(640, 480, 8, SDL_SWSURFACE|SDL_ANYFORMAT);
-	if ( screen == NULL ) {
+	SDL_CreateWindowAndRenderer(640,480,_flags,&window,&renderer);
+	
+//			(vi->width, vi->height, _bpp, _flags);
+	if ( window == NULL || renderer == NULL ) {
 		fprintf(stderr, "Couldn't set %dx%dx%d video mode: %s\n",
 				vi->width,vi->height,_bpp,SDL_GetError());
 		return false;
 	}
 //	printf("set %dx%dx%d video mode(%s): %s\n",
 //				vi->width,vi->height,_bpp,screen->flags & SDL_DOUBLEBUF?"DOUBLEBUFF":"No double buffer",SDL_GetError());
+
+Uint32 format;
+switch(_bpp) 
+{
+   case 8: format=SDL_PIXELFORMAT_INDEX8; break;
+   case 16: format=SDL_PIXELFORMAT_ARGB4444; break;
+   //case 16: format=SDL_PIXELFORMAT_BGRA4444; break;
+   case 24: format=SDL_PIXELFORMAT_RGB24; break;
+   case 32: format=SDL_PIXELFORMAT_ARGB8888; break;
+   default: format=SDL_PIXELFORMAT_ARGB8888;
+}
+
+	texture=SDL_CreateTexture(renderer,
+		format, 
+//SDL_PIXELFORMAT_ARGB8888,
+		SDL_TEXTUREACCESS_STREAMING,
+		vi->width, vi->height);
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+	SDL_RenderSetLogicalSize(renderer, vi->width, vi->height);
+
+SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+SDL_RenderClear(renderer);
+SDL_RenderPresent(renderer);
+
+SDL_QueryTexture(texture,&format,NULL,NULL,NULL); //666 TODO falta comprobar error
+fprintf(stderr,"format %s ",SDL_GetPixelFormatName(format));
+SDL_PixelFormat*pf= SDL_AllocFormat(format);
+fprintf(stderr,"BytesPerPixel %d ",pf->BytesPerPixel);
 
 	_originalPalette=pal;
 
@@ -80,7 +109,12 @@ void SDLBasicDrawPlugin<T>::updateFullPalette(IPalette *palette)
 		UINT8 r, g, b;
 
 		palette->getColor(i, r, g, b);
-		_palette[i] = SDL_MapRGB(screen->format,r,g,b);
+//666 TODO SDL2
+//		_palette[i] = SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888),r,g,b);
+		Uint32 format;
+		SDL_QueryTexture(texture,&format,NULL,NULL,NULL); //666 TODO falta comprobar error
+//fprintf(stderr,"format %s ",SDL_GetPixelFormatName(format));
+		_palette[i] = SDL_MapRGB(SDL_AllocFormat(format),r,g,b);
 	}
 }
 
@@ -92,7 +126,13 @@ void SDLBasicDrawPlugin<T>::update(IPalette *palette, int data)
 		UINT8 r, g, b;
 
 		palette->getColor(data, r, g, b);
-		_palette[data] = SDL_MapRGB(screen->format,r,g,b);
+//666 TODO SDL2
+		//_palette[data] = SDL_MapRGB(SDL_AllocFormat(SDL_PIXELFORMAT_ARGB8888),r,g,b);
+		//_palette[data] = SDL_MapRGB((SDL_Texture*)texture->GetSDLSurface()->format,r,g,b);
+		Uint32 format;
+		SDL_QueryTexture(texture,&format,NULL,NULL,NULL); //666 TODO falta comprobar error
+//fprintf(stderr,"format %s ",SDL_GetPixelFormatName(format));
+		_palette[data] = SDL_MapRGB(SDL_AllocFormat(format),r,g,b);
 	} else {
 		// full palette update
 		updateFullPalette(palette);	
@@ -117,6 +157,7 @@ void SDLBasicDrawPlugin<T>::render(bool throttle)
 	SDL_UpdateRects(screen,0,NULL);
 #else
 
+/*
 	int n=0;
 	for(int i=0;i<xrects;i++)
 	{
@@ -142,13 +183,57 @@ void SDLBasicDrawPlugin<T>::render(bool throttle)
                         }
                 }
 	}
+*/
+	// 666 TODO SDL2 quitar este 640 a fuego
+	//SDL_UpdateTexture(texture, NULL, myPixels, 640*sizeof(Uint32));
+int tmp;
+switch(_bpp) 
+{
+   case 8: tmp=sizeof(Uint8); break;
+   case 16: tmp=sizeof(Uint16); break;
+   case 24: tmp=sizeof(Uint32)-sizeof(Uint8); break;
+   case 32: tmp=sizeof(Uint32); break;
+   default: tmp=sizeof(Uint32);
+}
+	//SDL_UpdateTexture(texture, NULL, myPixels, 640*sizeof(Uint32));
+	SDL_UpdateTexture(texture, NULL, myPixels, 640*tmp);
+	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer,texture,NULL,NULL);
+	SDL_RenderPresent(renderer);
 #endif
 };
 
 template<typename T>
 void SDLBasicDrawPlugin<T>::setPixel(int x, int y, int color)
 {
-	/* Lock the screen for direct access to the pixels */
+
+		Uint32 format;
+		SDL_QueryTexture(texture,&format,NULL,NULL,NULL); //666 TODO falta comprobar error
+//fprintf(stderr,"format %s ",SDL_GetPixelFormatName(format));
+	SDL_PixelFormat*pf= SDL_AllocFormat(format);
+	Uint8 *p = (Uint8 *)myPixels + y * (640*pf->BytesPerPixel) + x * pf->BytesPerPixel;
+	//Uint8 *p = (Uint8 *)myPixels + y * 640 + x ;
+	*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+
+
+if(x==100 && y==100) {
+ fprintf(stderr,"100,100 color %d palette %d\n",color,_palette[color]);
+ fprintf(stderr,"%p %p %p \n",myPixels, (Uint8 *)myPixels+(y*640*4)+x*4, myPixels+y*640+x);
+ fprintf(stderr,"AAA %d %p %p %p \n", pf->BytesPerPixel, myPixels, (Uint8 *)myPixels+4, myPixels+1);
+ fprintf(stderr,"CCC %d %p %p %p \n", pf->BytesPerPixel, myPixels, (Uint8 *)myPixels+(1*4+4), myPixels+(1+1));
+ fprintf(stderr,"BBB %d %p %p %p \n", pf->BytesPerPixel, myPixels, (Uint8 *)myPixels+1*4+1*4, (Uint32 *)myPixels+1*1+1);
+fprintf(stderr,"size 32 %ld 24 %ld 16 %ld 8 %ld\n",sizeof(Uint32),sizeof(Uint32), sizeof(Uint16), sizeof(Uint8));
+}
+	//666 TODO SDL2 quitar ese 640 a fuego
+//	myPixels[x+640*y]=_palette[color];
+	
+	//Uint8 *p = (Uint8 *)myPixels + y * 640 + x ;
+	//*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+
+	//Uint16 *p = (Uint16 *)myPixels + y * 640*2 + x*2 ;
+	//*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+/*
+	// Lock the screen for direct access to the pixels 
 	if ( SDL_MUSTLOCK(screen) ) {
 		if ( SDL_LockSurface(screen) < 0 ) {
 			fprintf(stderr, "Can't lock screen: %s\n", SDL_GetError());
@@ -159,7 +244,7 @@ void SDLBasicDrawPlugin<T>::setPixel(int x, int y, int color)
 	updateRect(x,y);
 
 	int __bpp = screen->format->BytesPerPixel;
-	/* Here p is the address to the pixel we want to set */
+	// Here p is the address to the pixel we want to set 
 	Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * __bpp;
 
 	*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
@@ -167,4 +252,5 @@ void SDLBasicDrawPlugin<T>::setPixel(int x, int y, int color)
 	if ( SDL_MUSTLOCK(screen) ) {
 		SDL_UnlockSurface(screen);
 	}
+*/
 };

@@ -25,7 +25,9 @@ typedef std::vector<std::string> Strings;
 // default options
 std::string g_game("abadia");
 std::string g_drawPluginsDLL("libVigasocoSDLDrawPlugin.so");
-std::string g_drawPlugin("win8");
+// 666 TODO SDL2
+//std::string g_drawPlugin("win8");
+std::string g_drawPlugin("win32");
 
 // Se añade plugin NULLAudio sin salida de sonido
 // para poder compilar en Windows Services for Linux que no tiene soporte ALSA
@@ -38,9 +40,9 @@ std::string g_drawPlugin("win8");
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,wingris8 -audio:libVigasocoSDLAudioPlugin.so,SDLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoNULLAudioPlugin.so,NULLAudioPlugin
 std::string g_audioPluginsDLL("libVigasocoSDLAudioPlugin.so");
-std::string g_audioPlugin("SDLAudioPlugin");
+//std::string g_audioPlugin("SDLAudioPlugin");
 //std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
-//std::string g_audioPlugin("NULLAudioPlugin");
+std::string g_audioPlugin("NULLAudioPlugin");
 
 Strings g_inputPluginsDLLs;
 Strings g_inputPlugins;
