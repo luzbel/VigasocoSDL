@@ -29,7 +29,9 @@ protected:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	SDL_Texture* texture;
-	Uint32 myPixels[640*480]; // 666 TODO SDL2 quitar valor a fuego
+	SDL_PixelFormat* pixelFormat;
+	int _pitch;
+	Uint32* myPixels; 
 	
 	bool _isInitialized;
 	UINT32 _flags;
@@ -38,7 +40,19 @@ protected:
 private:
 	IPalette *_originalPalette;
 public:
-	SDLBasicDrawPlugin(){ window = NULL; renderer=NULL; texture=NULL; _isInitialized=false; _flags = DEFAULT::flags; _bpp = DEFAULT::bpp ; _palette = NULL; _originalPalette=NULL; }
+	SDLBasicDrawPlugin() { 
+		window = NULL;
+		renderer=NULL;
+		texture=NULL;
+		pixelFormat=NULL;
+		_pitch=-1;
+		myPixels=NULL;
+		_isInitialized=false;
+		_flags = DEFAULT::flags;
+		_bpp = DEFAULT::bpp ;
+		_palette = NULL;
+		_originalPalette=NULL; 
+	}
 	virtual ~SDLBasicDrawPlugin(){ }
 	virtual bool init(const VideoInfo *vi, IPalette *pal);
 	virtual void end(void);

@@ -69,6 +69,7 @@ void SDLAudioPlugin::end()
 	{
 		free(it->data);
 	}
+SDL_QuitSubSystem(SDL_INIT_AUDIO);
 
 	_isInitialized = false;
 }

@@ -22,9 +22,7 @@ class SDLDrawPlugin8bpp : public SDLBasicDrawPlugin<UINT8>
 		virtual void updateFullPalette(IPalette *palette);
 };
 
-//666 TODO SDL2
 class SDLDrawPlugin16bpp : public SDLBasicDrawPlugin<UINT16>
-//class SDLDrawPlugin16bpp : public SDLBasicDrawPlugin<UINT32>
 {
 	public:
 		SDLDrawPlugin16bpp() { _bpp = 16; }

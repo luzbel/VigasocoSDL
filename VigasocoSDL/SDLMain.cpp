@@ -160,8 +160,10 @@ int main(int argc,char **argv)
 
 	// cleanup
 	VIGASOCO.end();
-
+fprintf(stderr,"1sdlmain\n");
+fflush(stderr);
 	SDL_Quit();
+fprintf(stderr,"2sdlmain\n");
 
 	return 0;
 }

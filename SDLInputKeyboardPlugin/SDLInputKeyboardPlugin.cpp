@@ -75,6 +75,7 @@ void SDLInputKeyboardPlugin::end()
 	}
 #endif
 	SDL_SetRelativeMouseMode(SDL_FALSE);
+SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 }
 
 void SDLInputKeyboardPlugin::acquire()

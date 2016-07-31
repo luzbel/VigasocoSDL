@@ -196,6 +196,7 @@ bool Vigasoco::init(std::string name)
 
 void Vigasoco::end()
 {
+
 	// notify the driver that the audioPlugin is going to be disposed
 	if (_driver && _audioPlugin){
 		if (_audioPlugin->isInitialized()){
@@ -219,7 +220,12 @@ void Vigasoco::end()
 	// stops and deallocates the timing handler
 	if (_timingHandler){
 		_timingHandler->end();
+//FIXME TODO SDL2
+// da core dump al salir 
+//aunque no es seguro que sea por esto
+fprintf(stderr,"antes delete\n"); fflush(stderr);
 		delete _timingHandler;
+fprintf(stderr,"despues delete\n"); fflush(stderr);
 		_timingHandler = 0;
 	}
 

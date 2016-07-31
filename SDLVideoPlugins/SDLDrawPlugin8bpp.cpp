@@ -66,14 +66,9 @@ void SDLDrawPlugin8bpp::render(bool throttle)
 
 void SDLDrawPlugin8bpp::setPixel(int x, int y, int color)
 {
-//666 TODO SDL2
-Uint32 format;
-SDL_QueryTexture(texture,&format,NULL,NULL,NULL); //666 TODO falta comprobar error
-//fprintf(stderr,"format %s ",SDL_GetPixelFormatName(format));
-SDL_PixelFormat*pf= SDL_AllocFormat(format);
-//Uint8 *p = (Uint8 *)myPixels + y * 640 + x * pf->BytesPerPixel;
-Uint8 *p = (Uint8 *)myPixels + y * 640 + x ;
-*(Uint8 *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+//TODO SDL2
+Uint8 *p = (Uint8 *)myPixels + y * _pitch + x ;
+*p = color; // Vale para todos los bpp, excepto 24bpp
 /*
 	// Lock the screen for direct access to the pixels 
 	if ( SDL_MUSTLOCK(screen) ) {
