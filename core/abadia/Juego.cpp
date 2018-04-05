@@ -1703,216 +1703,146 @@ bool Juego::menu()
 /////////////////////////////////////////////////////////////////////////////
 
 void Juego::run()
+// para abadIA se usa el bucle original de Vigasoco
 {
-	// obtiene los recursos para el juego
-	timer = VigasocoMain->getTimingHandler();
-	controles->init(VigasocoMain->getInputHandler());
-	audio_plugin = VigasocoMain->getAudioPlugin();
+        // obtiene los recursos para el juego
+        timer = VigasocoMain->getTimingHandler();
+        controles->init(VigasocoMain->getInputHandler());
 
-	// muestra la imagen de presentaciÛn
+#ifndef __abadIA__
+        // muestra la imagen de presentaci√≥n
+        muestraPresentacion();
 
-	muestraPresentacion();
+        // muestra el pergamino de presentaci√≥n
+        muestraIntroduccion();
+#endif
 
-	// para borrar la presentacion antes del menu
-	marcador->limpiaAreaMarcador();
+        // crea las entidades del juego (sprites, personajes, puertas y objetos)
+        creaEntidadesJuego();
 
-	// llevo menu y pergamino mas atras para
-	// que el menu se encuentre ya objetos inicializados
-	//
-	// limpia el ·rea que ocupa el marcador
-	// no se limpia en menu() porque cuando se llame al menu 
-	// dentro del juego, no se debe borrar el marcador
-//	marcador->limpiaAreaMarcador();
-	// menu, sobretodo para permitir cambiar el idioma al empezar
-	// y ver el pergamino inicial en tu idioma
-//	menu();
+        // genera los gr√°ficos flipeados en x de las entidades que lo necesiten
+        generaGraficosFlipeados();
 
-	// muestra el pergamino de presentaciÛn
-//	muestraIntroduccion();
+        // inicialmente la c√°mara sigue a guillermo
+        motor->personaje = personajes[0];
 
-	// crea las entidades del juego (sprites, personajes, puertas y objetos)
-	creaEntidadesJuego();
+        // inicia el objeto que muestra informaci√≥n interna del juego
+        infoJuego->inicia();
 
+        // limpia el √°rea que ocupa el marcador
+        marcador->limpiaAreaMarcador();
 
-	// genera los gr·ficos flipeados en x de las entidades que lo necesiten
-	generaGraficosFlipeados();
+        // obtiene las direcciones de los datos relativos a la habitaci√≥n del espejo
+        logica->despHabitacionEspejo();
 
+        // aqu√≠ ya se ha completado la inicializaci√≥n de datos para el juego
+        // ahora realiza la inicializaci√≥n para poder empezar a jugar una partida
+        while (true){
+                // inicia la l√≥gica del juego
+                logica->inicia();
 
-	// inicialmente la c·mara sigue a guillermo
-	motor->personaje = personajes[0];
+                // limpia el √°rea de juego y dibuja el marcador
+                limpiaAreaJuego(0);
+                marcador->dibujaMarcador();
 
+                // inicia el contador de la interrupci√≥n
+                contadorInterrupcion = 0;
 
-	// inicia el objeto que muestra informaciÛn interna del juego
-	infoJuego->inicia();
+                // pone una posici√≥n de pantalla inv√°lida para que se redibuje la pantalla
+                motor->posXPantalla = motor->posYPantalla = -1;
 
-	//esto se hacia en muestraIntroduccion
-	//pero ahora muestraIntroduccion va despues
-	// limpia el ·rea que ocupa el marcador
-//	marcador->limpiaAreaMarcador();
+                // dibuja los objetos que tiene guillermo en el marcador
+                marcador->dibujaObjetos(personajes[0]->objetos, 0xff);
 
+                // inicia el marcador (d√≠a y momento del d√≠a, obsequium y el espacio de las frases)
+                marcador->muestraDiaYMomentoDia();
+                marcador->decrementaObsequium(0);
+                marcador->limpiaAreaFrases();
 
-	// obtiene las direcciones de los datos relativos a la habitaciÛn del espejo
-	logica->despHabitacionEspejo();
+                while (true){   // el bucle principal del juego empieza aqu√≠
+                        // actualiza el estado de los controles
+                        controles->actualizaEstado();
 
-//iniciar antes del menu, para que si a alguien le da por 
-//grabar antes de empezar una partida, se guarden
-//datos inicializados.
-//otra opcion seria desactivar el menu grabar
-//si se ha entrado en el menu antes de empezar a jugar
-//TODO: cambiar el bucle principal de inicializar
-//porque se esta liando bastante
-logica->inicia();
-	// menu, para permitir cambiar el idioma al empezar
-	// y ver el pergamino inicial en tu idioma
-	if (menu()) goto despues_de_cargar_o_iniciar;
+                        // obtiene el contador de la animaci√≥n de guillermo para saber si se generan caminos en esta iteraci√≥n
+                        elBuscadorDeRutas->contadorAnimGuillermo = laLogica->guillermo->contadorAnimacion;
 
-	// muestra el pergamino de presentaciÛn
+                        // comprueba si se debe abrir el espejo
+                        logica->compruebaAbreEspejo();
 
-	muestraIntroduccion();
+                        // comprueba si se ha pulsado la pausa
+                        compruebaPausa();
 
-	// limpia el ·rea que ocupa el marcador
-	marcador->limpiaAreaMarcador();
+                        // actualiza las variables relacionadas con el paso del tiempo
+                        logica->actualizaVariablesDeTiempo();
 
-	// aquÌ ya se ha completado la inicializaciÛn de datos para el juego
-	// ahora realiza la inicializaciÛn para poder empezar a jugar una partida
-	while (true){
+                        // si guillermo ha muerto, empieza una partida
+                        if (muestraPantallaFinInvestigacion()){
+                                break;
+                        }
 
-		// inicia la lÛgica del juego
-		logica->inicia();
+                        // comprueba si guillermo lee el libro, y si lo hace sin guantes, lo mata
+                        logica->compruebaLecturaLibro();
 
+                        // comprueba si hay que avanzar la parte del momento del d√≠a en el marcador
+                        marcador->realizaScrollMomentoDia();
 
-despues_de_cargar_o_iniciar:
-		ReiniciaPantalla();
+                        // comprueba si hay que ejecutar las acciones programadas seg√∫n el momento del d√≠a
+                        logica->ejecutaAccionesMomentoDia();
 
+                        // comprueba si hay opciones de que la c√°mara siga a otro personaje y calcula los bonus obtenidos
+                        logica->compruebaBonusYCambiosDeCamara();
 
-		while (true){	// el bucle principal del juego empieza aquÌ
-			// actualiza el estado de los controles
-			controles->actualizaEstado();
+                        // comprueba si se ha cambiado de pantalla y act√∫a en consecuencia
+                        motor->compruebaCambioPantalla();
 
-			// obtiene el contador de la animaciÛn de guillermo para saber si se generan caminos en esta iteraciÛn
-			elBuscadorDeRutas->contadorAnimGuillermo = laLogica->guillermo->contadorAnimacion;
+                        // comprueba si los personajes cogen o dejan alg√∫n objeto
+                        logica->compruebaCogerDejarObjetos();
 
-			// comprueba si se debe abrir el espejo
-			logica->compruebaAbreEspejo();
+                        // comprueba si se abre o se cierra alguna puerta
+                        logica->compruebaAbrirCerrarPuertas();
 
+                        // ejecuta la l√≥gica de los personajes
+                        for (int i = 0; i < numPersonajes; i++){
+                                personajes[i]->run();
+                        }
 
-			// comprueba si se ha pulsado la pausa
-			compruebaPausa();
-
-
-			//comprueba si se intenta cargar/grabar la partida
-			compruebaSave();
-
-
-			if ( compruebaLoad() ) goto despues_de_cargar_o_iniciar;
-
-
-			// comprueba si se quieren cambiar de graficos 
-			// CPC a VGA o viceversa
-			compruebaCambioCPC_VGA();
-
-			// comprueba si se quiere entrar al menu
-			if ( compruebaMenu() ) goto despues_de_cargar_o_iniciar;
-
-
-			// actualiza las variables relacionadas con el paso del tiempo
-			logica->actualizaVariablesDeTiempo();
-
-
-			// si guillermo ha muerto, empieza una partida
-			if (muestraPantallaFinInvestigacion()){
-				break;
-			}
-
-
-			// comprueba si guillermo lee el libro, y si lo hace sin guantes, lo mata
-			logica->compruebaLecturaLibro();
-
-
-			// comprueba si hay que avanzar la parte del momento del dÌa en el marcador
-			marcador->realizaScrollMomentoDia();
-
-
-			// comprueba si hay que ejecutar las acciones programadas seg˙n el momento del dÌa
-			logica->ejecutaAccionesMomentoDia();
-
-
-			// comprueba si hay opciones de que la c·mara siga a otro personaje y calcula los bonus obtenidos
-			logica->compruebaBonusYCambiosDeCamara();
-
-
-			// comprueba si se ha cambiado de pantalla y act˙a en consecuencia
-			motor->compruebaCambioPantalla();
-
-
-			// comprueba si los personajes cogen o dejan alg˙n objeto
-			logica->compruebaCogerDejarObjetos();
-
-
-			// comprueba si se abre o se cierra alguna puerta
-			logica->compruebaAbrirCerrarPuertas();
-
-
-			// ejecuta la lÛgica de los personajes
-			for (int i = 0; i < numPersonajes; i++){
-				personajes[i]->run();
-
-			}
-
-			// indica que en esta iteraciÛn no se ha generado ning˙n camino
-			logica->buscRutas->generadoCamino = false;
-
-			// actualiza el sprite de la luz para que se mueva siguiendo a adso
-			actualizaLuz();
-
-
-			// si guillermo o adso est·n frente al espejo, muestra su reflejo
-			laLogica->realizaReflejoEspejo();
-
-
-			// si est· en modo informaciÛn, 
-			// muestra la informaciÛn interna del juego
-			// con transparencia 
-			if (cambioModoInformacion && modoInformacion ) {
-				limpiaAreaJuego(12);
-				cambioModoInformacion=false;
-			}
-
-			if (cambioModoInformacion && !modoInformacion ) {
-				// TODO: Revisar el entrar y salir del modo
-				// informacion con puertas, objetos, 
-				// pantalla con iluminacion y lampara, etc
-				limpiaAreaJuego(12);
-			 	motor->compruebaCambioPantalla(true);	
-				cambioModoInformacion=false;
-			}
-
-			if (modoInformacion){
-				infoJuego->muestraInfo();
-			} else {
-
-			// dibuja la pantalla si fuera necesario
-			motor->dibujaPantalla();
-
-			// dibuja los sprites visibles que hayan cambiado
-			motor->dibujaSprites();
-			}
-
-			// espera un poco para actualizar el estado del juego
-			while (contadorInterrupcion < 0x24){
-				timer->sleep(5);
-			}
-
-			if (laLogica->guillermo->contadorAnimacion==1)
-			{
-				audio_plugin->Play(SONIDOS::Pasos);
-			}
-
-			// reinicia el contador de la interrupciÛn
-			contadorInterrupcion = 0;
-		}
-	}
+                        // indica que en esta iteraci√≥n no se ha generado ning√∫n camino
+                        logica->buscRutas->generadoCamino = false;
+
+                        // actualiza el sprite de la luz para que se mueva siguiendo a adso
+                        actualizaLuz();
+
+                        // si guillermo o adso est√°n frente al espejo, muestra su reflejo
+                        laLogica->realizaReflejoEspejo();
+
+                        // si est√° en modo informaci√≥n, muestra la informaci√≥n interna del juego
+                        if (
+#ifdef __abadIA__ 
+				true ||
+#endif
+			      	modoInformacion){
+                                infoJuego->muestraInfo();
+                        }
+
+#ifndef __abadIA__
+                        // dibuja la pantalla si fuera necesario
+                        motor->dibujaPantalla();
+
+                        // dibuja los sprites visibles que hayan cambiado
+                        motor->dibujaSprites();
+#endif
+
+                        // espera un poco para actualizar el estado del juego
+                        while (contadorInterrupcion < 0x24){
+                                timer->sleep(5);
+                        }
+
+                        // reinicia el contador de la interrupci√≥n
+                        contadorInterrupcion = 0;
+                }
+        }
 }
+
 
 // limpia el ·rea de juego de color que se le pasa y los bordes de negro
 void Juego::limpiaAreaJuego(int color)

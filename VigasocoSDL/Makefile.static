@@ -1,5 +1,5 @@
 #CXXFLAGS=-g -D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl-config --cflags` 
-CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl-config --cflags` 
+CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -D__abadIA__ -O3 -I../core `sdl-config --cflags` 
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 # en OBJECTS_CORE falta Operations.o ??

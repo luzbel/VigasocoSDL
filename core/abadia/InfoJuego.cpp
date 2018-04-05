@@ -141,9 +141,20 @@ void InfoJuego::muestraInfo()
 // asi que no miro las teclas y siempre dejo activos los mapas
 // TODO FIXME
 // mover esto a la inicializacion
+
+#ifdef __abadIA__
+// En las primeras versiones del proyecto abadIA, a la IA
+// se le mostrará la informaci�n de la habitacion en formato reducido
+// En versiones posteriores la IA deberá jugar procesando los pixeles
+// de la misma pantalla que usan los jugadores humanos
+mostrarRejilla=true;
+mostrarMapaPlantaActual=false;
+mostrarMapaRestoPlantas=false;
+#else
 mostrarRejilla=true;
 mostrarMapaPlantaActual=true;
 mostrarMapaRestoPlantas=true;
+#endif
 
 	if (mostrarRejilla){
 		// dibuja la rejilla del juego
