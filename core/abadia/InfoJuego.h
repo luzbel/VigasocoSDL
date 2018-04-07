@@ -98,6 +98,9 @@ protected:
 	// conversión de valores a cadenas
 	std::string muestra(int valor);
 	std::string muestra(bool valor);
+
+	// conversion de valores a propiedad JSON
+	std::string muestra(std::string, int valor);
 };
 
 

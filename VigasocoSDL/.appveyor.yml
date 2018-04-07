@@ -1,0 +1,82 @@
+version: 1.0.{build}
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      BUILD_CMD: "C:\\MinGW\\bin\\mingw32-make -f Makefile.MinGW"
+      ARTIFACT_FILE: "build\\win\\VigasocoSDL-Beta.Win32.zip"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+      BUILD_CMD: make -f Makefile
+      ARTIFACT_FILE: "build/linux/VigasocoSDL-Beta.Linux.zip"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+      BUILD_CMD: make -f Makefile.static
+      ARTIFACT_FILE: "build/linux/VigasocoSDL-Beta.Linux.static.zip"
+branches:
+  # whitelist
+  only:
+    - pruebasAbadIA
+install:
+- cmd: >-
+    
+    appveyor DownloadFile https://www.libsdl.org/release/SDL-devel-1.2.15-mingw32.tar.gz
+
+    7z x SDL-devel-1.2.15-mingw32.tar.gz -so | 7z x -si -ttar -oc:\MinGW
+
+    ren c:\MinGW\SDL-1.2.15 SDL-1.2.14
+
+    mkdir %APPVEYOR_BUILD_FOLDER%\VigasocoSDL\input
+
+    mkdir %APPVEYOR_BUILD_FOLDER%\VigasocoSDL\video
+
+    mkdir %APPVEYOR_BUILD_FOLDER%\VigasocoSDL\audio
+    
+    mkdir %APPVEYOR_BUILD_FOLDER%\build\
+    
+    mkdir %APPVEYOR_BUILD_FOLDER%\build\win
+- sh: >-
+    sudo apt-get update
+    
+    sudo apt-get install -y libsdl1.2-dev
+    
+    mkdir $APPVEYOR_BUILD_FOLDER/VigasocoSDL/input
+    
+    mkdir $APPVEYOR_BUILD_FOLDER/VigasocoSDL/video
+    
+    mkdir $APPVEYOR_BUILD_FOLDER/VigasocoSDL/audio
+    
+    mkdir $APPVEYOR_BUILD_FOLDER/build
+    
+    mkdir $APPVEYOR_BUILD_FOLDER/build/linux
+build_script:
+- cmd: >-
+    set PATH=C:\MinGW\bin\;%PATH%
+
+    %BUILD_CMD%
+
+    cp c:\MinGW\bin\libgcc_s_dw2-1.dll VigasocoSDL
+
+    cp c:\MinGW\bin\libstdc++-6.dll VigasocoSDL
+
+    cp c:\MinGW\SDL-1.2.14\bin\SDL.dll VigasocoSDL
+
+    7z a -tzip %ARTIFACT_FILE% VigasocoSDL\VigasocoSDL.exe VigasocoSDL\roms VigasocoSDL\input VigasocoSDL\video VigasocoSDL\audio VigasocoSDL\libgcc_s_dw2-1.dll VigasocoSDL\libstdc++-6.dll VigasocoSDL\SDL.dll
+- sh: >-
+    $BUILD_CMD
+    
+    zip $ARTIFACT_FILE VigasocoSDL/VigasocoSDL VigasocoSDL/audio/libVigasocoNULLAudioPlugin.so VigasocoSDL/audio/libVigasocoSDLAudioPlugin.so VigasocoSDL/video/libVigasocoSDLDrawPlugin.so VigasocoSDL/input/libVigasocoSDLInputPlugin.so VigasocoSDL/roms/abadia/*
+    
+    cp $ARTIFACT_FILE $APPVEYOR_BUILD_FOLDER
+artifacts:
+- path: build\*\*
+  name: zips
+
+deploy:
+  release: $(APPVEYOR_REPO_TAG_NAME)
+  description: $(APPVEYOR_REPO_COMMIT_MESSAGE)
+  provider: GitHub
+  auth_token:
+    secure: Nln0VXNH3fI6D0B7GizeIQTYFlqUY0n3BqDCzrwfFblMRG/9s0lsStJV+9aO3sR5
+  draft: false
+  prerelease: true
+  on:
+    branch: pruebasAbadIA
+    appveyor_repo_tag: true

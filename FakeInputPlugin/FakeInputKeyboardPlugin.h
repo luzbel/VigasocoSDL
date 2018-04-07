@@ -14,6 +14,7 @@ class FakeInputKeyboardPlugin: public IInputPlugin
 {
 // fields
 protected:
+	Uint8 keystate[SDLK_LAST];
 	static const std::string g_properties[];
 	static const int g_paramTypes[];
 

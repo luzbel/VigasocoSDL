@@ -1817,9 +1817,11 @@ void Juego::run()
 
                         // si está en modo información, muestra la información interna del juego
                         if (
+/*
 #ifdef __abadIA__ 
 				true ||
 #endif
+*/
 			      	modoInformacion){
                                 infoJuego->muestraInfo();
                         }
