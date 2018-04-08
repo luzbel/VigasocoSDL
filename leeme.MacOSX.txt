@@ -3,3 +3,8 @@ brew install sdl
 
 make -f Makefile.MacOSX 
 
+
+Headless ** AbadIA options
+--------------------------
+
+

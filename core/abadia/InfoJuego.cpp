@@ -5,6 +5,10 @@
 #include <cassert>
 #include <iomanip>
 #include <string>
+#include <iostream> // TODO: revisar JT
+#include <chrono>
+#include <ctime>
+#include <sstream>
 
 #include "../systems/cpc6128.h"
 #include "../IDrawPlugin.h"
@@ -27,11 +31,12 @@
 
 #ifdef __abadIA__
 #include <fstream>
+char pathDump[200];
 #endif
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// inicialización y limpieza
+// inicializaciï¿½n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 InfoJuego::InfoJuego()
@@ -49,6 +54,18 @@ InfoJuego::InfoJuego()
 	mostrarRejilla = false;
 	mostrarMapaPlantaActual = false;
 	mostrarMapaRestoPlantas = false;
+
+	// TODO: revisar aÃ±adido por JT
+	// Creo el path para el fichero de dump con la info
+
+	fprintf(stderr, "Init pathDump\n");
+	std::time_t t = std::time(nullptr);
+	
+    if (std::strftime(pathDump, sizeof(pathDump), "/tmp/abadiaDump%Y%m%d-%H%M%S.json", std::localtime(&t))) {
+        std::cerr << pathDump << '\n';
+    }
+ 	// strftime(pathDump, sizeof(pathDump), "/tmp/abadiaDump%Y%m%D-%H%M%S.json", tm);
+	// printf(stderr, "pathDump: %s", pathDump);
 }
 
 InfoJuego::~InfoJuego()
@@ -73,10 +90,10 @@ int InfoJuego::alturaBasePlanta[3] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos para mostrar información interna del juego
+// mï¿½todos para mostrar informaciï¿½n interna del juego
 /////////////////////////////////////////////////////////////////////////////
 
-// inicia los datos necesarios para poder mostrar la información sobre el comportamiento del juego más tarde
+// inicia los datos necesarios para poder mostrar la informaciï¿½n sobre el comportamiento del juego mï¿½s tarde
 void InfoJuego::inicia()
 {
 	// inicia la paleta (los colores colores 0-3 no pueden usarse ya que los usa el juego)
@@ -89,7 +106,7 @@ void InfoJuego::inicia()
 	int colores[8][3] = {
 		{ 0xff, 0x00, 0x00 },	// guillermo (rojo)
 		{ 0xff, 0x00, 0x00 },	// adso (rojo)
-		{ 0x00, 0xff, 0x00 },	// malaquías (verde)
+		{ 0x00, 0xff, 0x00 },	// malaquï¿½as (verde)
 		{ 0x00, 0x00, 0x00 },	// el abad (negro)
 		{ 0x00, 0xff, 0xff },	// berengario (azul celeste)
 		{ 0x00, 0x00, 0xff },	// severino (azul)
@@ -119,7 +136,7 @@ void InfoJuego::inicia()
 	generaAlturasPlanta();
 }
 
-// muestra la información del juego que se ha activado
+// muestra la informaciï¿½n del juego que se ha activado
 void InfoJuego::muestraInfo()
 {
 /* las teclas 1 a 7 ahora se usan para hacer trampas y cambiar la camara para seguir a otros personajes
@@ -147,7 +164,7 @@ void InfoJuego::muestraInfo()
 
 #ifdef __abadIA__
 // En las primeras versiones del proyecto abadIA, a la IA
-// se le mostrarÃ¡ la informaciÃn de la habitacion en formato reducido
+// se le mostrarÃ¡ la informaciï¿½n de la habitacion en formato reducido
 // En versiones posteriores la IA deberÃ¡ jugar procesando los pixeles
 // de la misma pantalla que usan los jugadores humanos
 mostrarRejilla=true;
@@ -156,7 +173,7 @@ mostrarMapaRestoPlantas=false;
 
 //fprintf(stderr,"info\n");
 //std::ofstream out("/dev/stdout",std::ios::app); // TODO , no abrir en cada bucle
-std::ofstream out("/tmp/b",std::ios::app); // TODO , no abrir en cada bucle
+std::ofstream out(pathDump,std::ios::app); // TODO , no abrir en cada bucle
 out << "{" ;
 out << muestra("dia", laLogica->dia);
 out << muestra("momentoDia", laLogica->momentoDia);
@@ -249,15 +266,15 @@ mostrarMapaRestoPlantas=true;
 	int planta = elMotorGrafico->obtenerPlanta(elMotorGrafico->obtenerAlturaBasePlanta(elMotorGrafico->personaje->altura));
 
 	if (mostrarMapaPlantaActual){
-		// dibuja el mapa de la planta actual del personaje al que sigue la cámara
+		// dibuja el mapa de la planta actual del personaje al que sigue la cï¿½mara
 		dibujaAlturaPlanta(planta);
 
-		// dibuja la posición de los personajes en el mapa de la planta actual
+		// dibuja la posiciï¿½n de los personajes en el mapa de la planta actual
 		muestraPosicionMapaAlturas(planta);
 	}
 
 	if (mostrarMapaRestoPlantas){
-		// para las plantas que no se muestran, dibuja el mapa pequeño de éstas
+		// para las plantas que no se muestran, dibuja el mapa pequeï¿½o de ï¿½stas
 		int numMapas = 0;
 		for (int i = 0; i < 3; i++){
 			if (i != planta){
@@ -267,7 +284,7 @@ mostrarMapaRestoPlantas=true;
 		}
 
 
-		// dibuja la posición de los personajes en el mapa del resto de plantas
+		// dibuja la posiciï¿½n de los personajes en el mapa del resto de plantas
 		numMapas = 0;
 		for (int i = 0; i < 3; i++){
 			if (i != planta){
@@ -278,28 +295,28 @@ mostrarMapaRestoPlantas=true;
 	}
 
 	if (mostrarLogica){
-		// muestra la lógica general del juego
+		// muestra la lï¿½gica general del juego
 		muestraInfoLogica(100, 0);
 	}
 
 	if (numPersonaje != Juego::numPersonajes){
-		// muestra la información sobre el personaje seleccionado
+		// muestra la informaciï¿½n sobre el personaje seleccionado
 		muestraInfoPersonaje(numPersonaje, 500, 0);
 	}
 
 	if (numObjeto != Juego::numObjetos){
-		// muestra la información sobre el objeto seleccionado
+		// muestra la informaciï¿½n sobre el objeto seleccionado
 		muestraInfoObjeto(numObjeto, 300, 0);
 	}
 
 	if (numPuerta != Juego::numPuertas){
-		// muestra la información sobre la puerta seleccionada
+		// muestra la informaciï¿½n sobre la puerta seleccionada
 		muestraInfoPuerta(numPuerta, 100, 0);
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos para dibujar la rejilla
+// mï¿½todos para dibujar la rejilla
 /////////////////////////////////////////////////////////////////////////////
 
 // dibuja la rejilla
@@ -316,12 +333,12 @@ void InfoJuego::dibujaRejilla()
 	}
 }
 
-// dibuja una posición de la rejilla
+// dibuja una posiciï¿½n de la rejilla
 void InfoJuego::dibujaPosicionRejilla(int x, int y, int valor)
 {
 	int color = (valor & 0x0f) + 16;
 
-	// si en esa posición no hay un personaje, dibuja la altura
+	// si en esa posiciï¿½n no hay un personaje, dibuja la altura
 	if (valor < 0x10){
 		for (int j = 0; j < 4; j++){
 			for (int i = 0; i < 4; i++){
@@ -329,7 +346,7 @@ void InfoJuego::dibujaPosicionRejilla(int x, int y, int valor)
 			}
 		}
 	} else {
-		// si hay un personaje, dibuja un símbolo
+		// si hay un personaje, dibuja un sï¿½mbolo
 		static int gfxPosPersonaje[4][4] = {
 			{ 15,  0,  0, 15 },
 			{  0, 15, 15,  0 },
@@ -346,10 +363,10 @@ void InfoJuego::dibujaPosicionRejilla(int x, int y, int valor)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos para dibujar la altura del mapa de una planta
+// mï¿½todos para dibujar la altura del mapa de una planta
 /////////////////////////////////////////////////////////////////////////////
 
-// genera el mapa de alturas de cada pantalla y lo graba para después
+// genera el mapa de alturas de cada pantalla y lo graba para despuï¿½s
 void InfoJuego::generaAlturasPlanta()
 {
 	// crea un personaje ficticio para generar la altura de todas las pantallas de la planta
@@ -394,7 +411,7 @@ void InfoJuego::generaAlturasPlanta()
 		for (int j = minY; j <= maxY; j++){
 			for (int i = minX; i <= maxX; i++){
 
-				// si la pantalla actual está definida, guarda su altura
+				// si la pantalla actual estï¿½ definida, guarda su altura
 				if ((mapa[16*j + i] != 0) || ((numPlanta == 0) && (i == 0x04) && (j == 0x03))){
 
 					pers.posX = 16*i;
@@ -416,10 +433,10 @@ void InfoJuego::generaAlturasPlanta()
 	}
 }
 
-// dibuja el mapa completo de la planta en una posición determinada
+// dibuja el mapa completo de la planta en una posiciï¿½n determinada
 void InfoJuego::dibujaAlturaPlanta(int numPlanta)
 {
-	// calcula el zoom a usar según la planta que se muestra
+	// calcula el zoom a usar segï¿½n la planta que se muestra
 	int zoom = (numPlanta == 0) ? 1 : 2;
 
 	// obtiene el mapa de la planta
@@ -439,7 +456,7 @@ void InfoJuego::dibujaAlturaPlanta(int numPlanta)
 	// pinta las casillas del mapa que tienen una pantalla asociada
 	for (int j = minY; j <= maxY; j++){
 		for (int i = minX; i <= maxX; i++){
-			// si la pantalla actual está definida, la pinta
+			// si la pantalla actual estï¿½ definida, la pinta
 			if ((mapa[16*j + i] != 0) || ((numPlanta == 0) && (i == 0x04) && (j == 0x03))){
 
 				UINT8 *alturaPantalla = &alturas[(longX*(j - minY) + i - minX)*16*16];
@@ -464,13 +481,13 @@ void InfoJuego::dibujaAlturaPosicionPlanta(int posX, int posY, int i, int j, int
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos para dibujar el mapa de una planta
+// mï¿½todos para dibujar el mapa de una planta
 /////////////////////////////////////////////////////////////////////////////
 
-// dibuja el mapa completo de la planta en una posición determinada
+// dibuja el mapa completo de la planta en una posiciï¿½n determinada
 void InfoJuego::dibujaMapa(int posX, int numPlanta)
 {
-	// calcula el zoom a usar según la planta que se muestra
+	// calcula el zoom a usar segï¿½n la planta que se muestra
 	int zoom = (numPlanta == 0) ? 6 : 8;
 
 	// obtiene el mapa de la planta
@@ -488,7 +505,7 @@ void InfoJuego::dibujaMapa(int posX, int numPlanta)
 	// pinta las casillas del mapa que tienen una pantalla asociada
 	for (int j = minY; j <= maxY; j++){
 		for (int i = minX; i <= maxX; i++){
-			// si la pantalla actual está definida, la pinta
+			// si la pantalla actual estï¿½ definida, la pinta
 			if ((mapa[16*j + i] != 0) || ((numPlanta == 0) && (i == 0x04) && (j == 0x03))){
 				dibujaPixelCuadradoZoom(posX, posY, i - minX, j - minY, zoom, 0x1f);
 			}
@@ -497,13 +514,13 @@ void InfoJuego::dibujaMapa(int posX, int numPlanta)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos para dibujar las posiciones en los mapas
+// mï¿½todos para dibujar las posiciones en los mapas
 /////////////////////////////////////////////////////////////////////////////
 
-// muestra la posición de los personajes que están en el mapa de alturas
+// muestra la posiciï¿½n de los personajes que estï¿½n en el mapa de alturas
 void InfoJuego::muestraPosicionMapaAlturas(int numPlanta)
 {
-	// calcula el zoom a usar según la planta que se muestra
+	// calcula el zoom a usar segï¿½n la planta que se muestra
 	int zoom = (numPlanta == 0) ? 1 : 2;
 
 	// obtiene la zona visible de la planta
@@ -514,29 +531,29 @@ void InfoJuego::muestraPosicionMapaAlturas(int numPlanta)
 	int longX = maxX - minX + 1;
 	int posX = 320 - 4 - longX*16*zoom;
 
-	// recorre los personajes pintando la posición que ocupan
+	// recorre los personajes pintando la posiciï¿½n que ocupan
 	for (int i = 0; i < Juego::numPersonajes; i++){
 		Personaje *pers = elJuego->personajes[i];
 
-		// si el personaje no está en la abadía, pasa al siguiente personaje
+		// si el personaje no estï¿½ en la abadï¿½a, pasa al siguiente personaje
 		if ((pers->posX == 0) && (pers->posY == 0) && (pers->altura == 0)) continue;
 
-		// si el personaje no está en esta planta, pasa al siguiente
+		// si el personaje no estï¿½ en esta planta, pasa al siguiente
 		if (elMotorGrafico->obtenerPlanta(elMotorGrafico->obtenerAlturaBasePlanta(pers->altura)) != numPlanta) continue;
 
 		// calcula el desplazamiento dentro del mapa
 		int despX = (((pers->posX & 0xf0) >> 4) - minX)*16 + (pers->posX & 0x0f);
 		int despY = (((pers->posY & 0xf0) >> 4) - minY)*16 + (pers->posY & 0x0f);
 
-		// dibuja la posición dentro del mapa
+		// dibuja la posiciï¿½n dentro del mapa
 		dibujaPixelCuadradoZoom(posX, 0, despX, despY, zoom, 4 + i);
 	}
 }
 
-// muestra la posición de los personajes que están en los mapas pequeños
+// muestra la posiciï¿½n de los personajes que estï¿½n en los mapas pequeï¿½os
 void InfoJuego::muestraPosicionMapa(int posX, int numPlanta)
 {
-	// calcula el zoom a usar según la planta que se muestra
+	// calcula el zoom a usar segï¿½n la planta que se muestra
 	int zoom = (numPlanta == 0) ? 6 : 8;
 
 	// obtiene la zona visible de la planta
@@ -548,14 +565,14 @@ void InfoJuego::muestraPosicionMapa(int posX, int numPlanta)
 	int longY = maxY - minY + 1;
 	int posY = 100 + (160 - 100 - longY*zoom)/2;
 
-	// recorre los personajes pintando la posición que ocupan
+	// recorre los personajes pintando la posiciï¿½n que ocupan
 	for (int i = 0; i < Juego::numPersonajes; i++){
 		Personaje *pers = elJuego->personajes[i];
 
-		// si el personaje no está en la abadía, pasa al siguiente personaje
+		// si el personaje no estï¿½ en la abadï¿½a, pasa al siguiente personaje
 		if ((pers->posX == 0) && (pers->posY == 0) && (pers->altura == 0)) continue;
 
-		// si el personaje no está en esta planta, pasa al siguiente
+		// si el personaje no estï¿½ en esta planta, pasa al siguiente
 		if (elMotorGrafico->obtenerPlanta(elMotorGrafico->obtenerAlturaBasePlanta(pers->altura)) != numPlanta) continue;
 
 		// calcula el desplazamiento dentro del mapa
@@ -567,17 +584,17 @@ void InfoJuego::muestraPosicionMapa(int posX, int numPlanta)
 		//assert(pixelValido);
 
 		if (pixelValido){
-			// dibuja la posición dentro del mapa
+			// dibuja la posiciï¿½n dentro del mapa
 			dibujaPixelCuadrado(posX + despX, posY + despY, 4 + i);
 		}
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos para mostrar información sobre la lógica y las entidades del juego
+// mï¿½todos para mostrar informaciï¿½n sobre la lï¿½gica y las entidades del juego
 /////////////////////////////////////////////////////////////////////////////
 
-// muestra por pantalla la información relativa a la lógica del juego
+// muestra por pantalla la informaciï¿½n relativa a la lï¿½gica del juego
 void InfoJuego::muestraInfoLogica(int x, int y)
 {
 	std::ostringstream strBuf;
@@ -617,7 +634,7 @@ void InfoJuego::muestraInfoLogica(int x, int y)
 	theFontManager->print(VigasocoMain->getDrawPlugin(), strBuf.str(), x, y);
 }
 
-// muestra por pantalla la información relativa a el personaje i
+// muestra por pantalla la informaciï¿½n relativa a el personaje i
 void InfoJuego::muestraInfoPersonaje(int i, int x, int y)
 {
 	Personaje *pers = elJuego->personajes[i];
@@ -632,7 +649,7 @@ void InfoJuego::muestraInfoPersonaje(int i, int x, int y)
 	theFontManager->print(VigasocoMain->getDrawPlugin(), strBuf.str(), x, y);
 }
 
-// muestra por pantalla la información relativa a la puerta i
+// muestra por pantalla la informaciï¿½n relativa a la puerta i
 void InfoJuego::muestraInfoPuerta(int i, int x, int y)
 {
 	Puerta *puerta = elJuego->puertas[i];
@@ -647,7 +664,7 @@ void InfoJuego::muestraInfoPuerta(int i, int x, int y)
 	theFontManager->print(VigasocoMain->getDrawPlugin(), strBuf.str(), x, y);
 }
 
-// muestra por pantalla la información relativa al objeto i
+// muestra por pantalla la informaciï¿½n relativa al objeto i
 void InfoJuego::muestraInfoObjeto(int i, int x, int y)
 {
 	Objeto *obj = elJuego->objetos[i];
@@ -663,10 +680,10 @@ void InfoJuego::muestraInfoObjeto(int i, int x, int y)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// conversión de tipos a cadenas
+// conversiï¿½n de tipos a cadenas
 /////////////////////////////////////////////////////////////////////////////
 
-// muestra la información relativa a una entidad
+// muestra la informaciï¿½n relativa a una entidad
 std::string InfoJuego::muestraEntidad(EntidadJuego *entidad)
 {
 	std::ostringstream strBuf;
@@ -675,7 +692,7 @@ std::string InfoJuego::muestraEntidad(EntidadJuego *entidad)
 	return strBuf.str();
 }
 
-// muestra la información relativa a un personaje
+// muestra la informaciï¿½n relativa a un personaje
 std::string InfoJuego::muestraPersonaje(int i, Personaje *pers)
 {
 	std::ostringstream strBuf;
@@ -703,7 +720,7 @@ std::string InfoJuego::muestraPersonaje(int i, Personaje *pers)
 	return strBuf.str();
 }
 
-// muestra la información relativa a una puerta
+// muestra la informaciï¿½n relativa a una puerta
 std::string InfoJuego::muestraPuerta(Puerta *puerta)
 {
 	std::ostringstream strBuf;
@@ -716,7 +733,7 @@ std::string InfoJuego::muestraPuerta(Puerta *puerta)
 	return strBuf.str();
 }
 
-// muestra la información relativa a un objeto
+// muestra la informaciï¿½n relativa a un objeto
 std::string InfoJuego::muestraObjeto(Objeto *obj)
 {
 	std::ostringstream strBuf;
@@ -734,7 +751,7 @@ std::string InfoJuego::muestraObjeto(Objeto *obj)
 	return strBuf.str();
 }
 
-// muestra la información relativa a un sprite
+// muestra la informaciï¿½n relativa a un sprite
 std::string InfoJuego::muestraSprite(Sprite *spr)
 {
 	std::ostringstream strBuf;
@@ -755,7 +772,7 @@ std::string InfoJuego::muestraSprite(Sprite *spr)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// conversión de valores a cadenas
+// conversiï¿½n de valores a cadenas
 /////////////////////////////////////////////////////////////////////////////
 
 std::string InfoJuego::muestra(std::string clave, int valor)
@@ -779,7 +796,7 @@ std::string InfoJuego::muestra(bool valor)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos auxiliares
+// mï¿½todos auxiliares
 /////////////////////////////////////////////////////////////////////////////
 
 // dibuja un pixel que ocupe 2x2 posiciones en el bitmap final
@@ -793,7 +810,7 @@ void InfoJuego::dibujaPixelCuadrado(int x, int y, int color)
 	cpc6128->setPixel(2*x + 1, y, color);
 }
 
-// igual que el método anterior pero con un factor de zoom
+// igual que el mï¿½todo anterior pero con un factor de zoom
 void InfoJuego::dibujaPixelCuadradoZoom(int posX, int posY, int i, int j, int zoom, int color)
 {
 	for (int zoomY = 0; zoomY < zoom; zoomY++){

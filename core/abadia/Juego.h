@@ -62,7 +62,7 @@ public:
 	bool GraficosCPC; // Indica si se usan los datos del archivo GraficosCPC
 			  // o del GraficosVGA
 			  // En ambos casos, son de 8 bits
-	CPC6128 *cpc6128;						// objeto de ayuda para realizar operaciones gráficas del cpc6128
+	CPC6128 *cpc6128;						// objeto de ayuda para realizar operaciones grï¿½ficas del cpc6128
 	IAudioPlugin *audio_plugin;	// puntero al plugin de audio
 	Controles *controles;					// acceso a los controles del juego
 	Paleta *paleta;							// paleta del juego
@@ -70,24 +70,27 @@ public:
 	UINT8 buffer[8192];						// buffer para mezclar los sprites y para buscar las rutas
 	UINT8 *roms;							// puntero a las roms originales
 
-	Logica *logica;							// objeto que se encarga de gestionar la lógica del juego
-	Pergamino *pergamino;					// pergamino para la presentación y el final
+	Logica *logica;							// objeto que se encarga de gestionar la lï¿½gica del juego
+	Pergamino *pergamino;					// pergamino para la presentaciï¿½n y el final
 	Marcador *marcador;						// marcador del juego
-	MotorGrafico *motor;					// motor gráfico
+	MotorGrafico *motor;					// motor grï¿½fico
 
 	Sprite *sprites[numSprites];			// sprites del juego
 	Puerta *puertas[numPuertas];			// puertas del juego
 	Objeto *objetos[numObjetos];			// objetos del juego
 	Personaje *personajes[numPersonajes];	// personajes del juego
 
-	volatile int contadorInterrupcion;		// contador incrementado en la interrupción para sincronizar el juego
+	volatile int contadorInterrupcion;		// contador incrementado en la interrupciï¿½n para sincronizar el juego
 
-	bool pausa;								// indica si el juego está pausado
-	bool modoInformacion;					// modo de información del juego
+	bool pausa;								// indica si el juego estï¿½ pausado
+	bool modoInformacion;					// modo de informaciï¿½n del juego
 	bool cambioModoInformacion; // se ha cambiado el estado
-	InfoJuego *infoJuego;					// objeto para mostrar información interna del juego
+	InfoJuego *infoJuego;					// objeto para mostrar informaciï¿½n interna del juego
 
-// métodos
+	// TODO: revisar no creo que este sea un buen sitio para meterlo JT 
+	char pathDump[200];
+
+// mï¿½todos
 private:
 	bool cargar(int slot);
 	void save(int slot);
@@ -124,7 +127,7 @@ public:
 	// bucle principal del juego
 	void run();
 
-	// inicialización y limpieza
+	// inicializaciï¿½n y limpieza
 	Juego(UINT8 *romData, CPC6128 *cpc);
 	~Juego();
 
