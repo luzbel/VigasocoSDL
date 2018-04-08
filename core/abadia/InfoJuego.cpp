@@ -43,7 +43,7 @@ InfoJuego::InfoJuego()
 	}
 
 	numPersonaje = Juego::numPersonajes;
-	numObjeto = Juego::numObjetos;						
+	numObjeto = Juego::numObjetos;
 	numPuerta = Juego::numPuertas;
 	mostrarLogica = false;
 	mostrarRejilla = false;
@@ -122,7 +122,7 @@ void InfoJuego::inicia()
 // muestra la información del juego que se ha activado
 void InfoJuego::muestraInfo()
 {
-/* las teclas 1 a 7 ahora se usan para hacer trampas y cambiar la camara para seguir a otros personajes 
+/* las teclas 1 a 7 ahora se usan para hacer trampas y cambiar la camara para seguir a otros personajes
 	if (losControles->seHaPulsado(KEYBOARD_1)) numPersonaje = (numPersonaje + 1) % (Juego::numPersonajes + 1);
 	if (losControles->seHaPulsado(KEYBOARD_2)) numObjeto = (numObjeto + 1) % (Juego::numObjetos + 1);
 	if (losControles->seHaPulsado(KEYBOARD_3)) numPuerta = (numPuerta + 1) % (Juego::numPuertas + 1);
@@ -132,7 +132,7 @@ void InfoJuego::muestraInfo()
 	if (losControles->seHaPulsado(KEYBOARD_7)) mostrarMapaRestoPlantas = !mostrarMapaRestoPlantas;
 */
 /*
-	// como con el plugin actual de SDLVideo no se muestran los textos 
+	// como con el plugin actual de SDLVideo no se muestran los textos
 	// de infojuego
 	// solo remapeo teclas para mostrar mapas
 	if (losControles->seHaPulsado(KEYBOARD_8)) mostrarRejilla = !mostrarRejilla;
@@ -157,82 +157,82 @@ mostrarMapaRestoPlantas=false;
 //fprintf(stderr,"info\n");
 //std::ofstream out("/dev/stdout",std::ios::app); // TODO , no abrir en cada bucle
 std::ofstream out("/tmp/b",std::ios::app); // TODO , no abrir en cada bucle
-out << "{" << std::endl;
-out << muestra("dia", laLogica->dia) << std::endl;
-out << muestra("momentoDia", laLogica->momentoDia) << std::endl;
-out << muestra("obsequium", laLogica->obsequium) << std::endl;
-out << muestra("numeroRomano", laLogica->numeroRomano) << std::endl;
-out << "\"Guillermo\": {" << std::endl;
-	out << muestra("posX", elJuego->personajes[0]->posX) << std::endl;
-	out << muestra("posY", elJuego->personajes[0]->posY) << std::endl;
-	out << muestra("altura", elJuego->personajes[0]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->personajes[0]->orientacion) << std::endl;
-	out << muestra("objetos", elJuego->personajes[0]->objetos) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"Adso\": {" << std::endl;
-	out << muestra("posX", elJuego->personajes[1]->posX) << std::endl;
-	out << muestra("posY", elJuego->personajes[1]->posY) << std::endl;
-	out << muestra("altura", elJuego->personajes[1]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->personajes[1]->orientacion) << std::endl;
-	out << muestra("objetos", elJuego->personajes[1]->objetos) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"Abad\": {" << std::endl; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->personajes[3]->posX) << std::endl;
-	out << muestra("posY", elJuego->personajes[3]->posY) << std::endl;
-	out << muestra("altura", elJuego->personajes[3]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->personajes[3]->altura) << std::endl;
-	out << muestra("objetos", elJuego->personajes[3]->objetos) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
+out << "{" ;
+out << muestra("dia", laLogica->dia);
+out << muestra("momentoDia", laLogica->momentoDia);
+out << muestra("obsequium", laLogica->obsequium);
+out << muestra("numeroRomano", laLogica->numeroRomano);
+out << "\"Guillermo\": {";
+	out << muestra("posX", elJuego->personajes[0]->posX);
+	out << muestra("posY", elJuego->personajes[0]->posY);
+	out << muestra("altura", elJuego->personajes[0]->altura);
+	out << muestra("orientacion", elJuego->personajes[0]->orientacion);
+	out << muestra("objetos", elJuego->personajes[0]->objetos);
+out << "\"filler\":\"fillvalue\""  << "},";
+out << "\"Adso\": {";
+	out << muestra("posX", elJuego->personajes[1]->posX);
+	out << muestra("posY", elJuego->personajes[1]->posY);
+	out << muestra("altura", elJuego->personajes[1]->altura);
+	out << muestra("orientacion", elJuego->personajes[1]->orientacion);
+	out << muestra("objetos", elJuego->personajes[1]->objetos);
+out << "\"filler\":\"fillvalue\""  << "},";
+out << "\"Abad\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
+	out << muestra("posX", elJuego->personajes[3]->posX) ;
+	out << muestra("posY", elJuego->personajes[3]->posY) ;
+	out << muestra("altura", elJuego->personajes[3]->altura) ;
+	out << muestra("orientacion", elJuego->personajes[3]->altura) ;
+	out << muestra("objetos", elJuego->personajes[3]->objetos) ;
+out << "\"filler\":\"fillvalue\""  << "}," ;
 // TODO, solo dar info de objetos visibles en la habitacion
-out << "\"Objeto0\": {" << std::endl; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[0]->posX) << std::endl;
-	out << muestra("posY", elJuego->objetos[0]->posY) << std::endl;
-	out << muestra("altura", elJuego->objetos[0]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->objetos[0]->orientacion) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"Objeto1\": {" << std::endl; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[1]->posX) << std::endl;
-	out << muestra("posY", elJuego->objetos[1]->posY) << std::endl;
-	out << muestra("altura", elJuego->objetos[1]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->objetos[1]->orientacion) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"Objeto2\": {" << std::endl; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[2]->posX) << std::endl;
-	out << muestra("posY", elJuego->objetos[2]->posY) << std::endl;
-	out << muestra("altura", elJuego->objetos[2]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->objetos[2]->orientacion) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"Objeto3\": {" << std::endl; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[3]->posX) << std::endl;
-	out << muestra("posY", elJuego->objetos[3]->posY) << std::endl;
-	out << muestra("altura", elJuego->objetos[3]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->objetos[3]->orientacion) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"Objeto4\": {" << std::endl; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[4]->posX) << std::endl;
-	out << muestra("posY", elJuego->objetos[4]->posY) << std::endl;
-	out << muestra("altura", elJuego->objetos[4]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->objetos[4]->orientacion) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"Objeto5\": {" << std::endl; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[5]->posX) << std::endl;
-	out << muestra("posY", elJuego->objetos[5]->posY) << std::endl;
-	out << muestra("altura", elJuego->objetos[5]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->objetos[5]->orientacion) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"Objeto6\": {" << std::endl; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[6]->posX) << std::endl;
-	out << muestra("posY", elJuego->objetos[6]->posY) << std::endl;
-	out << muestra("altura", elJuego->objetos[6]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->objetos[6]->orientacion) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"Objeto7\": {" << std::endl; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[7]->posX) << std::endl;
-	out << muestra("posY", elJuego->objetos[7]->posY) << std::endl;
-	out << muestra("altura", elJuego->objetos[7]->altura) << std::endl;
-	out << muestra("orientacion", elJuego->objetos[7]->orientacion) << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
-out << "\"filler\":\"fillvalue\"" << std::endl << "}," << std::endl;
+out << "\"Objeto0\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
+	out << muestra("posX", elJuego->objetos[0]->posX) ;
+	out << muestra("posY", elJuego->objetos[0]->posY) ;
+	out << muestra("altura", elJuego->objetos[0]->altura) ;
+	out << muestra("orientacion", elJuego->objetos[0]->orientacion) ;
+out << "\"filler\":\"fillvalue\""  << "}," ;
+out << "\"Objeto1\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
+	out << muestra("posX", elJuego->objetos[1]->posX) ;
+	out << muestra("posY", elJuego->objetos[1]->posY) ;
+	out << muestra("altura", elJuego->objetos[1]->altura) ;
+	out << muestra("orientacion", elJuego->objetos[1]->orientacion) ;
+out << "\"filler\":\"fillvalue\""  << "}," ;
+out << "\"Objeto2\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
+	out << muestra("posX", elJuego->objetos[2]->posX) ;
+	out << muestra("posY", elJuego->objetos[2]->posY) ;
+	out << muestra("altura", elJuego->objetos[2]->altura) ;
+	out << muestra("orientacion", elJuego->objetos[2]->orientacion) ;
+out << "\"filler\":\"fillvalue\""  << "}," ;
+out << "\"Objeto3\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
+	out << muestra("posX", elJuego->objetos[3]->posX) ;
+	out << muestra("posY", elJuego->objetos[3]->posY) ;
+	out << muestra("altura", elJuego->objetos[3]->altura) ;
+	out << muestra("orientacion", elJuego->objetos[3]->orientacion) ;
+out << "\"filler\":\"fillvalue\""  << "}," ;
+out << "\"Objeto4\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
+	out << muestra("posX", elJuego->objetos[4]->posX) ;
+	out << muestra("posY", elJuego->objetos[4]->posY) ;
+	out << muestra("altura", elJuego->objetos[4]->altura) ;
+	out << muestra("orientacion", elJuego->objetos[4]->orientacion) ;
+out << "\"filler\":\"fillvalue\""  << "}," ;
+out << "\"Objeto5\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
+	out << muestra("posX", elJuego->objetos[5]->posX) ;
+	out << muestra("posY", elJuego->objetos[5]->posY) ;
+	out << muestra("altura", elJuego->objetos[5]->altura) ;
+	out << muestra("orientacion", elJuego->objetos[5]->orientacion) ;
+out << "\"filler\":\"fillvalue\""  << "}," ;
+out << "\"Objeto6\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
+	out << muestra("posX", elJuego->objetos[6]->posX) ;
+	out << muestra("posY", elJuego->objetos[6]->posY) ;
+	out << muestra("altura", elJuego->objetos[6]->altura) ;
+	out << muestra("orientacion", elJuego->objetos[6]->orientacion) ;
+out << "\"filler\":\"fillvalue\""  << "}," ;
+out << "\"Objeto7\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
+	out << muestra("posX", elJuego->objetos[7]->posX) ;
+	out << muestra("posY", elJuego->objetos[7]->posY) ;
+	out << muestra("altura", elJuego->objetos[7]->altura) ;
+	out << muestra("orientacion", elJuego->objetos[7]->orientacion) ;
+out << "\"filler\":\"fillvalue\""  << "}," ;
+out << "\"filler\":\"fillvalue\"}" << std::endl;
 
 #else
 mostrarRejilla=true;
@@ -562,7 +562,7 @@ void InfoJuego::muestraPosicionMapa(int posX, int numPlanta)
 		int despX = (((pers->posX & 0xf0) >> 4) - minX)*zoom + (pers->posX & 0x0f)*zoom/16;
 		int despY = (((pers->posY & 0xf0) >> 4) - minY)*zoom + (pers->posY & 0x0f)*zoom/16;
 
-		bool pixelValido = (((pers->posX & 0xf0) >> 4) >= minX) && (((pers->posX & 0xf0) >> 4) <= maxX) && 
+		bool pixelValido = (((pers->posX & 0xf0) >> 4) >= minX) && (((pers->posX & 0xf0) >> 4) <= maxX) &&
 							(((pers->posY & 0xf0) >> 4) >= minY) && (((pers->posY & 0xf0) >> 4) <= maxY);
 		//assert(pixelValido);
 
@@ -604,7 +604,7 @@ void InfoJuego::muestraInfoLogica(int x, int y)
 		<< "tiempoUsoLampara = " << muestra(laLogica->tiempoUsoLampara) << std::endl
 		<< "cambioEstadoLampara = " << muestra(laLogica->cambioEstadoLampara) << std::endl
 		<< "cntTiempoAOscuras = " << muestra(laLogica->cntTiempoAOscuras) << std::endl
-		
+
 		<< "cntLeeLibroSinGuantes = " << muestra(laLogica->cntLeeLibroSinGuantes) << std::endl
 		<< "pergaminoGuardado = " << muestra(laLogica->pergaminoGuardado) << std::endl
 
@@ -670,7 +670,7 @@ void InfoJuego::muestraInfoObjeto(int i, int x, int y)
 std::string InfoJuego::muestraEntidad(EntidadJuego *entidad)
 {
 	std::ostringstream strBuf;
-	strBuf << "pos = (" + muestra(entidad->posX) + ", " + muestra(entidad->posY) + ", " + muestra(entidad->altura) + ")" << std::endl 
+	strBuf << "pos = (" + muestra(entidad->posX) + ", " + muestra(entidad->posY) + ", " + muestra(entidad->altura) + ")" << std::endl
 		<< "orientacion = " << muestra(entidad->orientacion) << std::endl;
 	return strBuf.str();
 }
@@ -707,7 +707,7 @@ std::string InfoJuego::muestraPersonaje(int i, Personaje *pers)
 std::string InfoJuego::muestraPuerta(Puerta *puerta)
 {
 	std::ostringstream strBuf;
-	strBuf << muestraEntidad(puerta) 
+	strBuf << muestraEntidad(puerta)
 		<< "identificador = " << muestra(puerta->identificador) << std::endl
 		<< "estaAbierta = " << muestra(puerta->estaAbierta) << std::endl
 		<< "haciaDentro = " << muestra(puerta->haciaDentro) << std::endl
@@ -722,11 +722,11 @@ std::string InfoJuego::muestraObjeto(Objeto *obj)
 	std::ostringstream strBuf;
 
 	if (!obj->seHaCogido){
-		strBuf << muestraEntidad(obj) 
+		strBuf << muestraEntidad(obj)
 			<< "seEstaCogiendo = " << muestra(obj->seEstaCogiendo) << std::endl
 			<< "seHaCogido = " << muestra(obj->seHaCogido) << std::endl;
 	} else {
-		strBuf << "pos = (" + muestra(obj->personaje->posX) + ", " + muestra(obj->personaje->posY) + ", " + muestra(obj->personaje->altura) + ")" << std::endl 
+		strBuf << "pos = (" + muestra(obj->personaje->posX) + ", " + muestra(obj->personaje->posY) + ", " + muestra(obj->personaje->altura) + ")" << std::endl
 		<< "orientacion = " << muestra(obj->personaje->orientacion) << std::endl
 		<< "seEstaCogiendo = " << muestra(obj->seEstaCogiendo) << std::endl
 		<< "seHaCogido = " << muestra(obj->seHaCogido) << std::endl;
