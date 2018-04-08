@@ -1,5 +1,6 @@
 all:
 	cd SDLInputKeyboardPlugin && make -f Makefile.MacOSX
+	cd FakeInputPlugin && make -f Makefile.MacOSX
 	cd SDLVideoPlugins && make -f Makefile.MacOSX
 	cd SDLAudioPlugin && make -f Makefile.MacOSX
 	cd NULLAudioPlugin && make -f Makefile.MacOSX
