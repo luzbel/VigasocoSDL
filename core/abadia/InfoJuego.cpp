@@ -5,10 +5,14 @@
 #include <cassert>
 #include <iomanip>
 #include <string>
+#if __cplusplus >= 201103L
 #include <iostream> // TODO: revisar JT
 #include <chrono>
 #include <ctime>
 #include <sstream>
+#else
+#include <string.h>
+#endif
 
 #include "../systems/cpc6128.h"
 #include "../IDrawPlugin.h"
@@ -54,18 +58,22 @@ InfoJuego::InfoJuego()
 	mostrarRejilla = false;
 	mostrarMapaPlantaActual = false;
 	mostrarMapaRestoPlantas = false;
+#if __cplusplus >= 201103
 
 	// TODO: revisar añadido por JT
 	// Creo el path para el fichero de dump con la info
 
 	fprintf(stderr, "Init pathDump\n");
-	std::time_t t = std::time(nullptr);
+	std::time_t t = std::time(NULL);
 	
     if (std::strftime(pathDump, sizeof(pathDump), "/tmp/abadiaDump%Y%m%d-%H%M%S.json", std::localtime(&t))) {
         std::cerr << pathDump << '\n';
     }
  	// strftime(pathDump, sizeof(pathDump), "/tmp/abadiaDump%Y%m%D-%H%M%S.json", tm);
 	// printf(stderr, "pathDump: %s", pathDump);
+#else // mientras actualizo a un entorno tan bonito como el del Mac de JT
+	strcpy(pathDump,"/tmp/abadiaSIN-FECHA-HORA.json");	
+#endif 
 }
 
 InfoJuego::~InfoJuego()
@@ -173,8 +181,10 @@ mostrarMapaRestoPlantas=false;
 
 //fprintf(stderr,"info\n");
 //std::ofstream out("/dev/stdout",std::ios::app); // TODO , no abrir en cada bucle
+//TODO el metodo muestra se deberia llamar muestraJSON o algo asi para ser mas legible el codigo
 std::ofstream out(pathDump,std::ios::app); // TODO , no abrir en cada bucle
 out << "{" ;
+out << muestra("fichero screenshot", -1); // TODO: falta generar un nombre para cada volcado, sobrecargar el metodo muestra para pasar cadenas de texto y rellenar aqui para que la IA sepa el nombre de la captura
 out << muestra("dia", laLogica->dia);
 out << muestra("momentoDia", laLogica->momentoDia);
 out << muestra("obsequium", laLogica->obsequium);
@@ -250,6 +260,22 @@ out << "\"Objeto7\": {" ; // TODO: la IA solo deberia ver esta info , si Guiller
 	out << muestra("orientacion", elJuego->objetos[7]->orientacion) ;
 out << "\"filler\":\"fillvalue\""  << "}," ;
 out << "\"filler\":\"fillvalue\"}" << std::endl;
+
+// TODO: pasar a C++
+// TODO: no abrir el fichero en cada pasada
+// TODO: el nombre del fichoer deberia cambiar en cada pasada y no machacarse cada vez que se genera captura
+// TODO: controlar errores al abrir, cerrar y escribir a fichero
+// TODO: optimizar escritura ¿mejor 1 elemento de 640x200 o 200 640 o ...?
+	FILE *fp;
+	fp=fopen("/tmp/volcadopantalla","w");
+	fclose(fp);
+	if ( fwrite(elJuego->cpc6128->screenBuffer,640,200,fp) != 640*200 )  fprintf(stderr,"liada parda al hacer el screen dump que tanto quiere JT\n");
+
+
+
+// en abadIA no dejamos el modoInformacion activo para que salga la info en cada bucle
+// en abadIA se vuelca la informacion cuando lo pide el comando y luego se desactiva
+elJuego->modoInformacion=false;
 
 #else
 mostrarRejilla=true;

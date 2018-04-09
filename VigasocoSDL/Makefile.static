@@ -11,7 +11,8 @@ OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLTh
 
 OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
 
-OBJECTS_STATIC_PLUGINS = video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a audio/libVigasocoSDLAudioPlugin.a
+#OBJECTS_STATIC_PLUGINS = video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a audio/libVigasocoSDLAudioPlugin.a
+OBJECTS_STATIC_PLUGINS = video/libVigasocoSDLDrawPlugin.a input/libVigasocoFakeInputPlugin.a audio/libVigasocoSDLAudioPlugin.a
 
 VigasocoSDL: $(OBJECTS) $(OBJECTS_STATIC_PLUGINS)
 #	$(CXX) -g -static $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) `sdl-config --static-libs` -ldl -o VigasocoSDL
