@@ -123,7 +123,6 @@ switch(webCommand) {
 		keystate[SDLK_SPACE]=false;  
 		break;   // D de Derecha
    case 'I': 
-		break;    // I de Izquierda
 		keystate[SDLK_UP]=false; 
 		keystate[SDLK_RIGHT]=false; 
 		keystate[SDLK_LEFT]=true; 
@@ -132,7 +131,6 @@ switch(webCommand) {
 		keystate[SDLK_SPACE]=false;  
 		break;    // I de Izquierda
    case 'B': 
-		break; // Cursor aBajo para mover a Adso
 		keystate[SDLK_UP]=false; 
 		keystate[SDLK_RIGHT]=false; 
 		keystate[SDLK_LEFT]=false; 
@@ -141,7 +139,6 @@ switch(webCommand) {
 		keystate[SDLK_SPACE]=false;  
 		break; // Cursor aBajo para mover a Adso
    case ' ': 
-		break;  // barra espaciadora
 		keystate[SDLK_UP]=false; 
 		keystate[SDLK_RIGHT]=false; 
 		keystate[SDLK_LEFT]=false; 
@@ -150,14 +147,13 @@ switch(webCommand) {
 		keystate[SDLK_SPACE]=true;  
 		break;  // barra espaciadora
    case 'E': 
-		break;    // E de esperar, STOP, esto debe imprimir el estado
 		keystate[SDLK_UP]=false; 
 		keystate[SDLK_RIGHT]=false; 
 		keystate[SDLK_LEFT]=false; 
 		keystate[SDLK_DOWN]=false;  
 		keystate[SDLK_F5]=true;  
 		keystate[SDLK_SPACE]=false;  
-   		fprintf(stderr,"Volcado del Estado (habría que hacerlo directamente sin esperar al driver) \r", webCommand ); 
+   		fprintf(stderr,"Volcado del Estado (habría que hacerlo directamente sin esperar al driver) \r"); 
 		break;    // E de esparar, STOP, esto debe imprimir el estado
    case 'Q': 
 		keystate[SDLK_q]=true;  
@@ -167,7 +163,7 @@ switch(webCommand) {
 		break; 
    case 'F':    // F de fin
 		keystate[SDLK_ESCAPE]=true; 
-   		fprintf(stderr,"Salgo ..... \r", webCommand ); 
+   		fprintf(stderr,"Salgo ..... \r"); 
 		break; 
    case '\0': 
    		fprintf(stderr,"No hago nada\r", webCommand ); 
