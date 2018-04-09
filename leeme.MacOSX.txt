@@ -1,6 +1,10 @@
 requirements for compile in MacOSX: 
 brew install sdl 
 
+para Crow - Mini Web Server 
+
+brew install boost google-perftools
+
 make -f Makefile.MacOSX 
 
 

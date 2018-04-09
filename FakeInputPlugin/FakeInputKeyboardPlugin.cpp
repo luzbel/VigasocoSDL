@@ -7,7 +7,13 @@
 
 #include <vector>
 
+#include <iostream>
 #include <fstream>
+
+
+// TODO: revisar he incluido crow web server 
+
+#include "crow_all.h"
 
 SDLKey FakeInputKeyboardPlugin::g_keyMapping[END_OF_INPUTS];
 
@@ -29,9 +35,35 @@ FakeInputKeyboardPlugin::~FakeInputKeyboardPlugin()
 {
 }
 
+void start_web_server() {
+	std::cout << "Starting Web Server" << std::endl;
+
+	crow::SimpleApp app;
+
+	CROW_ROUTE(app, "/")([](){
+		keystate[SDLK_UP]=true; 
+		keystate[SDLK_RIGHT]=false; 
+		keystate[SDLK_LEFT]=false; 
+		keystate[SDLK_DOWN]=false;  
+		keystate[SDLK_F5]=true;  
+		keystate[SDLK_SPACE]=false;  
+		return "Hello world";
+	});
+
+	//std::thread server_thread([&app](){
+    	//Start server                                                                                                                                                               
+    	app.port(8888).run();
+    //});
+}
+ 
+std::thread t1(start_web_server);
+
 bool FakeInputKeyboardPlugin::init()
 {
 fprintf(stderr,"FakeInputKeyboardPlugin::init\n");
+// app.port(8888).multithreaded().run();
+fprintf(stderr,"FakeInputKeyboardPlugin::WebServer Started Listening at 8888\n");
+
 #if defined _EE || defined _PS3
 	if ( SDL_InitSubSystem(SDL_INIT_JOYSTICK) != -1 )
 	{
@@ -242,16 +274,21 @@ void FakeInputKeyboardPlugin::process(int *inputs)
 	} // if joy
 #endif // _EE y _PS3
 
-
-std::ifstream in("/dev/stdin"); // TODO , no abrir en cada bucle
+std::ifstream in("/tmp/pipe"); // TODO , no abrir en cada bucle
 char kk[2];
 kk[0]=NULL;
 kk[1]=NULL;
-if ( in.readsome(kk,1) > 0 && !in.fail()) {
+int ret; 
+if (in.fail()) {
+	fprintf(stderr, "error al abrir la stdin!!!");
+}
 
-// fprintf(stderr,"comando %c\n", kk[0] );
+ret = in.readsome(kk, 1);
+// fprintf(stderr,"leidos %d (%d) %c \r", ret, kk[0], kk[0] );
+if (ret > 0) {
+fprintf(stderr,"comando %c\n", kk[0] );
 
-		keystate[SDLK_F5]=false;  
+keystate[SDLK_F5]=false;  
  switch(kk[0]) {
    case 'A':    // A de Arriba
 		keystate[SDLK_UP]=true; 
@@ -297,7 +334,7 @@ if ( in.readsome(kk,1) > 0 && !in.fail()) {
 		keystate[SDLK_SPACE]=true;  
 		break;  // barra espaciadora
    case 'E': 
-		break;    // E de esparar, STOP, esto debe imprimir el estado
+		break;    // E de esperar, STOP, esto debe imprimir el estado
 		keystate[SDLK_UP]=false; 
 		keystate[SDLK_RIGHT]=false; 
 		keystate[SDLK_LEFT]=false; 
@@ -440,7 +477,7 @@ const std::string FakeInputKeyboardPlugin::g_properties[] = {
 };
 
 const int FakeInputKeyboardPlugin::g_paramTypes[] = {
-	PARAM_ARRAY | PARAM_INPUT
+	int(PARAM_ARRAY | PARAM_INPUT)
 };
 
 const int * FakeInputKeyboardPlugin::getPropertiesType() const
