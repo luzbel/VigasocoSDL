@@ -113,6 +113,7 @@ switch(webCommand) {
 		keystate[SDLK_DOWN]=false;  
 		keystate[SDLK_F5]=true;  
 		keystate[SDLK_SPACE]=false;  
+   		fprintf(stderr,"Muevo hacia Arriba\r"); 
 		break;     // A de Arriba
    case 'D':    // D de Derecha
 		keystate[SDLK_UP]=false; 
@@ -121,6 +122,7 @@ switch(webCommand) {
 		keystate[SDLK_DOWN]=false;  
 		keystate[SDLK_F5]=true;  
 		keystate[SDLK_SPACE]=false;  
+   		fprintf(stderr,"Muevo hacia a la Derecha\r"); 
 		break;   // D de Derecha
    case 'I': 
 		keystate[SDLK_UP]=false; 
@@ -129,6 +131,7 @@ switch(webCommand) {
 		keystate[SDLK_DOWN]=false;  
 		keystate[SDLK_F5]=true;  
 		keystate[SDLK_SPACE]=false;  
+   		fprintf(stderr,"Muevo hacia a la izquierda\r"); 
 		break;    // I de Izquierda
    case 'B': 
 		keystate[SDLK_UP]=false; 
@@ -137,6 +140,7 @@ switch(webCommand) {
 		keystate[SDLK_DOWN]=true;  
 		keystate[SDLK_F5]=true;  
 		keystate[SDLK_SPACE]=false;  
+   		fprintf(stderr,"Muevo hacia abajo a Adso \r"); 
 		break; // Cursor aBajo para mover a Adso
    case ' ': 
 		keystate[SDLK_UP]=false; 
@@ -153,7 +157,7 @@ switch(webCommand) {
 		keystate[SDLK_DOWN]=false;  
 		keystate[SDLK_F5]=true;  
 		keystate[SDLK_SPACE]=false;  
-   		fprintf(stderr,"Volcado del Estado (habría que hacerlo directamente sin esperar al driver) \r"); 
+   		fprintf(stderr,"Volcado del Estado (habría que hacerlo directamente sin esperar al driver) \n"); 
 		break;    // E de esparar, STOP, esto debe imprimir el estado
    case 'Q': 
 		keystate[SDLK_q]=true;  
@@ -166,7 +170,7 @@ switch(webCommand) {
    		fprintf(stderr,"Salgo ..... \r"); 
 		break; 
    case '\0': 
-   		fprintf(stderr,"No hago nada\r", webCommand ); 
+   		fprintf(stderr,"No hago nada\r"); 
 		break;
    default: 
    		fprintf(stderr,"No entiendo el comando %c\n", webCommand ); // TODO devolver en JSON indicando status error
