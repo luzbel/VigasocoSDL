@@ -286,7 +286,6 @@ ret = in.readsome(kk,1);
 
 if (kk[0] > 0 && !in.fail()) {
 	fprintf(stderr,"comando %c\n", kk[0] );
-}
 
 keystate[SDLK_F5]=false;  
 keystate[SDLK_RIGHT]=false; 
