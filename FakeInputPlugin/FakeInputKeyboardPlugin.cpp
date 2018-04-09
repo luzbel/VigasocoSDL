@@ -99,11 +99,9 @@ void FakeInputKeyboardPlugin::process(int *inputs)
 //	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
 //	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
 
-/* 
-keystate[SDLK_F5]=false;  
-keystate[SDLK_RIGHT]=false; 
-keystate[SDLK_LEFT]=false; 
-*/
+// keystate[SDLK_F5]=false;  
+// keystate[SDLK_RIGHT]=false; 
+// keystate[SDLK_LEFT]=false; 
 
 switch(webCommand) {
    case 'A':    // A de Arriba
@@ -159,6 +157,10 @@ switch(webCommand) {
 		keystate[SDLK_SPACE]=false;  
    		fprintf(stderr,"Volcado del Estado (habría que hacerlo directamente sin esperar al driver) \n"); 
 		break;    // E de esperar, STOP, esto debe imprimir el estado
+   case 'e': 
+		keystate[SDLK_F5]=false;  
+   		fprintf(stderr,"Desactivo el Volcado del Estado \n"); 
+		break;    // e de esperar, STOP, esto debe imprimir el estado
    case 'Q': 
 		keystate[SDLK_q]=true;  
 		break; 

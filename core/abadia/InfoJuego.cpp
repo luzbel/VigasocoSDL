@@ -58,7 +58,7 @@ InfoJuego::InfoJuego()
 	mostrarRejilla = false;
 	mostrarMapaPlantaActual = false;
 	mostrarMapaRestoPlantas = false;
-#if __cplusplus >= 201103
+#if __cplusplus >= 199711
 
 	// TODO: revisar añadido por JT
 	// Creo el path para el fichero de dump con la info
@@ -67,7 +67,7 @@ InfoJuego::InfoJuego()
 	std::time_t t = std::time(NULL);
 	
     if (std::strftime(pathDump, sizeof(pathDump), "/tmp/abadiaDump%Y%m%d-%H%M%S.json", std::localtime(&t))) {
-        std::cerr << pathDump << '\n';
+        fprintf(stderr,"pathDump (%s)\n", pathDump);
     }
  	// strftime(pathDump, sizeof(pathDump), "/tmp/abadiaDump%Y%m%D-%H%M%S.json", tm);
 	// printf(stderr, "pathDump: %s", pathDump);
@@ -268,10 +268,9 @@ out << "\"filler\":\"fillvalue\"}" << std::endl;
 // TODO: optimizar escritura ¿mejor 1 elemento de 640x200 o 200 640 o ...?
 	FILE *fp;
 	fp=fopen("/tmp/volcadopantalla","w");
+	if ( fwrite(elJuego->cpc6128->screenBuffer,640,200,fp) != 640*200 )  
+		fprintf(stderr,"liada parda al hacer el screen dump que tanto quiere JT\n");
 	fclose(fp);
-	if ( fwrite(elJuego->cpc6128->screenBuffer,640,200,fp) != 640*200 )  fprintf(stderr,"liada parda al hacer el screen dump que tanto quiere JT\n");
-
-
 
 // en abadIA no dejamos el modoInformacion activo para que salga la info en cada bucle
 // en abadIA se vuelca la informacion cuando lo pide el comando y luego se desactiva
