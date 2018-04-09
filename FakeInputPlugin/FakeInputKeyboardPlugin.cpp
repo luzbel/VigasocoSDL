@@ -41,12 +41,6 @@ void start_web_server() {
 	crow::SimpleApp app;
 
 	CROW_ROUTE(app, "/")([](){
-		keystate[SDLK_UP]=true; 
-		keystate[SDLK_RIGHT]=false; 
-		keystate[SDLK_LEFT]=false; 
-		keystate[SDLK_DOWN]=false;  
-		keystate[SDLK_F5]=true;  
-		keystate[SDLK_SPACE]=false;  
 		return "Hello world";
 	});
 
