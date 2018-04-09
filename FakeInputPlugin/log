@@ -1,0 +1,1391 @@
+g++ -O3 -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`   -c -o FakeInputKeyboardPlugin.o FakeInputKeyboardPlugin.cpp
+In file included from FakeInputKeyboardPlugin.cpp:6:0:
+FakeInputKeyboardPlugin.h:2:1: error: expected unqualified-id before '/' token
+ /
+ ^
+In file included from /usr/include/c++/5/bits/stl_pair.h:59:0,
+                 from /usr/include/c++/5/bits/stl_algobase.h:64,
+                 from /usr/include/c++/5/bits/char_traits.h:39,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/move.h:193:26: error: 'size_t' has not been declared
+   template<typename _Tp, size_t _Nm>
+                          ^
+/usr/include/c++/5/bits/move.h: In function 'void std::swap(_Tp (&)[_Nm], _Tp (&)[_Nm])':
+/usr/include/c++/5/bits/move.h:200:12: error: 'size_t' was not declared in this scope
+       for (size_t __n = 0; __n < _Nm; ++__n)
+            ^
+/usr/include/c++/5/bits/move.h:200:28: error: '__n' was not declared in this scope
+       for (size_t __n = 0; __n < _Nm; ++__n)
+                            ^
+In file included from /usr/include/c++/5/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/5/bits/char_traits.h:39,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/stl_iterator_base_types.h: At global scope:
+/usr/include/c++/5/bits/stl_iterator_base_types.h:116:67: error: 'ptrdiff_t' does not name a type
+   template<typename _Category, typename _Tp, typename _Distance = ptrdiff_t,
+                                                                   ^
+/usr/include/c++/5/bits/stl_iterator_base_types.h:182:15: error: 'ptrdiff_t' does not name a type
+       typedef ptrdiff_t                   difference_type;
+               ^
+/usr/include/c++/5/bits/stl_iterator_base_types.h:193:15: error: 'ptrdiff_t' does not name a type
+       typedef ptrdiff_t                   difference_type;
+               ^
+In file included from /usr/include/c++/5/bits/char_traits.h:39:0,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/stl_algobase.h: In static member function 'static _Tp* std::__copy_move<_IsMove, true, std::random_access_iterator_tag>::__copy_m(const _Tp*, const _Tp*, _Tp*)':
+/usr/include/c++/5/bits/stl_algobase.h:382:10: error: 'ptrdiff_t' does not name a type
+    const ptrdiff_t _Num = __last - __first;
+          ^
+/usr/include/c++/5/bits/stl_algobase.h:383:8: error: '_Num' was not declared in this scope
+    if (_Num)
+        ^
+/usr/include/c++/5/bits/stl_algobase.h:385:22: error: '_Num' was not declared in this scope
+    return __result + _Num;
+                      ^
+/usr/include/c++/5/bits/stl_algobase.h: In static member function 'static _Tp* std::__copy_move_backward<_IsMove, true, std::random_access_iterator_tag>::__copy_move_b(const _Tp*, const _Tp*, _Tp*)':
+/usr/include/c++/5/bits/stl_algobase.h:584:10: error: 'ptrdiff_t' does not name a type
+    const ptrdiff_t _Num = __last - __first;
+          ^
+/usr/include/c++/5/bits/stl_algobase.h:585:8: error: '_Num' was not declared in this scope
+    if (_Num)
+        ^
+/usr/include/c++/5/bits/stl_algobase.h:587:22: error: '_Num' was not declared in this scope
+    return __result - _Num;
+                      ^
+/usr/include/c++/5/bits/stl_algobase.h: In function 'typename __gnu_cxx::__enable_if<std::__is_byte<_Tp>::__value, void>::__type std::__fill_a(_Tp*, _Tp*, const _Tp&)':
+/usr/include/c++/5/bits/stl_algobase.h:722:11: error: expected primary-expression before 'const'
+       if (const size_t __len = __last - __first)
+           ^
+/usr/include/c++/5/bits/stl_algobase.h:722:11: error: expected ')' before 'const'
+/usr/include/c++/5/bits/stl_algobase.h:723:63: error: '__len' was not declared in this scope
+  __builtin_memset(__first, static_cast<unsigned char>(__tmp), __len);
+                                                               ^
+/usr/include/c++/5/bits/stl_algobase.h: In static member function 'static bool std::__equal<true>::equal(const _Tp*, const _Tp*, const _Tp*)':
+/usr/include/c++/5/bits/stl_algobase.h:829:8: error: expected primary-expression before 'const'
+    if (const size_t __len = (__last1 - __first1))
+        ^
+/usr/include/c++/5/bits/stl_algobase.h:829:8: error: expected ')' before 'const'
+/usr/include/c++/5/bits/stl_algobase.h:830:65: error: '__len' was not declared in this scope
+      return !__builtin_memcmp(__first1, __first2, sizeof(_Tp) * __len);
+                                                                 ^
+/usr/include/c++/5/bits/stl_algobase.h: In static member function 'static bool std::__lexicographical_compare<true>::__lc(const _Tp*, const _Tp*, const _Up*, const _Up*)':
+/usr/include/c++/5/bits/stl_algobase.h:933:10: error: 'size_t' does not name a type
+    const size_t __len1 = __last1 - __first1;
+          ^
+/usr/include/c++/5/bits/stl_algobase.h:934:10: error: 'size_t' does not name a type
+    const size_t __len2 = __last2 - __first2;
+          ^
+/usr/include/c++/5/bits/stl_algobase.h:935:8: error: expected primary-expression before 'const'
+    if (const size_t __len = std::min(__len1, __len2))
+        ^
+/usr/include/c++/5/bits/stl_algobase.h:935:8: error: expected ')' before 'const'
+/usr/include/c++/5/bits/stl_algobase.h:936:62: error: '__len' was not declared in this scope
+      if (int __result = __builtin_memcmp(__first1, __first2, __len))
+                                                              ^
+/usr/include/c++/5/bits/stl_algobase.h:938:11: error: '__len1' was not declared in this scope
+    return __len1 < __len2;
+           ^
+/usr/include/c++/5/bits/stl_algobase.h:938:20: error: '__len2' was not declared in this scope
+    return __len1 < __len2;
+                    ^
+In file included from /usr/include/c++/5/bits/char_traits.h:40:0,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/postypes.h: At global scope:
+/usr/include/c++/5/bits/postypes.h:98:11: error: 'ptrdiff_t' does not name a type
+   typedef ptrdiff_t streamsize; // Signed integral type
+           ^
+In file included from /usr/include/c++/5/string:40:0,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/char_traits.h:104:66: error: 'std::size_t' has not been declared
+       compare(const char_type* __s1, const char_type* __s2, std::size_t __n);
+                                                                  ^
+/usr/include/c++/5/bits/char_traits.h:106:19: error: 'size_t' in namespace 'std' does not name a type
+       static std::size_t
+                   ^
+/usr/include/c++/5/bits/char_traits.h:110:39: error: 'std::size_t' has not been declared
+       find(const char_type* __s, std::size_t __n, const char_type& __a);
+                                       ^
+/usr/include/c++/5/bits/char_traits.h:113:57: error: 'std::size_t' has not been declared
+       move(char_type* __s1, const char_type* __s2, std::size_t __n);
+                                                         ^
+/usr/include/c++/5/bits/char_traits.h:116:57: error: 'std::size_t' has not been declared
+       copy(char_type* __s1, const char_type* __s2, std::size_t __n);
+                                                         ^
+/usr/include/c++/5/bits/char_traits.h:119:35: error: 'std::size_t' has not been declared
+       assign(char_type* __s, std::size_t __n, char_type __a);
+                                   ^
+/usr/include/c++/5/bits/char_traits.h:145:64: error: 'std::size_t' has not been declared
+     compare(const char_type* __s1, const char_type* __s2, std::size_t __n)
+                                                                ^
+/usr/include/c++/5/bits/char_traits.h: In static member function 'static int __gnu_cxx::char_traits<_CharT>::compare(const char_type*, const char_type*, int)':
+/usr/include/c++/5/bits/char_traits.h:147:12: error: 'size_t' is not a member of 'std'
+       for (std::size_t __i = 0; __i < __n; ++__i)
+            ^
+/usr/include/c++/5/bits/char_traits.h:147:12: note: suggested alternative:
+In file included from /usr/include/wchar.h:51:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:216:23: note:   'size_t'
+ typedef __SIZE_TYPE__ size_t;
+                       ^
+In file included from /usr/include/c++/5/string:40:0,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/char_traits.h:147:33: error: '__i' was not declared in this scope
+       for (std::size_t __i = 0; __i < __n; ++__i)
+                                 ^
+/usr/include/c++/5/bits/char_traits.h: At global scope:
+/usr/include/c++/5/bits/char_traits.h:156:10: error: 'size_t' in namespace 'std' does not name a type
+     std::size_t
+          ^
+/usr/include/c++/5/bits/char_traits.h:169:37: error: 'std::size_t' has not been declared
+     find(const char_type* __s, std::size_t __n, const char_type& __a)
+                                     ^
+/usr/include/c++/5/bits/char_traits.h: In static member function 'static const char_type* __gnu_cxx::char_traits<_CharT>::find(const char_type*, int, const char_type&)':
+/usr/include/c++/5/bits/char_traits.h:171:12: error: 'size_t' is not a member of 'std'
+       for (std::size_t __i = 0; __i < __n; ++__i)
+            ^
+/usr/include/c++/5/bits/char_traits.h:171:12: note: suggested alternative:
+In file included from /usr/include/wchar.h:51:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:216:23: note:   'size_t'
+ typedef __SIZE_TYPE__ size_t;
+                       ^
+In file included from /usr/include/c++/5/string:40:0,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/char_traits.h:171:33: error: '__i' was not declared in this scope
+       for (std::size_t __i = 0; __i < __n; ++__i)
+                                 ^
+/usr/include/c++/5/bits/char_traits.h: At global scope:
+/usr/include/c++/5/bits/char_traits.h:180:55: error: 'std::size_t' has not been declared
+     move(char_type* __s1, const char_type* __s2, std::size_t __n)
+                                                       ^
+/usr/include/c++/5/bits/char_traits.h:189:55: error: 'std::size_t' has not been declared
+     copy(char_type* __s1, const char_type* __s2, std::size_t __n)
+                                                       ^
+/usr/include/c++/5/bits/char_traits.h:199:33: error: 'std::size_t' has not been declared
+     assign(char_type* __s, std::size_t __n, char_type __a)
+                                 ^
+In file included from /usr/include/c++/5/ext/new_allocator.h:33:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:33,
+                 from /usr/include/c++/5/bits/allocator.h:46,
+                 from /usr/include/c++/5/string:41,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/new:111:31: error: declaration of 'operator new' as non-function
+ void* operator new(std::size_t) _GLIBCXX_THROW (std::bad_alloc)
+                               ^
+/usr/include/c++/5/new:111:20: error: 'size_t' is not a member of 'std'
+ void* operator new(std::size_t) _GLIBCXX_THROW (std::bad_alloc)
+                    ^
+/usr/include/c++/5/new:111:20: note: suggested alternative:
+In file included from /usr/include/wchar.h:51:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:216:23: note:   'size_t'
+ typedef __SIZE_TYPE__ size_t;
+                       ^
+In file included from /usr/include/c++/5/ext/new_allocator.h:33:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:33,
+                 from /usr/include/c++/5/bits/allocator.h:46,
+                 from /usr/include/c++/5/string:41,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/new:113:33: error: declaration of 'operator new []' as non-function
+ void* operator new[](std::size_t) _GLIBCXX_THROW (std::bad_alloc)
+                                 ^
+/usr/include/c++/5/new:113:22: error: 'size_t' is not a member of 'std'
+ void* operator new[](std::size_t) _GLIBCXX_THROW (std::bad_alloc)
+                      ^
+/usr/include/c++/5/new:113:22: note: suggested alternative:
+In file included from /usr/include/wchar.h:51:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:216:23: note:   'size_t'
+ typedef __SIZE_TYPE__ size_t;
+                       ^
+In file included from /usr/include/c++/5/ext/new_allocator.h:33:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:33,
+                 from /usr/include/c++/5/bits/allocator.h:46,
+                 from /usr/include/c++/5/string:41,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/new:119:25: error: declaration of 'operator new' as non-function
+ void* operator new(std::size_t, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
+                         ^
+/usr/include/c++/5/new:119:20: error: 'size_t' is not a member of 'std'
+ void* operator new(std::size_t, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
+                    ^
+/usr/include/c++/5/new:119:20: note: suggested alternative:
+In file included from /usr/include/wchar.h:51:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:216:23: note:   'size_t'
+ typedef __SIZE_TYPE__ size_t;
+                       ^
+In file included from /usr/include/c++/5/ext/new_allocator.h:33:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:33,
+                 from /usr/include/c++/5/bits/allocator.h:46,
+                 from /usr/include/c++/5/string:41,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/new:119:33: error: expected primary-expression before 'const'
+ void* operator new(std::size_t, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
+                                 ^
+/usr/include/c++/5/new:121:27: error: declaration of 'operator new []' as non-function
+ void* operator new[](std::size_t, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
+                           ^
+/usr/include/c++/5/new:121:22: error: 'size_t' is not a member of 'std'
+ void* operator new[](std::size_t, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
+                      ^
+/usr/include/c++/5/new:121:22: note: suggested alternative:
+In file included from /usr/include/wchar.h:51:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:216:23: note:   'size_t'
+ typedef __SIZE_TYPE__ size_t;
+                       ^
+In file included from /usr/include/c++/5/ext/new_allocator.h:33:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:33,
+                 from /usr/include/c++/5/bits/allocator.h:46,
+                 from /usr/include/c++/5/string:41,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/new:121:35: error: expected primary-expression before 'const'
+ void* operator new[](std::size_t, const std::nothrow_t&) _GLIBCXX_USE_NOEXCEPT
+                                   ^
+/usr/include/c++/5/new:129:32: error: declaration of 'operator new' as non-function
+ inline void* operator new(std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
+                                ^
+/usr/include/c++/5/new:129:27: error: 'size_t' is not a member of 'std'
+ inline void* operator new(std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
+                           ^
+/usr/include/c++/5/new:129:27: note: suggested alternative:
+In file included from /usr/include/wchar.h:51:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:216:23: note:   'size_t'
+ typedef __SIZE_TYPE__ size_t;
+                       ^
+In file included from /usr/include/c++/5/ext/new_allocator.h:33:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:33,
+                 from /usr/include/c++/5/bits/allocator.h:46,
+                 from /usr/include/c++/5/string:41,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/new:129:40: error: expected primary-expression before 'void'
+ inline void* operator new(std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
+                                        ^
+/usr/include/c++/5/new:131:34: error: declaration of 'operator new []' as non-function
+ inline void* operator new[](std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
+                                  ^
+/usr/include/c++/5/new:131:29: error: 'size_t' is not a member of 'std'
+ inline void* operator new[](std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
+                             ^
+/usr/include/c++/5/new:131:29: note: suggested alternative:
+In file included from /usr/include/wchar.h:51:0,
+                 from /usr/include/c++/5/cwchar:44,
+                 from /usr/include/c++/5/bits/postypes.h:40,
+                 from /usr/include/c++/5/bits/char_traits.h:40,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:216:23: note:   'size_t'
+ typedef __SIZE_TYPE__ size_t;
+                       ^
+In file included from /usr/include/c++/5/ext/new_allocator.h:33:0,
+                 from /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:33,
+                 from /usr/include/c++/5/bits/allocator.h:46,
+                 from /usr/include/c++/5/string:41,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/new:131:42: error: expected primary-expression before 'void'
+ inline void* operator new[](std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
+                                          ^
+In file included from /usr/include/x86_64-linux-gnu/c++/5/bits/c++allocator.h:33:0,
+                 from /usr/include/c++/5/bits/allocator.h:46,
+                 from /usr/include/c++/5/string:41,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/ext/new_allocator.h:44:14: error: 'std::size_t' has not been declared
+   using std::size_t;
+              ^
+/usr/include/c++/5/ext/new_allocator.h:45:14: error: 'std::ptrdiff_t' has not been declared
+   using std::ptrdiff_t;
+              ^
+/usr/include/c++/5/ext/new_allocator.h:62:15: error: 'ptrdiff_t' does not name a type
+       typedef ptrdiff_t  difference_type;
+               ^
+In file included from /usr/include/c++/5/string:41:0,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/allocator.h:67:15: error: 'ptrdiff_t' does not name a type
+       typedef ptrdiff_t   difference_type;
+               ^
+/usr/include/c++/5/bits/allocator.h:96:15: error: 'ptrdiff_t' does not name a type
+       typedef ptrdiff_t  difference_type;
+               ^
+In file included from /usr/include/c++/5/string:44:0,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/ostream_insert.h:45:26: error: 'streamsize' has not been declared
+       const _CharT* __s, streamsize __n)
+                          ^
+/usr/include/c++/5/bits/ostream_insert.h: In function 'void std::__ostream_write(std::basic_ostream<_CharT, _Traits>&, const _CharT*, int)':
+/usr/include/c++/5/bits/ostream_insert.h:50:13: error: 'streamsize' does not name a type
+       const streamsize __put = __out.rdbuf()->sputn(__s, __n);
+             ^
+/usr/include/c++/5/bits/ostream_insert.h:51:11: error: '__put' was not declared in this scope
+       if (__put != __n)
+           ^
+/usr/include/c++/5/bits/ostream_insert.h: At global scope:
+/usr/include/c++/5/bits/ostream_insert.h:57:59: error: 'streamsize' has not been declared
+     __ostream_fill(basic_ostream<_CharT, _Traits>& __out, streamsize __n)
+                                                           ^
+/usr/include/c++/5/bits/ostream_insert.h:77:27: error: 'streamsize' has not been declared
+        const _CharT* __s, streamsize __n)
+                           ^
+/usr/include/c++/5/bits/ostream_insert.h: In function 'std::basic_ostream<_CharT, _Traits>& std::__ostream_insert(std::basic_ostream<_CharT, _Traits>&, const _CharT*, int)':
+/usr/include/c++/5/bits/ostream_insert.h:87:14: error: 'streamsize' does not name a type
+        const streamsize __w = __out.width();
+              ^
+/usr/include/c++/5/bits/ostream_insert.h:88:12: error: '__w' was not declared in this scope
+        if (__w > __n)
+            ^
+/usr/include/c++/5/bits/ostream_insert.h: At global scope:
+/usr/include/c++/5/bits/ostream_insert.h:118:68: error: 'streamsize' has not been declared
+   extern template ostream& __ostream_insert(ostream&, const char*, streamsize);
+                                                                    ^
+/usr/include/c++/5/bits/ostream_insert.h:122:11: error: 'streamsize' has not been declared
+           streamsize);
+           ^
+In file included from /usr/include/c++/5/string:53:0,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/basic_string.tcc: In function 'std::basic_istream<_CharT, _Traits>& std::operator>>(std::basic_istream<_CharT, _Traits>&, std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&)':
+/usr/include/c++/5/bits/basic_string.tcc:1463:14: error: 'streamsize' does not name a type
+        const streamsize __w = __in.width();
+              ^
+/usr/include/c++/5/bits/basic_string.tcc:1464:32: error: '__w' was not declared in this scope
+        const __size_type __n = __w > 0 ? static_cast<__size_type>(__w)
+                                ^
+In file included from /usr/include/c++/5/bits/basic_string.h:40:0,
+                 from /usr/include/c++/5/string:52,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/ext/alloc_traits.h: In instantiation of 'struct __gnu_cxx::__alloc_traits<std::allocator<char> >':
+/usr/include/c++/5/bits/basic_string.h:74:24:   required from 'class std::__cxx11::basic_string<char>'
+/usr/include/c++/5/bits/basic_string.tcc:1577:25:   required from here
+/usr/include/c++/5/ext/alloc_traits.h:178:53: error: no type named 'difference_type' in 'class std::allocator<char>'
+     typedef typename _Alloc::difference_type        difference_type;
+                                                     ^
+/usr/include/c++/5/ext/alloc_traits.h: In instantiation of 'struct __gnu_cxx::__alloc_traits<std::allocator<wchar_t> >':
+/usr/include/c++/5/bits/basic_string.h:74:24:   required from 'class std::__cxx11::basic_string<wchar_t>'
+/usr/include/c++/5/bits/basic_string.tcc:1592:25:   required from here
+/usr/include/c++/5/ext/alloc_traits.h:178:53: error: no type named 'difference_type' in 'class std::allocator<wchar_t>'
+In file included from /usr/include/c++/5/ios:42:0,
+                 from /usr/include/c++/5/istream:38,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/ios_base.h: At global scope:
+/usr/include/c++/5/bits/ios_base.h:520:5: error: 'streamsize' does not name a type
+     streamsize  _M_precision;
+     ^
+/usr/include/c++/5/bits/ios_base.h:521:5: error: 'streamsize' does not name a type
+     streamsize  _M_width;
+     ^
+/usr/include/c++/5/bits/ios_base.h:688:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/ios_base.h:697:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/ios_base.h:711:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/ios_base.h:720:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+In file included from /usr/include/c++/5/ios:43:0,
+                 from /usr/include/c++/5/istream:38,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/streambuf:50:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/streambuf:147:14: error: 'streamsize' does not name a type
+       friend streamsize
+              ^
+/usr/include/c++/5/streambuf:239:33: error: 'streamsize' has not been declared
+       pubsetbuf(char_type* __s, streamsize __n)
+                                 ^
+/usr/include/c++/5/streambuf:283:7: error: 'streamsize' does not name a type
+       streamsize
+       ^
+/usr/include/c++/5/streambuf:356:7: error: 'streamsize' does not name a type
+       streamsize
+       ^
+/usr/include/c++/5/streambuf:449:7: error: 'streamsize' does not name a type
+       streamsize
+       ^
+/usr/include/c++/5/streambuf:591:26: error: 'streamsize' has not been declared
+       setbuf(char_type*, streamsize)
+                          ^
+/usr/include/c++/5/streambuf:648:15: error: 'streamsize' does not name a type
+       virtual streamsize
+               ^
+/usr/include/c++/5/streambuf:664:15: error: 'streamsize' does not name a type
+       virtual streamsize
+               ^
+/usr/include/c++/5/streambuf:741:15: error: 'streamsize' does not name a type
+       virtual streamsize
+               ^
+/usr/include/c++/5/streambuf:794:20: error: 'streamsize' has not been declared
+       __safe_gbump(streamsize __n) { _M_in_cur += __n; }
+                    ^
+/usr/include/c++/5/streambuf:797:20: error: 'streamsize' has not been declared
+       __safe_pbump(streamsize __n) { _M_out_cur += __n; }
+                    ^
+/usr/include/c++/5/streambuf:837:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/streambuf:842:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+In file included from /usr/include/c++/5/streambuf:850:0,
+                 from /usr/include/c++/5/ios:43,
+                 from /usr/include/c++/5/istream:38,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/streambuf.tcc:44:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:78:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:115:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:138:12: error: 'streamsize' does not name a type
+     inline streamsize
+            ^
+/usr/include/c++/5/bits/streambuf.tcc:151:5: error: 'streamsize' is not a template function
+     streamsize
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:152:5: error: expected ';' before '__copy_streambufs'
+     __copy_streambufs(basic_streambuf<char>*,
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:155:5: error: 'streamsize' is not a template function
+     streamsize
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:156:5: error: expected ';' before '__copy_streambufs_eof'
+     __copy_streambufs_eof(basic_streambuf<char>*,
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:162:5: error: 'streamsize' is not a template function
+     streamsize
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:163:5: error: expected ';' before '__copy_streambufs'
+     __copy_streambufs(basic_streambuf<wchar_t>*,
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:166:5: error: 'streamsize' is not a template function
+     streamsize
+     ^
+/usr/include/c++/5/bits/streambuf.tcc:167:5: error: expected ';' before '__copy_streambufs_eof'
+     __copy_streambufs_eof(basic_streambuf<wchar_t>*,
+     ^
+In file included from /usr/include/c++/5/bits/locale_facets.h:48:0,
+                 from /usr/include/c++/5/bits/basic_ios.h:37,
+                 from /usr/include/c++/5/ios:44,
+                 from /usr/include/c++/5/istream:38,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/streambuf_iterator.h:279:34: error: 'streamsize' has not been declared
+       _M_put(const _CharT* __ws, streamsize __len)
+                                  ^
+/usr/include/c++/5/bits/streambuf_iterator.h: In function 'typename __gnu_cxx::__enable_if<std::__is_char<_CharT>::__value, std::ostreambuf_iterator<_CharT, std::char_traits<_CharT> > >::__type std::__copy_move_a2(_CharT*, _CharT*, std::ostreambuf_iterator<_CharT, std::char_traits<_CharT> >)':
+/usr/include/c++/5/bits/streambuf_iterator.h:313:13: error: 'streamsize' does not name a type
+       const streamsize __num = __last - __first;
+             ^
+/usr/include/c++/5/bits/streambuf_iterator.h:314:11: error: '__num' was not declared in this scope
+       if (__num > 0)
+           ^
+/usr/include/c++/5/bits/streambuf_iterator.h: In function 'typename __gnu_cxx::__enable_if<std::__is_char<_CharT>::__value, std::ostreambuf_iterator<_CharT, std::char_traits<_CharT> > >::__type std::__copy_move_a2(const _CharT*, const _CharT*, std::ostreambuf_iterator<_CharT, std::char_traits<_CharT> >)':
+/usr/include/c++/5/bits/streambuf_iterator.h:325:13: error: 'streamsize' does not name a type
+       const streamsize __num = __last - __first;
+             ^
+/usr/include/c++/5/bits/streambuf_iterator.h:326:11: error: '__num' was not declared in this scope
+       if (__num > 0)
+           ^
+/usr/include/c++/5/bits/streambuf_iterator.h: In function 'typename __gnu_cxx::__enable_if<std::__is_char<_CharT>::__value, _CharT*>::__type std::__copy_move_a2(std::istreambuf_iterator<_CharT, std::char_traits<_CharT> >, std::istreambuf_iterator<_CharT, std::char_traits<_CharT> >, _CharT*)':
+/usr/include/c++/5/bits/streambuf_iterator.h:348:14: error: 'streamsize' does not name a type
+        const streamsize __n = __sb->egptr() - __sb->gptr();
+              ^
+/usr/include/c++/5/bits/streambuf_iterator.h:349:12: error: '__n' was not declared in this scope
+        if (__n > 1)
+            ^
+/usr/include/c++/5/bits/streambuf_iterator.h: In function 'typename __gnu_cxx::__enable_if<std::__is_char<_CharT2>::__value, std::istreambuf_iterator<_CharT> >::__type std::find(std::istreambuf_iterator<_CharT>, std::istreambuf_iterator<_CharT>, const _CharT2&)':
+/usr/include/c++/5/bits/streambuf_iterator.h:385:8: error: 'streamsize' was not declared in this scope
+        streamsize __n = __sb->egptr() - __sb->gptr();
+        ^
+/usr/include/c++/5/bits/streambuf_iterator.h:386:12: error: '__n' was not declared in this scope
+        if (__n > 1)
+            ^
+In file included from /usr/include/c++/5/bits/basic_ios.h:37:0,
+                 from /usr/include/c++/5/ios:44,
+                 from /usr/include/c++/5/istream:38,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/locale_facets.h: At global scope:
+/usr/include/c++/5/bits/locale_facets.h:99:29: error: 'streamsize' has not been declared
+       const _CharT* __olds, streamsize __newlen, streamsize __oldlen);
+                             ^
+/usr/include/c++/5/bits/locale_facets.h:99:50: error: 'streamsize' has not been declared
+       const _CharT* __olds, streamsize __newlen, streamsize __oldlen);
+                                                  ^
+In file included from /usr/include/c++/5/bits/basic_ios.h:37:0,
+                 from /usr/include/c++/5/ios:44,
+                 from /usr/include/c++/5/istream:38,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/locale_facets.h:2484:32: error: 'streamsize' has not been declared
+       _M_pad(char_type __fill, streamsize __w, ios_base& __io,
+                                ^
+In file included from /usr/include/c++/5/bits/locale_facets.h:2651:0,
+                 from /usr/include/c++/5/bits/basic_ios.h:37,
+                 from /usr/include/c++/5/ios:44,
+                 from /usr/include/c++/5/istream:38,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/locale_facets.tcc:780:27: error: 'streamsize' has not been declared
+     _M_pad(_CharT __fill, streamsize __w, ios_base& __io,
+                           ^
+/usr/include/c++/5/bits/locale_facets.tcc: In member function '_OutIter std::num_put<_CharT, _OutIter>::_M_insert_int(_OutIter, std::ios_base&, _CharT, _ValueT) const':
+/usr/include/c++/5/bits/locale_facets.tcc:921:8: error: 'streamsize' does not name a type
+  const streamsize __w = __io.width();
+        ^
+/usr/include/c++/5/bits/locale_facets.tcc:922:6: error: '__w' was not declared in this scope
+  if (__w > static_cast<streamsize>(__len))
+      ^
+/usr/include/c++/5/bits/locale_facets.tcc:922:24: error: 'streamsize' does not name a type
+  if (__w > static_cast<streamsize>(__len))
+                        ^
+/usr/include/c++/5/bits/locale_facets.tcc:929:7: error: 'class std::ios_base' has no member named 'width'
+  __io.width(0);
+       ^
+/usr/include/c++/5/bits/locale_facets.tcc: In member function '_OutIter std::num_put<_CharT, _OutIter>::_M_insert_float(_OutIter, std::ios_base&, _CharT, char, _ValueT) const':
+/usr/include/c++/5/bits/locale_facets.tcc:984:8: error: 'streamsize' does not name a type
+  const streamsize __prec = __io.precision() < 0 ? 6 : __io.precision();
+        ^
+/usr/include/c++/5/bits/locale_facets.tcc:1006:14: error: '__prec' was not declared in this scope
+      __fbuf, __prec, __v);
+              ^
+/usr/include/c++/5/bits/locale_facets.tcc:1018:18: error: '__prec' was not declared in this scope
+          __fbuf, __prec, __v);
+                  ^
+/usr/include/c++/5/bits/locale_facets.tcc:1071:6: error: 'streamsize' was not declared in this scope
+      streamsize __off = 0;
+      ^
+/usr/include/c++/5/bits/locale_facets.tcc:1074:3: error: '__off' was not declared in this scope
+   __off = 1;
+   ^
+/usr/include/c++/5/bits/locale_facets.tcc:1080:45: error: '__off' was not declared in this scope
+       __lc->_M_thousands_sep, __wp, __ws2 + __off,
+                                             ^
+/usr/include/c++/5/bits/locale_facets.tcc:1088:8: error: 'streamsize' does not name a type
+  const streamsize __w = __io.width();
+        ^
+/usr/include/c++/5/bits/locale_facets.tcc:1089:6: error: '__w' was not declared in this scope
+  if (__w > static_cast<streamsize>(__len))
+      ^
+/usr/include/c++/5/bits/locale_facets.tcc:1089:24: error: 'streamsize' does not name a type
+  if (__w > static_cast<streamsize>(__len))
+                        ^
+/usr/include/c++/5/bits/locale_facets.tcc:1096:7: error: 'class std::ios_base' has no member named 'width'
+  __io.width(0);
+       ^
+/usr/include/c++/5/bits/locale_facets.tcc: In member function 'virtual _OutIter std::num_put<_CharT, _OutIter>::do_put(std::num_put<_CharT, _OutIter>::iter_type, std::ios_base&, std::num_put<_CharT, _OutIter>::char_type, bool) const':
+/usr/include/c++/5/bits/locale_facets.tcc:1126:10: error: 'streamsize' does not name a type
+    const streamsize __w = __io.width();
+          ^
+/usr/include/c++/5/bits/locale_facets.tcc:1127:8: error: '__w' was not declared in this scope
+    if (__w > static_cast<streamsize>(__len))
+        ^
+/usr/include/c++/5/bits/locale_facets.tcc:1127:26: error: 'streamsize' does not name a type
+    if (__w > static_cast<streamsize>(__len))
+                          ^
+/usr/include/c++/5/bits/locale_facets.tcc:1129:14: error: 'streamsize' does not name a type
+        const streamsize __plen = __w - __len;
+              ^
+/usr/include/c++/5/bits/locale_facets.tcc:1132:10: error: '__plen' was not declared in this scope
+        * __plen));
+          ^
+/usr/include/c++/5/bits/locale_facets.tcc:1135:13: error: 'class std::ios_base' has no member named 'width'
+        __io.width(0);
+             ^
+/usr/include/c++/5/bits/locale_facets.tcc:1149:9: error: 'class std::ios_base' has no member named 'width'
+    __io.width(0);
+         ^
+/usr/include/c++/5/bits/locale_facets.tcc: At global scope:
+/usr/include/c++/5/bits/locale_facets.tcc:1210:8: error: 'streamsize' has not been declared
+        streamsize __newlen, streamsize __oldlen)
+        ^
+/usr/include/c++/5/bits/locale_facets.tcc:1210:29: error: 'streamsize' has not been declared
+        streamsize __newlen, streamsize __oldlen)
+                             ^
+In file included from /usr/include/c++/5/istream:39:0,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/ostream:311:38: error: 'streamsize' has not been declared
+       _M_write(const char_type* __s, streamsize __n)
+                                      ^
+/usr/include/c++/5/ostream:335:35: error: 'streamsize' has not been declared
+       write(const char_type* __s, streamsize __n);
+                                   ^
+/usr/include/c++/5/ostream: In member function 'void std::basic_ostream<_CharT, _Traits>::_M_write(const char_type*, int)':
+/usr/include/c++/5/ostream:313:8: error: 'streamsize' does not name a type
+  const streamsize __put = this->rdbuf()->sputn(__s, __n);
+        ^
+/usr/include/c++/5/ostream:314:6: error: '__put' was not declared in this scope
+  if (__put != __n)
+      ^
+/usr/include/c++/5/ostream: In function 'std::basic_ostream<_CharT, _Traits>& std::operator<<(std::basic_ostream<_CharT, _Traits>&, const _CharT*)':
+/usr/include/c++/5/ostream:545:17: error: 'streamsize' does not name a type
+     static_cast<streamsize>(_Traits::length(__s)));
+                 ^
+/usr/include/c++/5/ostream: In function 'std::basic_ostream<char, _Traits>& std::operator<<(std::basic_ostream<char, _Traits>&, const char*)':
+/usr/include/c++/5/ostream:562:17: error: 'streamsize' does not name a type
+     static_cast<streamsize>(_Traits::length(__s)));
+                 ^
+In file included from /usr/include/c++/5/ostream:638:0,
+                 from /usr/include/c++/5/istream:39,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/ostream.tcc: At global scope:
+/usr/include/c++/5/bits/ostream.tcc:183:30: error: 'streamsize' has not been declared
+     write(const _CharT* __s, streamsize __n)
+                              ^
+In file included from /usr/include/c++/5/fstream:38:0,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/istream:82:7: error: 'streamsize' does not name a type
+       streamsize   _M_gcount;
+       ^
+/usr/include/c++/5/istream:268:7: error: 'streamsize' does not name a type
+       streamsize
+       ^
+/usr/include/c++/5/istream:343:27: error: 'streamsize' has not been declared
+       get(char_type* __s, streamsize __n, char_type __delim);
+                           ^
+/usr/include/c++/5/istream:354:27: error: 'streamsize' has not been declared
+       get(char_type* __s, streamsize __n)
+                           ^
+/usr/include/c++/5/istream:416:31: error: 'streamsize' has not been declared
+       getline(char_type* __s, streamsize __n, char_type __delim);
+                               ^
+/usr/include/c++/5/istream:427:31: error: 'streamsize' has not been declared
+       getline(char_type* __s, streamsize __n)
+                               ^
+/usr/include/c++/5/istream:451:7: error: expected ';' at end of member declaration
+       ignore(streamsize __n, int_type __delim);
+       ^
+/usr/include/c++/5/istream:451:25: error: expected ')' before '__n'
+       ignore(streamsize __n, int_type __delim);
+                         ^
+/usr/include/c++/5/istream:454:7: error: expected ';' at end of member declaration
+       ignore(streamsize __n);
+       ^
+/usr/include/c++/5/istream:454:14: error: redeclaration of 'std::basic_istream<_CharT, _Traits>::__istream_type& std::basic_istream<_CharT, _Traits>::ignore'
+       ignore(streamsize __n);
+              ^
+/usr/include/c++/5/istream:451:14: note: previous declaration 'std::basic_istream<_CharT, _Traits>::__istream_type& std::basic_istream<_CharT, _Traits>::ignore'
+       ignore(streamsize __n, int_type __delim);
+              ^
+/usr/include/c++/5/istream:454:25: error: expected ')' before '__n'
+       ignore(streamsize __n);
+                         ^
+/usr/include/c++/5/istream:457:14: error: 'std::basic_istream<_CharT, _Traits>::__istream_type& std::basic_istream<_CharT, _Traits>::ignore()' conflicts with a previous declaration
+       ignore();
+              ^
+/usr/include/c++/5/istream:451:14: note: previous declaration 'std::basic_istream<_CharT, _Traits>::__istream_type& std::basic_istream<_CharT, _Traits>::ignore'
+       ignore(streamsize __n, int_type __delim);
+              ^
+/usr/include/c++/5/istream:486:28: error: 'streamsize' has not been declared
+       read(char_type* __s, streamsize __n);
+                            ^
+/usr/include/c++/5/istream:504:7: error: 'streamsize' does not name a type
+       streamsize
+       ^
+/usr/include/c++/5/istream: In constructor 'std::basic_istream<_CharT, _Traits>::basic_istream(std::basic_istream<_CharT, _Traits>::__streambuf_type*)':
+/usr/include/c++/5/istream:94:9: error: class 'std::basic_istream<_CharT, _Traits>' does not have any field named '_M_gcount'
+       : _M_gcount(streamsize(0))
+         ^
+/usr/include/c++/5/istream:94:31: error: there are no arguments to 'streamsize' that depend on a template parameter, so a declaration of 'streamsize' must be available [-fpermissive]
+       : _M_gcount(streamsize(0))
+                               ^
+/usr/include/c++/5/istream:94:31: note: (if you use '-fpermissive', G++ will accept your code, but allowing the use of an undeclared name is deprecated)
+/usr/include/c++/5/istream: In destructor 'virtual std::basic_istream<_CharT, _Traits>::~basic_istream()':
+/usr/include/c++/5/istream:104:9: error: '_M_gcount' was not declared in this scope
+       { _M_gcount = streamsize(0); }
+         ^
+/usr/include/c++/5/istream:104:33: error: there are no arguments to 'streamsize' that depend on a template parameter, so a declaration of 'streamsize' must be available [-fpermissive]
+       { _M_gcount = streamsize(0); }
+                                 ^
+/usr/include/c++/5/istream: In constructor 'std::basic_istream<_CharT, _Traits>::basic_istream()':
+/usr/include/c++/5/istream:607:9: error: class 'std::basic_istream<_CharT, _Traits>' does not have any field named '_M_gcount'
+       : _M_gcount(streamsize(0))
+         ^
+/usr/include/c++/5/istream:607:31: error: there are no arguments to 'streamsize' that depend on a template parameter, so a declaration of 'streamsize' must be available [-fpermissive]
+       : _M_gcount(streamsize(0))
+                               ^
+/usr/include/c++/5/istream: In instantiation of 'class std::basic_istream<char>':
+/usr/include/c++/5/istream:647:24:   required from here
+/usr/include/c++/5/istream:451:14: error: 'std::basic_istream<_CharT, _Traits>::__istream_type& std::basic_istream<_CharT, _Traits>::ignore() [with _CharT = char; _Traits = std::char_traits<char>; std::basic_istream<_CharT, _Traits>::__istream_type = std::basic_istream<char>]' conflicts with a previous declaration
+       ignore(streamsize __n, int_type __delim);
+              ^
+/usr/include/c++/5/istream:451:14: note: previous declaration 'std::basic_istream<char>::__istream_type& std::basic_istream<char>::ignore'
+/usr/include/c++/5/istream: At global scope:
+/usr/include/c++/5/istream:648:29: error: 'streamsize' has not been declared
+     getline(char_type* __s, streamsize __n, char_type __delim);
+                             ^
+/usr/include/c++/5/istream:653:12: error: 'std::basic_istream<char>& std::basic_istream<char>::ignore' is not a static data member of 'class std::basic_istream<char>'
+     ignore(streamsize __n);
+            ^
+/usr/include/c++/5/istream:653:12: error: 'streamsize' was not declared in this scope
+/usr/include/c++/5/istream:658:12: error: 'std::basic_istream<char>& std::basic_istream<char>::ignore' is not a static data member of 'class std::basic_istream<char>'
+     ignore(streamsize __n, int_type __delim);
+            ^
+/usr/include/c++/5/istream:658:12: error: 'streamsize' was not declared in this scope
+/usr/include/c++/5/istream:658:37: error: expected primary-expression before '__delim'
+     ignore(streamsize __n, int_type __delim);
+                                     ^
+/usr/include/c++/5/istream:658:44: error: expression list treated as compound expression in initializer [-fpermissive]
+     ignore(streamsize __n, int_type __delim);
+                                            ^
+/usr/include/c++/5/istream: In instantiation of 'class std::basic_istream<wchar_t>':
+/usr/include/c++/5/istream:663:27:   required from here
+/usr/include/c++/5/istream:451:14: error: 'std::basic_istream<_CharT, _Traits>::__istream_type& std::basic_istream<_CharT, _Traits>::ignore() [with _CharT = wchar_t; _Traits = std::char_traits<wchar_t>; std::basic_istream<_CharT, _Traits>::__istream_type = std::basic_istream<wchar_t>]' conflicts with a previous declaration
+       ignore(streamsize __n, int_type __delim);
+              ^
+/usr/include/c++/5/istream:451:14: note: previous declaration 'std::basic_istream<wchar_t>::__istream_type& std::basic_istream<wchar_t>::ignore'
+/usr/include/c++/5/istream:664:29: error: 'streamsize' has not been declared
+     getline(char_type* __s, streamsize __n, char_type __delim);
+                             ^
+/usr/include/c++/5/istream:669:12: error: 'std::basic_istream<wchar_t>& std::basic_istream<wchar_t>::ignore' is not a static data member of 'class std::basic_istream<wchar_t>'
+     ignore(streamsize __n);
+            ^
+/usr/include/c++/5/istream:669:12: error: 'streamsize' was not declared in this scope
+/usr/include/c++/5/istream:674:12: error: 'std::basic_istream<wchar_t>& std::basic_istream<wchar_t>::ignore' is not a static data member of 'class std::basic_istream<wchar_t>'
+     ignore(streamsize __n, int_type __delim);
+            ^
+/usr/include/c++/5/istream:674:12: error: 'streamsize' was not declared in this scope
+/usr/include/c++/5/istream:674:37: error: expected primary-expression before '__delim'
+     ignore(streamsize __n, int_type __delim);
+                                     ^
+/usr/include/c++/5/istream:674:44: error: expression list treated as compound expression in initializer [-fpermissive]
+     ignore(streamsize __n, int_type __delim);
+                                            ^
+In file included from /usr/include/c++/5/istream:934:0,
+                 from /usr/include/c++/5/fstream:38,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>::int_type std::basic_istream<_CharT, _Traits>::get()':
+/usr/include/c++/5/bits/istream.tcc:240:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::get(std::basic_istream<_CharT, _Traits>::char_type&)':
+/usr/include/c++/5/bits/istream.tcc:274:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: At global scope:
+/usr/include/c++/5/bits/istream.tcc:309:25: error: 'streamsize' has not been declared
+     get(char_type* __s, streamsize __n, char_type __delim)
+                         ^
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::get(std::basic_istream<_CharT, _Traits>::char_type*, int, std::basic_istream<_CharT, _Traits>::char_type)':
+/usr/include/c++/5/bits/istream.tcc:311:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::get(std::basic_istream<_CharT, _Traits>::__streambuf_type&, std::basic_istream<_CharT, _Traits>::char_type)':
+/usr/include/c++/5/bits/istream.tcc:358:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: At global scope:
+/usr/include/c++/5/bits/istream.tcc:400:29: error: 'streamsize' has not been declared
+     getline(char_type* __s, streamsize __n, char_type __delim)
+                             ^
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::getline(std::basic_istream<_CharT, _Traits>::char_type*, int, std::basic_istream<_CharT, _Traits>::char_type)':
+/usr/include/c++/5/bits/istream.tcc:402:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::ignore()':
+/usr/include/c++/5/bits/istream.tcc:462:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: At global scope:
+/usr/include/c++/5/bits/istream.tcc:493:12: error: 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::ignore' is not a static data member of 'class std::basic_istream<_CharT, _Traits>'
+     ignore(streamsize __n)
+            ^
+/usr/include/c++/5/bits/istream.tcc:493:12: error: template definition of non-template 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::ignore'
+/usr/include/c++/5/bits/istream.tcc:493:12: error: 'streamsize' was not declared in this scope
+/usr/include/c++/5/bits/istream.tcc:555:12: error: 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::ignore' is not a static data member of 'class std::basic_istream<_CharT, _Traits>'
+     ignore(streamsize __n, int_type __delim)
+            ^
+/usr/include/c++/5/bits/istream.tcc:555:12: error: template definition of non-template 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::ignore'
+/usr/include/c++/5/bits/istream.tcc:555:12: error: 'streamsize' was not declared in this scope
+/usr/include/c++/5/bits/istream.tcc:555:37: error: expected primary-expression before '__delim'
+     ignore(streamsize __n, int_type __delim)
+                                     ^
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>::int_type std::basic_istream<_CharT, _Traits>::peek()':
+/usr/include/c++/5/bits/istream.tcc:623:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: At global scope:
+/usr/include/c++/5/bits/istream.tcc:650:26: error: 'streamsize' has not been declared
+     read(char_type* __s, streamsize __n)
+                          ^
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::read(std::basic_istream<_CharT, _Traits>::char_type*, int)':
+/usr/include/c++/5/bits/istream.tcc:652:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: At global scope:
+/usr/include/c++/5/bits/istream.tcc:677:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::putback(std::basic_istream<_CharT, _Traits>::char_type)':
+/usr/include/c++/5/bits/istream.tcc:715:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: In member function 'std::basic_istream<_CharT, _Traits>& std::basic_istream<_CharT, _Traits>::unget()':
+/usr/include/c++/5/bits/istream.tcc:750:7: error: '_M_gcount' was not declared in this scope
+       _M_gcount = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc: In function 'std::basic_istream<_CharT, _Traits>& std::operator>>(std::basic_istream<_CharT, _Traits>&, _CharT2*)':
+/usr/include/c++/5/bits/istream.tcc:963:7: error: 'streamsize' was not declared in this scope
+       streamsize __extracted = 0;
+       ^
+/usr/include/c++/5/bits/istream.tcc:971:19: error: expected ';' before '__num'
+        streamsize __num = __in.width();
+                   ^
+/usr/include/c++/5/bits/istream.tcc:972:12: error: '__num' was not declared in this scope
+        if (__num <= 0)
+            ^
+/usr/include/c++/5/bits/istream.tcc:973:49: error: type/value mismatch at argument 1 in template parameter list for 'template<class _Value> struct __gnu_cxx::__numeric_traits'
+   __num = __gnu_cxx::__numeric_traits<streamsize>::__max;
+                                                 ^
+/usr/include/c++/5/bits/istream.tcc:973:49: note:   expected a type, got 'streamsize'
+/usr/include/c++/5/bits/istream.tcc:981:15: error: '__extracted' was not declared in this scope
+        while (__extracted < __num - 1
+               ^
+/usr/include/c++/5/bits/istream.tcc:981:29: error: '__num' was not declared in this scope
+        while (__extracted < __num - 1
+                             ^
+/usr/include/c++/5/bits/istream.tcc:1006:12: error: '__extracted' was not declared in this scope
+       if (!__extracted)
+            ^
+In file included from /usr/include/c++/5/fstream:42:0,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/x86_64-linux-gnu/c++/5/bits/basic_file.h: At global scope:
+/usr/include/x86_64-linux-gnu/c++/5/bits/basic_file.h:107:7: error: 'streamsize' does not name a type
+       streamsize 
+       ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/basic_file.h:110:7: error: 'streamsize' does not name a type
+       streamsize 
+       ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/basic_file.h:114:7: error: 'streamsize' does not name a type
+       streamsize 
+       ^
+/usr/include/x86_64-linux-gnu/c++/5/bits/basic_file.h:123:7: error: 'streamsize' does not name a type
+       streamsize
+       ^
+In file included from FakeInputKeyboardPlugin.h:11:0,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/fstream:175:7: error: 'streamsize' does not name a type
+       streamsize  _M_ext_buf_size;
+       ^
+/usr/include/c++/5/fstream:334:15: error: 'streamsize' does not name a type
+       virtual streamsize
+               ^
+/usr/include/c++/5/fstream:361:42: error: 'streamsize' has not been declared
+       _M_convert_to_external(char_type*, streamsize);
+                                          ^
+/usr/include/c++/5/fstream:376:30: error: 'streamsize' has not been declared
+       setbuf(char_type* __s, streamsize __n);
+                              ^
+/usr/include/c++/5/fstream:399:15: error: 'streamsize' does not name a type
+       virtual streamsize
+               ^
+/usr/include/c++/5/fstream:402:15: error: 'streamsize' does not name a type
+       virtual streamsize
+               ^
+/usr/include/c++/5/fstream:422:21: error: 'streamsize' has not been declared
+       _M_set_buffer(streamsize __off)
+                     ^
+In file included from /usr/include/c++/5/fstream:1081:0,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/fstream.tcc: In member function 'void std::basic_filebuf<_CharT, _Traits>::_M_destroy_internal_buffer()':
+/usr/include/c++/5/bits/fstream.tcc:73:7: error: '_M_ext_buf_size' was not declared in this scope
+       _M_ext_buf_size = 0;
+       ^
+/usr/include/c++/5/bits/fstream.tcc: In constructor 'std::basic_filebuf<_CharT, _Traits>::basic_filebuf()':
+/usr/include/c++/5/bits/fstream.tcc:85:35: error: class 'std::basic_filebuf<_CharT, _Traits>' does not have any field named '_M_ext_buf_size'
+     _M_codecvt(0), _M_ext_buf(0), _M_ext_buf_size(0), _M_ext_next(0),
+                                   ^
+/usr/include/c++/5/bits/fstream.tcc: At global scope:
+/usr/include/c++/5/bits/fstream.tcc:261:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/fstream.tcc: In member function 'virtual std::basic_filebuf<_CharT, _Traits>::int_type std::basic_filebuf<_CharT, _Traits>::underflow()':
+/usr/include/c++/5/bits/fstream.tcc:316:4: error: 'streamsize' was not declared in this scope
+    streamsize __ilen = 0;
+    ^
+/usr/include/c++/5/bits/fstream.tcc:320:8: error: '__ilen' was not declared in this scope
+        __ilen = _M_file.xsgetn(reinterpret_cast<char*>(this->eback()),
+        ^
+/usr/include/c++/5/bits/fstream.tcc:320:25: error: 'std::basic_filebuf<_CharT, _Traits>::__file_type {aka class std::__basic_file<char>}' has no member named 'xsgetn'
+        __ilen = _M_file.xsgetn(reinterpret_cast<char*>(this->eback()),
+                         ^
+/usr/include/c++/5/bits/fstream.tcc:330:19: error: expected ';' before '__blen'
+        streamsize __blen; // Minimum buffer size.
+                   ^
+/usr/include/c++/5/bits/fstream.tcc:331:19: error: expected ';' before '__rlen'
+        streamsize __rlen; // Number of chars to read.
+                   ^
+/usr/include/c++/5/bits/fstream.tcc:333:3: error: '__blen' was not declared in this scope
+   __blen = __rlen = __buflen * __enc;
+   ^
+/usr/include/c++/5/bits/fstream.tcc:333:12: error: '__rlen' was not declared in this scope
+   __blen = __rlen = __buflen * __enc;
+            ^
+/usr/include/c++/5/bits/fstream.tcc:336:5: error: '__blen' was not declared in this scope
+     __blen = __buflen + _M_codecvt->max_length() - 1;
+     ^
+/usr/include/c++/5/bits/fstream.tcc:337:5: error: '__rlen' was not declared in this scope
+     __rlen = __buflen;
+     ^
+/usr/include/c++/5/bits/fstream.tcc:339:14: error: 'streamsize' does not name a type
+        const streamsize __remainder = _M_ext_end - _M_ext_next;
+              ^
+/usr/include/c++/5/bits/fstream.tcc:340:8: error: '__rlen' was not declared in this scope
+        __rlen = __rlen > __remainder ? __rlen - __remainder : 0;
+        ^
+/usr/include/c++/5/bits/fstream.tcc:340:26: error: '__remainder' was not declared in this scope
+        __rlen = __rlen > __remainder ? __rlen - __remainder : 0;
+                          ^
+/usr/include/c++/5/bits/fstream.tcc:349:12: error: '_M_ext_buf_size' was not declared in this scope
+        if (_M_ext_buf_size < __blen)
+            ^
+/usr/include/c++/5/bits/fstream.tcc:349:30: error: '__blen' was not declared in this scope
+        if (_M_ext_buf_size < __blen)
+                              ^
+/usr/include/c++/5/bits/fstream.tcc:373:48: error: '_M_ext_buf_size' was not declared in this scope
+         if (_M_ext_end - _M_ext_buf + __rlen > _M_ext_buf_size)
+                                                ^
+/usr/include/c++/5/bits/fstream.tcc:379:20: error: expected ';' before '__elen'
+         streamsize __elen = _M_file.xsgetn(_M_ext_end, __rlen);
+                    ^
+/usr/include/c++/5/bits/fstream.tcc:380:13: error: '__elen' was not declared in this scope
+         if (__elen == 0)
+             ^
+/usr/include/c++/5/bits/fstream.tcc:384:23: error: '__elen' was not declared in this scope
+         _M_ext_end += __elen;
+                       ^
+/usr/include/c++/5/bits/fstream.tcc:396:9: error: '__ilen' was not declared in this scope
+         __ilen = std::min(__avail, __buflen);
+         ^
+/usr/include/c++/5/bits/fstream.tcc:403:7: error: '__ilen' was not declared in this scope
+       __ilen = __iend - this->eback();
+       ^
+/usr/include/c++/5/bits/fstream.tcc:413:15: error: '__ilen' was not declared in this scope
+        while (__ilen == 0 && !__got_eof);
+               ^
+/usr/include/c++/5/bits/fstream.tcc:416:8: error: '__ilen' was not declared in this scope
+    if (__ilen > 0)
+        ^
+/usr/include/c++/5/bits/fstream.tcc: At global scope:
+/usr/include/c++/5/bits/fstream.tcc:572:44: error: 'streamsize' has not been declared
+     _M_convert_to_external(_CharT* __ibuf, streamsize __ilen)
+                                            ^
+/usr/include/c++/5/bits/fstream.tcc: In member function 'bool std::basic_filebuf<_CharT, _Traits>::_M_convert_to_external(_CharT*, int)':
+/usr/include/c++/5/bits/fstream.tcc:575:7: error: 'streamsize' was not declared in this scope
+       streamsize __elen;
+       ^
+/usr/include/c++/5/bits/fstream.tcc:576:18: error: expected ';' before '__plen'
+       streamsize __plen;
+                  ^
+/usr/include/c++/5/bits/fstream.tcc:579:4: error: '__elen' was not declared in this scope
+    __elen = _M_file.xsputn(reinterpret_cast<char*>(__ibuf), __ilen);
+    ^
+/usr/include/c++/5/bits/fstream.tcc:579:21: error: 'std::basic_filebuf<_CharT, _Traits>::__file_type {aka class std::__basic_file<char>}' has no member named 'xsputn'
+    __elen = _M_file.xsputn(reinterpret_cast<char*>(__ibuf), __ilen);
+                     ^
+/usr/include/c++/5/bits/fstream.tcc:580:4: error: '__plen' was not declared in this scope
+    __plen = __ilen;
+    ^
+/usr/include/c++/5/bits/fstream.tcc:586:15: error: expected ';' before '__blen'
+    streamsize __blen = __ilen * _M_codecvt->max_length();
+               ^
+/usr/include/c++/5/bits/fstream.tcc:587:54: error: '__blen' was not declared in this scope
+    char* __buf = static_cast<char*>(__builtin_alloca(__blen));
+                                                      ^
+/usr/include/c++/5/bits/fstream.tcc:607:4: error: '__elen' was not declared in this scope
+    __elen = _M_file.xsputn(__buf, __blen);
+    ^
+/usr/include/c++/5/bits/fstream.tcc:607:21: error: 'std::basic_filebuf<_CharT, _Traits>::__file_type {aka class std::__basic_file<char>}' has no member named 'xsputn'
+    __elen = _M_file.xsputn(__buf, __blen);
+                     ^
+/usr/include/c++/5/bits/fstream.tcc:608:4: error: '__plen' was not declared in this scope
+    __plen = __blen;
+    ^
+/usr/include/c++/5/bits/fstream.tcc:614:19: error: expected ';' before '__rlen'
+        streamsize __rlen = this->pptr() - __iend;
+                   ^
+/usr/include/c++/5/bits/fstream.tcc:616:21: error: '__rlen' was not declared in this scope
+         __iresume + __rlen, __iend, __buf,
+                     ^
+/usr/include/c++/5/bits/fstream.tcc:621:22: error: 'std::basic_filebuf<_CharT, _Traits>::__file_type {aka class std::__basic_file<char>}' has no member named 'xsputn'
+     __elen = _M_file.xsputn(__buf, __rlen);
+                      ^
+/usr/include/c++/5/bits/fstream.tcc:629:14: error: '__elen' was not declared in this scope
+       return __elen == __plen;
+              ^
+/usr/include/c++/5/bits/fstream.tcc:629:24: error: '__plen' was not declared in this scope
+       return __elen == __plen;
+                        ^
+/usr/include/c++/5/bits/fstream.tcc: At global scope:
+/usr/include/c++/5/bits/fstream.tcc:633:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/fstream.tcc:721:5: error: 'streamsize' does not name a type
+     streamsize
+     ^
+/usr/include/c++/5/bits/fstream.tcc:771:28: error: 'streamsize' has not been declared
+     setbuf(char_type* __s, streamsize __n)
+                            ^
+/usr/include/c++/5/bits/fstream.tcc: In member function 'bool std::basic_filebuf<_CharT, _Traits>::_M_terminate_output()':
+/usr/include/c++/5/bits/fstream.tcc:940:4: error: 'streamsize' was not declared in this scope
+    streamsize __ilen = 0;
+    ^
+/usr/include/c++/5/bits/fstream.tcc:952:5: error: '__ilen' was not declared in this scope
+     __ilen = __next - __buf;
+     ^
+/usr/include/c++/5/bits/fstream.tcc:955:15: error: 'streamsize' does not name a type
+         const streamsize __elen = _M_file.xsputn(__buf, __ilen);
+               ^
+/usr/include/c++/5/bits/fstream.tcc:956:13: error: '__elen' was not declared in this scope
+         if (__elen != __ilen)
+             ^
+/usr/include/c++/5/bits/fstream.tcc:961:43: error: '__ilen' was not declared in this scope
+    while (__r == codecvt_base::partial && __ilen > 0 && __testvalid);
+                                           ^
+/usr/include/c++/5/bits/fstream.tcc: In member function 'virtual void std::basic_filebuf<_CharT, _Traits>::imbue(const std::locale&)':
+/usr/include/c++/5/bits/fstream.tcc:1029:15: error: 'streamsize' does not name a type
+         const streamsize __remainder = _M_ext_end - _M_ext_next;
+               ^
+/usr/include/c++/5/bits/fstream.tcc:1030:13: error: '__remainder' was not declared in this scope
+         if (__remainder)
+             ^
+/usr/include/c++/5/bits/fstream.tcc:1034:35: error: '__remainder' was not declared in this scope
+         _M_ext_end = _M_ext_buf + __remainder;
+                                   ^
+In file included from /usr/include/c++/5/vector:65:0,
+                 from FakeInputKeyboardPlugin.h:13,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/stl_bvector.h: At global scope:
+/usr/include/c++/5/bits/stl_bvector.h:137:63: error: template argument 3 is invalid
+   : public std::iterator<std::random_access_iterator_tag, bool>
+                                                               ^
+/usr/include/c++/5/bits/stl_bvector.h: In member function 'void std::_Bit_iterator_base::_M_incr(ptrdiff_t)':
+/usr/include/c++/5/bits/stl_bvector.h:168:7: error: 'difference_type' was not declared in this scope
+       difference_type __n = __i + _M_offset;
+       ^
+/usr/include/c++/5/bits/stl_bvector.h:169:15: error: '__n' was not declared in this scope
+       _M_p += __n / int(_S_word_bit);
+               ^
+/usr/include/c++/5/bits/stl_bvector.h: At global scope:
+/usr/include/c++/5/bits/stl_bvector.h:264:16: error: declaration of 'operator+=' as non-function
+     operator+=(difference_type __i)
+                ^
+/usr/include/c++/5/bits/stl_bvector.h:264:13: error: expected ';' at end of member declaration
+     operator+=(difference_type __i)
+             ^
+/usr/include/c++/5/bits/stl_bvector.h:264:32: error: expected ')' before '__i'
+     operator+=(difference_type __i)
+                                ^
+/usr/include/c++/5/bits/stl_bvector.h:271:16: error: declaration of 'operator-=' as non-function
+     operator-=(difference_type __i)
+                ^
+/usr/include/c++/5/bits/stl_bvector.h:271:13: error: expected ';' at end of member declaration
+     operator-=(difference_type __i)
+             ^
+/usr/include/c++/5/bits/stl_bvector.h:271:32: error: expected ')' before '__i'
+     operator-=(difference_type __i)
+                                ^
+/usr/include/c++/5/bits/stl_bvector.h:278:15: error: 'difference_type' has not been declared
+     operator+(difference_type __i) const
+               ^
+/usr/include/c++/5/bits/stl_bvector.h:285:15: error: 'difference_type' has not been declared
+     operator-(difference_type __i) const
+               ^
+/usr/include/c++/5/bits/stl_bvector.h:292:16: error: 'difference_type' has not been declared
+     operator[](difference_type __i) const
+                ^
+/usr/include/c++/5/bits/stl_bvector.h: In member function 'std::_Bit_iterator::iterator std::_Bit_iterator::operator+(int) const':
+/usr/include/c++/5/bits/stl_bvector.h:281:20: error: no match for 'operator+=' (operand types are 'std::_Bit_iterator::iterator {aka std::_Bit_iterator}' and 'int')
+       return __tmp += __i;
+                    ^
+/usr/include/c++/5/bits/stl_bvector.h: In member function 'std::_Bit_iterator::iterator std::_Bit_iterator::operator-(int) const':
+/usr/include/c++/5/bits/stl_bvector.h:288:20: error: no match for 'operator-=' (operand types are 'std::_Bit_iterator::iterator {aka std::_Bit_iterator}' and 'int')
+       return __tmp -= __i;
+                    ^
+/usr/include/c++/5/bits/stl_bvector.h: At global scope:
+/usr/include/c++/5/bits/stl_bvector.h:354:16: error: declaration of 'operator+=' as non-function
+     operator+=(difference_type __i)
+                ^
+/usr/include/c++/5/bits/stl_bvector.h:354:13: error: expected ';' at end of member declaration
+     operator+=(difference_type __i)
+             ^
+/usr/include/c++/5/bits/stl_bvector.h:354:32: error: expected ')' before '__i'
+     operator+=(difference_type __i)
+                                ^
+/usr/include/c++/5/bits/stl_bvector.h:361:16: error: declaration of 'operator-=' as non-function
+     operator-=(difference_type __i)
+                ^
+/usr/include/c++/5/bits/stl_bvector.h:361:13: error: expected ';' at end of member declaration
+     operator-=(difference_type __i)
+             ^
+/usr/include/c++/5/bits/stl_bvector.h:361:32: error: expected ')' before '__i'
+     operator-=(difference_type __i)
+                                ^
+/usr/include/c++/5/bits/stl_bvector.h:368:15: error: 'difference_type' has not been declared
+     operator+(difference_type __i) const
+               ^
+/usr/include/c++/5/bits/stl_bvector.h:375:15: error: 'difference_type' has not been declared
+     operator-(difference_type __i) const
+               ^
+/usr/include/c++/5/bits/stl_bvector.h:382:16: error: 'difference_type' has not been declared
+     operator[](difference_type __i) const
+                ^
+/usr/include/c++/5/bits/stl_bvector.h: In member function 'std::_Bit_const_iterator::const_iterator std::_Bit_const_iterator::operator+(int) const':
+/usr/include/c++/5/bits/stl_bvector.h:371:20: error: no match for 'operator+=' (operand types are 'std::_Bit_const_iterator::const_iterator {aka std::_Bit_const_iterator}' and 'int')
+       return __tmp += __i;
+                    ^
+/usr/include/c++/5/bits/stl_bvector.h: In member function 'std::_Bit_const_iterator::const_iterator std::_Bit_const_iterator::operator-(int) const':
+/usr/include/c++/5/bits/stl_bvector.h:378:20: error: no match for 'operator-=' (operand types are 'std::_Bit_const_iterator::const_iterator {aka std::_Bit_const_iterator}' and 'int')
+       return __tmp -= __i;
+                    ^
+In file included from /usr/include/c++/5/bits/stl_algobase.h:65:0,
+                 from /usr/include/c++/5/bits/char_traits.h:39,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/stl_iterator_base_types.h: In instantiation of 'struct std::iterator_traits<std::_Bit_iterator>':
+/usr/include/c++/5/bits/stl_iterator.h:97:11:   required from 'class std::reverse_iterator<std::_Bit_iterator>'
+/usr/include/c++/5/bits/stl_bvector.h:796:5:   required from here
+/usr/include/c++/5/bits/stl_iterator_base_types.h:168:53: error: no type named 'iterator_category' in 'struct std::_Bit_iterator'
+       typedef typename _Iterator::iterator_category iterator_category;
+                                                     ^
+/usr/include/c++/5/bits/stl_iterator_base_types.h:169:53: error: no type named 'value_type' in 'struct std::_Bit_iterator'
+       typedef typename _Iterator::value_type        value_type;
+                                                     ^
+/usr/include/c++/5/bits/stl_iterator_base_types.h:170:53: error: no type named 'difference_type' in 'struct std::_Bit_iterator'
+       typedef typename _Iterator::difference_type   difference_type;
+                                                     ^
+/usr/include/c++/5/bits/stl_iterator_base_types.h: In instantiation of 'struct std::iterator_traits<std::_Bit_const_iterator>':
+/usr/include/c++/5/bits/stl_iterator.h:97:11:   required from 'class std::reverse_iterator<std::_Bit_const_iterator>'
+/usr/include/c++/5/bits/stl_bvector.h:800:5:   required from here
+/usr/include/c++/5/bits/stl_iterator_base_types.h:168:53: error: no type named 'iterator_category' in 'struct std::_Bit_const_iterator'
+       typedef typename _Iterator::iterator_category iterator_category;
+                                                     ^
+/usr/include/c++/5/bits/stl_iterator_base_types.h:169:53: error: no type named 'value_type' in 'struct std::_Bit_const_iterator'
+       typedef typename _Iterator::value_type        value_type;
+                                                     ^
+/usr/include/c++/5/bits/stl_iterator_base_types.h:170:53: error: no type named 'difference_type' in 'struct std::_Bit_const_iterator'
+       typedef typename _Iterator::difference_type   difference_type;
+                                                     ^
+FakeInputKeyboardPlugin.cpp: In member function 'virtual void FakeInputKeyboardPlugin::process(int*)':
+FakeInputKeyboardPlugin.cpp:261:6: warning: converting to non-pointer type 'char' from NULL [-Wconversion-null]
+ kk[0]=NULL;
+      ^
+FakeInputKeyboardPlugin.cpp:262:6: warning: converting to non-pointer type 'char' from NULL [-Wconversion-null]
+ kk[1]=NULL;
+      ^
+FakeInputKeyboardPlugin.cpp:263:9: error: 'std::ifstream {aka class std::basic_ifstream<char>}' has no member named 'readsome'
+ if ( in.readsome(kk,1) > 0 && !in.fail()) {
+         ^
+In file included from /usr/include/c++/5/fstream:38:0,
+                 from FakeInputKeyboardPlugin.h:11,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/istream: In instantiation of 'std::basic_istream<_CharT, _Traits>::basic_istream() [with _CharT = char; _Traits = std::char_traits<char>]':
+/usr/include/c++/5/fstream:496:38:   required from 'std::basic_ifstream<_CharT, _Traits>::basic_ifstream(const char*, std::ios_base::openmode) [with _CharT = char; _Traits = std::char_traits<char>; std::ios_base::openmode = std::_Ios_Openmode]'
+FakeInputKeyboardPlugin.cpp:259:30:   required from here
+/usr/include/c++/5/istream:606:7: error: uninitialized reference member in 'std::basic_istream<char>::__istream_type& {aka class std::basic_istream<char>&}' [-fpermissive]
+       basic_istream()
+       ^
+/usr/include/c++/5/istream:451:14: note: 'std::basic_istream<char>::__istream_type& std::basic_istream<char>::ignore' should be initialized
+       ignore(streamsize __n, int_type __delim);
+              ^
+/usr/include/c++/5/istream: In instantiation of 'std::basic_istream<_CharT, _Traits>::~basic_istream() [with _CharT = char; _Traits = std::char_traits<char>]':
+/usr/include/c++/5/fstream:496:38:   required from 'std::basic_ifstream<_CharT, _Traits>::basic_ifstream(const char*, std::ios_base::openmode) [with _CharT = char; _Traits = std::char_traits<char>; std::ios_base::openmode = std::_Ios_Openmode]'
+FakeInputKeyboardPlugin.cpp:259:30:   required from here
+/usr/include/c++/5/istream:104:31: error: 'streamsize' was not declared in this scope
+       { _M_gcount = streamsize(0); }
+                               ^
+In file included from /usr/include/c++/5/string:53:0,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/basic_string.tcc: In instantiation of 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator, std::forward_iterator_tag) [with _FwdIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]':
+/usr/include/c++/5/bits/basic_string.h:195:23:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct_aux(_InIterator, _InIterator, std::__false_type) [with _InIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:214:20:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator) [with _InIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:456:21:   required from 'std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::basic_string(const _CharT*, const _Alloc&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+FakeInputKeyboardPlugin.cpp:461:1:   required from here
+/usr/include/c++/5/bits/basic_string.tcc:219:57: error: no matching function for call to 'distance(const char*&, const char*&)'
+  size_type __dnew = static_cast<size_type>(std::distance(__beg, __end));
+                                                         ^
+In file included from /usr/include/c++/5/bits/stl_algobase.h:66:0,
+                 from /usr/include/c++/5/bits/char_traits.h:39,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/stl_iterator_base_funcs.h:114:5: note: candidate: template<class _InputIterator> typename std::iterator_traits<_Iterator>::difference_type std::distance(_InputIterator, _InputIterator)
+     distance(_InputIterator __first, _InputIterator __last)
+     ^
+/usr/include/c++/5/bits/stl_iterator_base_funcs.h:114:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/5/bits/stl_iterator_base_funcs.h: In substitution of 'template<class _InputIterator> typename std::iterator_traits<_Iterator>::difference_type std::distance(_InputIterator, _InputIterator) [with _InputIterator = const char*]':
+/usr/include/c++/5/bits/basic_string.tcc:219:57:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator, std::forward_iterator_tag) [with _FwdIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:195:23:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct_aux(_InIterator, _InIterator, std::__false_type) [with _InIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:214:20:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator) [with _InIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:456:21:   required from 'std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::basic_string(const _CharT*, const _Alloc&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+FakeInputKeyboardPlugin.cpp:461:1:   required from here
+/usr/include/c++/5/bits/stl_iterator_base_funcs.h:114:5: error: no type named 'difference_type' in 'struct std::iterator_traits<const char*>'
+In file included from /usr/include/c++/5/bits/stl_algobase.h:67:0,
+                 from /usr/include/c++/5/bits/char_traits.h:39,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/stl_iterator.h: In instantiation of 'class __gnu_cxx::__normal_iterator<const char*, std::__cxx11::basic_string<char> >':
+/usr/include/c++/5/bits/basic_string.tcc:229:6:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator, std::forward_iterator_tag) [with _FwdIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:195:23:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct_aux(_InIterator, _InIterator, std::__false_type) [with _InIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:214:20:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator) [with _InIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:456:21:   required from 'std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::basic_string(const _CharT*, const _Alloc&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+FakeInputKeyboardPlugin.cpp:461:1:   required from here
+/usr/include/c++/5/bits/stl_iterator.h:732:56: error: no type named 'difference_type' in 'struct std::iterator_traits<const char*>'
+       typedef typename __traits_type::difference_type  difference_type;
+                                                        ^
+/usr/include/c++/5/bits/stl_iterator.h: In instantiation of 'class __gnu_cxx::__normal_iterator<char*, std::__cxx11::basic_string<char> >':
+/usr/include/c++/5/bits/basic_string.tcc:229:6:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator, std::forward_iterator_tag) [with _FwdIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:195:23:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct_aux(_InIterator, _InIterator, std::__false_type) [with _InIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:214:20:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator) [with _InIterator = const char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:456:21:   required from 'std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::basic_string(const _CharT*, const _Alloc&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+FakeInputKeyboardPlugin.cpp:461:1:   required from here
+/usr/include/c++/5/bits/stl_iterator.h:732:56: error: no type named 'difference_type' in 'struct std::iterator_traits<char*>'
+In file included from /usr/include/c++/5/string:53:0,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/basic_string.tcc: In instantiation of 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator, std::forward_iterator_tag) [with _FwdIterator = char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]':
+/usr/include/c++/5/bits/basic_string.h:195:23:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct_aux(_InIterator, _InIterator, std::__false_type) [with _InIterator = char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:214:20:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator) [with _InIterator = char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:400:21:   required from 'std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::basic_string(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+FakeInputKeyboardPlugin.cpp:461:1:   required from here
+/usr/include/c++/5/bits/basic_string.tcc:219:57: error: no matching function for call to 'distance(char*&, char*&)'
+  size_type __dnew = static_cast<size_type>(std::distance(__beg, __end));
+                                                         ^
+In file included from /usr/include/c++/5/bits/stl_algobase.h:66:0,
+                 from /usr/include/c++/5/bits/char_traits.h:39,
+                 from /usr/include/c++/5/string:40,
+                 from ../core/IInputPlugin.h:15,
+                 from FakeInputKeyboardPlugin.h:10,
+                 from FakeInputKeyboardPlugin.cpp:6:
+/usr/include/c++/5/bits/stl_iterator_base_funcs.h:114:5: note: candidate: template<class _InputIterator> typename std::iterator_traits<_Iterator>::difference_type std::distance(_InputIterator, _InputIterator)
+     distance(_InputIterator __first, _InputIterator __last)
+     ^
+/usr/include/c++/5/bits/stl_iterator_base_funcs.h:114:5: note:   template argument deduction/substitution failed:
+/usr/include/c++/5/bits/stl_iterator_base_funcs.h: In substitution of 'template<class _InputIterator> typename std::iterator_traits<_Iterator>::difference_type std::distance(_InputIterator, _InputIterator) [with _InputIterator = char*]':
+/usr/include/c++/5/bits/basic_string.tcc:219:57:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator, std::forward_iterator_tag) [with _FwdIterator = char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:195:23:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct_aux(_InIterator, _InIterator, std::__false_type) [with _InIterator = char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:214:20:   required from 'void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator) [with _InIterator = char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+/usr/include/c++/5/bits/basic_string.h:400:21:   required from 'std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::basic_string(const std::__cxx11::basic_string<_CharT, _Traits, _Alloc>&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]'
+FakeInputKeyboardPlugin.cpp:461:1:   required from here
+/usr/include/c++/5/bits/stl_iterator_base_funcs.h:114:5: error: no type named 'difference_type' in 'struct std::iterator_traits<char*>'
+<builtin>: recipe for target 'FakeInputKeyboardPlugin.o' failed
+make: *** [FakeInputKeyboardPlugin.o] Error 1

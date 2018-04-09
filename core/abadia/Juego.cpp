@@ -1826,13 +1826,13 @@ void Juego::run()
                                 infoJuego->muestraInfo();
                         }
 
-#ifndef __abadIA__
+//#ifndef __abadIA__
                         // dibuja la pantalla si fuera necesario
                         motor->dibujaPantalla();
 
                         // dibuja los sprites visibles que hayan cambiado
                         motor->dibujaSprites();
-#endif
+//#endif
 
                         // espera un poco para actualizar el estado del juego
                         while (contadorInterrupcion < 0x24){

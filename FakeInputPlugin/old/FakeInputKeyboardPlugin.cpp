@@ -5,15 +5,7 @@
 #include <cassert>
 #include "FakeInputKeyboardPlugin.h"
 
-#include <vector>
-
-#include <iostream>
-#include <fstream>
-
-
-// TODO: revisar he incluido crow web server 
-
-#include "crow_all.h"
+//#include <vector> // me lo llevo al .h
 
 SDLKey FakeInputKeyboardPlugin::g_keyMapping[END_OF_INPUTS];
 
@@ -29,41 +21,17 @@ FakeInputKeyboardPlugin::FakeInputKeyboardPlugin()
 #endif
 
 	initRemapTable();
+
+	for (int i=0;i<SDLK_LAST;i++) keystate[i]=0; // TODO: no recuerdo si esto es necesario o ya esta inicializado con ceros
 }
 
 FakeInputKeyboardPlugin::~FakeInputKeyboardPlugin()
 {
 }
 
-void start_web_server() {
-	std::cout << "Starting Web Server" << std::endl;
-
-	crow::SimpleApp app;
-
-	CROW_ROUTE(app, "/")([](){
-		keystate[SDLK_UP]=true; 
-		keystate[SDLK_RIGHT]=false; 
-		keystate[SDLK_LEFT]=false; 
-		keystate[SDLK_DOWN]=false;  
-		keystate[SDLK_F5]=true;  
-		keystate[SDLK_SPACE]=false;  
-		return "Hello world";
-	});
-
-	//std::thread server_thread([&app](){
-    	//Start server                                                                                                                                                               
-    	app.port(8888).run();
-    //});
-}
- 
-std::thread t1(start_web_server);
-
 bool FakeInputKeyboardPlugin::init()
 {
 fprintf(stderr,"FakeInputKeyboardPlugin::init\n");
-// app.port(8888).multithreaded().run();
-fprintf(stderr,"FakeInputKeyboardPlugin::WebServer Started Listening at 8888\n");
-
 #if defined _EE || defined _PS3
 	if ( SDL_InitSubSystem(SDL_INIT_JOYSTICK) != -1 )
 	{
@@ -108,17 +76,17 @@ void FakeInputKeyboardPlugin::end()
 		}
 	}
 #endif
-	SDL_WM_GrabInput(SDL_GRAB_OFF);
+//TODO	SDL_WM_GrabInput(SDL_GRAB_OFF);
 }
 
 void FakeInputKeyboardPlugin::acquire()
 {
-	SDL_WM_GrabInput(SDL_GRAB_ON);
+//TODO	SDL_WM_GrabInput(SDL_GRAB_ON);
 }
 
 void FakeInputKeyboardPlugin::unAcquire()
 {
-	SDL_WM_GrabInput(SDL_GRAB_OFF);
+//TODO	SDL_WM_GrabInput(SDL_GRAB_OFF);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -195,9 +163,14 @@ enum ps3_sixaxis_sdl_axis
 void FakeInputKeyboardPlugin::process(int *inputs)
 {
 	//Uint8 *keystate = SDL_GetKeyState(NULL);
-	int size;
-//	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
-//	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
+//	int size;
+//TODO	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
+//TODO	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
+//	Uint8 keystate_tmp[SDLK_LAST];
+//	std::vector<Uint8> keystate[SDLK_LAST];
+//	Uint8 keystate[SDLK_LAST];
+//	for (int i=0;i<SDLK_LAST;i++) keystate[i]=0; // TODO: no deberiamos inicializar esto en cada bucle
+// lo declaro a nivel de clase
 
 #if defined _EE || defined _PS3
 	if(joy)
@@ -273,26 +246,25 @@ void FakeInputKeyboardPlugin::process(int *inputs)
 
 	} // if joy
 #endif // _EE y _PS3
+//fprintf(stderr,"antes for\n");
 
+/*
+std::ifstream in("/dev/stdin"); // TODO , no abrir en cada bucle
+std::string comando;
+in >> comando;
 
-//std::ifstream in("/dev/stdin"); // TODO , no abrir en cada bucle
-std::ifstream in("/abadIA/VigasocoSDL/VigasocoSDL/out"); // TODO , no abrir en cada bucle
+fprintf(stderr,"comando %s\n", comando.c_str());
+*/
+
+std::ifstream in("/dev/stdin"); // TODO , no abrir en cada bucle
 char kk[2];
 kk[0]=NULL;
 kk[1]=NULL;
-int ret; 
+if ( in.readsome(kk,1) > 0 && !in.fail()) {
 
-ret = in.readsome(kk,1);
+ fprintf(stderr,"comando %c\n", kk[0] );
 
-if (kk[0] > 0 && !in.fail()) {
-	fprintf(stderr,"comando %c\n", kk[0] );
-}
-
-keystate[SDLK_F5]=false;  
-keystate[SDLK_RIGHT]=false; 
-keystate[SDLK_LEFT]=false; 
-
-switch(kk[0]) {
+ switch(kk[0]) {
    case 'A':    // A de Arriba
 		keystate[SDLK_UP]=true; 
 		keystate[SDLK_RIGHT]=false; 
@@ -337,7 +309,7 @@ switch(kk[0]) {
 		keystate[SDLK_SPACE]=true;  
 		break;  // barra espaciadora
    case 'E': 
-		break;    // E de esperar, STOP, esto debe imprimir el estado
+		break;    // E de esparar, STOP, esto debe imprimir el estado
 		keystate[SDLK_UP]=false; 
 		keystate[SDLK_RIGHT]=false; 
 		keystate[SDLK_LEFT]=false; 
@@ -351,29 +323,39 @@ switch(kk[0]) {
    case 'R': 
 		keystate[SDLK_r]=true; 
 		break; 
-   case 'F':    // F de fin
-		keystate[SDLK_ESCAPE]=true; 
-		break; 
    default: fprintf(stderr,"No entiendo el comando %c\n", kk[0] ); // TODO devolver en JSON indicando status error
  }
-// fprintf(stderr,"ups %d\n", keystate[SDLK_UP] );
+ fprintf(stderr,"ups %d\n", keystate[SDLK_UP] );
 
 }
 
+	
 	// iterate through the inputs checking associated keys
 	for (int i = 0; i < END_OF_INPUTS; i++){
+//fprintf(stderr,"en for\n");
 		// if we're interested in that input, check it's value
 		if (inputs[i] >= 0){
+//fprintf(stderr,"next\n");
 			// if the input is mapped and the key is pressed,
 			// update inputs
 			if (g_keyMapping[i] != 0){
-//fprintf(stderr,"SDLInput %i\n",i);
+//fprintf(stderr,"%i \n",i);
 				if (keystate[g_keyMapping[i]] ){
 					inputs[i]++;
 				}
+
+				// simular todo el rato la tecla cursor arriba pulsada
+				//if (i==P1_UP) {
+//				if (i==P1_DOWN) {
+//					 inputs[i]++;
+//fprintf(stderr,"simulando SDLK_UP\n");
+//				}
 			}
 		}
 	}
+//valen lo mismo
+//fprintf(stderr,"SDLK_UP %d\n",SDLK_UP);
+//fprintf(stderr,"P1_UP %d\n",P1_UP);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -479,7 +461,7 @@ const std::string FakeInputKeyboardPlugin::g_properties[] = {
 };
 
 const int FakeInputKeyboardPlugin::g_paramTypes[] = {
-	int(PARAM_ARRAY | PARAM_INPUT)
+	PARAM_ARRAY | PARAM_INPUT
 };
 
 const int * FakeInputKeyboardPlugin::getPropertiesType() const

@@ -1,0 +1,12 @@
+CXXFLAGS=-O3 -I../core -I../VigasocoSDL/ -IC:\MinGW\SDL-1.2.14\include\SDL
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
+
+all: ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so 
+
+OBJECTS = SDLInputKeyboardPlugin.o PluginMain.o
+
+../VigasocoSDL/input/libVigasocoSDLInputPlugin.so: $(OBJECTS)
+	$(CXX) -shared $(OBJECTS) -LC:\MinGW\SDL-1.2.14\lib -lSDL -o $@
+
+clean:
+	rm -f $(OBJECTS) ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so 
