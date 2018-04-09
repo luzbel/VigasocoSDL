@@ -30,6 +30,12 @@ void start_web_server() {
 		return "Pido Salir";
 	});
 
+	CROW_ROUTE(app, "/cmd/<string>")
+	([ = ](crow::request req, std::string str){
+		webCommand = str.at(0);
+		return crow::response(200, str);
+	});
+
     app.port(8888).run();
 }
  
@@ -151,6 +157,7 @@ switch(webCommand) {
 		keystate[SDLK_DOWN]=false;  
 		keystate[SDLK_F5]=true;  
 		keystate[SDLK_SPACE]=false;  
+   		fprintf(stderr,"Volcado del Estado (habría que hacerlo directamente sin esperar al driver) \r", webCommand ); 
 		break;    // E de esparar, STOP, esto debe imprimir el estado
    case 'Q': 
 		keystate[SDLK_q]=true;  
@@ -160,7 +167,7 @@ switch(webCommand) {
 		break; 
    case 'F':    // F de fin
 		keystate[SDLK_ESCAPE]=true; 
-   		fprintf(stderr,"Salgo ..... \n", webCommand ); 
+   		fprintf(stderr,"Salgo ..... \r", webCommand ); 
 		break; 
    case '\0': 
    		fprintf(stderr,"No hago nada\r", webCommand ); 
