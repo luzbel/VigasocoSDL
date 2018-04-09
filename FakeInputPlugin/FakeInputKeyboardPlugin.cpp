@@ -11,9 +11,30 @@
 #include <fstream>
 
 
-// TODO: revisar he incluido crow web server 
-
 #include "crow_all.h"
+
+char webCommand = '\0';
+
+void start_web_server() {
+	std::cout << "Starting Web Server" << std::endl;
+
+	crow::SimpleApp app;
+
+	CROW_ROUTE(app, "/")([](){
+		webCommand = 'E';
+		return "Cambiado el webCommand";
+	});
+
+	CROW_ROUTE(app, "/fin")([](){
+		webCommand = 'F';
+		return "Pido Salir";
+	});
+
+    app.port(8888).run();
+}
+ 
+std::thread t1(start_web_server);
+
 
 SDLKey FakeInputKeyboardPlugin::g_keyMapping[END_OF_INPUTS];
 
@@ -35,73 +56,19 @@ FakeInputKeyboardPlugin::~FakeInputKeyboardPlugin()
 {
 }
 
-void start_web_server() {
-	std::cout << "Starting Web Server" << std::endl;
 
-	crow::SimpleApp app;
 
-	CROW_ROUTE(app, "/")([](){
-		return "Hello world";
-	});
-
-	//std::thread server_thread([&app](){
-    	//Start server                                                                                                                                                               
-    	app.port(8888).run();
-    //});
-}
- 
-std::thread t1(start_web_server);
 
 bool FakeInputKeyboardPlugin::init()
 {
-fprintf(stderr,"FakeInputKeyboardPlugin::init\n");
-// app.port(8888).multithreaded().run();
-fprintf(stderr,"FakeInputKeyboardPlugin::WebServer Started Listening at 8888\n");
+	fprintf(stderr,"FakeInputKeyboardPlugin::init\n");
+	fprintf(stderr,"FakeInputKeyboardPlugin::WebServer Started Listening at 8888\n");
 
-#if defined _EE || defined _PS3
-	if ( SDL_InitSubSystem(SDL_INIT_JOYSTICK) != -1 )
-	{
-		// Check for joystick
-		if(SDL_NumJoysticks()>0){
-			// Open joystick
-			joy=SDL_JoystickOpen(0);
-
-			if(joy)
-			{
-				printf("Opened Joystick 0\n");
-				printf("Name: %s\n", SDL_JoystickName(0));
-				printf("Number of Axes: %d\n",
-					SDL_JoystickNumAxes(joy));
-				printf("Number of Buttons: %d\n",
-					SDL_JoystickNumButtons(joy));
-				printf("Number of Balls: %d\n",
-					SDL_JoystickNumBalls(joy));
-				printf("Number of Hats: %d\n",
-					SDL_JoystickNumHats(joy));
-			}
-			else
-				printf("Couldn't open Joystick 0\n");
-
-			// Close if opened
-			// if(SDL_JoystickOpened(0))
-			// 	SDL_JoystickClose(joy);
-		} else printf("\n!!! NUMERO DE JOYSTICKS 0!!!\n\n");
-	}
-#endif   // _EE _PS3
 	return true;
 }
 
 void FakeInputKeyboardPlugin::end()
 {
-#if defined _EE || defined _PS3
-	if(SDL_NumJoysticks()>0)
-	{
-		if(SDL_JoystickOpened(0))
-		{
-			if (joy) SDL_JoystickClose(joy);
-		}
-	}
-#endif
 	SDL_WM_GrabInput(SDL_GRAB_OFF);
 }
 
@@ -119,73 +86,6 @@ void FakeInputKeyboardPlugin::unAcquire()
 // input processing
 /////////////////////////////////////////////////////////////////////////////
 
-#ifdef _EE
-enum ps2_sdl_buttons
-{
-        PAD_SQUARE,
-        PAD_CROSS,
-        PAD_CIRCLE,
-        PAD_TRIANGLE,
-        PAD_SELECT,
-        PAD_START,
-        PAD_L1,
-        PAD_R1,
-        PAD_L2,
-        PAD_R2,
-        PAD_L3,
-        PAD_R3
-};
-#endif // _EE
-
-#ifdef _PS3
-enum ps3_sixaxis_sdl_buttons
-{
-	PAD_SELECT,
-	PAD_L3,
-	PAD_R3,
-	PAD_START,
-	PAD_UP,
-	PAD_RIGHT,
-	PAD_DOWN,
-	PAD_LEFT,
-	PAD_L2,
-	PAD_R2,
-	PAD_L1,
-	PAD_R1,
-	PAD_TRIANGLE,
-	PAD_CIRCLE,
-	PAD_CROSS,
-	PAD_SQUARE,
-	PAD_PS
-};
-
-enum ps3_sixaxis_sdl_axis
-{
-	AXIS_L3_HORIZONTAL,
-	AXIS_L3_VERTICAL,
-	AXIS_R3_HORIZONTAL,
-	AXIS_R3_VERTICAL,
-	AXIS_UNKNONW4,
-	AXIS_UNKNONW5,
-	AXIS_UNKNONW6,
-	AXIS_UNKNONW7,
-	AXIS_UP,
-	AXIS_RIGHT,
-	AXIS_DOWN,
-	AXIS_LEFT,
-	AXIS_L2,
-	AXIS_R2,
-	AXIS_L1,
-	AXIS_R1,
-	AXIS_TRIANGLE,
-	AXIS_CIRCLE,
-	AXIS_CROSS,
-	AXIS_SQUARE		
-/* a partir del 19 no se que boton es ... */
-};
-
-#endif // _PS3
-
 void FakeInputKeyboardPlugin::process(int *inputs)
 {
 	//Uint8 *keystate = SDL_GetKeyState(NULL);
@@ -193,99 +93,13 @@ void FakeInputKeyboardPlugin::process(int *inputs)
 //	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
 //	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
 
-#if defined _EE || defined _PS3
-	if(joy)
-	{
-
-		SDL_JoystickUpdate();
-
-		/* analogico */
-		Sint16 x_move = SDL_JoystickGetAxis(joy,0);
-		keystate[SDLK_RIGHT] |= ( x_move > 10000  && !keystate[SDLK_LEFT] );
-		keystate[SDLK_LEFT]  |= ( x_move < -10000 && !keystate[SDLK_RIGHT] );
-		Sint16 y_move = SDL_JoystickGetAxis(joy,1);
-		keystate[SDLK_DOWN]  |= ( y_move > 10000  && !keystate[SDLK_UP] );
-		keystate[SDLK_UP]    |= ( y_move < -10000 && !keystate[SDLK_DOWN] );
-
-		keystate[SDLK_F8] |= SDL_JoystickGetButton(joy,PAD_L3);
-		keystate[SDLK_F9] |= SDL_JoystickGetButton(joy,PAD_R3);
-		keystate[SDLK_F10] |= SDL_JoystickGetButton(joy,PAD_SELECT);
-		keystate[SDLK_DELETE] |= SDL_JoystickGetButton(joy,PAD_START);
-		keystate[SDLK_SPACE] |= SDL_JoystickGetButton(joy,PAD_CROSS);
-		// Cambiar entre graficos CPC y VGA
-		keystate[SDLK_F2] |= SDL_JoystickGetButton(joy,PAD_TRIANGLE);
-		// contestar afirmativamente a una pregunta
-		keystate[SDLK_s] |= SDL_JoystickGetButton(joy,PAD_CIRCLE);
-		// contesta negativamente a una pregunta
-		keystate[SDLK_n] |= SDL_JoystickGetButton(joy,PAD_SQUARE);
-		// q y r se usan en la habitacion del espejo
-		keystate[SDLK_q] |= SDL_JoystickGetButton(joy,PAD_L2);
-		keystate[SDLK_r] |= SDL_JoystickGetButton(joy,PAD_R2);
-
-		keystate[SDLK_c] |= SDL_JoystickGetButton(joy,PAD_L1); // cargar partida
-		keystate[SDLK_g] |= SDL_JoystickGetButton(joy,PAD_R1); // grabar partida
-
-#ifdef _EE
-		Uint8 hat = SDL_JoystickGetHat(joy,0);
-
-
-		// Cruzeta 
-		// La primera condicion mira si se ha pulsado esa direccion,
-		// la segunda direccion mira que no se tiene pulsado el boton contrario
-		//  (?se puede fisicamente?)
-		// y la tercera que no tengamos pulsado ya el movimiento contrario 
-		// en la seta analogica
-
-		keystate[SDLK_UP]    |= 
-			(hat & SDL_HAT_UP) && 
-			!(hat & SDL_HAT_DOWN)  &&
-			!keystate[SDLK_DOWN];
-
-		keystate[SDLK_DOWN]  |= 
-			(hat & SDL_HAT_DOWN)  &&
-			!(hat & SDL_HAT_UP)   &&
-			!keystate[SDLK_UP];
-
-		keystate[SDLK_RIGHT] |= 
-			(hat & SDL_HAT_RIGHT) && !(hat & SDL_HAT_LEFT) &&
-			!keystate[SDLK_LEFT];
-
-		keystate[SDLK_LEFT]  |= 
-			(hat & SDL_HAT_LEFT)	&&
-			!(hat & SDL_HAT_RIGHT)	&&
-			!keystate[SDLK_RIGHT]; 
-#endif // _EE
-
-#ifdef _PS3
-		keystate[SDLK_UP]    |= SDL_JoystickGetButton(joy,PAD_UP)    && !keystate[SDLK_DOWN];
-		keystate[SDLK_DOWN]  |= SDL_JoystickGetButton(joy,PAD_DOWN)  && !keystate[SDLK_UP];
-		keystate[SDLK_RIGHT] |= (SDL_JoystickGetButton(joy,PAD_RIGHT) && !keystate[SDLK_LEFT]);
-		keystate[SDLK_LEFT]  |= (SDL_JoystickGetButton(joy,PAD_LEFT)  && !keystate[SDLK_RIGHT]);
-
-#endif // _PS3
-
-
-	} // if joy
-#endif // _EE y _PS3
-
-
-//std::ifstream in("/dev/stdin"); // TODO , no abrir en cada bucle
-std::ifstream in("/abadIA/VigasocoSDL/VigasocoSDL/out"); // TODO , no abrir en cada bucle
-char kk[2];
-kk[0]=NULL;
-kk[1]=NULL;
-int ret; 
-
-ret = in.readsome(kk,1);
-
-if (kk[0] > 0 && !in.fail()) {
-	fprintf(stderr,"comando %c\n", kk[0] );
-
+/* 
 keystate[SDLK_F5]=false;  
 keystate[SDLK_RIGHT]=false; 
 keystate[SDLK_LEFT]=false; 
+*/
 
-switch(kk[0]) {
+switch(webCommand) {
    case 'A':    // A de Arriba
 		keystate[SDLK_UP]=true; 
 		keystate[SDLK_RIGHT]=false; 
@@ -346,12 +160,15 @@ switch(kk[0]) {
 		break; 
    case 'F':    // F de fin
 		keystate[SDLK_ESCAPE]=true; 
+   		fprintf(stderr,"Salgo ..... \n", webCommand ); 
 		break; 
-   default: fprintf(stderr,"No entiendo el comando %c\n", kk[0] ); // TODO devolver en JSON indicando status error
+   case '\0': 
+   		fprintf(stderr,"No hago nada\r", webCommand ); 
+		break;
+   default: 
+   		fprintf(stderr,"No entiendo el comando %c\n", webCommand ); // TODO devolver en JSON indicando status error
  }
 // fprintf(stderr,"ups %d\n", keystate[SDLK_UP] );
-
-}
 
 	// iterate through the inputs checking associated keys
 	for (int i = 0; i < END_OF_INPUTS; i++){

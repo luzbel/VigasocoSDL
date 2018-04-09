@@ -4,13 +4,12 @@
 
 // Para DECLSPEC en SDL_loadso.h
 #include "SDL.h"
-
 #include "FakeInputKeyboardPlugin.h"
 
 static const char * const description = "VIGASOCO Fake Keyboard Plugin v1.0";
 
 static const char *plugins[] = {
-	"FakeInputPlugin" 
+	"FakeInputPlugin"
 };
 
 /////////////////////////////////////////////////////////////////////////////

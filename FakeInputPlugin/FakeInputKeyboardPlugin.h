@@ -10,6 +10,7 @@
 #include "IInputPlugin.h"
 #include "SDL.h"
 
+
 class FakeInputKeyboardPlugin: public IInputPlugin
 {
 // fields
