@@ -36,9 +36,9 @@ void start_web_server() {
 		return crow::response(200, str);
 	});
 
-    app.port(8888).run();
+    app.port(4477).run(); // la primera letra de cuatro y la septima QR
 }
- 
+
 std::thread t1(start_web_server);
 
 
@@ -99,86 +99,86 @@ void FakeInputKeyboardPlugin::process(int *inputs)
 //	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
 //	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
 
-// keystate[SDLK_F5]=false;  
-// keystate[SDLK_RIGHT]=false; 
-// keystate[SDLK_LEFT]=false; 
+// keystate[SDLK_F5]=false;
+// keystate[SDLK_RIGHT]=false;
+// keystate[SDLK_LEFT]=false;
 
 switch(webCommand) {
    case 'A':    // A de Arriba
-		keystate[SDLK_UP]=true; 
-		keystate[SDLK_RIGHT]=false; 
-		keystate[SDLK_LEFT]=false; 
-		keystate[SDLK_DOWN]=false;  
-		keystate[SDLK_F5]=true;  
-		keystate[SDLK_SPACE]=false;  
-   		fprintf(stderr,"Muevo hacia Arriba\n"); 
+		keystate[SDLK_UP]=true;
+		keystate[SDLK_RIGHT]=false;
+		keystate[SDLK_LEFT]=false;
+		keystate[SDLK_DOWN]=false;
+		keystate[SDLK_F5]=true;
+		keystate[SDLK_SPACE]=false;
+   		fprintf(stderr,"Muevo hacia Arriba\n");
 		break;     // A de Arriba
    case 'D':    // D de Derecha
-		keystate[SDLK_UP]=false; 
-		keystate[SDLK_RIGHT]=true; 
-		keystate[SDLK_LEFT]=false; 
-		keystate[SDLK_DOWN]=false;  
-		keystate[SDLK_F5]=true;  
-		keystate[SDLK_SPACE]=false;  
-   		fprintf(stderr,"Muevo hacia a la Derecha\n"); 
+		keystate[SDLK_UP]=false;
+		keystate[SDLK_RIGHT]=true;
+		keystate[SDLK_LEFT]=false;
+		keystate[SDLK_DOWN]=false;
+		keystate[SDLK_F5]=true;
+		keystate[SDLK_SPACE]=false;
+   		fprintf(stderr,"Muevo hacia a la Derecha\n");
 		break;   // D de Derecha
-   case 'I': 
-		keystate[SDLK_UP]=false; 
-		keystate[SDLK_RIGHT]=false; 
-		keystate[SDLK_LEFT]=true; 
-		keystate[SDLK_DOWN]=false;  
-		keystate[SDLK_F5]=true;  
-		keystate[SDLK_SPACE]=false;  
-   		fprintf(stderr,"Muevo hacia a la izquierda\n"); 
+   case 'I':
+		keystate[SDLK_UP]=false;
+		keystate[SDLK_RIGHT]=false;
+		keystate[SDLK_LEFT]=true;
+		keystate[SDLK_DOWN]=false;
+		keystate[SDLK_F5]=true;
+		keystate[SDLK_SPACE]=false;
+   		fprintf(stderr,"Muevo hacia a la izquierda\n");
 		break;    // I de Izquierda
-   case 'B': 
-		keystate[SDLK_UP]=false; 
-		keystate[SDLK_RIGHT]=false; 
-		keystate[SDLK_LEFT]=false; 
-		keystate[SDLK_DOWN]=true;  
-		keystate[SDLK_F5]=true;  
-		keystate[SDLK_SPACE]=false;  
-   		fprintf(stderr,"Muevo hacia abajo a Adso \n"); 
+   case 'B':
+		keystate[SDLK_UP]=false;
+		keystate[SDLK_RIGHT]=false;
+		keystate[SDLK_LEFT]=false;
+		keystate[SDLK_DOWN]=true;
+		keystate[SDLK_F5]=true;
+		keystate[SDLK_SPACE]=false;
+   		fprintf(stderr,"Muevo hacia abajo a Adso \n");
 		break; // Cursor aBajo para mover a Adso
-   case '_': 
-		keystate[SDLK_UP]=false; 
-		keystate[SDLK_RIGHT]=false; 
-		keystate[SDLK_LEFT]=false; 
-		keystate[SDLK_DOWN]=false;  
-		keystate[SDLK_F5]=true;  
-		keystate[SDLK_SPACE]=true;  
+   case '_':
+		keystate[SDLK_UP]=false;
+		keystate[SDLK_RIGHT]=false;
+		keystate[SDLK_LEFT]=false;
+		keystate[SDLK_DOWN]=false;
+		keystate[SDLK_F5]=true;
+		keystate[SDLK_SPACE]=true;
 		break;  // barra espaciadora
-   case 'E': 
-		keystate[SDLK_UP]=false; 
-		keystate[SDLK_RIGHT]=false; 
-		keystate[SDLK_LEFT]=false; 
-		keystate[SDLK_DOWN]=false;  
-		keystate[SDLK_F5]=true;  
-		keystate[SDLK_SPACE]=false;  
-   		fprintf(stderr,"Volcado del Estado (habría que hacerlo directamente sin esperar al driver) \n"); 
+   case 'E':
+		keystate[SDLK_UP]=false;
+		keystate[SDLK_RIGHT]=false;
+		keystate[SDLK_LEFT]=false;
+		keystate[SDLK_DOWN]=false;
+		keystate[SDLK_F5]=true;
+		keystate[SDLK_SPACE]=false;
+   		fprintf(stderr,"Volcado del Estado (habría que hacerlo directamente sin esperar al driver) \n");
 		break;    // E de esperar, STOP, esto debe imprimir el estado
-   case 'e': 
-		keystate[SDLK_F5]=false;  
-   		fprintf(stderr,"Desactivo el Volcado del Estado \n"); 
+   case 'e':
+		keystate[SDLK_F5]=false;
+   		fprintf(stderr,"Desactivo el Volcado del Estado \n");
 		break;    // e de esperar, STOP, esto debe imprimir el estado
-   case 'Q': 
-		keystate[SDLK_q]=true;  
-		break; 
-   case 'R': 
-		keystate[SDLK_r]=true; 
-		break; 
-   case 'F':    // F de fin
-		keystate[SDLK_ESCAPE]=true; 
-   		fprintf(stderr,"Salgo ..... \n"); 
-		break; 
-   case '\0': 
-   		fprintf(stderr,"No hago nada\r"); 
+   case 'Q':
+		keystate[SDLK_q]=true;
 		break;
-   default: 
+   case 'R':
+		keystate[SDLK_r]=true;
+		break;
+   case 'F':    // F de fin
+		keystate[SDLK_ESCAPE]=true;
+   		fprintf(stderr,"Salgo ..... \n");
+		break;
+   case '\0':
+   		fprintf(stderr,"No hago nada\r");
+		break;
+   default:
    		fprintf(stderr,"No entiendo el comando %c\n", webCommand ); // TODO devolver en JSON indicando status error
  }
 
-// I just DID what I need to DO, so I reset 
+// I just DID what I need to DO, so I reset
 
 webCommand = '\0';
 
@@ -220,7 +220,7 @@ void FakeInputKeyboardPlugin::initRemapTable()
 	g_keyMapping[P1_BUTTON2] = SDLK_LSUPER;
 
 	g_keyMapping[P2_UP] = SDLK_w;
-	g_keyMapping[P2_LEFT] = SDLK_a; 
+	g_keyMapping[P2_LEFT] = SDLK_a;
 	g_keyMapping[P2_DOWN] = SDLK_s;
 	g_keyMapping[P2_RIGHT] = SDLK_d;
 	g_keyMapping[P2_BUTTON1] = SDLK_y;
@@ -269,7 +269,7 @@ void FakeInputKeyboardPlugin::initRemapTable()
 	g_keyMapping[KEYBOARD_6] = SDLK_6;
 	g_keyMapping[KEYBOARD_7] = SDLK_7;
 	g_keyMapping[KEYBOARD_8] = SDLK_8;
-	g_keyMapping[KEYBOARD_9] = SDLK_9; 
+	g_keyMapping[KEYBOARD_9] = SDLK_9;
 	g_keyMapping[KEYBOARD_SPACE] = SDLK_SPACE;
 	g_keyMapping[KEYBOARD_INTRO] = SDLK_RETURN; // SDLK_KP_ENTER;
 	g_keyMapping[KEYBOARD_SUPR] = SDLK_DELETE;
@@ -311,7 +311,7 @@ const int * FakeInputKeyboardPlugin::getPropertiesType() const
 	return FakeInputKeyboardPlugin::g_paramTypes;
 }
 
-const std::string * FakeInputKeyboardPlugin::getProperties(int *num) const 
+const std::string * FakeInputKeyboardPlugin::getProperties(int *num) const
 {
 	*num = sizeof(g_paramTypes)/sizeof(g_paramTypes[0]);
 	return FakeInputKeyboardPlugin::g_properties;
@@ -341,6 +341,6 @@ int FakeInputKeyboardPlugin::getProperty(std::string prop, int index) const
 		if ((index >= 0) && (index < END_OF_INPUTS)){
 			return g_keyMapping[index];
 		}
-	} 
-	return -1; 
+	}
+	return -1;
 };
