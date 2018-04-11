@@ -87,8 +87,6 @@ public:
 	bool cambioModoInformacion; // se ha cambiado el estado
 	InfoJuego *infoJuego;					// objeto para mostrar informaci�n interna del juego
 
-	// TODO: revisar no creo que este sea un buen sitio para meterlo JT 
-	char pathDump[200];
 
 // m�todos
 private:
@@ -120,6 +118,7 @@ private:
 	void compruebaCambioCPC_VGA(void);
 	bool compruebaMenu(void);
 	void ReiniciaPantalla(void);
+	InfoJuego *Info(void);
 public:
 	void muestraFinal();
 	void limpiaAreaJuego(int color);

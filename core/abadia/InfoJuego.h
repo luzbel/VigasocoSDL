@@ -57,7 +57,7 @@ protected:
 // m�todos
 public:
 	void inicia();
-	void muestraInfo();
+	std::string muestraInfo();
 
 	// inicializaci�n y limpieza
 	InfoJuego();
@@ -103,7 +103,6 @@ protected:
 	// conversion de valores a propiedad JSON
 	std::string muestra(std::string, int valor);
 };
-
 
 }
 

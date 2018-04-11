@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <fstream>
-
+#include <thread>  
 
 #include "crow_all.h"
 
@@ -36,7 +36,7 @@ void start_web_server() {
 		return crow::response(200, str);
 	});
 
-    app.port(4477).run(); // la primera letra de cuatro y la septima QR
+    app.port(4747).run(); // la primera letra de cuatro y la septima QR
 }
 
 std::thread t1(start_web_server);

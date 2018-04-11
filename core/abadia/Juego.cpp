@@ -84,16 +84,16 @@ const char *Juego::savefile[7] = {
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// inicialización y limpieza
+// inicializaciï¿½n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Juego::Juego(UINT8 *romData, CPC6128 *cpc)
 {
-	idioma=0; // 0 español
+	idioma=0; // 0 espaï¿½ol
 	mute=false; 
 	slot=0;
 	GraficosCPC=false;
-	// apunta a los datos del juego, pero saltándose la de la presentación
+	// apunta a los datos del juego, pero saltï¿½ndose la de la presentaciï¿½n
 	roms = romData + 0x4000;
 
 	cpc6128 = cpc;
@@ -120,7 +120,7 @@ Juego::Juego(UINT8 *romData, CPC6128 *cpc)
 
 	timer = 0;
 
-	// crea los objetos principales que usará el juego
+	// crea los objetos principales que usarï¿½ el juego
 	//paleta = new Paleta();
 	paleta = new Paleta(romData+0x24000-1); // le pasamos los datos de la paleta VGA
 	pergamino = new Pergamino();
@@ -132,6 +132,10 @@ Juego::Juego(UINT8 *romData, CPC6128 *cpc)
 
 	pausa = false;
 	modoInformacion = false;
+}
+
+InfoJuego *Juego::Info() {
+	return infoJuego;
 }
 
 Juego::~Juego()
@@ -168,23 +172,23 @@ Juego::~Juego()
 
 void Juego::ReiniciaPantalla(void)
 {
-	// limpia el área de juego y dibuja el marcador
+	// limpia el ï¿½rea de juego y dibuja el marcador
 	// CPC limpiaAreaJuego(0);
 	limpiaAreaJuego(12); // el 0 es el cyan en CPC, no se cual poner en VGA
 	// pongo el 12 que es un amarillo cantoso, para comparar con Abadia32
 
 	marcador->dibujaMarcador();
 
-	// inicia el contador de la interrupción
+	// inicia el contador de la interrupciï¿½n
 	contadorInterrupcion = 0;
 
-	// pone una posición de pantalla inválida para que se redibuje la pantalla
+	// pone una posiciï¿½n de pantalla invï¿½lida para que se redibuje la pantalla
 	motor->posXPantalla = motor->posYPantalla = -1;
 
 	// dibuja los objetos que tiene guillermo en el marcador
 	marcador->dibujaObjetos(personajes[0]->objetos, 0xff);
 
-	// inicia el marcador (día y momento del día, obsequium y el espacio de las frases)
+	// inicia el marcador (dï¿½a y momento del dï¿½a, obsequium y el espacio de las frases)
 	marcador->muestraDiaYMomentoDia();
 	marcador->decrementaObsequium(0);
 	marcador->limpiaAreaFrases();
@@ -368,7 +372,7 @@ void Juego::pintaMenuGrabar(int seleccionado,bool efecto)
 			"7 VOLVER AL MENU ANTERIOR"
 		}
 	};
-	// limpia el área que ocupa el marcador
+	// limpia el ï¿½rea que ocupa el marcador
 	limpiaAreaJuego(0); 
 
 	//repintar con un efecto para que vaya apareciendo el
@@ -392,7 +396,7 @@ void Juego::pintaMenuGrabar(int seleccionado,bool efecto)
 		marcador->imprimeFrase(textos[idioma][i], 88, 32+(i*16),4, 0);
 	}
 
-	// pinta la opción seleccionado con el color de fondo y el color
+	// pinta la opciï¿½n seleccionado con el color de fondo y el color
 	// de letra cambiado 
 	marcador->imprimeFrase(textos[idioma][seleccionado], 88, 
 		32+(seleccionado*16), 0, 4);
@@ -490,7 +494,7 @@ bool Juego::menuIntroduccion()
 	limpiaAreaJuego(0);
 	pergamino->muestraTexto(Pergamino::pergaminoIntroduccion[idioma]);
 
-	// espera a que se suelte el botón
+	// espera a que se suelte el botï¿½n
 	bool espera = true;
 
 	while (espera){
@@ -601,7 +605,7 @@ void Juego::pintaMenuTeclado(int seleccionado)
 			"",
 		}
 	};
-	// limpia el área que ocupa el marcador
+	// limpia el ï¿½rea que ocupa el marcador
 	limpiaAreaJuego(0); 
 
 	for (int i=0;i<9;i++)
@@ -609,7 +613,7 @@ void Juego::pintaMenuTeclado(int seleccionado)
 		marcador->imprimeFrase(textos[idioma][i], 8, 16+(i*16),4, 0);
 	}
 
-	// pinta la opción seleccionado con el color de fondo y el color
+	// pinta la opciï¿½n seleccionado con el color de fondo y el color
 	// de letra cambiado 
 	marcador->imprimeFrase(textos[idioma][seleccionado], 8, 
 		16+(seleccionado*16), 0, 4);
@@ -622,7 +626,7 @@ bool Juego::menuTeclado()
 
 	pergamino->muestraTexto(Pergamino::pergaminoManejo[idioma]);
 
-	// espera a que se suelte el botón
+	// espera a que se suelte el botï¿½n
 	bool espera = true;
 
 	while (espera){
@@ -663,7 +667,7 @@ void Juego::pintaMenuMejoras(int seleccionado)
 			"   USA ESTAS TECLAS DURANTE EL JUEGO   " , 
 			"G GRABAR LA PARTIDA" , 
 			"C CARGAR LA PARTIDA" ,
-			"F2 CAMBIAR ENTRE GRÁFICOS VGA O CPC", 
+			"F2 CAMBIAR ENTRE GRï¿½FICOS VGA O CPC", 
 			"F3 PANTALLA COMPLETA",
 			"F5 MOSTRAR MAPAS",
 			"SUPR PAUSA",
@@ -685,7 +689,7 @@ void Juego::pintaMenuMejoras(int seleccionado)
 			"   USA ESTAS TECLAS DURANTE EL JUEGO   " , 
 			"G GRABAR LA PARTIDA" , 
 			"C CARGAR LA PARTIDA" ,
-			"F2 CAMBIAR ENTRE GRÁFICOS VGA O CPC", 
+			"F2 CAMBIAR ENTRE GRï¿½FICOS VGA O CPC", 
 			"F3 PANTALLA COMPLETA",
 			"F5 MOSTRAR MAPAS",
 			"SUPR PAUSA",
@@ -696,7 +700,7 @@ void Juego::pintaMenuMejoras(int seleccionado)
 			"   USA ESTAS TECLAS DURANTE EL JUEGO   " , 
 			"G GRABAR LA PARTIDA" , 
 			"C CARGAR LA PARTIDA" ,
-			"F2 CAMBIAR ENTRE GRÁFICOS VGA O CPC", 
+			"F2 CAMBIAR ENTRE GRï¿½FICOS VGA O CPC", 
 			"F3 PANTALLA COMPLETA",
 			"F5 MOSTRAR MAPAS",
 			"SUPR PAUSA",
@@ -707,7 +711,7 @@ void Juego::pintaMenuMejoras(int seleccionado)
 			"   USA ESTAS TECLAS DURANTE EL JUEGO   " , 
 			"G GRABAR LA PARTIDA" , 
 			"C CARGAR LA PARTIDA" ,
-			"F2 CAMBIAR ENTRE GRÁFICOS VGA O CPC", 
+			"F2 CAMBIAR ENTRE GRï¿½FICOS VGA O CPC", 
 			"F3 PANTALLA COMPLETA",
 			"F5 MOSTRAR MAPAS",
 			"SUPR PAUSA",
@@ -718,7 +722,7 @@ void Juego::pintaMenuMejoras(int seleccionado)
 			"   USA ESTAS TECLAS DURANTE EL JUEGO   " , 
 			"G GRABAR LA PARTIDA" , 
 			"C CARGAR LA PARTIDA" ,
-			"F2 CAMBIAR ENTRE GRÁFICOS VGA O CPC", 
+			"F2 CAMBIAR ENTRE GRï¿½FICOS VGA O CPC", 
 			"F3 PANTALLA COMPLETA",
 			"F5 MOSTRAR MAPAS",
 			"SUPR PAUSA",
@@ -740,7 +744,7 @@ void Juego::pintaMenuMejoras(int seleccionado)
 			"   USA ESTAS TECLAS DURANTE EL JUEGO   " , 
 			"G GRABAR LA PARTIDA" , 
 			"C CARGAR LA PARTIDA" ,
-			"F2 CAMBIAR ENTRE GRÁFICOS VGA O CPC", 
+			"F2 CAMBIAR ENTRE GRï¿½FICOS VGA O CPC", 
 			"F3 PANTALLA COMPLETA",
 			"F5 MOSTRAR MAPAS",
 			"SUPR PAUSA",
@@ -748,7 +752,7 @@ void Juego::pintaMenuMejoras(int seleccionado)
 			"    -PULSA ESPACIO PARA CONTINUAR-"
 		}
 	};
-	// limpia el área que ocupa el marcador
+	// limpia el ï¿½rea que ocupa el marcador
 	limpiaAreaJuego(0); 
 
 	for (int i=0;i<9;i++)
@@ -756,7 +760,7 @@ void Juego::pintaMenuMejoras(int seleccionado)
 		marcador->imprimeFrase(textos[idioma][i], 8, 16+(i*16),4, 0);
 	}
 
-	// pinta la opción seleccionado con el color de fondo y el color
+	// pinta la opciï¿½n seleccionado con el color de fondo y el color
 	// de letra cambiado 
 	marcador->imprimeFrase(textos[idioma][seleccionado], 8, 
 		16+(seleccionado*16), 0, 4);
@@ -878,7 +882,7 @@ void Juego::pintaMenuCamaras(int seleccionado)
 			"PRESS SPACE TO CONTINUE"
 		}
 	};
-	// limpia el área que ocupa el marcador
+	// limpia el ï¿½rea que ocupa el marcador
 	limpiaAreaJuego(0); 
 
 	for (int i=0;i<9;i++)
@@ -886,7 +890,7 @@ void Juego::pintaMenuCamaras(int seleccionado)
 		marcador->imprimeFrase(textos[idioma][i], 0, 16+(i*16),4, 0);
 	}
 
-	// pinta la opción seleccionado con el color de fondo y el color
+	// pinta la opciï¿½n seleccionado con el color de fondo y el color
 	// de letra cambiado 
 	marcador->imprimeFrase(textos[idioma][seleccionado], 1, 
 		16+(seleccionado*16), 0, 4);
@@ -1005,7 +1009,7 @@ void Juego::pintaMenuTutorial(int seleccionado,bool efecto)
 			""
 		}
 	};
-	// limpia el área que ocupa el marcador
+	// limpia el ï¿½rea que ocupa el marcador
 	limpiaAreaJuego(0); 
 
 	// repintar con un efecto para que vaya apareciendo el
@@ -1029,7 +1033,7 @@ void Juego::pintaMenuTutorial(int seleccionado,bool efecto)
 		marcador->imprimeFrase(textos[idioma][i], 88, 32+(i*16),4, 0);
 	}
 
-	// pinta la opción seleccionado con el color de fondo y el color
+	// pinta la opciï¿½n seleccionado con el color de fondo y el color
 	// de letra cambiado 
 	marcador->imprimeFrase(textos[idioma][seleccionado], 88, 
 		32+(seleccionado*16), 0, 4);
@@ -1148,7 +1152,7 @@ void Juego::pintaMenuAyuda(int seleccionado,bool efecto)
 			""
 		}
 	};
-	// limpia el área que ocupa el marcador
+	// limpia el ï¿½rea que ocupa el marcador
 	limpiaAreaJuego(0); 
 
 	// repintar con un efecto para que vaya apareciendo el
@@ -1172,7 +1176,7 @@ void Juego::pintaMenuAyuda(int seleccionado,bool efecto)
 		marcador->imprimeFrase(textos[idioma][i], 88, 32+(i*16),4, 0);
 	}
 
-	// pinta la opción seleccionado con el color de fondo y el color
+	// pinta la opciï¿½n seleccionado con el color de fondo y el color
 	// de letra cambiado 
 	marcador->imprimeFrase(textos[idioma][seleccionado], 88, 
 		32+(seleccionado*16), 0, 4);
@@ -1240,7 +1244,7 @@ bool Juego::menuAyuda()
 					Pergamino::pergaminoReferencias[idioma]
 				);
 
-				// espera a que se suelte el botón
+				// espera a que se suelte el botï¿½n
 				bool espera = true;
 
 				while (espera){
@@ -1285,85 +1289,85 @@ void Juego::pintaMenuIdioma(int seleccionado,bool efecto)
 		{ // 0 Castellano
 			"0 CASTELLANO" , 
 			"1 ENGLISH" ,
-			"2 PORTUGUÉS BRASIL" ,
-			"3 CATALÁN" ,
+			"2 PORTUGUï¿½S BRASIL" ,
+			"3 CATALï¿½N" ,
 			"4 GALLEGO" ,
 			"5 ITALIANO",
 			"6 FINES",
-			"7 PORTUGUÉS"
+			"7 PORTUGUï¿½S"
 		},
 		{ // 1 INGLES
 			"0 CASTELLANO" , 
 			"1 ENGLISH" ,
-			"2 PORTUGUÉS BRASIL" ,
-			"3 CATALÁN" ,
+			"2 PORTUGUï¿½S BRASIL" ,
+			"3 CATALï¿½N" ,
 			"4 GALLEGO" ,
 			"5 ITALIANO",
 			"6 FINES",
-			"7 PORTUGUÉS"
+			"7 PORTUGUï¿½S"
 		},
 		{ // 2 PORTUGUES BRASIL
 			"0 CASTELLANO" , 
 			"1 ENGLISH" ,
-			"2 PORTUGUÉS BRASIL" ,
-			"3 CATALÁN" ,
+			"2 PORTUGUï¿½S BRASIL" ,
+			"3 CATALï¿½N" ,
 			"4 GALLEGO" ,
 			"5 ITALIANO",
 			"6 FINES",
-			"7 PORTUGUÉS"
+			"7 PORTUGUï¿½S"
 		},
 		{ // 3 CATALAN
 			"0 CASTELLANO" , 
 			"1 ENGLISH" ,
-			"2 PORTUGUÉS BRASIL" ,
-			"3 CATALÁN" ,
+			"2 PORTUGUï¿½S BRASIL" ,
+			"3 CATALï¿½N" ,
 			"4 GALLEGO" ,
 			"5 ITALIANO",
 			"6 FINES",
-			"7 PORTUGUÉS"
+			"7 PORTUGUï¿½S"
 		},
 		{ // 4 GALLEGO
 			"0 CASTELLANO" , 
 			"1 ENGLISH" ,
-			"2 PORTUGUÉS BRASIL" ,
-			"3 CATALÁN" ,
+			"2 PORTUGUï¿½S BRASIL" ,
+			"3 CATALï¿½N" ,
 			"4 GALLEGO" ,
 			"5 ITALIANO",
 			"6 FINES",
-			"7 PORTUGUÉS"
+			"7 PORTUGUï¿½S"
 		},
 		{ // 5 ITALIANO
 			"0 CASTELLANO" , 
 			"1 ENGLISH" ,
-			"2 PORTUGUÉS BRASIL" ,
-			"3 CATALÁN" ,
+			"2 PORTUGUï¿½S BRASIL" ,
+			"3 CATALï¿½N" ,
 			"4 GALLEGO" ,
 			"5 ITALIANO",
 			"6 FINES",
-			"7 PORTUGUÉS"
+			"7 PORTUGUï¿½S"
 		},
 		{ // 6 FINES
 			"0 CASTELLANO" , 
 			"1 ENGLISH" ,
-			"2 PORTUGUÉS BRASIL" ,
-			"3 CATALÁN" ,
+			"2 PORTUGUï¿½S BRASIL" ,
+			"3 CATALï¿½N" ,
 			"4 GALLEGO" ,
 			"5 ITALIANO",
 			"6 FINES",
-			"7 PORTUGUÉS"
+			"7 PORTUGUï¿½S"
 		},
 		{ // 7 PORTUGUES
 			"0 CASTELLANO" , 
 			"1 ENGLISH" ,
-			"2 PORTUGUÉS BRASIL" ,
-			"3 CATALÁN" ,
+			"2 PORTUGUï¿½S BRASIL" ,
+			"3 CATALï¿½N" ,
 			"4 GALLEGO" ,
 			"5 ITALIANO",
 			"6 FINES",
-			"7 PORTUGUÉS"
+			"7 PORTUGUï¿½S"
 		}
 	};
-	// limpia el área que ocupa el marcador
+	// limpia el ï¿½rea que ocupa el marcador
 	limpiaAreaJuego(0); 
 
 	// repintar con un efecto para que vaya apareciendo el
@@ -1387,7 +1391,7 @@ void Juego::pintaMenuIdioma(int seleccionado,bool efecto)
 		marcador->imprimeFrase(textos[idioma][i], 88, 32+(i*16),4, 0);
 	}
 
-	// pinta la opción seleccionado con el color de fondo y el color
+	// pinta la opciï¿½n seleccionado con el color de fondo y el color
 	// de letra cambiado 
 	marcador->imprimeFrase(textos[idioma][seleccionado], 88, 
 		32+(seleccionado*16), 0, 4);
@@ -1489,7 +1493,7 @@ void Juego::pintaMenuPrincipal(int seleccionado,bool efecto)
 			"0 IDIOMA",
 			"1 CARGAR PARTIDA" ,
 			"2 GRABAR PARTIDA" ,
-			"3 GRÁFICOS VGA-CPC" ,
+			"3 GRï¿½FICOS VGA-CPC" ,
 			"4 AYUDA" ,
 			"5 TUTORIAL",
 			"6 REINICIAR",
@@ -1511,7 +1515,7 @@ void Juego::pintaMenuPrincipal(int seleccionado,bool efecto)
 			"0 IDIOMA" , 
 			"1 CARGAR PARTIDA" ,
 			"2 GRABAR PARTIDA" ,
-			"3 GRÁFICOS VGA-CPC" ,
+			"3 GRï¿½FICOS VGA-CPC" ,
 			"4 AYUDA" ,
 			"5 TUTORIAL",
 			"6 REINICIAR",
@@ -1522,7 +1526,7 @@ void Juego::pintaMenuPrincipal(int seleccionado,bool efecto)
 			"0 IDIOMA" , 
 			"1 CARGAR PARTIDA" ,
 			"2 GRABAR PARTIDA" ,
-			"3 GRÁFICOS VGA-CPC" ,
+			"3 GRï¿½FICOS VGA-CPC" ,
 			"4 AYUDA" ,
 			"5 TUTORIAL",
 			"6 REINICIAR",
@@ -1533,7 +1537,7 @@ void Juego::pintaMenuPrincipal(int seleccionado,bool efecto)
 			"0 IDIOMA" , 
 			"1 CARGAR PARTIDA" ,
 			"2 GRABAR PARTIDA" ,
-			"3 GRÁFICOS VGA-CPC" ,
+			"3 GRï¿½FICOS VGA-CPC" ,
 			"4 AYUDA" ,
 			"5 TUTORIAL",
 			"6 REINICIAR",
@@ -1544,7 +1548,7 @@ void Juego::pintaMenuPrincipal(int seleccionado,bool efecto)
 			"0 IDIOMA" , 
 			"1 CARGAR PARTIDA" ,
 			"2 GRABAR PARTIDA" ,
-			"3 GRÁFICOS VGA-CPC" ,
+			"3 GRï¿½FICOS VGA-CPC" ,
 			"4 AYUDA" ,
 			"5 TUTORIAL",
 			"6 REINICIAR",
@@ -1555,7 +1559,7 @@ void Juego::pintaMenuPrincipal(int seleccionado,bool efecto)
 			"0 IDIOMA" , 
 			"1 CARGAR PARTIDA" ,
 			"2 GRABAR PARTIDA" ,
-			"3 GRÁFICOS VGA-CPC" ,
+			"3 GRï¿½FICOS VGA-CPC" ,
 			"4 AYUDA" ,
 			"5 TUTORIAL",
 			"6 REINICIAR",
@@ -1566,7 +1570,7 @@ void Juego::pintaMenuPrincipal(int seleccionado,bool efecto)
 			"0 IDIOMA" , 
 			"1 CARGAR PARTIDA" ,
 			"2 GRABAR PARTIDA" ,
-			"3 GRÁFICOS VGA-CPC" ,
+			"3 GRï¿½FICOS VGA-CPC" ,
 			"4 AYUDA" ,
 			"5 TUTORIAL",
 			"6 REINICIAR",
@@ -1574,7 +1578,7 @@ void Juego::pintaMenuPrincipal(int seleccionado,bool efecto)
 			"8 JUGAR"
 		}
 	};
-	// limpia el área que ocupa el marcador
+	// limpia el ï¿½rea que ocupa el marcador
 	limpiaAreaJuego(0); 
 	// repinta todo el menu
 	for(int x=efecto?8:88;x<88;x+=10)
@@ -1593,7 +1597,7 @@ void Juego::pintaMenuPrincipal(int seleccionado,bool efecto)
 		marcador->imprimeFrase(textos[idioma][i], 88, 16+(i*16),4, 0);
 	}
 
-	// pinta la opción seleccionado con el color de fondo y el color
+	// pinta la opciï¿½n seleccionado con el color de fondo y el color
 	// de letra cambiado 
 	marcador->imprimeFrase(textos[idioma][seleccionado], 88, 
 		16+(seleccionado*16), 0, 4);
@@ -1699,7 +1703,7 @@ bool Juego::menu()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// método principal del juego
+// mï¿½todo principal del juego
 /////////////////////////////////////////////////////////////////////////////
 
 void Juego::run()
@@ -1846,7 +1850,7 @@ void Juego::run()
 }
 
 
-// limpia el área de juego de color que se le pasa y los bordes de negro
+// limpia el ï¿½rea de juego de color que se le pasa y los bordes de negro
 void Juego::limpiaAreaJuego(int color)
 {
 	/* CPC
@@ -1861,14 +1865,14 @@ void Juego::limpiaAreaJuego(int color)
 }
 
 
-// flipea respecto a x todos los gráficos del juego que lo necesiten
+// flipea respecto a x todos los grï¿½ficos del juego que lo necesiten
 void Juego::generaGraficosFlipeados()
 {
 	generaGraficosFlipeadosVGA(); //  VGA
 
 	UINT8 tablaFlipX[256];
 
-	// inicia la tabla para flipear los gráficos
+	// inicia la tabla para flipear los grï¿½ficos
 	for (int i = 0; i < 256; i++){
 		// extrae los pixels
 		int pixel0 = cpc6128->unpackPixelMode1(i, 0);
@@ -1888,79 +1892,79 @@ void Juego::generaGraficosFlipeados()
 		tablaFlipX[i] = data;
 	}
 
-	// genera los gráficos de las animaciones de guillermo flipeados respecto a x
+	// genera los grï¿½ficos de las animaciones de guillermo flipeados respecto a x
 	flipeaGraficos(tablaFlipX, &roms[0x0a300], &roms[0x16300], 5, 0x366);
 	flipeaGraficos(tablaFlipX, &roms[0x0a666], &roms[0x16666], 4, 0x084);
 
-	// genera los gráficos de las animaciones de adso flipeados respecto a x
+	// genera los grï¿½ficos de las animaciones de adso flipeados respecto a x
 	flipeaGraficos(tablaFlipX, &roms[0x0a6ea], &roms[0x166ea], 5, 0x1db);
 	flipeaGraficos(tablaFlipX, &roms[0x0a8c5], &roms[0x168c5], 4, 0x168);
 
-	// genera los gráficos de los trajes de los monjes flipeados respecto a x
+	// genera los grï¿½ficos de los trajes de los monjes flipeados respecto a x
 	flipeaGraficos(tablaFlipX, &roms[0x0ab59], &roms[0x16b59], 5, 0x2d5);
 
-	// genera los gráficos de las caras de los monjes flipeados respecto a x
+	// genera los grï¿½ficos de las caras de los monjes flipeados respecto a x
 	flipeaGraficos(tablaFlipX, &roms[0x0b103], &roms[0x17103], 5, 0x2bc);
 
-	// genera los gráficos de las puertas flipeados respecto a x
+	// genera los grï¿½ficos de las puertas flipeados respecto a x
 	flipeaGraficos(tablaFlipX, &roms[0x0aa49], &roms[0x16a49], 6, 0x0f0);
 }
 
-// flipea respecto a x todos los gráficos del juego que lo necesiten
+// flipea respecto a x todos los grï¿½ficos del juego que lo necesiten
 void Juego::generaGraficosFlipeadosVGA()
 {
 	UINT8 *romsVGA = &roms[0x24000-1-0x4000];
 	UINT8 *romsVGAFlip = &roms[0x24000 + 174065 -1 - 0x4000];
 	int dest = 0;
 	int size = 57240-53760;
-	// genera los gráficos de las animaciones de guillermo flipeados respecto a x
+	// genera los grï¿½ficos de las animaciones de guillermo flipeados respecto a x
 	flipeaGraficosVGA(&romsVGA[53760], &romsVGAFlip[dest], 5*4, size);
 	dest += size;
 	size = 57768-57240; // ok, coincide con los 0x084 que se pasaba para CPC * 4 ya que en VGA cada pixel es un byte , y no 4 pixel en un byte
 	flipeaGraficosVGA(&romsVGA[57240], &romsVGAFlip[dest], 4*4, size );
 	dest += size;
 
-	// genera los gráficos de las animaciones de adso flipeados respecto a x
+	// genera los grï¿½ficos de las animaciones de adso flipeados respecto a x
 	size = 59668 - 57768; // ok, coincide con 0x1db *4 
 	flipeaGraficosVGA(&romsVGA[57768], &romsVGAFlip[dest], 5*4, size);
 	dest += size;
 	size = 61108 - 59668; // ok , es 0x168 * 4
 	flipeaGraficosVGA(&romsVGA[59668], &romsVGAFlip[dest], 4*4, size);
 
-	// genera los gráficos de los trajes de los monjes flipeados respecto a x
+	// genera los grï¿½ficos de los trajes de los monjes flipeados respecto a x
 	dest += size;
 	size = 64008 - 61108; // ok , es 0x2d5*4
 	flipeaGraficosVGA(&romsVGA[61108], &romsVGAFlip[dest], 5*4, size);
 
-	// genera los gráficos de las caras de los monjes flipeados respecto a x
+	// genera los grï¿½ficos de las caras de los monjes flipeados respecto a x
 	dest += size;
 	dest+=2900; // TODO: cambio temporal, para que la distancia entre los graficos y su homologo flipeados sea siempre 120305
 // a ver si hay suerte, y en estos 2900 bytes lo que estan son los graficos de las puertas que son los que nos faltan !!! -> pues no, estan justo detras de las caras
 	size = 69708 - 66908; // OK , es 0x2bc*4
 	flipeaGraficosVGA(&romsVGA[66908], &romsVGAFlip[dest], 5*4, size);
 
-	// genera los gráficos de las puertas flipeados respecto a x
+	// genera los grï¿½ficos de las puertas flipeados respecto a x
 	dest += size;
 	size = 24*40; // OK , es 0x0f0 * 4
 	flipeaGraficosVGA(&romsVGA[69708], &romsVGAFlip[dest], 6*4, size);
 }
 
-// copia los gráficos de origen en el destino y los flipea
+// copia los grï¿½ficos de origen en el destino y los flipea
 void Juego::flipeaGraficos(UINT8 *tablaFlip, UINT8 *src, UINT8 *dest, int ancho, int bytes)
 {
-	// copia los gráficos del origen al destino
+	// copia los grï¿½ficos del origen al destino
 	memcpy(dest, src, bytes);
 
 	// calcula las variables que controlan el bucle
 	int numLineas = bytes/ancho;
 	int numIntercambios = (ancho + 1)/2;
 
-	// recorre todas las líneas que forman el gráfico
+	// recorre todas las lï¿½neas que forman el grï¿½fico
 	for (int j = 0; j < numLineas; j++){
 		UINT8 *ptr1 = dest;
 		UINT8 *ptr2 = ptr1 + ancho - 1;
 
-		// realiza los intercambios necesarios para flipear esta línea
+		// realiza los intercambios necesarios para flipear esta lï¿½nea
 		for (int i = 0; i < numIntercambios; i++){
 			UINT8 aux = *ptr1;
 			*ptr1 = tablaFlip[*ptr2];
@@ -1970,27 +1974,27 @@ void Juego::flipeaGraficos(UINT8 *tablaFlip, UINT8 *src, UINT8 *dest, int ancho,
 			ptr2--;
 		}
 
-		// pasa a la siguiente línea
+		// pasa a la siguiente lï¿½nea
 		dest = dest + ancho;
 	}
 }
 
-// copia los gráficos de origen en el destino y los flipea
+// copia los grï¿½ficos de origen en el destino y los flipea
 void Juego::flipeaGraficosVGA(UINT8 *src, UINT8 *dest, int ancho, int bytes)
 {
-	// copia los gráficos del origen al destino
+	// copia los grï¿½ficos del origen al destino
 	memcpy(dest, src, bytes);
 
 	// calcula las variables que controlan el bucle
 	int numLineas = bytes/ancho;
 	int numIntercambios = (ancho + 1)/2;
 
-	// recorre todas las líneas que forman el gráfico
+	// recorre todas las lï¿½neas que forman el grï¿½fico
 	for (int j = 0; j < numLineas; j++){
 		UINT8 *ptr1 = dest;
 		UINT8 *ptr2 = ptr1 + ancho - 1;
 
-		// realiza los intercambios necesarios para flipear esta línea
+		// realiza los intercambios necesarios para flipear esta lï¿½nea
 		for (int i = 0; i < numIntercambios; i++){
 			UINT8 aux = *ptr1;
 			*ptr1 = *ptr2;
@@ -2000,7 +2004,7 @@ void Juego::flipeaGraficosVGA(UINT8 *src, UINT8 *dest, int ancho, int bytes)
 			ptr2--;
 		}
 
-		// pasa a la siguiente línea
+		// pasa a la siguiente lï¿½nea
 		dest = dest + ancho;
 	}
 }
@@ -2011,7 +2015,7 @@ void Juego::actualizaLuz()
 	// desactiva el sprite de la luz
 	sprites[spriteLuz]->esVisible = false;
 
-	// si la pantalla está iluminada, sale
+	// si la pantalla estï¿½ iluminada, sale
 	if (motor->pantallaIluminada) return;
 
 	// si adso no es visible en la pantalla actual
@@ -2025,7 +2029,7 @@ void Juego::actualizaLuz()
 		return;
 	}
 
-	// actualiza las características del sprite de la luz según la posición del personaje
+	// actualiza las caracterï¿½sticas del sprite de la luz segï¿½n la posiciï¿½n del personaje
 	SpriteLuz *sprLuz = (SpriteLuz *) sprites[spriteLuz];
 	sprLuz->ajustaAPersonaje(personajes[1]);
 }
@@ -2074,7 +2078,7 @@ void Juego::cambioCPC_VGA()
 		GraficosCPC=true;
 	}
 
-	// genera los gráficos flipeados en x de las entidades que lo necesiten
+	// genera los grï¿½ficos flipeados en x de las entidades que lo necesiten
 	generaGraficosFlipeados();
 
 	ReiniciaPantalla();		
@@ -2102,7 +2106,7 @@ bool Juego::cargar(int slot)
 	{
 		/* CPC
 		   elMarcador->imprimeFrase("            ", 110, 164, 2, 3);
-		   elMarcador->imprimeFrase("¡¡¡ERROR!!!", 110, 164, 2, 3); */
+		   elMarcador->imprimeFrase("ï¿½ï¿½ï¿½ERROR!!!", 110, 164, 2, 3); */
 		// VGA
 		elMarcador->imprimeFrase("                  ", 100, 164, 4, 0);
 		elMarcador->imprimeFrase("ERROR: PRESS SPACE", 100, 164, 4, 0);
@@ -2134,9 +2138,9 @@ void Juego::save(int slot)
 		// En Chrome bajo Linux se graba bien
 		// pero en Chrome bajo windows da un error
 		// al grabar indicando que no hay espacio libre
-		// En Chrome "Versión 35.0.1904.0 canary"
+		// En Chrome "Versiï¿½n 35.0.1904.0 canary"
 		// al menos se puede si se crea inicialmente el
-		// archivo para añadir, se cierra y luego se abre
+		// archivo para aï¿½adir, se cierra y luego se abre
 		// ya para truncar
 		std::ofstream out(savefile[slot],
 				std::ofstream::out|std::ofstream::app);
@@ -2153,7 +2157,7 @@ void Juego::save(int slot)
 	{
 		/* CPC
 		   elMarcador->imprimeFrase("            ", 110, 164, 2, 3);
-		   elMarcador->imprimeFrase("¡¡¡ERROR!!!", 110, 164, 2, 3); */
+		   elMarcador->imprimeFrase("ï¿½ï¿½ï¿½ERROR!!!", 110, 164, 2, 3); */
 		// VGA
 		elMarcador->imprimeFrase("                  ", 100, 164, 4, 0);
 		elMarcador->imprimeFrase("ERROR: PRESS SPACE", 100, 164, 4, 0);
@@ -2181,17 +2185,17 @@ void Juego::compruebaSave()
 		} 
 
 		// Preguntamos
-		// CPC elMarcador->imprimeFrase("¿GRABAR? S:N", 110, 164, 2, 3);
-		//elMarcador->imprimeFrase(",.WÑ", 110, 164, 4, 0); // VGA
-		elMarcador->imprimeFrase("¿GRABAR? S:N", 110, 164, 4, 0); // VGA
-		//se estaba guardando el ¿ como multibyte c2bf 
+		// CPC elMarcador->imprimeFrase("ï¿½GRABAR? S:N", 110, 164, 2, 3);
+		//elMarcador->imprimeFrase(",.Wï¿½", 110, 164, 4, 0); // VGA
+		elMarcador->imprimeFrase("ï¿½GRABAR? S:N", 110, 164, 4, 0); // VGA
+		//se estaba guardando el ï¿½ como multibyte c2bf 
 		// en vez de un simple char bf
-		// con imprimeFrase no se cambia la Ñ por la W
-		// la ¿ por el caracter adecuado ...
+		// con imprimeFrase no se cambia la ï¿½ por la W
+		// la ï¿½ por el caracter adecuado ...
 		//elMarcador->imprimeFrase("\xbfGRABAR? S:N", 110, 164, 4, 0); // VGA
 		// TODO esto deberia tener su numero de frase  y estar traducido
 		// e imprimirse con  
-		//elGestorFrases->muestraFrase¿ya?
+		//elGestorFrases->muestraFraseï¿½ya?
 
 		do
 		{
@@ -2228,8 +2232,8 @@ bool Juego::compruebaLoad()
 		} 
 
 		// Preguntamos
-		// CPC elMarcador->imprimeFrase("¿CARGAR? S:N", 110, 164, 2, 3);
-		elMarcador->imprimeFrase("¿CARGAR? S:N", 110, 164, 4, 0);  // VGA
+		// CPC elMarcador->imprimeFrase("ï¿½CARGAR? S:N", 110, 164, 2, 3);
+		elMarcador->imprimeFrase("ï¿½CARGAR? S:N", 110, 164, 4, 0);  // VGA
 
 		do
 		{
@@ -2264,16 +2268,16 @@ bool Juego::compruebaMenu()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos para mostrar distintas las pantallas de distintas situaciones del juego
+// mï¿½todos para mostrar distintas las pantallas de distintas situaciones del juego
 /////////////////////////////////////////////////////////////////////////////
 
-// muestra la imagen de presentación del juego
+// muestra la imagen de presentaciï¿½n del juego
 void Juego::muestraPresentacion()
 {
-	// fija la paleta de la presentación
+	// fija la paleta de la presentaciï¿½n
 	paleta->setIntroPalette();
 
-	// muestra la pantalla de la presentación
+	// muestra la pantalla de la presentaciï¿½n
 
 	/* CPC
 	cpc6128->showMode0Screen(roms - 0x4000);
@@ -2287,18 +2291,18 @@ void Juego::muestraPresentacion()
 	timer->sleep(5000);
 }
 
-// muestra el pergamino de presentación
+// muestra el pergamino de presentaciï¿½n
 void Juego::muestraIntroduccion()
 {
 	audio_plugin->Play(SONIDOS::Inicio,true);
 
-	// muestra la introducción
+	// muestra la introducciï¿½n
 	pergamino->muestraTexto(Pergamino::pergaminoInicio[idioma]);
 
 	// coloca la paleta negra
 	paleta->setGamePalette(0);
 
-	// espera a que se suelte el botón
+	// espera a que se suelte el botï¿½n
 	bool espera = true;
 
 	while (espera){
@@ -2320,30 +2324,30 @@ void Juego::muestraFinal()
 	}
 }
 
-// muestra la parte de misión completada. Si se ha completado el juego, muestra el final
+// muestra la parte de misiï¿½n completada. Si se ha completado el juego, muestra el final
 bool Juego::muestraPantallaFinInvestigacion()
 {
-	// si guillermo está vivo, sale
+	// si guillermo estï¿½ vivo, sale
 	if (!logica->haFracasado) return false;
 
-	// indica que la cámara siga a guillermo y lo haga ya
+	// indica que la cï¿½mara siga a guillermo y lo haga ya
 	laLogica->numPersonajeCamara = 0x80;
 
-	// si está mostrando una frase por el marcador, espera a que se termine de mostrar
+	// si estï¿½ mostrando una frase por el marcador, espera a que se termine de mostrar
 	if (elGestorFrases->mostrandoFrase) return false;
 
-	// oculta el área de juego
+	// oculta el ï¿½rea de juego
 	// CPC limpiaAreaJuego(3);
 	limpiaAreaJuego(0); // VGA
 
-	// calcula el porcentaje de misión completada. Si se ha completado el juego, muestra el final
+	// calcula el porcentaje de misiï¿½n completada. Si se ha completado el juego, muestra el final
 	int porc = logica->calculaPorcentajeMision();
 
 	std::string frase1[8] = {
 		"  HAS RESUELTO EL", // 0 castellano
 		"YOU HAVE SOLVED", // 1 INGLES
-		"  VOCÊ RESOLVEU", // 2 PORTUGUES BRASIL
-		" HAS  RESOLT EL", // 3 CATALÁN
+		"  VOCï¿½ RESOLVEU", // 2 PORTUGUES BRASIL
+		" HAS  RESOLT EL", // 3 CATALï¿½N
 		"  RESOLVICHELO", // 4 GALLEGO
 		"HAI RISOLTO IL", // 5 ITALIANO
 		"YOU HAVE SOLVED", // 6 FINES
@@ -2353,27 +2357,27 @@ bool Juego::muestraPantallaFinInvestigacion()
 		"  XX POR CIENTO DE", // 0 castellano
 		"  XX  PER  CENT", // 1 ingles
 		"  XX POR CENTO DA", // 2 portugues brasil
-		"  XX PER CENT DE", // 3 CATALÁN
+		"  XX PER CENT DE", // 3 CATALï¿½N
 		"  XX POR CENTO DA", // 4 GALLEGO
 		"  XX PER CENTO", // 5 ITALIANO
 		"  XX  PER  CENT", // 6 fines
 		"  XX POR CENTO DA" // 7 PORTUGUES
 	};
 	std::string frase3[8] = {
-		"  LA INVESTIGACIÓN", // 0 castellano
+		"  LA INVESTIGACIï¿½N", // 0 castellano
 		" OF THE RESEARCH", // 1 INGLES
-		"   INVESTIGAÇÃO", // 2 PORTUGUES BRASIL
-		" LA INVESTIGACIÓ", // 3 CATALÁN
-		"  INVESTIGACIÓN", // 4 GALLEGO
+		"   INVESTIGAï¿½ï¿½O", // 2 PORTUGUES BRASIL
+		" LA INVESTIGACIï¿½", // 3 CATALï¿½N
+		"  INVESTIGACIï¿½N", // 4 GALLEGO
 		" DELL'INDAGINE", // 5 italiano
 		" OF THE RESEARCH", // 6 FINES
-		"   INVESTIGAÇÃO" // 7 PORTUGUES
+		"   INVESTIGAï¿½ï¿½O" // 7 PORTUGUES
 	};
 	std::string frase4[8] = {
 		"PULSA ESPACIO PARA EMPEZAR", // 0 castellano
 		"PULSA ESPACIO PARA EMPEZAR", // 1 ingles
 		"PULSA ESPACIO PARA EMPEZAR", // 2 portugues brasil
-		"PULSA ESPACIO PARA EMPEZAR", // 3 catalán
+		"PULSA ESPACIO PARA EMPEZAR", // 3 catalï¿½n
 		"PULSA ESPACIO PARA EMPEZAR", // 4 gallego
 		"PULSA ESPACIO PARA EMPEZAR", // 5 italiano
 		"PULSA ESPACIO PARA EMPEZAR", // 6 fines
@@ -2399,7 +2403,7 @@ bool Juego::muestraPantallaFinInvestigacion()
 	marcador->imprimeFrase(frase3[idioma], 90, 64, 4, 0);
 	marcador->imprimeFrase(frase4[idioma], 56, 128, 4, 0);
 
-	// espera a que se pulse y se suelte el botón
+	// espera a que se pulse y se suelte el botï¿½n
 	bool espera = true;
 
 	while (espera){
@@ -2420,7 +2424,7 @@ bool Juego::muestraPantallaFinInvestigacion()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// creación de las entidades del juego
+// creaciï¿½n de las entidades del juego
 /////////////////////////////////////////////////////////////////////////////
 
 // crea los sprites, personajes, puertas y objetos del juego
@@ -2460,7 +2464,7 @@ void Juego::creaEntidadesJuego()
 		0x24000 - 1 - 0x4000 + 11008  // ?LAMPARA?
 	}; */
 	// En Sprite::dibujaVGA ya le anyade el 0x24000 - 1 - 0x4000 para saltarse la rom CPC e ir a los graficos VGA
-	// ¡¡¡ ojo !!! , entonces en Marcador::dibujaObjetos hay que incluir este salto ...
+	// ï¿½ï¿½ï¿½ ojo !!! , entonces en Marcador::dibujaObjetos hay que incluir este salto ...
 	int despObjetos[8] = { 
 		11200,  // LIBRO
 		34496,  // GUANTES
@@ -2485,7 +2489,7 @@ void Juego::creaEntidadesJuego()
 		// -1 de empezar a contar en el cero
 		// - 0x4000 ya que en el puntero con el que se trabaja se han pasado los primeros 0x4000 bytes con la pantalla de presentacion CPC
 		// +34304 que es donde esta el tile 228 , que es por donde anda la imagen del primer objeto
-		// como los objetos son de 16*12 (¡¡¡ojo!!! no son como el resto de tiles!!!)
+		// como los objetos son de 16*12 (ï¿½ï¿½ï¿½ojo!!! no son como el resto de tiles!!!)
 		// sumo 16*12* el numero de objeto que busco
 		//sprites[i]->despGfx = 0x24000 - 1 - 0x4000 + 34304 + (i - primerSpriteObjetos)*16*12;
 		//muy bonito , si los graficos estuviesen en el mismo orden logico que los objetos en el juego

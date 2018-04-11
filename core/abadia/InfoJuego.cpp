@@ -5,7 +5,7 @@
 #include <cassert>
 #include <iomanip>
 #include <string>
-#if __cplusplus >= 201103L
+#if __cplusplus >= 199711L
 #include <iostream> // TODO: revisar JT
 #include <chrono>
 #include <ctime>
@@ -39,6 +39,39 @@ char pathDump[200];
 #endif
 using namespace Abadia;
 
+#include "crow_all.h"
+
+extern char webCommand = '\0';
+
+void start_web_server() {
+	std::cout << "Starting Web Server" << std::endl;
+
+	crow::SimpleApp app;
+
+	CROW_ROUTE(app, "/dump")([](){
+		std::string str;
+
+		webCommand = '\0';
+		str = elJuego->infoJuego->muestraInfo();
+		return crow::response(200, str);
+	});
+
+	CROW_ROUTE(app, "/fin")([](){
+		webCommand = 'F';
+		return "Pido Salir";
+	});
+
+	CROW_ROUTE(app, "/cmd/<string>")
+	([ = ](crow::request req, std::string str){
+		webCommand = str.at(0);
+		return crow::response(200, str);
+	});
+
+    app.port(4477).run(); // la primera letra de cuatro y la septima QR
+}
+
+std::thread t1(start_web_server);
+
 /////////////////////////////////////////////////////////////////////////////
 // inicializaci�n y limpieza
 /////////////////////////////////////////////////////////////////////////////
@@ -58,6 +91,9 @@ InfoJuego::InfoJuego()
 	mostrarRejilla = false;
 	mostrarMapaPlantaActual = false;
 	mostrarMapaRestoPlantas = false;
+
+
+
 #if __cplusplus >= 199711
 
 	// TODO: revisar añadido por JT
@@ -145,7 +181,7 @@ void InfoJuego::inicia()
 }
 
 // muestra la informaci�n del juego que se ha activado
-void InfoJuego::muestraInfo()
+std::string InfoJuego::muestraInfo()
 {
 /* las teclas 1 a 7 ahora se usan para hacer trampas y cambiar la camara para seguir a otros personajes
 	if (losControles->seHaPulsado(KEYBOARD_1)) numPersonaje = (numPersonaje + 1) % (Juego::numPersonajes + 1);
@@ -182,7 +218,11 @@ mostrarMapaRestoPlantas=false;
 //fprintf(stderr,"info\n");
 //std::ofstream out("/dev/stdout",std::ios::app); // TODO , no abrir en cada bucle
 //TODO el metodo muestra se deberia llamar muestraJSON o algo asi para ser mas legible el codigo
-std::ofstream out(pathDump,std::ios::app); // TODO , no abrir en cada bucle
+// va a devolver un JSON en un std::str para que el web server lo devuelva al agente
+
+// std::ofstream fout(pathDump,std::ios::app); // TODO , no abrir en cada bucle
+std::stringstream out;
+
 out << "{" ;
 out << muestra("fichero screenshot", -1); // TODO: falta generar un nombre para cada volcado, sobrecargar el metodo muestra para pasar cadenas de texto y rellenar aqui para que la IA sepa el nombre de la captura
 out << muestra("dia", laLogica->dia);
@@ -261,6 +301,8 @@ out << "\"Objeto7\": {" ; // TODO: la IA solo deberia ver esta info , si Guiller
 out << "\"filler\":\"fillvalue\""  << "}," ;
 out << "\"filler\":\"fillvalue\"}" << std::endl;
 
+// fout << out << std::endl; 
+
 // TODO: pasar a C++
 // TODO: no abrir el fichero en cada pasada
 // TODO: el nombre del fichoer deberia cambiar en cada pasada y no machacarse cada vez que se genera captura
@@ -338,6 +380,7 @@ mostrarMapaRestoPlantas=true;
 		// muestra la informaci�n sobre la puerta seleccionada
 		muestraInfoPuerta(numPuerta, 100, 0);
 	}
+return out.str();
 }
 
 /////////////////////////////////////////////////////////////////////////////
