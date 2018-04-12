@@ -134,7 +134,11 @@ void InputHandler::process()
 
 	// for each plugin, modify _inputs array if the user has pressed an input
 	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
+		if (webCommand != '\0') {
+			(*i)->setWebCommand('D');
+		}
 		(*i)->process(_inputs);
+		webCommand = '\0';
 	}
 
 	// process the _inputs array modifying the input ports' values
@@ -172,55 +176,20 @@ void InputHandler::process()
 
 void InputHandler::sendCommand(char command)
 {
-	GameDriver::InputPorts &inputPorts = *_inputPorts;
-
-	// reset the _inputs array and update the _oldInputs array
-	for (int i = 0; i < END_OF_INPUTS; i++){
-		_oldInputs[i] = (_oldInputs[i] << 1) & 0x0f;
-		if (_inputs[i] > 0){
-			_inputs[i] = 0;
-			_oldInputs[i] |= 1;
-		}
-	}	
-	printf("voy a mandar -> (%c)", command);
+	// printf("voy a mandar -> (%c)\n", command);
+	webCommand = command;
 	// for each plugin, modify _inputs array if the user has pressed an input
+/*
 	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
-		printf("mandando -> (%c)", command);
+		// printf("mandando -> (%c)\n", command);
 		// (*i)->setWebCommand(command);
-		printf("mandado -> (%c)", command);
-		(*i)->process(_inputs);
-		printf("procesado -> (%c)", command);
+		// printf("mandado -> (%c)\n", command);
+		// (*i)->process(_inputs);
+		// printf("procesado -> (%c)\n", command);
 	}
+	return;
+*/
 
-	// process the _inputs array modifying the input ports' values
-
-	// iterate through the input ports checking associated inputs
-	for (GameDriver::InputPorts::size_type j = 0; j < inputPorts.size(); j++){
-		InputPort &ip = *inputPorts[j];
-
-		// reset input port value
-		ip.reset();
-
-		InputPort::InputBits &ib = *ip.getBits();
-
-		// get actual input port value
-		UINT32 value = ip.getValue();
-
-		// check if the input was pressed
-		for (InputPort::InputBits::size_type i = 0; i < ib.size(); i++){
-			// if that input is pressed, update value
-			if (_inputs[ib[i].input] > 0){
-				if (ib[i].mode == ACTIVE_HIGH){
-					value |= 1 << i;
-				} else {
-					value &= ~(1 << i);
-				}
-			}
-		}
-
-		// update input port value
-		ip.setValue(value);
-	}
 }
 
 void InputHandler::copyInputsState(int *dest)

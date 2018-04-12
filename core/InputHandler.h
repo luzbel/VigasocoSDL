@@ -75,6 +75,8 @@ public:
 	void process();
 	// TODO: revisar
 	void sendCommand(char command);
+	char webCommand = '\0';
+
 // helper methods
 protected:
 	void enableFullKeyboard();

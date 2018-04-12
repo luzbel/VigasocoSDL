@@ -62,13 +62,12 @@ void start_web_server() {
 
 	CROW_ROUTE(app, "/cmd/<string>")
 	([ = ](crow::request req, std::string str){
-		std::string json;
-
-	    std::cout << "Mando el comando -> " << str << std::endl;	
-		elJuego->infoJuego->inputHandler->sendCommand(str.at(0));
+	    std::cout << "infoJuego -> Mando el comando -> " << str << std::endl;	
+		elJuego->infoJuego->inputHandler->webCommand = 'A'; // str.at(0);
+		// elJuego->infoJuego->inputHandler->sendCommand(str.at(0));
 	    std::cout << "Pido el JSON" << std::endl;	
-		json = elJuego->infoJuego->muestraInfo();
-		return crow::response(200, json);
+		// json = elJuego->infoJuego->muestraInfo();
+		return crow::response(200, str);
 	});
 
     app.port(4477).run(); // la primera letra de cuatro y la septima QR
