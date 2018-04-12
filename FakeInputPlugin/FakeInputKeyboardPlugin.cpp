@@ -63,10 +63,12 @@ int size;
 
 _errorMsg = "";
 
-keystate[SDLK_UP]   = false;
-keystate[SDLK_RIGHT]= false;
-keystate[SDLK_LEFT] = false;
-keystate[SDLK_DOWN] = false;
+if (webCommand == '\0') {
+	keystate[SDLK_UP]   = false;
+	keystate[SDLK_RIGHT]= false;
+	keystate[SDLK_LEFT] = false;
+	keystate[SDLK_DOWN] = false;
+}
 
 switch(webCommand) {
    case 'A':    // A de Arriba
@@ -145,7 +147,7 @@ switch(webCommand) {
 
 // I just DID what I need to DO, so I reset
 
-webCommand = '\0';
+// webCommand = '\0';
 
 // fprintf(stderr,"ups %d\n", keystate[SDLK_UP] );
 

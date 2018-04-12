@@ -143,7 +143,6 @@ void InputHandler::process()
 			(*i)->setProperty(str, (int) (globalcc));
 		}
 		(*i)->process(_inputs);
-		globalcc = '\0';
 	}
 	// process the _inputs array modifying the input ports' values
 
