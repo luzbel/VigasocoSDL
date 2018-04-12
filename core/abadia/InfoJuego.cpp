@@ -41,7 +41,7 @@ using namespace Abadia;
 
 #include "crow_all.h"
 
-extern char webCommand = '\0';
+char webCommand;
 
 void start_web_server() {
 	std::cout << "Starting Web Server" << std::endl;
@@ -92,8 +92,6 @@ InfoJuego::InfoJuego()
 	mostrarMapaPlantaActual = false;
 	mostrarMapaRestoPlantas = false;
 
-
-
 #if __cplusplus >= 199711
 
 	// TODO: revisar añadido por JT
@@ -102,8 +100,13 @@ InfoJuego::InfoJuego()
 	fprintf(stderr, "Init pathDump\n");
 	std::time_t t = std::time(NULL);
 	
-    if (std::strftime(pathDump, sizeof(pathDump), "/tmp/abadiaDump%Y%m%d-%H%M%S.json", std::localtime(&t))) {
+	startTime = std::time(NULL);
+	currentTime = std::time(NULL);
+	version = 1; 
+
+    if (std::strftime(pathDump, sizeof(pathDump), "abadia%Y-%m-%d_%H:%M:%S", std::localtime(&t))) {
         fprintf(stderr,"pathDump (%s)\n", pathDump);
+		nameGame = pathDump;
     }
  	// strftime(pathDump, sizeof(pathDump), "/tmp/abadiaDump%Y%m%D-%H%M%S.json", tm);
 	// printf(stderr, "pathDump: %s", pathDump);
@@ -215,20 +218,19 @@ mostrarRejilla=true;
 mostrarMapaPlantaActual=false;
 mostrarMapaRestoPlantas=false;
 
-//fprintf(stderr,"info\n");
-//std::ofstream out("/dev/stdout",std::ios::app); // TODO , no abrir en cada bucle
-//TODO el metodo muestra se deberia llamar muestraJSON o algo asi para ser mas legible el codigo
-// va a devolver un JSON en un std::str para que el web server lo devuelva al agente
-
-// std::ofstream fout(pathDump,std::ios::app); // TODO , no abrir en cada bucle
 std::stringstream out;
 
 out << "{" ;
-out << muestra("fichero screenshot", -1); // TODO: falta generar un nombre para cada volcado, sobrecargar el metodo muestra para pasar cadenas de texto y rellenar aqui para que la IA sepa el nombre de la captura
+out << muestra("nameGame", nameGame);
+out << muestra("version", version);
+out << muestra("startTime", startTime);
+out << muestra("currentGame", std::time(0));
+out << muestra("duracion", std::time(0) - startTime);
 out << muestra("dia", laLogica->dia);
 out << muestra("momentoDia", laLogica->momentoDia);
 out << muestra("obsequium", laLogica->obsequium);
 out << muestra("numeroRomano", laLogica->numeroRomano);
+// out << muestra("webCommand", webCommand);
 out << "\"Guillermo\": {";
 	out << muestra("posX", elJuego->personajes[0]->posX);
 	out << muestra("posY", elJuego->personajes[0]->posY);
@@ -301,18 +303,20 @@ out << "\"Objeto7\": {" ; // TODO: la IA solo deberia ver esta info , si Guiller
 out << "\"filler\":\"fillvalue\""  << "}," ;
 out << "\"filler\":\"fillvalue\"}" << std::endl;
 
-// fout << out << std::endl; 
+version++;
 
 // TODO: pasar a C++
 // TODO: no abrir el fichero en cada pasada
 // TODO: el nombre del fichoer deberia cambiar en cada pasada y no machacarse cada vez que se genera captura
 // TODO: controlar errores al abrir, cerrar y escribir a fichero
 // TODO: optimizar escritura ¿mejor 1 elemento de 640x200 o 200 640 o ...?
+/*
 	FILE *fp;
 	fp=fopen("/tmp/volcadopantalla","w");
 	if ( fwrite(elJuego->cpc6128->screenBuffer,640,200,fp) != 640*200 )  
 		fprintf(stderr,"liada parda al hacer el screen dump que tanto quiere JT\n");
 	fclose(fp);
+	*/
 
 // en abadIA no dejamos el modoInformacion activo para que salga la info en cada bucle
 // en abadIA se vuelca la informacion cuando lo pide el comando y luego se desactiva
@@ -842,11 +846,31 @@ std::string InfoJuego::muestraSprite(Sprite *spr)
 /////////////////////////////////////////////////////////////////////////////
 // conversi�n de valores a cadenas
 /////////////////////////////////////////////////////////////////////////////
+std::string InfoJuego::muestra(std::string clave, std::string valor)
+{
+	std::ostringstream strBuf;
+	strBuf << "\"" << clave << "\": \"" << valor << "\",";
+	return strBuf.str();
+}
+
+std::string InfoJuego::muestra(std::string clave, char valor)
+{
+	std::ostringstream strBuf;
+	strBuf << "\"" << clave << "\": \"" << valor << "\",";
+	return strBuf.str();
+}
+
+
+std::string InfoJuego::muestra(std::string clave, long valor)
+{
+	std::ostringstream strBuf;
+	strBuf << "\"" << clave << "\": \"" << valor << "\",";
+	return strBuf.str();
+}
 
 std::string InfoJuego::muestra(std::string clave, int valor)
 {
 	std::ostringstream strBuf;
-//    strBuf << std::setfill('0') << std::setw(2) << std::hex << (UINT16)valor;
 	strBuf << "\"" << clave << "\": \"" << valor << "\",";
 	return strBuf.str();
 }

@@ -1,4 +1,4 @@
-CXXFLAGS=-O3 -fPIC -std=c++14 -Wc++11-extensions -I../core -I../VigasocoSDL/ `sdl-config --cflags` -L/usr/local/Cellar/boost/1.66.0/lib/ -I /usr/local/Cellar/boost/1.66.0/include -DBOOST_SYSTEM_NO_DEPRECATED -lboost_system
+CXXFLAGS=-O3 -fPIC -g -std=c++14 -Wc++11-extensions -I../core -I../VigasocoSDL/ `sdl-config --cflags` -L/usr/local/Cellar/boost/1.66.0/lib/ -I /usr/local/Cellar/boost/1.66.0/include -DBOOST_SYSTEM_NO_DEPRECATED -lboost_system
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 all: ../VigasocoSDL/input/libVigasocoFakeInputPlugin.so 
@@ -6,7 +6,7 @@ all: ../VigasocoSDL/input/libVigasocoFakeInputPlugin.so
 OBJECTS = FakeInputKeyboardPlugin.o PluginMain.o
 
 ../VigasocoSDL/input/libVigasocoFakeInputPlugin.so: $(OBJECTS)
-	$(CXX) -fPIC `sdl-config --libs` -shared -Wc++11-extensions -lboost_thread-mt -lboost_system-mt -pthread  $(OBJECTS) -o $@
+	$(CXX) -g -fPIC `sdl-config --libs` -shared -Wc++11-extensions -lboost_thread-mt -lboost_system-mt -pthread  $(OBJECTS) -o $@
 
 clean:
 	rm -f $(OBJECTS) ../VigasocoSDL/input/libVigasocoFakeInputPlugin.so 

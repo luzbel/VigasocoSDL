@@ -23,6 +23,7 @@
 #include <sstream>
 #include <string>
 #include "../Types.h"
+#include <ctime>
 
 class CPC6128;							// definido en CPC6128.h
 
@@ -53,11 +54,18 @@ protected:
 	static int alturaBasePlanta[3];		// altura base de cada planta
 	static int zonaVisiblePlanta[3][4];	// zonas visibles para cada planta
 
+	// TODO: revisar JT 
+	long startTime;        // Cuando empieza la partida
+	long currentTime;      // Momemto actual la partida
+	int version = 0;              // contador incremental de la version
+	std::string nameGame;         // Nombre único de la partida
+	
 
 // m�todos
 public:
 	void inicia();
 	std::string muestraInfo();
+	
 
 	// inicializaci�n y limpieza
 	InfoJuego();
@@ -97,11 +105,17 @@ protected:
 	std::string muestraSprite(Sprite *spr);
 
 	// conversi�n de valores a cadenas
+	std::string muestra(std::string clave, std::string valor);
+	std::string muestra(std::string clave, char valor);
+	std::string muestra(std::string clave, long valor);
 	std::string muestra(int valor);
 	std::string muestra(bool valor);
 
 	// conversion de valores a propiedad JSON
 	std::string muestra(std::string, int valor);
+
+	// Crea un nombre único para la partida 
+
 };
 
 }

@@ -11,36 +11,7 @@
 #include <fstream>
 #include <thread>  
 
-#include "crow_all.h"
-
 char webCommand = '\0';
-
-void start_web_server() {
-	std::cout << "Starting Web Server" << std::endl;
-
-	crow::SimpleApp app;
-
-	CROW_ROUTE(app, "/")([](){
-		webCommand = 'E';
-		return "Cambiado el webCommand";
-	});
-
-	CROW_ROUTE(app, "/fin")([](){
-		webCommand = 'F';
-		return "Pido Salir";
-	});
-
-	CROW_ROUTE(app, "/cmd/<string>")
-	([ = ](crow::request req, std::string str){
-		webCommand = str.at(0);
-		return crow::response(200, str);
-	});
-
-    app.port(4747).run(); // la primera letra de cuatro y la septima QR
-}
-
-std::thread t1(start_web_server);
-
 
 SDLKey FakeInputKeyboardPlugin::g_keyMapping[END_OF_INPUTS];
 
@@ -63,13 +34,9 @@ FakeInputKeyboardPlugin::~FakeInputKeyboardPlugin()
 }
 
 
-
-
 bool FakeInputKeyboardPlugin::init()
 {
 	fprintf(stderr,"FakeInputKeyboardPlugin::init\n");
-	fprintf(stderr,"FakeInputKeyboardPlugin::WebServer Started Listening at 8888\n");
-
 	return true;
 }
 
@@ -99,17 +66,13 @@ void FakeInputKeyboardPlugin::process(int *inputs)
 //	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
 //	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
 
-// keystate[SDLK_F5]=false;
-// keystate[SDLK_RIGHT]=false;
-// keystate[SDLK_LEFT]=false;
-
 switch(webCommand) {
    case 'A':    // A de Arriba
 		keystate[SDLK_UP]=true;
 		keystate[SDLK_RIGHT]=false;
 		keystate[SDLK_LEFT]=false;
 		keystate[SDLK_DOWN]=false;
-		keystate[SDLK_F5]=true;
+		// keystate[SDLK_F5]=true;
 		keystate[SDLK_SPACE]=false;
    		fprintf(stderr,"Muevo hacia Arriba\n");
 		break;     // A de Arriba
@@ -118,16 +81,16 @@ switch(webCommand) {
 		keystate[SDLK_RIGHT]=true;
 		keystate[SDLK_LEFT]=false;
 		keystate[SDLK_DOWN]=false;
-		keystate[SDLK_F5]=true;
+		// keystate[SDLK_F5]=true;
 		keystate[SDLK_SPACE]=false;
    		fprintf(stderr,"Muevo hacia a la Derecha\n");
 		break;   // D de Derecha
    case 'I':
 		keystate[SDLK_UP]=false;
 		keystate[SDLK_RIGHT]=false;
-		keystate[SDLK_LEFT]=true;
+ 		keystate[SDLK_LEFT]=true;
 		keystate[SDLK_DOWN]=false;
-		keystate[SDLK_F5]=true;
+		// keystate[SDLK_F5]=true;
 		keystate[SDLK_SPACE]=false;
    		fprintf(stderr,"Muevo hacia a la izquierda\n");
 		break;    // I de Izquierda
@@ -136,7 +99,7 @@ switch(webCommand) {
 		keystate[SDLK_RIGHT]=false;
 		keystate[SDLK_LEFT]=false;
 		keystate[SDLK_DOWN]=true;
-		keystate[SDLK_F5]=true;
+		// keystate[SDLK_F5]=true;
 		keystate[SDLK_SPACE]=false;
    		fprintf(stderr,"Muevo hacia abajo a Adso \n");
 		break; // Cursor aBajo para mover a Adso
@@ -145,7 +108,7 @@ switch(webCommand) {
 		keystate[SDLK_RIGHT]=false;
 		keystate[SDLK_LEFT]=false;
 		keystate[SDLK_DOWN]=false;
-		keystate[SDLK_F5]=true;
+		//keystate[SDLK_F5]=true;
 		keystate[SDLK_SPACE]=true;
 		break;  // barra espaciadora
    case 'E':
@@ -153,7 +116,7 @@ switch(webCommand) {
 		keystate[SDLK_RIGHT]=false;
 		keystate[SDLK_LEFT]=false;
 		keystate[SDLK_DOWN]=false;
-		keystate[SDLK_F5]=true;
+		// keystate[SDLK_F5]=true;
 		keystate[SDLK_SPACE]=false;
    		fprintf(stderr,"Volcado del Estado (habría que hacerlo directamente sin esperar al driver) \n");
 		break;    // E de esperar, STOP, esto debe imprimir el estado
