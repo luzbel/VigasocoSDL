@@ -37,8 +37,7 @@ public:
 	virtual void setProperty(std::string prop, int index, int data) = 0;
 	virtual int getProperty(std::string prop) const = 0;
 	virtual int getProperty(std::string prop, int index) const = 0;
-	virtual char getWebCommand();
-	virtual void setWebCommand(char command);
+	// virtual void setWebCommand(char command);
 
 };
 

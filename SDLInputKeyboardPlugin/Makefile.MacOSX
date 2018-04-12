@@ -1,4 +1,5 @@
-CXXFLAGS=-O3 -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
+CXXFLAGS=-O3 -fPIC -D__abadIA__ -std=c++14 -Wc++11-extensions -I../core -I../VigasocoSDL/ `sdl-config --cflags` -L/usr/local/Cellar/boost/1.66.0/lib/ -I /usr/local/Cellar/boost/1.66.0/include -DBOOST_SYSTEM_NO_DEPRECATED -lboost_system
+
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 all: ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so 
@@ -6,7 +7,9 @@ all: ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so
 OBJECTS = SDLInputKeyboardPlugin.o PluginMain.o
 
 ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so: $(OBJECTS)
-	$(CXX) -fPIC `sdl-config --libs` -shared $(OBJECTS) -o $@
+	$(CXX) -fPIC -D__abadIA__ -std=c++14 `sdl-config --libs` -shared -Wc++11-extensions -lboost_thread-mt -lboost_system-mt -pthread  $(OBJECTS) -o $@
 
 clean:
 	rm -f $(OBJECTS) ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so 
+
+

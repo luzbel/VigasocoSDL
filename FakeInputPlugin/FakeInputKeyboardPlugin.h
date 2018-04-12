@@ -47,7 +47,7 @@ public:
 	virtual void setProperty(std::string prop, int index, int data);
 	virtual int getProperty(std::string prop) const;
 	virtual int getProperty(std::string prop, int index) const;
-	virtual char getWebCommand();
+	// virtual char getWebCommand();
 	virtual void setWebCommand(char command);
 
 protected:

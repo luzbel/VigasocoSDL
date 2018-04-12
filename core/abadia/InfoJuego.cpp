@@ -41,7 +41,7 @@ using namespace Abadia;
 
 #include "crow_all.h"
 
-char webCommand;
+char globalcc = '\0';
 
 void start_web_server() {
 	std::cout << "Starting Web Server" << std::endl;
@@ -49,25 +49,25 @@ void start_web_server() {
 	crow::SimpleApp app;
 
 	CROW_ROUTE(app, "/dump")([](){
-		std::string str;
+		std::string json;
 
-		str = elJuego->infoJuego->muestraInfo();
-		return crow::response(200, str);
+		json = elJuego->infoJuego->muestraInfo();
+		return crow::response(200, json);
 	});
 
 	CROW_ROUTE(app, "/fin")([](){
-		webCommand = 'F';
+		globalcc = 'F';
 		return "Pido Salir";
 	});
 
 	CROW_ROUTE(app, "/cmd/<string>")
 	([ = ](crow::request req, std::string str){
+		std::string json;
 	    std::cout << "infoJuego -> Mando el comando -> " << str << std::endl;	
-		elJuego->infoJuego->inputHandler->webCommand = 'A'; // str.at(0);
-		// elJuego->infoJuego->inputHandler->sendCommand(str.at(0));
+		elJuego->infoJuego->sendCommand('I'); // str.at(0);
 	    std::cout << "Pido el JSON" << std::endl;	
-		// json = elJuego->infoJuego->muestraInfo();
-		return crow::response(200, str);
+		json = elJuego->infoJuego->muestraInfo();
+		return crow::response(200, json);
 	});
 
     app.port(4477).run(); // la primera letra de cuatro y la septima QR
@@ -185,6 +185,11 @@ void InfoJuego::inicia()
 
 	// guarda la altura de las pantallas de cada planta
 	generaAlturasPlanta();
+}
+
+void InfoJuego::sendCommand(char command) {
+	// inputHandler->webCommand = command;
+	globalcc = command;
 }
 
 // muestra la informaci�n del juego que se ha activado
@@ -915,3 +920,4 @@ void InfoJuego::dibujaPixelCuadradoZoom(int posX, int posY, int i, int j, int zo
 		}
 	}
 }
+

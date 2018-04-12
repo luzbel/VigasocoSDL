@@ -9,6 +9,8 @@
 //para memset
 #include <string.h>
 
+extern char globalcc; 
+
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
@@ -17,6 +19,7 @@ InputHandler::InputHandler()
 {
 	_inputPorts = 0;
 	_isInitialized = false;
+	globalcc = '\0';
 }
 
 InputHandler::~InputHandler()
@@ -134,13 +137,13 @@ void InputHandler::process()
 
 	// for each plugin, modify _inputs array if the user has pressed an input
 	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
-		if (webCommand != '\0') {
-			(*i)->setWebCommand('D');
+		std::string str="webCommand";
+		if (globalcc != '\0') {
+			(*i)->setProperty(str, (int) (globalcc));
 		}
 		(*i)->process(_inputs);
-		webCommand = '\0';
+		globalcc = '\0';
 	}
-
 	// process the _inputs array modifying the input ports' values
 
 	// iterate through the input ports checking associated inputs

@@ -28,6 +28,7 @@ protected:
 // methods
 public:
 	// initialization and cleanup
+	char webCommand;
 	SDLInputKeyboardPlugin();
 	virtual ~SDLInputKeyboardPlugin();
 	virtual bool init();
@@ -45,6 +46,8 @@ public:
 	virtual void setProperty(std::string prop, int index, int data);
 	virtual int getProperty(std::string prop) const;
 	virtual int getProperty(std::string prop, int index) const;
+	virtual char getWebCommand();
+	virtual void setWebCommand(char command);
 
 protected:
 	void initRemapTable();

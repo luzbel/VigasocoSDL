@@ -151,7 +151,7 @@ enum ps3_sixaxis_sdl_axis
 	AXIS_TRIANGLE,
 	AXIS_CIRCLE,
 	AXIS_CROSS,
-	AXIS_SQUARE		
+	AXIS_SQUARE
 /* a partir del 19 no se que boton es ... */
 };
 
@@ -200,31 +200,31 @@ void SDLInputKeyboardPlugin::process(int *inputs)
 		Uint8 hat = SDL_JoystickGetHat(joy,0);
 
 
-		// Cruzeta 
+		// Cruzeta
 		// La primera condicion mira si se ha pulsado esa direccion,
 		// la segunda direccion mira que no se tiene pulsado el boton contrario
 		//  (?se puede fisicamente?)
-		// y la tercera que no tengamos pulsado ya el movimiento contrario 
+		// y la tercera que no tengamos pulsado ya el movimiento contrario
 		// en la seta analogica
 
-		keystate[SDLK_UP]    |= 
-			(hat & SDL_HAT_UP) && 
+		keystate[SDLK_UP]    |=
+			(hat & SDL_HAT_UP) &&
 			!(hat & SDL_HAT_DOWN)  &&
 			!keystate[SDLK_DOWN];
 
-		keystate[SDLK_DOWN]  |= 
+		keystate[SDLK_DOWN]  |=
 			(hat & SDL_HAT_DOWN)  &&
 			!(hat & SDL_HAT_UP)   &&
 			!keystate[SDLK_UP];
 
-		keystate[SDLK_RIGHT] |= 
+		keystate[SDLK_RIGHT] |=
 			(hat & SDL_HAT_RIGHT) && !(hat & SDL_HAT_LEFT) &&
 			!keystate[SDLK_LEFT];
 
-		keystate[SDLK_LEFT]  |= 
+		keystate[SDLK_LEFT]  |=
 			(hat & SDL_HAT_LEFT)	&&
 			!(hat & SDL_HAT_RIGHT)	&&
-			!keystate[SDLK_RIGHT]; 
+			!keystate[SDLK_RIGHT];
 #endif // _EE
 
 #ifdef _PS3
@@ -238,7 +238,7 @@ void SDLInputKeyboardPlugin::process(int *inputs)
 
 	} // if joy
 #endif // _EE y _PS3
-	
+
 	// iterate through the inputs checking associated keys
 	for (int i = 0; i < END_OF_INPUTS; i++){
 		// if we're interested in that input, check it's value
@@ -274,7 +274,7 @@ void SDLInputKeyboardPlugin::initRemapTable()
 	g_keyMapping[P1_BUTTON2] = SDLK_LSUPER;
 
 	g_keyMapping[P2_UP] = SDLK_w;
-	g_keyMapping[P2_LEFT] = SDLK_a; 
+	g_keyMapping[P2_LEFT] = SDLK_a;
 	g_keyMapping[P2_DOWN] = SDLK_s;
 	g_keyMapping[P2_RIGHT] = SDLK_d;
 	g_keyMapping[P2_BUTTON1] = SDLK_y;
@@ -323,7 +323,7 @@ void SDLInputKeyboardPlugin::initRemapTable()
 	g_keyMapping[KEYBOARD_6] = SDLK_6;
 	g_keyMapping[KEYBOARD_7] = SDLK_7;
 	g_keyMapping[KEYBOARD_8] = SDLK_8;
-	g_keyMapping[KEYBOARD_9] = SDLK_9; 
+	g_keyMapping[KEYBOARD_9] = SDLK_9;
 	g_keyMapping[KEYBOARD_SPACE] = SDLK_SPACE;
 	g_keyMapping[KEYBOARD_INTRO] = SDLK_RETURN; // SDLK_KP_ENTER;
 	g_keyMapping[KEYBOARD_SUPR] = SDLK_DELETE;
@@ -357,7 +357,7 @@ const std::string SDLInputKeyboardPlugin::g_properties[] = {
 };
 
 const int SDLInputKeyboardPlugin::g_paramTypes[] = {
-	PARAM_ARRAY | PARAM_INPUT
+	(int) (PARAM_ARRAY | PARAM_INPUT)
 };
 
 const int * SDLInputKeyboardPlugin::getPropertiesType() const
@@ -365,7 +365,7 @@ const int * SDLInputKeyboardPlugin::getPropertiesType() const
 	return SDLInputKeyboardPlugin::g_paramTypes;
 }
 
-const std::string * SDLInputKeyboardPlugin::getProperties(int *num) const 
+const std::string * SDLInputKeyboardPlugin::getProperties(int *num) const
 {
 	*num = sizeof(g_paramTypes)/sizeof(g_paramTypes[0]);
 	return SDLInputKeyboardPlugin::g_properties;
@@ -395,6 +395,14 @@ int SDLInputKeyboardPlugin::getProperty(std::string prop, int index) const
 		if ((index >= 0) && (index < END_OF_INPUTS)){
 			return g_keyMapping[index];
 		}
-	} 
-	return -1; 
+	}
+	return -1;
+};
+
+char SDLInputKeyboardPlugin::getWebCommand() {
+	return '\0';
+}
+
+void SDLInputKeyboardPlugin::setWebCommand(char command) {
+	return;
 };

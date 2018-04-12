@@ -279,6 +279,8 @@ const std::string * FakeInputKeyboardPlugin::getProperties(int *num) const
 
 void FakeInputKeyboardPlugin::setProperty(std::string prop, int data)
 {
+	fprintf(stderr, "Setteada webCommand %c\n", data);
+	webCommand = 'D';
 }
 
 void FakeInputKeyboardPlugin::setProperty(std::string prop, int index, int data)
@@ -292,7 +294,7 @@ void FakeInputKeyboardPlugin::setProperty(std::string prop, int index, int data)
 
 int FakeInputKeyboardPlugin::getProperty(std::string prop) const
 {
-	return -1;
+	return webCommand;
 };
 
 int FakeInputKeyboardPlugin::getProperty(std::string prop, int index) const
@@ -305,11 +307,12 @@ int FakeInputKeyboardPlugin::getProperty(std::string prop, int index) const
 	return -1;
 };
 
+/*
 char FakeInputKeyboardPlugin::getWebCommand() {
 	_errorMsg = "";
 	return webCommand;
 };
-
+*/
 void FakeInputKeyboardPlugin::setWebCommand(char command) {
 	_errorMsg = "";
 	webCommand = command;

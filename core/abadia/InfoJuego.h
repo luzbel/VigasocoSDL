@@ -65,7 +65,7 @@ public:
 	void inicia();
 	std::string muestraInfo();
 	InputHandler *inputHandler;	
-
+	void sendCommand(char command);
 	// inicializaci�n y limpieza
 	InfoJuego();
 	virtual ~InfoJuego();
