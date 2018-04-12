@@ -60,12 +60,11 @@ protected:
 	int version = 0;              // contador incremental de la version
 	std::string nameGame;         // Nombre único de la partida
 	
-
 // m�todos
 public:
 	void inicia();
 	std::string muestraInfo();
-	
+	InputHandler *inputHandler;	
 
 	// inicializaci�n y limpieza
 	InfoJuego();

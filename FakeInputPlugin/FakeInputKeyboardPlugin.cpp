@@ -11,8 +11,6 @@
 #include <fstream>
 #include <thread>  
 
-char webCommand = '\0';
-
 SDLKey FakeInputKeyboardPlugin::g_keyMapping[END_OF_INPUTS];
 
 /////////////////////////////////////////////////////////////////////////////
@@ -61,10 +59,9 @@ void FakeInputKeyboardPlugin::unAcquire()
 
 void FakeInputKeyboardPlugin::process(int *inputs)
 {
-	//Uint8 *keystate = SDL_GetKeyState(NULL);
-	int size;
-//	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
-//	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
+int size;
+
+_errorMsg = "";
 
 switch(webCommand) {
    case 'A':    // A de Arriba
@@ -306,4 +303,15 @@ int FakeInputKeyboardPlugin::getProperty(std::string prop, int index) const
 		}
 	}
 	return -1;
+};
+
+char FakeInputKeyboardPlugin::getWebCommand() {
+	_errorMsg = "";
+	return webCommand;
+};
+
+void FakeInputKeyboardPlugin::setWebCommand(char command) {
+	_errorMsg = "";
+	webCommand = command;
+	return;
 };

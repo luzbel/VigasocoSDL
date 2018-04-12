@@ -12,7 +12,7 @@ OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLTh
 OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
 
 VigasocoSDL: $(OBJECTS)
-	$(CXX) $(OBJECTS) -g  -std=c++14 -Wc++11-extensions `sdl-config --libs` -o VigasocoSDL -lboost_thread-mt -lboost_system-mt -pthread
+	$(CXX) $(OBJECTS)  -std=c++14 -Wc++11-extensions `sdl-config --libs` -o VigasocoSDL -lboost_thread-mt -lboost_system-mt -pthread
 	# strip VigasocoSDL
 
 clean:

@@ -51,7 +51,6 @@ void start_web_server() {
 	CROW_ROUTE(app, "/dump")([](){
 		std::string str;
 
-		webCommand = '\0';
 		str = elJuego->infoJuego->muestraInfo();
 		return crow::response(200, str);
 	});
@@ -63,8 +62,13 @@ void start_web_server() {
 
 	CROW_ROUTE(app, "/cmd/<string>")
 	([ = ](crow::request req, std::string str){
-		webCommand = str.at(0);
-		return crow::response(200, str);
+		std::string json;
+
+	    std::cout << "Mando el comando -> " << str << std::endl;	
+		elJuego->infoJuego->inputHandler->sendCommand(str.at(0));
+	    std::cout << "Pido el JSON" << std::endl;	
+		json = elJuego->infoJuego->muestraInfo();
+		return crow::response(200, json);
 	});
 
     app.port(4477).run(); // la primera letra de cuatro y la septima QR
@@ -91,6 +95,7 @@ InfoJuego::InfoJuego()
 	mostrarRejilla = false;
 	mostrarMapaPlantaActual = false;
 	mostrarMapaRestoPlantas = false;
+	inputHandler = VigasocoMain->getInputHandler();
 
 #if __cplusplus >= 199711
 

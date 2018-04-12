@@ -26,9 +26,9 @@ protected:
 	SDL_Joystick *joy;
 #endif
 	std::string _errorMsg;						// error message
-
 // methods
 public:
+	char webCommand;
 	// initialization and cleanup
 	FakeInputKeyboardPlugin();
 	virtual ~FakeInputKeyboardPlugin();
@@ -47,6 +47,8 @@ public:
 	virtual void setProperty(std::string prop, int index, int data);
 	virtual int getProperty(std::string prop) const;
 	virtual int getProperty(std::string prop, int index) const;
+	virtual char getWebCommand();
+	virtual void setWebCommand(char command);
 
 protected:
 	void initRemapTable();

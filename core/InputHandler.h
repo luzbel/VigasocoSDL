@@ -73,7 +73,8 @@ public:
 	void acquire();
 	void unAcquire();
 	void process();
-
+	// TODO: revisar
+	void sendCommand(char command);
 // helper methods
 protected:
 	void enableFullKeyboard();
