@@ -64,7 +64,7 @@ void start_web_server() {
 	([ = ](crow::request req, std::string str){
 		std::string json;
 	    std::cout << "infoJuego -> Mando el comando -> " << str << std::endl;	
-		elJuego->infoJuego->sendCommand('I'); // str.at(0);
+		elJuego->infoJuego->sendCommand(str.at(0));
 	    std::cout << "Pido el JSON" << std::endl;	
 		json = elJuego->infoJuego->muestraInfo();
 		return crow::response(200, json);
@@ -189,6 +189,7 @@ void InfoJuego::inicia()
 
 void InfoJuego::sendCommand(char command) {
 	// inputHandler->webCommand = command;
+	fprintf(stderr, "pongo globalcc a %c \n", command);
 	globalcc = command;
 }
 

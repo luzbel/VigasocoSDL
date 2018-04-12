@@ -139,6 +139,7 @@ void InputHandler::process()
 	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
 		std::string str="webCommand";
 		if (globalcc != '\0') {
+			fprintf(stderr, "Mando a FakeInput %d %c\n", globalcc, int(globalcc));
 			(*i)->setProperty(str, (int) (globalcc));
 		}
 		(*i)->process(_inputs);

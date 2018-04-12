@@ -63,6 +63,11 @@ int size;
 
 _errorMsg = "";
 
+keystate[SDLK_UP]   = false;
+keystate[SDLK_RIGHT]= false;
+keystate[SDLK_LEFT] = false;
+keystate[SDLK_DOWN] = false;
+
 switch(webCommand) {
    case 'A':    // A de Arriba
 		keystate[SDLK_UP]=true;
@@ -280,7 +285,7 @@ const std::string * FakeInputKeyboardPlugin::getProperties(int *num) const
 void FakeInputKeyboardPlugin::setProperty(std::string prop, int data)
 {
 	fprintf(stderr, "Setteada webCommand %c\n", data);
-	webCommand = 'D';
+	webCommand = (char) (data);
 }
 
 void FakeInputKeyboardPlugin::setProperty(std::string prop, int index, int data)
