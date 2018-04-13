@@ -286,7 +286,9 @@ const std::string * FakeInputKeyboardPlugin::getProperties(int *num) const
 
 void FakeInputKeyboardPlugin::setProperty(std::string prop, int data)
 {
-	fprintf(stderr, "Setteada webCommand %c\n", data);
+	if (data != '\0') {
+		fprintf(stderr, "Setteada webCommand %c\n", data);
+	}
 	webCommand = (char) (data);
 }
 

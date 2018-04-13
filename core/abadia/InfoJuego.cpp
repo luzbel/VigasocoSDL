@@ -320,13 +320,12 @@ version++;
 // TODO: el nombre del fichoer deberia cambiar en cada pasada y no machacarse cada vez que se genera captura
 // TODO: controlar errores al abrir, cerrar y escribir a fichero
 // TODO: optimizar escritura ¿mejor 1 elemento de 640x200 o 200 640 o ...?
-/*
+	
 	FILE *fp;
 	fp=fopen("/tmp/volcadopantalla","w");
 	if ( fwrite(elJuego->cpc6128->screenBuffer,640,200,fp) != 640*200 )  
 		fprintf(stderr,"liada parda al hacer el screen dump que tanto quiere JT\n");
 	fclose(fp);
-	*/
 
 // en abadIA no dejamos el modoInformacion activo para que salga la info en cada bucle
 // en abadIA se vuelca la informacion cuando lo pide el comando y luego se desactiva
