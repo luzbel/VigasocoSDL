@@ -89,6 +89,7 @@ void Guillermo::ejecutaMovimiento()
 			trataDeAvanzar(difAltura1, difAltura2, avanceX, avanceY);
 		}
 	} else {
+		globalcc = '\0';
 		// si ha llegado al �ltimo estado cuando est� muerto, sale
 		if (estado == 1) return;
 

@@ -26,6 +26,7 @@
 #ifdef _EE
 bool PS2SpecificInit(void);
 #endif
+extern char globalcc;
 
 // current plugin versions
 int VigasocoSDL::g_currentVideoPluginVersion = 1;
@@ -288,7 +289,10 @@ bool VigasocoSDL::processEvents()
 #ifndef __native_client__
 // en el navegador no salimos al pulsar ESC, porque se queda la pantalla sin limpiar y parece que se ha colgado
 // habría que buscar una manera de finalizar de una manera elegante
-		if (event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_ESCAPE) return false;
+		if (event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_ESCAPE) {
+			globalcc = '\0';
+			return false;
+		} 
 #endif
 	}
 

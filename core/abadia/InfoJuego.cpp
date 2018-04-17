@@ -66,7 +66,12 @@ void start_web_server() {
 	    std::cout << "infoJuego -> Mando el comando -> " << str << std::endl;	
 		elJuego->infoJuego->sendCommand(str.at(0));
 	    std::cout << "Pido el JSON" << std::endl;	
+		while (globalcc != '\0') {
+			std::cout << "wait for the command completion" << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		}
 		json = elJuego->infoJuego->muestraInfo();
+
 		return crow::response(200, json);
 	});
 
@@ -106,7 +111,7 @@ InfoJuego::InfoJuego()
 	
 	startTime = std::time(NULL);
 	currentTime = std::time(NULL);
-	version = 1; 
+	jugada = 1; 
 
     if (std::strftime(pathDump, sizeof(pathDump), "abadia%Y-%m-%d_%H:%M:%S", std::localtime(&t))) {
         fprintf(stderr,"pathDump (%s)\n", pathDump);
@@ -232,7 +237,7 @@ std::stringstream out;
 
 out << "{" ;
 out << muestra("nameGame", nameGame);
-out << muestra("version", version);
+out << muestra("jugada", jugada);
 out << muestra("startTime", startTime);
 out << muestra("currentGame", std::time(0));
 out << muestra("duracion", std::time(0) - startTime);
@@ -313,7 +318,7 @@ out << "\"Objeto7\": {" ; // TODO: la IA solo deberia ver esta info , si Guiller
 out << "\"filler\":\"fillvalue\""  << "}," ;
 out << "\"filler\":\"fillvalue\"}" << std::endl;
 
-version++;
+jugada++;
 
 // TODO: pasar a C++
 // TODO: no abrir el fichero en cada pasada

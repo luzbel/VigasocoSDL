@@ -57,7 +57,7 @@ protected:
 	// TODO: revisar JT 
 	long startTime;        // Cuando empieza la partida
 	long currentTime;      // Momemto actual la partida
-	int version = 0;              // contador incremental de la version
+	int jugada = 0;              // contador incremental de la version
 	std::string nameGame;         // Nombre único de la partida
 	
 // m�todos
