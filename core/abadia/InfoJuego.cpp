@@ -55,6 +55,14 @@ void start_web_server() {
 		return crow::response(200, json);
 	});
 
+	CROW_ROUTE(app, "/reset")([](){
+		std::string json;
+
+		json = "{}";
+		laLogica->inicia();
+		return crow::response(200, json);
+	});
+
 	CROW_ROUTE(app, "/fin")([](){
 		globalcc = 'F';
 		return "Pido Salir";
