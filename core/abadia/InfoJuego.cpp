@@ -194,8 +194,15 @@ void InfoJuego::inicia()
 
 void InfoJuego::sendCommand(char command) {
 	// inputHandler->webCommand = command;
-	fprintf(stderr, "pongo globalcc a %c \n", command);
-	globalcc = command;
+	if (command == 'N') {
+		fprintf(stderr, "NOP: wait 500 ms doing nothing\n", command);
+		globalcc = '\0';
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+	}
+	else {
+		fprintf(stderr, "pongo globalcc a %c \n", command);
+		globalcc = command;
+	}
 }
 
 // muestra la informaci�n del juego que se ha activado
