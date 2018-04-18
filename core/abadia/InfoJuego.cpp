@@ -195,7 +195,7 @@ void InfoJuego::inicia()
 void InfoJuego::sendCommand(char command) {
 	// inputHandler->webCommand = command;
 	if (command == 'N') {
-		fprintf(stderr, "NOP: wait 500 ms doing nothing\n", command);
+		fprintf(stderr, "NOP: wait 500 ms doing nothing\n");
 		globalcc = '\0';
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	}
