@@ -60,6 +60,7 @@ void start_web_server() {
 
 		json = "{}";
 		laLogica->inicia();
+		globalcc = '\0';
 		return crow::response(200, json);
 	});
 
