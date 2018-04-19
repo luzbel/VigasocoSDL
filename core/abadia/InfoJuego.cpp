@@ -252,6 +252,7 @@ out << muestra("haFracasado", laLogica->haFracasado);
 out << muestra("bonus", laLogica->bonus);
 out << muestra("investigacionCompleta", laLogica->investigacionCompleta);
 out << muestra("porcentaje", laLogica->calculaPorcentajeMision());
+out << muestra("numPantalla", elJuego->motor->numPantalla);
 // out << muestra("webCommand", webCommand);
 out << "\"Guillermo\": {";
 	out << muestra("posX", elJuego->personajes[0]->posX);
