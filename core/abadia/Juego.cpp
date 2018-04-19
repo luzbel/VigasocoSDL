@@ -2104,6 +2104,12 @@ bool Juego::cargar(int slot)
 	in >> logica;
 	if ( in.fail() )
 	{
+#ifdef __abadIA__
+		//
+		elMarcador->imprimeFrase("                  ", 100, 164, 4, 0);
+		logica->inicia();
+		return false;
+#else
 		/* CPC
 		   elMarcador->imprimeFrase("            ", 110, 164, 2, 3);
 		   elMarcador->imprimeFrase("���ERROR!!!", 110, 164, 2, 3); */
@@ -2124,6 +2130,7 @@ bool Juego::cargar(int slot)
 		logica->inicia();
 		// devolvemos true, para que se reinicie todo
 		return true;
+#endif 
 	}
 	else
 	{
@@ -2131,7 +2138,7 @@ bool Juego::cargar(int slot)
 	}
 }
 
-void Juego::save(int slot)
+bool Juego::save(int slot)
 {
 #ifdef __native_client__
 	{
@@ -2155,6 +2162,7 @@ void Juego::save(int slot)
 
 	if ( out.fail() )
 	{
+#ifndef __abadIA__
 		/* CPC
 		   elMarcador->imprimeFrase("            ", 110, 164, 2, 3);
 		   elMarcador->imprimeFrase("���ERROR!!!", 110, 164, 2, 3); */
@@ -2165,7 +2173,11 @@ void Juego::save(int slot)
 		{
 			losControles->actualizaEstado();
 		}while (losControles->estaSiendoPulsado(P1_BUTTON1) == false);
+#endif
+		return false;
 	}
+
+	return true;
 }
 
 // comprueba si se desea grabar la partida
