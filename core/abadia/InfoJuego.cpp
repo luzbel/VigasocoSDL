@@ -55,11 +55,28 @@ void start_web_server() {
 		return crow::response(200, json);
 	});
 
+	CROW_ROUTE(app, "/save")([](){
+		std::string json;
+
+		json = "{}";
+		if (elJuego->save(0)) return crow::response(200, json);
+				else  return crow::response(500, json);
+	});
+
+	CROW_ROUTE(app, "/load")([](){
+		std::string json;
+
+		json = "{}";
+		if (elJuego->cargar(0)) return crow::response(200, json);
+				else return crow::response(500, "{ \"MUST RESET\"}" );
+	});
+
 	CROW_ROUTE(app, "/reset")([](){
 		std::string json;
 
 		json = "{}";
 		laLogica->inicia();
+		globalcc = '\0';
 		return crow::response(200, json);
 	});
 
@@ -264,6 +281,7 @@ out << muestra("haFracasado", laLogica->haFracasado);
 out << muestra("bonus", laLogica->bonus);
 out << muestra("investigacionCompleta", laLogica->investigacionCompleta);
 out << muestra("porcentaje", laLogica->calculaPorcentajeMision());
+out << muestra("numPantalla", elJuego->motor->numPantalla);
 // out << muestra("webCommand", webCommand);
 out << "\"Guillermo\": {";
 	out << muestra("posX", elJuego->personajes[0]->posX);

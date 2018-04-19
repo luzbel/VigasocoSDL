@@ -90,8 +90,10 @@ public:
 
 // m�todos
 private:
+#ifndef __abadIA__
 	bool cargar(int slot);
-	void save(int slot);
+	bool save(int slot);
+#endif
 	// TODO sacar todo lo relativo a menus
 	// a una clase para menu y no ensuciar la clase Juego
 	void pintaMenuCargar(int seleccionado,bool efecto=false);
@@ -120,6 +122,10 @@ private:
 	void ReiniciaPantalla(void);
 	InfoJuego *Info(void);
 public:
+#ifdef __abadIA__
+	bool cargar(int slot);
+	bool save(int slot);
+#endif
 	void muestraFinal();
 	void limpiaAreaJuego(int color);
 
