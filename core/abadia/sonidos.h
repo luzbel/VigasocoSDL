@@ -27,6 +27,7 @@ namespace Abadia {
 			static const UINT8 Inicio = 9;
 			static const UINT8 Pasos = 10;
 			static const UINT8 Tintineo = 11;
+			static const UINT8 END_OF_SOUNDS;
 	};
 
 } // namespace Abadia
