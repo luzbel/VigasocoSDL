@@ -11,6 +11,10 @@
 #include "../util/Singleton.h"
 #include "../Types.h"
 
+#ifdef __abadIA__
+#include <vector>
+#endif
+
 class CPC6128;					// definido en CPC6128.h
 class IAudioPlugin;				// definido en IAudioPlugin.h
 class TimingHandler;			// definido en TimingHandler.h
@@ -86,6 +90,11 @@ public:
 	bool modoInformacion;					// modo de informaci�n del juego
 	bool cambioModoInformacion; // se ha cambiado el estado
 	InfoJuego *infoJuego;					// objeto para mostrar informaci�n interna del juego
+#ifdef __abadIA__
+//        static std::vector<bool> sonidos; // sonidos activos para pasar a la IA
+//	static const bool sonidos[12];
+	bool sonidos[12]; 
+#endif
 
 
 // m�todos

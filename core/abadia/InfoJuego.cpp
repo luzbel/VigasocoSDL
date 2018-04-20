@@ -36,6 +36,7 @@
 #ifdef __abadIA__
 #include <fstream>
 char pathDump[200];
+#include "sonidos.h"
 #endif
 using namespace Abadia;
 
@@ -50,8 +51,24 @@ void start_web_server() {
 
 	CROW_ROUTE(app, "/dump")([](){
 		std::string json;
-
 		json = elJuego->infoJuego->muestraInfo();
+/*
+	elJuego->sonidos[SONIDOS::Abrir]=false;
+	elJuego->sonidos[SONIDOS::Aporrear]=false;
+	elJuego->sonidos[SONIDOS::Campanas]=false;
+	elJuego->sonidos[SONIDOS::Cerrar]=false;
+	elJuego->sonidos[SONIDOS::Coger]=false;
+	elJuego->sonidos[SONIDOS::Dejar]=false;
+	elJuego->sonidos[SONIDOS::Espejo]=false;
+	elJuego->sonidos[SONIDOS::Final]=false;
+	elJuego->sonidos[SONIDOS::Fondo]=false;
+	elJuego->sonidos[SONIDOS::Inicio]=false;
+	elJuego->sonidos[SONIDOS::Pasos]=false;
+	elJuego->sonidos[SONIDOS::Tintineo]=false;
+*/
+		//for (int index=0;index<SONIDOS::END_OF_SOUNDS;index++) 
+		for (int index=0;index<12;index++) 
+			VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
 		return crow::response(200, json);
 	});
 
@@ -282,6 +299,33 @@ out << muestra("bonus", laLogica->bonus);
 out << muestra("investigacionCompleta", laLogica->investigacionCompleta);
 out << muestra("porcentaje", laLogica->calculaPorcentajeMision());
 out << muestra("numPantalla", elJuego->motor->numPantalla);
+out << "\"sonidos\": [";
+//typedef std::vector<sound> tSounds;
+//typedef tSounds::iterator tIteratorSounds;
+//for ( const std::vector<bool>::iterator it=elJuego->sonidos.begin();it!=elJuego->sonidos.end();it++)
+//{
+//	out << "\"" << *it << "\"";	
+//}
+
+/*
+	out << "\"" << elJuego->sonidos[SONIDOS::Abrir] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Aporrear] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Campanas] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Cerrar] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Coger] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Dejar] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Espejo] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Final] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Fondo] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Inicio] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Pasos] << "\",";	
+	out << "\"" << elJuego->sonidos[SONIDOS::Tintineo] << "\"";	
+*/ 
+		for (int index=0;index<12;index++) 
+			out << "\"" << VigasocoMain->getAudioPlugin()->getProperty("sonidos",index) << "\",";
+
+out << "] ";
+
 // out << muestra("webCommand", webCommand);
 out << "\"Guillermo\": {";
 	out << muestra("posX", elJuego->personajes[0]->posX);

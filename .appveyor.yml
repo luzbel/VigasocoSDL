@@ -1,15 +1,25 @@
 version: 1.0.{build}
 environment:
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      BUILD_CMD: "C:\\MinGW\\bin\\mingw32-make -f Makefile.MinGW"
-      ARTIFACT_FILE: "build\\win\\VigasocoSDL-Beta.Win32.zip"
+#no genero version win hasta arreglar dependencias
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      BUILD_CMD: "C:\\MinGW\\bin\\mingw32-make -f Makefile"
+#      ARTIFACT_FILE: "build\\win\\VigasocoSDL-abadIA.Win32.zip"
+#      CXX: clang
+#      LD: clang
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       BUILD_CMD: make -f Makefile
-      ARTIFACT_FILE: "build/linux/VigasocoSDL-Beta.Linux.zip"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
-      BUILD_CMD: make -f Makefile.static
-      ARTIFACT_FILE: "build/linux/VigasocoSDL-Beta.Linux.static.zip"
+      ARTIFACT_FILE: "build/linux/VigasocoSDL-abadIA.Linux.zip"
+      CXX: clang
+      LD: clang
+# no genero estatico de abadIA
+# si hiciera falta, hay que adaptar Makefile.static y enlazar con el NULLaudioplugin
+# igual no hay libs estaticas de boost
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+#      BUILD_CMD: make -f Makefile.static
+#      ARTIFACT_FILE: "build/linux/VigasocoSDL-abadIA.Linux.static.zip"
+#      CXX: clang
+#      LD: clang
 branches:
   # whitelist
   only:
@@ -35,7 +45,7 @@ install:
 - sh: >-
     sudo apt-get update
     
-    sudo apt-get install -y libsdl1.2-dev
+    sudo apt-get install -y libsdl1.2-dev clang libboost-all-dev
     
     mkdir $APPVEYOR_BUILD_FOLDER/VigasocoSDL/input
     

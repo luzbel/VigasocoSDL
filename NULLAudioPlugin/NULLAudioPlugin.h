@@ -11,12 +11,19 @@
 
 #include <vector>
 
+//#ifdef __abadIA__
+// TODO, que feo una dependencia en un plugin de un driver de juego particular
+//#include <../core/abadia/sonidos.h>
+//#endif
+
 class NULLAudioPlugin: public IAudioPlugin
 {
 // fields
 	private:
 		bool mute;
 		bool _isInitialized;
+		//bool sonidos[SONIDOS::END_OF_SOUNDS];
+		bool sonidos[12];
 
 protected:
 	static const std::string g_properties[];

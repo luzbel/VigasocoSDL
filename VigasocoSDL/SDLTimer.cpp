@@ -21,7 +21,10 @@ bool SDLTimer::init()
 {
 	if ( SDL_InitSubSystem(SDL_INIT_TIMER) == -1 ) return false;
 
-	_ticksPerSecond = calcTicksPerSecond();
+	// abadIA _ticksPerSecond = calcTicksPerSecond(); // ORIGINAL
+	//_ticksPerSecond = calcTicksPerSecond()*1000; // ESTO ENLENTECE MUCHO
+	//_ticksPerSecond = calcTicksPerSecond()/2; // ESTO ?duplica la velocidad?
+	_ticksPerSecond = calcTicksPerSecond()/5; // ESTO ?quintuplica la velocidad?
 	_ticksPerMilliSecond = _ticksPerSecond/1000;
 
 	return true;

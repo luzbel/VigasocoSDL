@@ -132,6 +132,23 @@ Juego::Juego(UINT8 *romData, CPC6128 *cpc)
 
 	pausa = false;
 	modoInformacion = false;
+
+/*
+#ifdef __abadIA__
+	sonidos[SONIDOS::Abrir]=false;
+	sonidos[SONIDOS::Aporrear]=false;
+	sonidos[SONIDOS::Campanas]=false;
+	sonidos[SONIDOS::Cerrar]=false;
+	sonidos[SONIDOS::Coger]=false;
+	sonidos[SONIDOS::Dejar]=false;
+	sonidos[SONIDOS::Espejo]=false;
+	sonidos[SONIDOS::Final]=false;
+	sonidos[SONIDOS::Fondo]=false;
+	sonidos[SONIDOS::Inicio]=false;
+	sonidos[SONIDOS::Pasos]=false;
+	sonidos[SONIDOS::Tintineo]=false;
+#endif
+*/
 }
 
 InfoJuego *Juego::Info() {
