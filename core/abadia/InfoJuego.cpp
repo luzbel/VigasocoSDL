@@ -324,7 +324,7 @@ out << "\"sonidos\": [";
 		for (int index=0;index<12;index++) 
 			out << "\"" << VigasocoMain->getAudioPlugin()->getProperty("sonidos",index) << "\",";
 
-out << "] ";
+out << "\"0\"],";
 
 // out << muestra("webCommand", webCommand);
 out << "\"Guillermo\": {";
