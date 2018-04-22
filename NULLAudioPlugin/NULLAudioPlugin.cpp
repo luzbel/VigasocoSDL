@@ -54,7 +54,7 @@ void NULLAudioPlugin::Play(int sample,bool loop)
 {
 #ifdef __abadIA__
 //fprintf(stderr,"Play %d\n", sample);
-std::cerr << "Play " << sample << std::endl;
+//std::cerr << "Play " << sample << std::endl;
 sonidos[sample]=true;
 #endif
 }
