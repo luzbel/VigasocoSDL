@@ -328,22 +328,24 @@ out << "\"0\"],";
 
 // out << muestra("webCommand", webCommand);
 
-	out << "\"Personajes\": [";
+	out << "\"Personajes\": {";
+	out << "\"Personaje\": [";
 
 	for(int i=0;i<elJuego->numPersonajes;i++) {
 		Personaje *pers=elJuego->personajes[i];
 		if (pers->sprite->esVisible) {
-			out << "\"Personaje " << i << "\": {";
+			out << "{\"id\":\"" << i << "\",";
 			out << muestra("posX", pers->posX);
 			out << muestra("posY", pers->posY);
 			out << muestra("altura", pers->altura); //TODO ??deberia saber esto la IA
 			out << muestra("orientacion", pers->orientacion);
 			out << muestra("objetos", elJuego->personajes[0]->objetos);
-			out << "\"filler\":\"fillvalue\""  << "},";
+			out << "\"fil\":\"val\""  << "},";
 		}
 	}	
-			out << "{\"filler\":\"fillvalue\"}";
-	out << "],";
+	out << "{\"fill\":\"val\"}";
+	out << "]},";
+
 
 	out << "\"Objetos\": [";
 
@@ -359,7 +361,7 @@ out << "\"0\"],";
 		}
 	}	
 			out << "{\"filler\":\"fillvalue\"}";
-	out << "]";
+	out << "]}";
 
 jugada++;
 
