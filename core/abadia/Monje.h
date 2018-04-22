@@ -18,13 +18,18 @@ class Monje : public PersonajeConIA
 {
 // campos
 protected:
+#ifndef __abadIA__
 	int datosCara[2];							// dirección de los gráficos de la cara
+#endif
 	SpriteMonje *sprMonje;						// sprite del monje
 
 	static DatosFotograma tablaAnimacion[8];	// tabla con los distintos fotogramas de animación
 
 // métodos
 public:
+#ifdef __abadIA__
+	int datosCara[2];							// dirección de los gráficos de la cara
+#endif
 	virtual DatosFotograma *calculaFotograma();
 
 	// inicialización y limpieza

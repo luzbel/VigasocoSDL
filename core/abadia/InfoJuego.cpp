@@ -37,6 +37,8 @@
 #include <fstream>
 char pathDump[200];
 #include "sonidos.h"
+//#include "Monje.h"
+#include "Berengario.h"
 #endif
 using namespace Abadia;
 
@@ -332,14 +334,14 @@ out << "\"0\"],";
 	out << "\"Personaje\": [";
 
 	std::string tablaNombresPersonajes[] = { 
-		"Guillermo" , 
-		"Adso",
-		"Malaquias",
-		"Abad",
-		"Berengario",
-		"Severino",
-		"Jorge",
-		"Bernardo" };
+		"Guillermo" ,  // 0
+		"Adso", // 1
+		"Malaquias", // 2
+		"Abad", // 3
+		"Berengario", // 4
+		"Severino", // 5 
+		"Jorge", // 6 
+		"Bernardo" }; // 7
 
 	bool primero=true;
 	for(int i=0;i<elJuego->numPersonajes;i++) {
@@ -347,7 +349,12 @@ out << "\"0\"],";
 		if (pers->sprite->esVisible) {
 			if (!primero) { out << ","; } else primero=false;
 			out << "{\"id\":\"" << i << "\",";
-			out << "\"nombre\":\"" << tablaNombresPersonajes[i]   << "\",";
+			if (i==4) {
+			 Berengario *ber=(Berengario *)pers;
+			 //Monje*ber=(Monje *)pers;
+			 if (ber->datosCara[0]==69308) out << "\"nombre\":\"" << "Encapuchado" << "\",";
+			 else out << "\"nombre\":\"" << tablaNombresPersonajes[i]   << "\",";
+			} else out << "\"nombre\":\"" << tablaNombresPersonajes[i]   << "\",";
 			out << muestra("posX", pers->posX,false);
 			out << muestra("posY", pers->posY,false);
 			out << muestra("altura", pers->altura,false); //TODO ??deberia saber esto la IA
