@@ -237,9 +237,9 @@ void InfoJuego::inicia()
 void InfoJuego::sendCommand(char command) {
 	// inputHandler->webCommand = command;
 	if (command == 'N') {
-		fprintf(stderr, "NOP: wait 500 ms doing nothing\n");
+		fprintf(stderr, "NOP: wait 100 ms doing nothing\n");
 		globalcc = '\0';
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 	else {
 		fprintf(stderr, "pongo globalcc a %c \n", command);
@@ -407,11 +407,13 @@ jugada++;
 // TODO: controlar errores al abrir, cerrar y escribir a fichero
 // TODO: optimizar escritura ¿mejor 1 elemento de 640x200 o 200 640 o ...?
 	
+	/* JT: I will cacth this with one REST request
 	FILE *fp;
 	fp=fopen("/tmp/volcadopantalla","w");
 	if ( fwrite(elJuego->cpc6128->screenBuffer,640,200,fp) != 640*200 )  
 		fprintf(stderr,"liada parda al hacer el screen dump que tanto quiere JT\n");
 	fclose(fp);
+	*/ 
 
 // en abadIA no dejamos el modoInformacion activo para que salga la info en cada bucle
 // en abadIA se vuelca la informacion cuando lo pide el comando y luego se desactiva

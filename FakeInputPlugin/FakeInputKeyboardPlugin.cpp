@@ -68,6 +68,7 @@ if (webCommand == '\0') {
 	keystate[SDLK_RIGHT]= false;
 	keystate[SDLK_LEFT] = false;
 	keystate[SDLK_DOWN] = false;
+	keystate[SDLK_F5]   = false;
 }
 
 switch(webCommand) {
