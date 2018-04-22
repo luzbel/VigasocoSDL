@@ -327,77 +327,39 @@ out << "\"sonidos\": [";
 out << "\"0\"],";
 
 // out << muestra("webCommand", webCommand);
-out << "\"Guillermo\": {";
-	out << muestra("posX", elJuego->personajes[0]->posX);
-	out << muestra("posY", elJuego->personajes[0]->posY);
-	out << muestra("altura", elJuego->personajes[0]->altura);
-	out << muestra("orientacion", elJuego->personajes[0]->orientacion);
-	out << muestra("objetos", elJuego->personajes[0]->objetos);
-out << "\"filler\":\"fillvalue\""  << "},";
-out << "\"Adso\": {";
-	out << muestra("posX", elJuego->personajes[1]->posX);
-	out << muestra("posY", elJuego->personajes[1]->posY);
-	out << muestra("altura", elJuego->personajes[1]->altura);
-	out << muestra("orientacion", elJuego->personajes[1]->orientacion);
-	out << muestra("objetos", elJuego->personajes[1]->objetos);
-out << "\"filler\":\"fillvalue\""  << "},";
-out << "\"Abad\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->personajes[3]->posX) ;
-	out << muestra("posY", elJuego->personajes[3]->posY) ;
-	out << muestra("altura", elJuego->personajes[3]->altura) ;
-	out << muestra("orientacion", elJuego->personajes[3]->altura) ;
-	out << muestra("objetos", elJuego->personajes[3]->objetos) ;
-out << "\"filler\":\"fillvalue\""  << "}," ;
-// TODO, solo dar info de objetos visibles en la habitacion
-out << "\"Objeto0\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[0]->posX) ;
-	out << muestra("posY", elJuego->objetos[0]->posY) ;
-	out << muestra("altura", elJuego->objetos[0]->altura) ;
-	out << muestra("orientacion", elJuego->objetos[0]->orientacion) ;
-out << "\"filler\":\"fillvalue\""  << "}," ;
-out << "\"Objeto1\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[1]->posX) ;
-	out << muestra("posY", elJuego->objetos[1]->posY) ;
-	out << muestra("altura", elJuego->objetos[1]->altura) ;
-	out << muestra("orientacion", elJuego->objetos[1]->orientacion) ;
-out << "\"filler\":\"fillvalue\""  << "}," ;
-out << "\"Objeto2\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[2]->posX) ;
-	out << muestra("posY", elJuego->objetos[2]->posY) ;
-	out << muestra("altura", elJuego->objetos[2]->altura) ;
-	out << muestra("orientacion", elJuego->objetos[2]->orientacion) ;
-out << "\"filler\":\"fillvalue\""  << "}," ;
-out << "\"Objeto3\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[3]->posX) ;
-	out << muestra("posY", elJuego->objetos[3]->posY) ;
-	out << muestra("altura", elJuego->objetos[3]->altura) ;
-	out << muestra("orientacion", elJuego->objetos[3]->orientacion) ;
-out << "\"filler\":\"fillvalue\""  << "}," ;
-out << "\"Objeto4\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[4]->posX) ;
-	out << muestra("posY", elJuego->objetos[4]->posY) ;
-	out << muestra("altura", elJuego->objetos[4]->altura) ;
-	out << muestra("orientacion", elJuego->objetos[4]->orientacion) ;
-out << "\"filler\":\"fillvalue\""  << "}," ;
-out << "\"Objeto5\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[5]->posX) ;
-	out << muestra("posY", elJuego->objetos[5]->posY) ;
-	out << muestra("altura", elJuego->objetos[5]->altura) ;
-	out << muestra("orientacion", elJuego->objetos[5]->orientacion) ;
-out << "\"filler\":\"fillvalue\""  << "}," ;
-out << "\"Objeto6\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[6]->posX) ;
-	out << muestra("posY", elJuego->objetos[6]->posY) ;
-	out << muestra("altura", elJuego->objetos[6]->altura) ;
-	out << muestra("orientacion", elJuego->objetos[6]->orientacion) ;
-out << "\"filler\":\"fillvalue\""  << "}," ;
-out << "\"Objeto7\": {" ; // TODO: la IA solo deberia ver esta info , si Guillermo y el Abad estan en la misma habitacion
-	out << muestra("posX", elJuego->objetos[7]->posX) ;
-	out << muestra("posY", elJuego->objetos[7]->posY) ;
-	out << muestra("altura", elJuego->objetos[7]->altura) ;
-	out << muestra("orientacion", elJuego->objetos[7]->orientacion) ;
-out << "\"filler\":\"fillvalue\""  << "}," ;
-out << "\"filler\":\"fillvalue\"}" << std::endl;
+
+	out << "\"Personajes\": [";
+
+	for(int i=0;i<elJuego->numPersonajes;i++) {
+		Personaje *pers=elJuego->personajes[i];
+		if (pers->sprite->esVisible) {
+			out << "\"Personaje " << i << "\": {";
+			out << muestra("posX", pers->posX);
+			out << muestra("posY", pers->posY);
+			out << muestra("altura", pers->altura); //TODO ??deberia saber esto la IA
+			out << muestra("orientacion", pers->orientacion);
+			out << muestra("objetos", elJuego->personajes[0]->objetos);
+			out << "\"filler\":\"fillvalue\""  << "},";
+		}
+	}	
+			out << "{\"filler\":\"fillvalue\"}";
+	out << "],";
+
+	out << "\"Objetos\": [";
+
+	for(int i=0;i<elJuego->numObjetos;i++) {
+		Objeto*obj=elJuego->objetos[i];
+		if (obj->sprite->esVisible) {
+			out << "\"Objeto " << i << "\": {";
+			out << muestra("posX", obj->posX);
+			out << muestra("posY", obj->posY);
+			out << muestra("altura", obj->altura); //TODO ??deberia saber esto la IA
+			out << muestra("orientacion", obj->orientacion);
+			out << "\"filler\":\"fillvalue\""  << "},";
+		}
+	}	
+			out << "{\"filler\":\"fillvalue\"}";
+	out << "]";
 
 jugada++;
 
