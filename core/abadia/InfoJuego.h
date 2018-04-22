@@ -104,9 +104,10 @@ protected:
 	std::string muestraSprite(Sprite *spr);
 
 	// conversi�n de valores a cadenas
-	std::string muestra(std::string clave, std::string valor);
-	std::string muestra(std::string clave, char valor);
-	std::string muestra(std::string clave, long valor);
+	std::string muestra(std::string clave, std::string valor,bool elementofinal=false);
+	std::string muestra(std::string clave, char valor,bool elementofinal=false);
+	std::string muestra(std::string clave, long valor,bool elementofinal=false);
+	std::string muestra(std::string clave, int valor,bool elementofinal=false);
 	std::string muestra(int valor);
 	std::string muestra(bool valor);
 

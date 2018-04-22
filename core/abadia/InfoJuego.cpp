@@ -285,20 +285,20 @@ mostrarMapaRestoPlantas=false;
 std::stringstream out;
 
 out << "{" ;
-out << muestra("nameGame", nameGame);
-out << muestra("jugada", jugada);
-out << muestra("startTime", startTime);
-out << muestra("currentGame", std::time(0));
-out << muestra("duracion", std::time(0) - startTime);
-out << muestra("dia", laLogica->dia);
-out << muestra("momentoDia", laLogica->momentoDia);
-out << muestra("obsequium", laLogica->obsequium);
-out << muestra("numeroRomano", laLogica->numeroRomano);
-out << muestra("haFracasado", laLogica->haFracasado);
-out << muestra("bonus", laLogica->bonus);
-out << muestra("investigacionCompleta", laLogica->investigacionCompleta);
-out << muestra("porcentaje", laLogica->calculaPorcentajeMision());
-out << muestra("numPantalla", elJuego->motor->numPantalla);
+out << muestra("nameGame", nameGame,false);
+out << muestra("jugada", jugada,false);
+out << muestra("startTime", startTime,false);
+out << muestra("currentGame", std::time(0),false);
+out << muestra("duracion", std::time(0) - startTime,false);
+out << muestra("dia", laLogica->dia,false);
+out << muestra("momentoDia", laLogica->momentoDia,false);
+out << muestra("obsequium", laLogica->obsequium,false);
+out << muestra("numeroRomano", laLogica->numeroRomano,false);
+out << muestra("haFracasado", laLogica->haFracasado,false);
+out << muestra("bonus", laLogica->bonus,false);
+out << muestra("investigacionCompleta", laLogica->investigacionCompleta,false);
+out << muestra("porcentaje", laLogica->calculaPorcentajeMision(),false);
+out << muestra("numPantalla", elJuego->motor->numPantalla,false);
 out << "\"sonidos\": [";
 //typedef std::vector<sound> tSounds;
 //typedef tSounds::iterator tIteratorSounds;
@@ -331,37 +331,56 @@ out << "\"0\"],";
 	out << "\"Personajes\": {";
 	out << "\"Personaje\": [";
 
+	std::string tablaNombresPersonajes[] = { 
+		"Guillermo" , 
+		"Adso",
+		"Malaquias",
+		"Abad",
+		"Berengario",
+		"Severino",
+		"Jorge",
+		"Bernardo" };
+
+	bool primero=true;
 	for(int i=0;i<elJuego->numPersonajes;i++) {
 		Personaje *pers=elJuego->personajes[i];
 		if (pers->sprite->esVisible) {
+			if (!primero) { out << ","; } else primero=false;
 			out << "{\"id\":\"" << i << "\",";
-			out << muestra("posX", pers->posX);
-			out << muestra("posY", pers->posY);
-			out << muestra("altura", pers->altura); //TODO ??deberia saber esto la IA
-			out << muestra("orientacion", pers->orientacion);
-			out << muestra("objetos", elJuego->personajes[0]->objetos);
-			out << "\"fil\":\"val\""  << "},";
+			out << "\"nombre\":\"" << tablaNombresPersonajes[i]   << "\",";
+			out << muestra("posX", pers->posX,false);
+			out << muestra("posY", pers->posY,false);
+			out << muestra("altura", pers->altura,false); //TODO ??deberia saber esto la IA
+			out << muestra("orientacion", pers->orientacion,false);
+			out << muestra("objetos", elJuego->personajes[0]->objetos,true);
+			out << "}";
+//			out << "\"fil\":\"val\""  << "},";
 		}
 	}	
-	out << "{\"fill\":\"val\"}";
+//	out << "{\"fill\":\"val\"}";
 	out << "]},";
 
 
-	out << "\"Objetos\": [";
+	out << "\"Objetos\": {";
+	out << "\"ListaObjetos\": [";
 
+	primero=true;
 	for(int i=0;i<elJuego->numObjetos;i++) {
 		Objeto*obj=elJuego->objetos[i];
 		if (obj->sprite->esVisible) {
-			out << "\"Objeto " << i << "\": {";
-			out << muestra("posX", obj->posX);
-			out << muestra("posY", obj->posY);
-			out << muestra("altura", obj->altura); //TODO ??deberia saber esto la IA
-			out << muestra("orientacion", obj->orientacion);
-			out << "\"filler\":\"fillvalue\""  << "},";
+			if (!primero) { out << ","; } else primero=false;
+			out << "{\"id\":\"" << i << "\",";
+			out << muestra("posX", obj->posX,false);
+			out << muestra("posY", obj->posY,false);
+			out << muestra("altura", obj->altura,false); //TODO ??deberia saber esto la IA
+			out << muestra("orientacion", obj->orientacion,true);
+			out << "}";
+//			out << "\"filler\":\"fillvalue\""  << "},";
 		}
 	}	
-			out << "{\"filler\":\"fillvalue\"}";
-	out << "]}";
+//			out << "{\"filler\":\"fillvalue\"}";
+	out << "]}"; // fin lista objetos
+	out << "}"; // fin dump
 
 jugada++;
 
@@ -907,32 +926,36 @@ std::string InfoJuego::muestraSprite(Sprite *spr)
 /////////////////////////////////////////////////////////////////////////////
 // conversi�n de valores a cadenas
 /////////////////////////////////////////////////////////////////////////////
-std::string InfoJuego::muestra(std::string clave, std::string valor)
+std::string InfoJuego::muestra(std::string clave, std::string valor,bool elementofinal)
 {
 	std::ostringstream strBuf;
-	strBuf << "\"" << clave << "\": \"" << valor << "\",";
+	strBuf << "\"" << clave << "\": \"" << valor << "\"";
+	if (!elementofinal) strBuf << ",";
 	return strBuf.str();
 }
 
-std::string InfoJuego::muestra(std::string clave, char valor)
+std::string InfoJuego::muestra(std::string clave, char valor,bool elementofinal)
 {
 	std::ostringstream strBuf;
-	strBuf << "\"" << clave << "\": \"" << valor << "\",";
+	strBuf << "\"" << clave << "\": \"" << valor << "\"";
+	if (!elementofinal) strBuf << ",";
 	return strBuf.str();
 }
 
 
-std::string InfoJuego::muestra(std::string clave, long valor)
+std::string InfoJuego::muestra(std::string clave, long valor,bool elementofinal)
 {
 	std::ostringstream strBuf;
-	strBuf << "\"" << clave << "\": \"" << valor << "\",";
+	strBuf << "\"" << clave << "\": \"" << valor << "\"";
+	if (!elementofinal) strBuf << ",";
 	return strBuf.str();
 }
 
-std::string InfoJuego::muestra(std::string clave, int valor)
+std::string InfoJuego::muestra(std::string clave, int valor,bool elementofinal)
 {
 	std::ostringstream strBuf;
-	strBuf << "\"" << clave << "\": \"" << valor << "\",";
+	strBuf << "\"" << clave << "\": \"" << valor << "\"";
+	if (!elementofinal) strBuf << ",";
 	return strBuf.str();
 }
 
