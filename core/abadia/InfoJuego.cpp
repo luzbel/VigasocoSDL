@@ -39,6 +39,7 @@ char pathDump[200];
 #include "sonidos.h"
 //#include "Monje.h"
 #include "Berengario.h"
+#include <stack>
 #endif
 using namespace Abadia;
 
@@ -328,6 +329,15 @@ out << "\"sonidos\": [";
 
 out << "\"0\"],";
 
+out << "\"frases\": [";
+	bool primero=true;
+	while (!elJuego->frases.empty()) {
+		if (!primero) { out << ","; } else primero=false;
+		out << "\"" << elJuego->frases.top() << "\"";
+		elJuego->frases.pop();
+	}
+out << "],";
+
 // out << muestra("webCommand", webCommand);
 
 	out << "\"Personajes\": {";
@@ -343,7 +353,7 @@ out << "\"0\"],";
 		"Jorge", // 6 
 		"Bernardo" }; // 7
 
-	bool primero=true;
+	primero=true;
 	for(int i=0;i<elJuego->numPersonajes;i++) {
 		Personaje *pers=elJuego->personajes[i];
 		if (pers->sprite->esVisible) {

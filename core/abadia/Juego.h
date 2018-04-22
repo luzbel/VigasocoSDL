@@ -13,6 +13,7 @@
 
 #ifdef __abadIA__
 #include <vector>
+#include <stack>
 #endif
 
 class CPC6128;					// definido en CPC6128.h
@@ -94,6 +95,7 @@ public:
 //        static std::vector<bool> sonidos; // sonidos activos para pasar a la IA
 //	static const bool sonidos[12];
 	bool sonidos[12]; 
+	std::stack<int> frases; // una pila con todas las frases dichas desde el ultimo dump
 #endif
 
 

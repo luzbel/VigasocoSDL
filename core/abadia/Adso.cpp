@@ -443,6 +443,9 @@ void Adso::escribeSN(bool muestra)
 {
 	if (muestra){
 		// CPC elMarcador->imprimeFrase("S:N", 148, 164, 2, 3);
+#ifdef __abadIA__
+		elJuego->frases.push(0x38+2); // esta frase no está en GestorFrases::frases así que le damos un nuevo ID aquí
+#endif
 		elMarcador->imprimeFrase("S:N", 148, 164, 4, 0); // VGA
 	} else {
         	// CPC elMarcador->imprimeFrase("   ", 148, 164, 2, 3);
