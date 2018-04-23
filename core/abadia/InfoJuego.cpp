@@ -96,6 +96,7 @@ void start_web_server() {
 
 		json = "{}";
 		laLogica->inicia();
+//		laLogica->haFracasado=true;
 		globalcc = '\0';
 		return crow::response(200, json);
 	});
@@ -281,7 +282,7 @@ std::string InfoJuego::muestraInfo()
 // se le mostrará la informaci�n de la habitacion en formato reducido
 // En versiones posteriores la IA deberá jugar procesando los pixeles
 // de la misma pantalla que usan los jugadores humanos
-mostrarRejilla=false;
+mostrarRejilla=false; // JT ya no quiere esto mientras juega
 mostrarMapaPlantaActual=false;
 mostrarMapaRestoPlantas=false;
 
@@ -396,8 +397,27 @@ out << "],";
 		}
 	}	
 //			out << "{\"filler\":\"fillvalue\"}";
-	out << "]}"; // fin lista objetos
+	out << "]},"; // fin lista objetos
+
+	RejillaPantalla *rejilla = elMotorGrafico->rejilla;
+
+	// pinta la rejilla de un color dependiendo de su altura
+	primero=true;
+	out << "\"rejilla\": [";
+	for (int j = 0; j < 24; j++){
+		if (!primero) { out << ","; } else primero=false;
+		out << "[";
+		bool primeroJ=true;
+		for (int i = 0; i < 24; i++){
+			if (!primeroJ) { out << ","; } else primeroJ=false;
+			out << (int)rejilla->bufAlturas[j][i];
+		}
+		out << "]"; // fin array eje J rejilla
+	}
+	out << "]"; // fin rejilla
+
 	out << "}"; // fin dump
+
 
 jugada++;
 
