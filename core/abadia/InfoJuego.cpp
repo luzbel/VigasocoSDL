@@ -281,7 +281,7 @@ std::string InfoJuego::muestraInfo()
 // se le mostrará la informaci�n de la habitacion en formato reducido
 // En versiones posteriores la IA deberá jugar procesando los pixeles
 // de la misma pantalla que usan los jugadores humanos
-mostrarRejilla=true;
+mostrarRejilla=false;
 mostrarMapaPlantaActual=false;
 mostrarMapaRestoPlantas=false;
 
