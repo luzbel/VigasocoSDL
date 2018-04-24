@@ -75,26 +75,143 @@ void start_web_server() {
 		return crow::response(200, json);
 	});
 
-	CROW_ROUTE(app, "/save")([](){
+		// TODO: fusionar con save y hacer un if seg√n el headeraccept application/json o no
+	CROW_ROUTE(app, "/saveJSON")([](){
+			// ejemplo: curl http://localhost:4477/saveJSON > crow.save.json
 		std::string json;
 
 		json = "{}";
-		if (elJuego->save(0)) return crow::response(200, json);
-				else  return crow::response(500, json);
+
+		bool ok=elJuego->save(0);
+		if (ok) { // TODO: falta control errores
+			std::stringstream json;
+			char dump[8192]; //TODO: intentar que sea dinamico
+			std::ifstream savefile("abadia0.save");
+			savefile.read(dump,8192);
+			json << "{\"snapshot\":\"" << dump << "\"}";		
+			return crow::response(200, json.str());
+		} 
+		else  return crow::response(500, json);
 	});
 
+	CROW_ROUTE(app, "/save")([](){
+			// ejemplo: curl http://localhost:4477/save > crow.save
+
+		bool ok=elJuego->save(0);
+		if (ok) { // TODO: falta control errores
+			char dump[8192]; //TODO: intentar que sea dinamico
+			std::ifstream savefile("abadia0.save");
+			savefile.read(dump,8192);
+			return crow::response(200, dump);
+		} 
+		else  return crow::response(500);
+	});
+/*
 	CROW_ROUTE(app, "/load")([](){
 		std::string json;
 
 		json = "{}";
-		if (elJuego->cargar(0)) return crow::response(200, json);
-				else return crow::response(500, "{ \"MUST RESET\"}" );
+		bool ok=elJuego->cargar(0));
+		
+		if (ok) {
+			
+			 return crow::response(200, json);
+		}
+		else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
 	});
+*/
+/*
+ CROW_ROUTE(app, "/add_json")
+        .methods("POST"_method)
+    ([](const crow::request& req){
+        auto x = crow::json::load(req.body);
+        if (!x)
+            return crow::response(400);
+        int sum = x["a"].i()+x["b"].i();
+        std::ostringstream os;
+        os << sum;
+        return crow::response{os.str()};
+    });
+*/
+
+		// TODO: fusionar con load y hacer un if seg√n el header content-type application/json o no
+	CROW_ROUTE(app, "/loadJSON").methods("POST"_method)([](const crow::request& req) {
+		auto x=crow::json::load(req.body);
+		if (!x) return crow::response(500);
+		//std::string snapshot = x["snapshot"].string_value();
+		//auto snapshot = x["snapshot"].string_value();
+		std::ofstream savefile("abadia0.save");
+		//savefile << req.body;
+			// si se env√a asi curl -v -X POST  --data @crow.sav.json http://localhost:4477/loadJSON
+			// se come los cambios de linea y no nos vale. Se tiene que enviar as√≠
+			// curl -v -X POST  -T crow.save.json http://localhost:4477/loadJSON
+		savefile << x["snapshot"].s(); 
+		savefile.close();
+
+
+		std::string json;
+
+		json = "{}";
+		bool ok=elJuego->cargar(0);
+		
+		if (ok) {
+//			elJuego->ReiniciaPantalla();
+				// TODO: esto solo fuerza el repintado del area  de juego
+				// pero el dia, marcador de obsequium, etc. no se refresca
+				// o se hace public ReiniciaPantalla o se quita la confirmacion
+				// al cargar y grabar con las letras C y G 
+				// (total, esta version no es interactiva) 
+				// y se simula la pulsacion de la tecla de cargado desde aqui
+			elJuego->motor->posXPantalla = elJuego->motor->posYPantalla = -1;
+			 return crow::response(200, json);
+		}
+		else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
+
+//		return crow::response(200);
+	});
+
+	CROW_ROUTE(app, "/load").methods("POST"_method)([](const crow::request& req) {
+		std::ofstream savefile("abadia0.save");
+			// si se env√a asi curl -v -X POST  --data @crow.save http://localhost:4477/loa
+			// se come los cambios de linea y no nos vale. Se tiene que enviar as√≠
+			// curl -v -X POST  -T crow.save http://localhost:4477/load
+		savefile << req.body; 
+		savefile.close();
+
+
+		std::string json;
+
+		json = "{}";
+		bool ok=elJuego->cargar(0);
+		
+		if (ok) {
+			//elJuego->ReiniciaPantalla();
+				// TODO: esto solo fuerza el repintado del area  de juego
+				// pero el dia, marcador de obsequium, etc. no se refresca
+				// o se hace public ReiniciaPantalla o se quita la confirmacion
+				// al cargar y grabar con las letras C y G 
+				// (total, esta version no es interactiva) 
+				// y se simula la pulsacion de la tecla de cargado desde aqui
+			elJuego->motor->posXPantalla = elJuego->motor->posYPantalla = -1;
+			 return crow::response(200, json);
+		}
+		else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
+
+
+//		return crow::response(200);
+	});
+
 
 	CROW_ROUTE(app, "/reset")([](){
 		std::string json;
 
 		json = "{}";
+			// TODO: esto no fuerza el repintando de todos los elementos
+			// asi que el obsequim mostrado parecera menos si en la partida anterior
+			// nos habian quitado, tampoco se actualiza el dia ni la hora
+			// ver comenarios en /loadJSON
+			// otra opcion es poner en Juego.cpp codigo que ante una pulsacion de tecla
+			// por ejemplo R, reinicie la pantalla llamando a ReiniciaPantalla()
 		laLogica->inicia();
 //		laLogica->haFracasado=true;
 		globalcc = '\0';
