@@ -86,14 +86,4 @@ COPY busybox /bin/busybox
 USER abadIA
 EXPOSE 4477
 WORKDIR /bin
-
-# No funcionan
-#ENTRYPOINT ["busybox","sh -c 'while true; do VigasocoSDL abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin; done'"]
-#ENTRYPOINT ["busybox","sh -c 'while true; do echo A; sleep 1; done'"]
-
-#estas funcionan
-#ENTRYPOINT ["VigasocoSDL","abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin"]
 ENTRYPOINT ["busybox","sh","-c","while true; do VigasocoSDL abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin; done"]
-#ENTRYPOINT ["busybox","sh -c 'while true; do VigasocoSDL abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin; done'"]
-#ENTRYPOINT ["busybox","sh", "-c","while true; do echo A; sleep 1; done"]
-#ENTRYPOINT ["busybox","sh"]
