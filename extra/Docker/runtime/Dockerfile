@@ -31,24 +31,12 @@ RUN cd /home/abadIA && git clone https://github.com/luzbel/VigasocoSDL.git \
 
 FROM scratch
 ENV SDL_VIDEODRIVER dummy
-#COPY --from=build /bin/rm /bin/
-#COPY --from=build /bin/mv /bin/
-COPY --from=build /usr/bin/ldd /bin/
-COPY --from=build /bin/bash /bin/
-COPY --from=build /bin/dash /bin/
-COPY --from=build /bin/ls /bin/
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/VigasocoSDL /bin/
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/video /bin/video
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/audio /bin/audio
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/input /bin/input
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/roms /bin/roms
 COPY --from=build /etc/passwd /etc/passwd
-#esto es lo que quiero quitar
-#COPY --from=build /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu
-#sin esta no va, me falta copiar algo de /lib/x*
-COPY --from=build /lib/x86_64-linux-gnu /lib/x86_64-linux-gnu
-#COPY --from=build /lib64 /lib64
-#COPY --from=build /home/abadIA/rootfs /
 COPY --from=build /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /lib/x86_64-linux-gnu/
 COPY --from=build /lib/x86_64-linux-gnu/libm.so.6 /lib/x86_64-linux-gnu/
 COPY --from=build /usr/lib/x86_64-linux-gnu/libSDL-1.2.so.0 /lib/x86_64-linux-gnu/
@@ -91,14 +79,9 @@ COPY --from=build /lib/x86_64-linux-gnu/libgpg-error.so.0 /lib/x86_64-linux-gnu/
 COPY --from=build /usr/lib/x86_64-linux-gnu/libogg.so.0 /lib/x86_64-linux-gnu/
 COPY --from=build /usr/lib/x86_64-linux-gnu/libvorbis.so.0 /lib/x86_64-linux-gnu/
 COPY --from=build /etc/passwd /etc/passwd 
-#COPY --from=build /lib64/ld-linux-x86-64.so.2 /lib64
+COPY --from=build /lib/x86_64-linux-gnu/ld-2.23.so /lib/x86_64-linux-gnu/
 COPY --from=build /lib64 /lib64
-COPY busybox /bin/busybox
-#USER abadIA
+USER abadIA
 EXPOSE 4477
 WORKDIR /bin
-#ENTRYPOINT ["VigasocoSDL","abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin"]
-#ENTRYPOINT ["ls"]
-#ENTRYPOINT ["dash"]
-#ENTRYPOINT ["ldd"]
-#ENTRYPOINT ["/bin/busybox"]
+ENTRYPOINT ["VigasocoSDL","abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin"]
