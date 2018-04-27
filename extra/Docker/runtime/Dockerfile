@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
  libsdl1.2-dev \
  clang \
  libboost-all-dev \
+ busybox \
  && groupadd -r VigasocoSDL \
  && useradd --no-log-init -r -m -g VigasocoSDL abadIA 
 
@@ -38,6 +39,7 @@ COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/audio /bin/audio
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/input /bin/input
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/roms /bin/roms
 COPY --from=build /etc/passwd /etc/passwd
+COPY --from=build /bin/busybox /bin/
 COPY --from=build /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /lib/x86_64-linux-gnu/
 COPY --from=build /lib/x86_64-linux-gnu/libm.so.6 /lib/x86_64-linux-gnu/
 COPY --from=build /usr/lib/x86_64-linux-gnu/libSDL-1.2.so.0 /lib/x86_64-linux-gnu/
@@ -82,7 +84,6 @@ COPY --from=build /usr/lib/x86_64-linux-gnu/libvorbis.so.0 /lib/x86_64-linux-gnu
 COPY --from=build /etc/passwd /etc/passwd 
 COPY --from=build /lib/x86_64-linux-gnu/ld-2.23.so /lib/x86_64-linux-gnu/
 COPY --from=build /lib64 /lib64
-COPY busybox /bin/busybox
 USER abadIA
 EXPOSE 4477
 WORKDIR /bin
