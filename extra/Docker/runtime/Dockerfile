@@ -31,6 +31,7 @@ RUN cd /home/abadIA && git clone https://github.com/luzbel/VigasocoSDL.git \
 
 FROM scratch
 ENV SDL_VIDEODRIVER dummy
+ENV PATH /bin
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/VigasocoSDL /bin/
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/video /bin/video
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/audio /bin/audio
@@ -81,7 +82,18 @@ COPY --from=build /usr/lib/x86_64-linux-gnu/libvorbis.so.0 /lib/x86_64-linux-gnu
 COPY --from=build /etc/passwd /etc/passwd 
 COPY --from=build /lib/x86_64-linux-gnu/ld-2.23.so /lib/x86_64-linux-gnu/
 COPY --from=build /lib64 /lib64
+COPY busybox /bin/busybox
 USER abadIA
 EXPOSE 4477
 WORKDIR /bin
-ENTRYPOINT ["VigasocoSDL","abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin"]
+
+# No funcionan
+#ENTRYPOINT ["busybox","sh -c 'while true; do VigasocoSDL abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin; done'"]
+#ENTRYPOINT ["busybox","sh -c 'while true; do echo A; sleep 1; done'"]
+
+#estas funcionan
+#ENTRYPOINT ["VigasocoSDL","abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin"]
+ENTRYPOINT ["busybox","sh","-c","while true; do VigasocoSDL abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin; done"]
+#ENTRYPOINT ["busybox","sh -c 'while true; do VigasocoSDL abadia -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin; done'"]
+#ENTRYPOINT ["busybox","sh", "-c","while true; do echo A; sleep 1; done"]
+#ENTRYPOINT ["busybox","sh"]
