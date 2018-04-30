@@ -75,7 +75,7 @@ void start_web_server() {
 		return crow::response(200, json);
 	});
 
-		// TODO: fusionar con save y hacer un if segÃn el headeraccept application/json o no
+		// TODO: fusionar con save y hacer un if segï¿½n el headeraccept application/json o no
 	CROW_ROUTE(app, "/saveJSON")([](){
 			// ejemplo: curl http://localhost:4477/saveJSON > crow.save.json
 		std::string json;
@@ -134,7 +134,7 @@ void start_web_server() {
     });
 */
 
-		// TODO: fusionar con load y hacer un if segÃn el header content-type application/json o no
+		// TODO: fusionar con load y hacer un if segï¿½n el header content-type application/json o no
 	CROW_ROUTE(app, "/loadJSON").methods("POST"_method)([](const crow::request& req) {
 		auto x=crow::json::load(req.body);
 		if (!x) return crow::response(500);
@@ -142,7 +142,7 @@ void start_web_server() {
 		//auto snapshot = x["snapshot"].string_value();
 		std::ofstream savefile("abadia0.save");
 		//savefile << req.body;
-			// si se envÃa asi curl -v -X POST  --data @crow.sav.json http://localhost:4477/loadJSON
+			// si se envï¿½a asi curl -v -X POST  --data @crow.sav.json http://localhost:4477/loadJSON
 			// se come los cambios de linea y no nos vale. Se tiene que enviar asÃ­
 			// curl -v -X POST  -T crow.save.json http://localhost:4477/loadJSON
 		savefile << x["snapshot"].s(); 
@@ -172,7 +172,7 @@ void start_web_server() {
 
 	CROW_ROUTE(app, "/load").methods("POST"_method)([](const crow::request& req) {
 		std::ofstream savefile("abadia0.save");
-			// si se envÃa asi curl -v -X POST  --data @crow.save http://localhost:4477/loa
+			// si se envï¿½a asi curl -v -X POST  --data @crow.save http://localhost:4477/loa
 			// se come los cambios de linea y no nos vale. Se tiene que enviar asÃ­
 			// curl -v -X POST  -T crow.save http://localhost:4477/load
 		savefile << req.body; 
@@ -229,9 +229,13 @@ void start_web_server() {
 	    std::cout << "infoJuego -> Mando el comando -> " << str << std::endl;	
 		elJuego->infoJuego->sendCommand(str.at(0));
 	    std::cout << "Pido el JSON" << std::endl;	
+		int muybored = 0;
 		while (globalcc != '\0') {
 			std::cout << "wait for the command completion" << std::endl;
 			std::this_thread::sleep_for(std::chrono::milliseconds(50));
+			muybored++;
+			if (muybored > 100)
+				globalcc = '\0';
 		}
 		json = elJuego->infoJuego->muestraInfo();
 
