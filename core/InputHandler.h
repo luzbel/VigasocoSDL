@@ -72,7 +72,7 @@ public:
 
 	void acquire();
 	void unAcquire();
-	void process();
+	bool process();
 
 // helper methods
 protected:

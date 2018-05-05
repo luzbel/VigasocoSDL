@@ -281,6 +281,11 @@ void VigasocoSDL::platformSpecificEnd()
 
 bool VigasocoSDL::processEvents()
 {
+#ifdef __abadIA__
+	// en abadIA los eventos se controlan desde un nuevo plugin de entrada
+	// el plugin de entrada propaga el evento SDL_QUIT devolviendo false
+	// en el m√todo process
+#else
 	SDL_Event event;
 	if ( SDL_PollEvent(&event) )
 	{
@@ -291,7 +296,7 @@ bool VigasocoSDL::processEvents()
 		if (event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_ESCAPE) return false;
 #endif
 	}
-
+#endif
 	return true;
 }
 

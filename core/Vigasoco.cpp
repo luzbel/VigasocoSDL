@@ -315,7 +315,9 @@ void Vigasoco::mainLoop()
 			initFrame();
 
 			// process inputs
-			_inputHandler->process();
+			// si alguno de los plugins de entrada nos indica que ha 
+			// recibido el evento de salir, salimos del bucle de juego
+			if (!_inputHandler->process()) return;
 
 			// change core state if necessary
 			processCoreInputs();

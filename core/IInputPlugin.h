@@ -28,7 +28,7 @@ public:
 	virtual void acquire() = 0;
 	virtual void unAcquire() = 0;
 
-	virtual void process(int *inputs) = 0;
+	virtual bool process(int *inputs) = 0;
 
 	// access to custom plugin properties
 	virtual const std::string *getProperties(int *num) const = 0;

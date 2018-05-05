@@ -119,7 +119,7 @@ void InputHandler::unAcquire()
 	}
 }
 
-void InputHandler::process()
+bool InputHandler::process()
 {
 	GameDriver::InputPorts &inputPorts = *_inputPorts;
 
@@ -134,7 +134,9 @@ void InputHandler::process()
 
 	// for each plugin, modify _inputs array if the user has pressed an input
 	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
-		(*i)->process(_inputs);
+		// Si alguno de los plugins recibe una seÃal para salir,
+		// desencadenamos salir del bucle principal
+		if (!(*i)->process(_inputs)) return false;
 	}
 
 	// process the _inputs array modifying the input ports' values
@@ -166,6 +168,8 @@ void InputHandler::process()
 		// update input port value
 		ip.setValue(value);
 	}
+
+	return true; // continuar sin salir del juego
 }
 
 void InputHandler::copyInputsState(int *dest)
