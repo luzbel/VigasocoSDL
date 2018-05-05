@@ -226,6 +226,11 @@ void AccionesCompletas::ejecuta(AccionesDia *ad)
 // genera el efecto de la espiral
 void AccionesDia::dibujaEfectoEspiral()
 {
+#ifdef __abadIA__
+	// en abadIA no queremos efectos que nos retarden la puesta en marcha de la partida
+	// el agente de la IA tiene que jugar cuantas m√s partidas y m√s rapidas mejor
+	return;
+#endif
 	dibujaEspiral(3);	// dibuja la espiral
 	dibujaEspiral(0);	// borra la espiral
 
