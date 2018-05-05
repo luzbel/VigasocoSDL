@@ -37,10 +37,13 @@ std::string g_drawPlugin("win8");
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,wingris8 -audio:libVigasocoSDLAudioPlugin.so,SDLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoNULLAudioPlugin.so,NULLAudioPlugin
+#ifdef __abadIA__
+std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
+std::string g_audioPlugin("NULLAudioPlugin");
+#else
 std::string g_audioPluginsDLL("libVigasocoSDLAudioPlugin.so");
 std::string g_audioPlugin("SDLAudioPlugin");
-//std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
-//std::string g_audioPlugin("NULLAudioPlugin");
+#endif
 
 Strings g_inputPluginsDLLs;
 Strings g_inputPlugins;
@@ -314,7 +317,13 @@ bool parseCommandLine(std::string cmdLine)
 	// if the user hasn't set any input plugin, set the default one
 	if (g_inputPluginsDLLs.size() == 0){
 		g_inputPluginsDLLs.push_back("libVigasocoSDLInputPlugin.so");
+#ifdef __abadIA__
+		g_inputPlugins.push_back("PollEvent");
+		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
+		g_inputPlugins.push_back("crow");
+#else
 		g_inputPlugins.push_back("SDLInputPlugin");
+#endif
 	}
 
 	return true;

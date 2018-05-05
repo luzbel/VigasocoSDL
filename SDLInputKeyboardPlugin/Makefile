@@ -3,7 +3,7 @@ VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 all: ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so 
 
-OBJECTS = SDLInputKeyboardPlugin.o PluginMain.o
+OBJECTS = SDLInputKeyboardPlugin.o SDLInputKeyboardPluginsPollEvent.o PluginMain.o
 
 ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so: $(OBJECTS)
 	$(CXX) -fPIC -shared $(OBJECTS) -o $@

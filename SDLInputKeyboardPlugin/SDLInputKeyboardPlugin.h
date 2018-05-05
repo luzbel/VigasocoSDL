@@ -36,7 +36,7 @@ public:
 	virtual void acquire();
 	virtual void unAcquire();
 
-	virtual void process(int *inputs);
+	virtual bool process(int *inputs);
 
 	// custom properties
 	virtual const std::string *getProperties(int *num) const;

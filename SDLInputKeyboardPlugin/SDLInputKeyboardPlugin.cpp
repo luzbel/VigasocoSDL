@@ -157,10 +157,13 @@ enum ps3_sixaxis_sdl_axis
 
 #endif // _PS3
 
-void SDLInputKeyboardPlugin::process(int *inputs)
+bool SDLInputKeyboardPlugin::process(int *inputs)
 {
 	//Uint8 *keystate = SDL_GetKeyState(NULL);
 	int size;
+
+//SDL_PumpEvents(); //no llega lo que paso con SDL_PushEvents :-(
+// TODO: esto parece que se puede hacer una sola vez al principio
 	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
 	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
 
@@ -247,11 +250,14 @@ void SDLInputKeyboardPlugin::process(int *inputs)
 			// update inputs
 			if (g_keyMapping[i] != 0){
 				if (keystate[g_keyMapping[i]] ){
+fprintf(stderr,"keystate %d keymap %d\n",i,g_keyMapping[i]);
 					inputs[i]++;
 				}
 			}
 		}
 	}
+
+	return true; // este plugin no tiene nada para provocar la salida del juego
 }
 
 /////////////////////////////////////////////////////////////////////////////

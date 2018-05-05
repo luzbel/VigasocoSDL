@@ -6,11 +6,12 @@
 #include "SDL.h"
 
 #include "SDLInputKeyboardPlugin.h"
+#include "SDLInputKeyboardPluginsPollEvent.h"
 
-static const char * const description = "VIGASOCO SDL Keyboard Plugin v1.0";
+static const char * const description = "VIGASOCO SDL Keyboard Plugin v1.1";
 
 static const char *plugins[] = {
-	"SDLInputPlugin" 
+	"SDLInputPlugin" , "PollEvent"
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -26,7 +27,10 @@ void createPlugin(const char *name,void**plugin)
 {
 	if (strcmp(name, plugins[0]) == 0){
 		*plugin = new SDLInputKeyboardPlugin();
-	} else {
+	} else if (strcmp(name, plugins[1]) == 0) {
+		*plugin = new SDLInputKeyboardPluginsPollEvent();
+        }
+	 else {
 		*plugin = NULL;
 	}
 }
