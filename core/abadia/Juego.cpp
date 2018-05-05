@@ -1789,6 +1789,8 @@ despues_de_cargar_o_iniciar:
 			// actualiza el estado de los controles
 			controles->actualizaEstado();
 
+			compruebaReinicio();
+
 			// obtiene el contador de la animación de guillermo para saber si se generan caminos en esta iteración
 			elBuscadorDeRutas->contadorAnimGuillermo = laLogica->guillermo->contadorAnimacion;
 
@@ -2096,6 +2098,23 @@ void Juego::actualizaLuz()
 	// actualiza las características del sprite de la luz según la posición del personaje
 	SpriteLuz *sprLuz = (SpriteLuz *) sprites[spriteLuz];
 	sprLuz->ajustaAPersonaje(personajes[1]);
+}
+
+// comprueba si se solicita reiniciar la partida 
+// con una pulsacion de tecla (no desde el menu)
+void Juego::compruebaReinicio()
+{
+	// si se ha pulsado suprimir, se para hasta que se vuelva a pulsar
+	if (controles->seHaPulsado(KEYBOARD_E)){  // ?E de rEset 
+		// Frase vacia para parar la frase actual
+		elGestorFrases->muestraFraseYa(0x38);
+		// Esperamos a que se limpie el marcador
+		while (elGestorFrases->mostrandoFrase)
+		{
+			elGestorFrases->actualizaEstado();
+		}
+		logica->inicia();
+	}
 }
 
 // comprueba si se debe pausar el juego

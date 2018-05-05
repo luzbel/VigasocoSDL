@@ -141,6 +141,7 @@ protected:
 	void generaGraficosFlipeadosVGA();
 	void flipeaGraficosVGA(UINT8 *src, UINT8 *dest, int ancho, int bytes);
 
+	void compruebaReinicio();
 	void compruebaPausa();
 	bool compruebaLoad();
 	void compruebaSave();
