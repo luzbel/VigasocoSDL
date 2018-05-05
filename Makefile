@@ -1,5 +1,6 @@
 all:
 	cd SDLInputKeyboardPlugin && make
+	cd HTTPInputPlugin && make
 	cd SDLVideoPlugins && make
 	cd SDLAudioPlugin && make
 	cd NULLAudioPlugin && make
@@ -7,6 +8,7 @@ all:
 
 clean:
 	cd SDLInputKeyboardPlugin && make clean
+	cd HTTPInputPlugin && make clean
 	cd SDLVideoPlugins && make clean
 	cd SDLAudioPlugin && make clean
 	cd NULLAudioPlugin && make clean
