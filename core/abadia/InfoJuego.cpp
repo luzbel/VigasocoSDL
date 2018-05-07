@@ -424,6 +424,7 @@ out << muestra("bonus", laLogica->bonus,false);
 out << muestra("investigacionCompleta", laLogica->investigacionCompleta,false);
 out << muestra("porcentaje", laLogica->calculaPorcentajeMision(),false);
 out << muestra("numPantalla", elJuego->motor->numPantalla,false);
+out << muestra("planta", elMotorGrafico->obtenerPlanta(elMotorGrafico->obtenerAlturaBasePlanta(elMotorGrafico->personaje->altura)) ,false);
 out << "\"sonidos\": [";
 //typedef std::vector<sound> tSounds;
 //typedef tSounds::iterator tIteratorSounds;
