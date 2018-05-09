@@ -402,7 +402,15 @@ int BuscadorRutas::buscaCamino(PersonajeConIA *origen, PosicionJuego *destino)
 
 				// ajusta la posición de destino a las coordenadas de rejilla
 				bool noHayError = rejilla->ajustaAPosRejilla(destino->posX, destino->posY, posXDest, posYDest);
+#ifdef __abadIA__
+				if (!noHayError) {
+					// para intentar depurar a posteriori, grabo en abadia.noHayError.save
+					elJuego->save(7); 
+					return -2;
+				}
+#else
 				assert(noHayError);
+#endif
 
 				return generaCaminoAPosicionSiAlcanzable(origen, posXDest, posYDest);
 			}
@@ -447,7 +455,16 @@ int BuscadorRutas::generaCaminoAPosicion(PersonajeConIA *pers, int posXDest, int
 {
 	// ajusta la posición del personaje a la rejilla
 	bool noHayError = rejilla->ajustaAPosRejilla(pers->posX, pers->posY, posXIni, posYIni);
-	assert(noHayError);
+#ifdef __abadIA__
+				if (!noHayError) {
+					// para intentar depurar a posteriori, grabo en abadia.noHayError.save
+					elJuego->save(7); 
+					return -2;
+				}
+#else
+				assert(noHayError);
+#endif
+
 
 	// busca una ruta dentro de una pantalla desde la posición de origen a la de destino
 	bool encontrado = buscaEnPantalla(posXDest, posYDest);
@@ -461,7 +478,16 @@ int BuscadorRutas::generaCaminoAPosicionSiAlcanzable(PersonajeConIA *pers, int p
 {
 	// ajusta la posición del personaje a la rejilla
 	bool noHayError = rejilla->ajustaAPosRejilla(pers->posX, pers->posY, posXIni, posYIni);
-	assert(noHayError);
+#ifdef __abadIA__
+				if (!noHayError) {
+					// para intentar depurar a posteriori, grabo en abadia.noHayError.save
+					elJuego->save(7); 
+					return -2;
+				}
+#else
+				assert(noHayError);
+#endif
+
 
 	// busca una ruta dentro de una pantalla desde la posición de origen a la de destino
 	bool encontrado = buscaEnPantallaSiAlcanzable(posXDest, posYDest);
@@ -512,7 +538,16 @@ int BuscadorRutas::compruebaFinCamino(PersonajeConIA *pers, bool encontrado)
 
 			// ajusta la posición de la siguiente alternativa a la rejilla
 			bool noHayError = rejilla->ajustaAPosRejilla(destino->posX, destino->posY, posXDest, posYDest);
-			assert(noHayError);
+#ifdef __abadIA__
+				if (!noHayError) {
+					// para intentar depurar a posteriori, grabo en abadia.noHayError.save
+					elJuego->save(7); 
+					return -2;
+				}
+#else
+				assert(noHayError);
+#endif
+
 
 			// vuelve a probar a ver si encuentra el camino a esa posición
 			return generaCaminoAPosicionSiAlcanzable(pers, posXDest, posYDest);
@@ -1107,7 +1142,16 @@ void BuscadorRutas::reconstruyeCamino(PersonajeConIA *pers)
 
 		// obtiene la posición del personaje con respecto a las 20x20 posiciones centrales de la rejilla
 		bool noHayError = rejilla->ajustaAPosRejilla(pers->posX, pers->posY, posXRejilla, posYRejilla);
-		assert(noHayError);
+#ifdef __abadIA__
+				if (!noHayError) {
+					// para intentar depurar a posteriori, grabo en abadia.noHayError.save
+					elJuego->save(7); 
+//					return;
+				}
+#else
+				assert(noHayError);
+#endif
+
 
 		// comprueba si ha llegado a la posición de destino antes de sacar más valores de la pila
 		llegoADestino = ((posXRejilla == posXDest) && (posYRejilla == posYDest));

@@ -50,7 +50,11 @@ public:
 	static const int spritesReflejos = primerSpriteObjetos + numObjetos;
 	static const int spriteLuz = spritesReflejos + 2;
 	static const int numSprites = spriteLuz + 1;
+#ifdef __abadIA__
+	static const char *savefile[8];
+#else
 	static const char *savefile[7];
+#endif
 
 // campos
 private:

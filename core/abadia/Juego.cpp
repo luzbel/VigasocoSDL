@@ -71,6 +71,18 @@ const char *Juego::savefile[7] = {
 	"/save/abadia6.save"
 };
 #else
+#ifdef __abadIA__
+const char *Juego::savefile[8] = {
+	 "abadia0.save",
+	 "abadia1.save",
+	 "abadia2.save",
+	 "abadia3.save",
+	 "abadia4.save",
+	 "abadia5.save",
+	 "abadia6.save",
+	 "abadia.noHayError.save"
+};
+#else
 const char *Juego::savefile[7] = {
 	 "abadia0.save",
 	 "abadia1.save",
@@ -80,8 +92,9 @@ const char *Juego::savefile[7] = {
 	 "abadia5.save",
 	 "abadia6.save"
 };
-#endif
-#endif
+#endif // abadIA
+#endif // nativeclient
+#endif // EE
 
 /////////////////////////////////////////////////////////////////////////////
 // inicializaci�n y limpieza
