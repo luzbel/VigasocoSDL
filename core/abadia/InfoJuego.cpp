@@ -208,6 +208,7 @@ void start_web_server() {
 		std::string json;
 
 		json = "{}";
+			elJuego->ReiniciaPantalla(); // a ver si con esto se quita el TODO siguiente
 			// TODO: esto no fuerza el repintando de todos los elementos
 			// asi que el obsequim mostrado parecera menos si en la partida anterior
 			// nos habian quitado, tampoco se actualiza el dia ni la hora
