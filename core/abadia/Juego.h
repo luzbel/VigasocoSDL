@@ -130,10 +130,13 @@ private:
 	void cambioCPC_VGA(void);
 	void compruebaCambioCPC_VGA(void);
 	bool compruebaMenu(void);
+#ifndef __abadIA__
 	void ReiniciaPantalla(void);
+#endif
 	InfoJuego *Info(void);
 public:
 #ifdef __abadIA__
+	void ReiniciaPantalla(void);
 	bool cargar(int slot);
 	bool save(int slot);
 #endif

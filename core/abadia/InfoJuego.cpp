@@ -157,14 +157,14 @@ void start_web_server() {
 		bool ok=elJuego->cargar(0);
 		
 		if (ok) {
-//			elJuego->ReiniciaPantalla();
+			elJuego->ReiniciaPantalla(); // a ver si con esto se quita el TODO siguiente
 				// TODO: esto solo fuerza el repintado del area  de juego
 				// pero el dia, marcador de obsequium, etc. no se refresca
 				// o se hace public ReiniciaPantalla o se quita la confirmacion
 				// al cargar y grabar con las letras C y G 
 				// (total, esta version no es interactiva) 
 				// y se simula la pulsacion de la tecla de cargado desde aqui
-			elJuego->motor->posXPantalla = elJuego->motor->posYPantalla = -1;
+//			elJuego->motor->posXPantalla = elJuego->motor->posYPantalla = -1;
 			 return crow::response(200, json);
 		}
 		else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
@@ -187,14 +187,14 @@ void start_web_server() {
 		bool ok=elJuego->cargar(0);
 		
 		if (ok) {
-			//elJuego->ReiniciaPantalla();
+			elJuego->ReiniciaPantalla(); // a ver si con esto se quita el TODO siguiente
 				// TODO: esto solo fuerza el repintado del area  de juego
 				// pero el dia, marcador de obsequium, etc. no se refresca
 				// o se hace public ReiniciaPantalla o se quita la confirmacion
 				// al cargar y grabar con las letras C y G 
 				// (total, esta version no es interactiva) 
 				// y se simula la pulsacion de la tecla de cargado desde aqui
-			elJuego->motor->posXPantalla = elJuego->motor->posYPantalla = -1;
+//			elJuego->motor->posXPantalla = elJuego->motor->posYPantalla = -1;
 			 return crow::response(200, json);
 		}
 		else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
