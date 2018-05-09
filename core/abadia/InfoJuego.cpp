@@ -44,6 +44,8 @@ char pathDump[200];
 using namespace Abadia;
 
 #include "crow_all.h"
+// para evento SDL_QUIT
+#include "SDL.h"
 
 char globalcc = '\0';
 
@@ -219,7 +221,12 @@ void start_web_server() {
 	});
 
 	CROW_ROUTE(app, "/fin")([](){
+
 		globalcc = 'F';
+
+		SDL_Event sdlevent = {};
+		sdlevent.type = SDL_QUIT;
+		SDL_PushEvent(&sdlevent);
 		return "Pido Salir";
 	});
 
