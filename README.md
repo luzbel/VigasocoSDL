@@ -6,14 +6,6 @@ A branch of VigasocoSDL to allow interaction with the AbadIA project through a R
 
 ### Prerequisites
 
-Create the resources folders
-
-```bash
-mkdir VigasocoSDL/audio
-mkdir VigasocoSDL/video
-mkdir VigasocoSDL/input
-```
-
 Make sure your system includes clang, libboost and sdl1.2 . You can install these through
 
 ```bash
@@ -27,7 +19,7 @@ or the equivalent package manager for your Linux distribution.
 Compile the project with
 
 ```bash
-CXX=clang LD=clang make
+make
 ```
 
 ## Usage
@@ -35,5 +27,5 @@ CXX=clang LD=clang make
 To launch VigasocoSDL running "La Abadía del Crimen", type
 
 ```bash
-./VigasocoSDL abadia -audio:libVigasocoNULLAudioPlugin.so,NULLAudioPlugin -input:libVigasocoFakeInputPlugin.so,FakeInputPlugin -input:libVigasocoSDLInputPlugin.so,SDLInputPlugin
+make run
 ```
