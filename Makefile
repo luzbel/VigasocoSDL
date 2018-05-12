@@ -1,4 +1,11 @@
-all:
+all: folders build
+
+folders:
+	mkdir -p VigasocoSDL/audio
+	mkdir -p VigasocoSDL/video
+	mkdir -p VigasocoSDL/input
+
+build:
 	cd SDLInputKeyboardPlugin && make
 	cd HTTPInputPlugin && make
 	cd SDLVideoPlugins && make
