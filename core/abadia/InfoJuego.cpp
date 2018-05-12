@@ -250,7 +250,14 @@ void start_web_server() {
 		}
 		json = elJuego->infoJuego->muestraInfo();
 
-		return crow::response(200, json);
+		crow::response resp;
+  	  	resp.code = 200;
+   		resp.add_header("Access-Control-Allow-Origin", "*");
+		resp.add_header("Access-Control-Allow-Headers", "Content-Type");
+    	resp.write(json);
+    	return resp;
+
+		// return crow::response(200, json);
 	});
 
     app.port(4477).run(); // la primera letra de cuatro y la septima QR

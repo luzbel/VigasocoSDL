@@ -3,7 +3,7 @@
 0// duracionMomentoDia
 4// oldMomentoDia
 0// avanzarMomentoDia
-11// obsequium
+13// obsequium
 0// haFracasado
 0// investigacionCompleta
 0// bonus
@@ -25,7 +25,7 @@
 1// hayMovimiento
 1// cntMovimiento
 0// numPersonajeCamara
-3// opcionPersonajeCamara
+0// opcionPersonajeCamara
 // SPRITE 0
 1// esVisible
 // SPRITE 1
@@ -80,11 +80,11 @@
 0// esVisible
 // GUILLERMO
 1// orientacion
-135// posX
-127// posY
+143// posX
+78// posY
 2// altura
 0// estado
-2// contadorAnimacion
+0// contadorAnimacion
 0// bajando
 1// orientacion
 0// enDesnivel
@@ -95,7 +95,7 @@
 -34// despY
 16// valorPosicion
 0// puedeQuitarObjetos
-0// objetos
+32// objetos
 252// mascaraObjetos
 0// contadorObjetos
 8// permisosPuertas
@@ -103,8 +103,8 @@
 2// incrPosY
 // ADSO
 1// orientacion
-137// posX
-128// posY
+141// posX
+79// posY
 2// altura
 0// estado
 0// contadorAnimacion
@@ -140,7 +140,7 @@
 1// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
-1// flipX
+0// flipX
 49152// despFlipX
 -2// despX
 -34// despY
@@ -158,17 +158,17 @@
 0// estado2
 0// contadorEnScriptorium
 // ABAD
-0// orientacion
-135// posX
-137// posY
+1// orientacion
+139// posX
+87// posY
 2// altura
 129// estado
-0// contadorAnimacion
+3// contadorAnimacion
 0// bajando
-0// orientacion
+1// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
-1// flipX
+0// flipX
 49152// despFlipX
 -2// despX
 -34// despY
@@ -218,11 +218,11 @@
 0// contadorPergamino
 // SEVERINO
 1// orientacion
-136// posX
-85// posY
-2// altura
+111// posX
+112// posY
+0// altura
 0// estado
-2// contadorAnimacion
+1// contadorAnimacion
 0// bajando
 1// orientacion
 0// enDesnivel
@@ -239,8 +239,8 @@
 12// permisosPuertas
 8// numFotogramas
 47// mascarasPuertasBusqueda
-3// aDondeVa
-2// aDondeHaLlegado
+2// aDondeVa
+3// aDondeHaLlegado
 1// estaVivo
 // JORGE
 0// orientacion
@@ -382,13 +382,13 @@
 0// seHaCogido
 -1// numPersonaje
 // OBJETO 2
-2// orientacion
-136// posX
-168// posY
+0// orientacion
+0// posX
+0// posY
 0// altura
 0// seEstaCogiendo
-0// seHaCogido
--1// numPersonaje
+1// seHaCogido
+0// numPersonaje
 // OBJETO 3
 1// orientacion
 54// posX
@@ -428,4 +428,4 @@
 2// altura
 0// seEstaCogiendo
 0// seHaCogido
--1// numPersonaje
+-1// numPersonaj
