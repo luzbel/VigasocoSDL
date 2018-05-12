@@ -157,7 +157,8 @@ void start_web_server() {
 		bool ok=elJuego->cargar(0);
 		
 		if (ok) {
-			elJuego->ReiniciaPantalla(); // a ver si con esto se quita el TODO siguiente
+		elJuego->reset();
+//			elJuego->ReiniciaPantalla(); // a ver si con esto se quita el TODO siguiente
 				// TODO: esto solo fuerza el repintado del area  de juego
 				// pero el dia, marcador de obsequium, etc. no se refresca
 				// o se hace public ReiniciaPantalla o se quita la confirmacion
@@ -187,7 +188,8 @@ void start_web_server() {
 		bool ok=elJuego->cargar(0);
 		
 		if (ok) {
-			elJuego->ReiniciaPantalla(); // a ver si con esto se quita el TODO siguiente
+		elJuego->reset();
+//			elJuego->ReiniciaPantalla(); // a ver si con esto se quita el TODO siguiente
 				// TODO: esto solo fuerza el repintado del area  de juego
 				// pero el dia, marcador de obsequium, etc. no se refresca
 				// o se hace public ReiniciaPantalla o se quita la confirmacion
@@ -208,7 +210,7 @@ void start_web_server() {
 		std::string json;
 
 		json = "{}";
-			elJuego->ReiniciaPantalla(); // a ver si con esto se quita el TODO siguiente
+			//elJuego->ReiniciaPantalla(); // a ver si con esto se quita el TODO siguiente
 			// TODO: esto no fuerza el repintando de todos los elementos
 			// asi que el obsequim mostrado parecera menos si en la partida anterior
 			// nos habian quitado, tampoco se actualiza el dia ni la hora
@@ -216,6 +218,7 @@ void start_web_server() {
 			// otra opcion es poner en Juego.cpp codigo que ante una pulsacion de tecla
 			// por ejemplo R, reinicie la pantalla llamando a ReiniciaPantalla()
 		laLogica->inicia();
+		elJuego->reset();
 //		laLogica->haFracasado=true;
 		globalcc = '\0';
 		return crow::response(200, json);

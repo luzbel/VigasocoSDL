@@ -60,6 +60,7 @@ public:
 private:
 	bool mute;
 	unsigned short slot;
+	bool _reset=false;
 public:
 	int idioma;  // idioma de los textos TODO ponerlo como un enumerado
 	// GraficosCPC estaba como privado
@@ -140,6 +141,7 @@ private:
 	InfoJuego *Info(void);
 public:
 #ifdef __abadIA__
+	void reset(void);
 	void ReiniciaPantalla(void);
 	bool cargar(int slot);
 	bool save(int slot);

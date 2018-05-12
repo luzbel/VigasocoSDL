@@ -162,6 +162,7 @@ Juego::Juego(UINT8 *romData, CPC6128 *cpc)
 	sonidos[SONIDOS::Tintineo]=false;
 #endif
 */
+	_reset=false;
 }
 
 InfoJuego *Juego::Info() {
@@ -1732,6 +1733,10 @@ bool Juego::menu()
 	return false;
 }
 
+void Juego::reset() {
+	_reset=true;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // m�todo principal del juego
 /////////////////////////////////////////////////////////////////////////////
@@ -1774,7 +1779,8 @@ void Juego::run()
         while (true){
                 // inicia la lógica del juego
                 logica->inicia();
-
+despues_de_cargar_o_iniciar:
+_reset=false;
                 // limpia el área de juego y dibuja el marcador
                 limpiaAreaJuego(0);
                 marcador->dibujaMarcador();
@@ -1794,6 +1800,8 @@ void Juego::run()
                 marcador->limpiaAreaFrases();
 
                 while (true){   // el bucle principal del juego empieza aquí
+
+			if (_reset) goto despues_de_cargar_o_iniciar;
                         // actualiza el estado de los controles
                         controles->actualizaEstado();
 
