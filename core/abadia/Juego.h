@@ -89,6 +89,7 @@ public:
 
 // métodos
 private:
+	void reinicio();
 	bool cargar(int slot);
 	void save(int slot);
 	// TODO sacar todo lo relativo a menus
@@ -141,7 +142,7 @@ protected:
 	void generaGraficosFlipeadosVGA();
 	void flipeaGraficosVGA(UINT8 *src, UINT8 *dest, int ancho, int bytes);
 
-	void compruebaReinicio();
+	bool compruebaReinicio();
 	void compruebaPausa();
 	bool compruebaLoad();
 	void compruebaSave();

@@ -1669,7 +1669,7 @@ bool Juego::menu()
 				pulsado==6 )
 			{
 				// TODO habria que pedir confirmacion S/N
-
+/*
 				// Frase vacia para parar la frase actual
 				elGestorFrases->muestraFraseYa(0x38);
 				// Esperamos a que se limpie el marcador
@@ -1678,6 +1678,8 @@ bool Juego::menu()
 					elGestorFrases->actualizaEstado();
 				}
 				logica->inicia();
+*/
+				reinicio();
 				return true;
 			} else
 			if (losControles->estaSiendoPulsado(KEYBOARD_7) ||
@@ -1789,7 +1791,7 @@ despues_de_cargar_o_iniciar:
 			// actualiza el estado de los controles
 			controles->actualizaEstado();
 
-			compruebaReinicio();
+			if ( compruebaReinicio() ) goto despues_de_cargar_o_iniciar;
 
 			// obtiene el contador de la animación de guillermo para saber si se generan caminos en esta iteración
 			elBuscadorDeRutas->contadorAnimGuillermo = laLogica->guillermo->contadorAnimacion;
@@ -2100,21 +2102,29 @@ void Juego::actualizaLuz()
 	sprLuz->ajustaAPersonaje(personajes[1]);
 }
 
+void Juego::reinicio() 
+{
+	// Frase vacia para parar la frase actual
+	elGestorFrases->muestraFraseYa(0x38);
+	// Esperamos a que se limpie el marcador
+	while (elGestorFrases->mostrandoFrase)
+	{
+		elGestorFrases->actualizaEstado();
+	}
+	logica->inicia();
+}
+
 // comprueba si se solicita reiniciar la partida 
 // con una pulsacion de tecla (no desde el menu)
-void Juego::compruebaReinicio()
+bool Juego::compruebaReinicio()
 {
 	// si se ha pulsado suprimir, se para hasta que se vuelva a pulsar
 	if (controles->seHaPulsado(KEYBOARD_E)){  // ?E de rEset 
-		// Frase vacia para parar la frase actual
-		elGestorFrases->muestraFraseYa(0x38);
-		// Esperamos a que se limpie el marcador
-		while (elGestorFrases->mostrandoFrase)
-		{
-			elGestorFrases->actualizaEstado();
-		}
-		logica->inicia();
-	}
+		reinicio();
+		return true;
+	} 
+
+	return false;
 }
 
 // comprueba si se debe pausar el juego
