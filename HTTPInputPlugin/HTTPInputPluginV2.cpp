@@ -69,6 +69,72 @@ bool HTTPInputPluginV2::init()
                 	return crow::response(200);
         	});		
 
+		CROW_ROUTE(app, "/fin")([](){
+			SDL_Event sdlevent = {};
+			sdlevent.type = SDL_QUIT;
+			SDL_PushEvent(&sdlevent);
+			return crow::response(200);
+		});
+
+		CROW_ROUTE(app, "/dump")([](){
+			return crow::response(500,"No implementado");
+		});
+
+#ifdef _CROW_V1_COMPATIBLE_MODE_
+		CROW_ROUTE(app, "/cmd/<string>")([this](crow::request req, std::string comando){
+			// cursor Arriba 
+			std::vector<char *> keys;
+			char key[4]; 
+			switch (comando.at(0)) {	
+				// TODO: convertir los valores desde SDLK_ y no poner la cadena a fuego
+				case 'A': strcpy(key,"273"); break; // cursor Arriba
+				case 'B': strcpy(key,"274"); break; // cursor aBajo
+				case 'D': strcpy(key,"275"); break; // cursor Derecha
+				case 'I': strcpy(key,"276"); break; // cursor Izquierda
+				case '_': strcpy(key,"32"); break; // barra espaciadora
+				case 'Q': strcpy(key,"113"); break; // Q
+				case 'R': strcpy(key,"114"); break; // R
+				default: return crow::response(400,"cmd desconocido");
+			}
+			keys.push_back(key);
+			simulateKeys(10,25,keys);
+			return crow::response(200);
+		});
+
+		CROW_ROUTE(app, "/loadJSON")([](){
+			return crow::response(500,"No implementado, usa /load");
+		});
+
+		CROW_ROUTE(app, "/saveJSON")([](){
+			return crow::response(500,"No implementado, usa /save");
+		});
+#endif
+
+		CROW_ROUTE(app, "/load").methods("POST"_method)([this](const crow::request& req){
+			std::ofstream savefile("abadia0.save");
+			savefile << req.body;
+			savefile.close();
+			std::vector<char *> keys;
+			char key[]="99";  // SDLK_c , c de Cargar
+			keys.push_back(key);
+			simulateKeys(10,25,keys);
+			return crow::response(500,"No implementado");
+		});
+
+		CROW_ROUTE(app, "/save")([this](){
+			std::vector<char *> keys;
+			char key[]="103"; // SDLK_g , g de Grabar
+			keys.push_back(key);
+			simulateKeys(10,25,keys);	
+			// TODO: devolver error si hay error al grabar
+			// TODO: no devolver nada hasta haber finalizado la grabaciÃn
+//quizas mejor llamar a juego->save como en V1
+//se podria tener una critical section en Juego->run y que deje en determinados
+//momentos tiempo para que el webserver actue
+                	return crow::response(200);
+        	});		
+
+
 		// ejemplo enviar QR . SDLK_q=113 y SDLK_r=114
 		// /simulate?repeat=10&interval=25&keys[]=113&keys[]=114	
 		CROW_ROUTE(app, "/simulate")([this](crow::request req){

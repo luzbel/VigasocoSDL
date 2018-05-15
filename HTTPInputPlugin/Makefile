@@ -1,5 +1,5 @@
 #CXXFLAGS=-std=c++11 -O3 -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
-CXXFLAGS=-std=c++11 -g -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
+CXXFLAGS=-D_CROW_V1_COMPATIBLE_MODE_ -std=c++11 -g -fPIC -I../core -I../core/abadia -I../VigasocoSDL/ `sdl-config --cflags`
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 all: ../VigasocoSDL/input/libVigasocoHTTPInputPlugin.so 

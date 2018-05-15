@@ -6,6 +6,9 @@
 
 #include <cassert>
 #include "HTTPInputPluginV1.h"
+// Para elJuego
+#include "Vigasoco.h"
+#include "Juego.h"
 
 #include "crow_all.h"
 
@@ -26,11 +29,21 @@ HTTPInputPluginV1::~HTTPInputPluginV1()
 }
 
 void HTTPInputPluginV1::cleanKeys() {
-  keystate[SDLK_e]=false;
+  keystate[SDLK_e]=
+  keystate[SDLK_UP]=
+  keystate[SDLK_RIGHT]=
+  keystate[SDLK_LEFT]=
+  keystate[SDLK_DOWN]=
+  keystate[SDLK_SPACE]=
+  keystate[SDLK_F5]=             // TODO: esto se hace aquí o solo con el comando \0
+  keystate[SDLK_q]=
+  keystate[SDLK_r]=
+  keystate[SDLK_LEFT]=false;
 }
 
 bool HTTPInputPluginV1::init()
 {
+	elJuego->save(0);//TODO 666
 	std::thread webThread([this]() {
 		crow::SimpleApp app;
 
@@ -40,11 +53,160 @@ bool HTTPInputPluginV1::init()
                 	return crow::response(200);
         	});		
 
+		CROW_ROUTE(app, "/fin")([](){
+			SDL_Event sdlevent = {};
+			sdlevent.type = SDL_QUIT;
+			SDL_PushEvent(&sdlevent);
+			return crow::response(200);
+		});
+
 		CROW_ROUTE(app, "/dump")([this](){
 			cleanKeys();
-			HTTPInputPluginV1::keystate[SDLK_e]=false;
+//			HTTPInputPluginV1::keystate[SDLK_e]=false;
+//llamar a InfoJuego->muestraInfo ... pero y si se toca algo mientras se genera
+//si pulsamos una tecla que genere el dump ?como lo recuperamos luego?
+//?un tocho string con algun tipo de bloqueo para hilos???
+                	//return crow::response(200);
+                	return crow::response(500,"Sin implementar");
+		});
+
+		CROW_ROUTE(app, "/cmd/A")([this](){
+			cleanKeys();
+			// A de arriba
+			HTTPInputPluginV1::keystate[SDLK_UP]=true;
                 	return crow::response(200);
 		});
+
+		CROW_ROUTE(app, "/cmd/D")([this](){
+			cleanKeys();
+			// D de derecha
+			HTTPInputPluginV1::keystate[SDLK_RIGHT]=true;
+                	return crow::response(200);
+		});
+		CROW_ROUTE(app, "/cmd/I")([this](){
+			cleanKeys();
+			// I de izquierda
+			HTTPInputPluginV1::keystate[SDLK_LEFT]=true;
+                	return crow::response(200);
+		});
+		CROW_ROUTE(app, "/cmd/B")([this](){
+			cleanKeys();
+			// Cursos aBajo para mover a ADSO
+			HTTPInputPluginV1::keystate[SDLK_DOWN]=true;
+                	return crow::response(200);
+		});
+		CROW_ROUTE(app, "/cmd/_")([this](){
+			cleanKeys();
+			// barra espaciadora
+			HTTPInputPluginV1::keystate[SDLK_SPACE]=true;
+                	return crow::response(200);
+		});
+		CROW_ROUTE(app, "/cmd/E")([this](){
+			cleanKeys();
+			// Volcado del estado
+                	return crow::response(200);
+		});
+		CROW_ROUTE(app, "/cmd/e")([this](){
+			cleanKeys();
+			// Desactivar el volcado del estado
+			HTTPInputPluginV1::keystate[SDLK_F5]=true;
+                	return crow::response(200);
+		});
+		CROW_ROUTE(app, "/cmd/Q")([this](){
+			cleanKeys();
+			//
+			HTTPInputPluginV1::keystate[SDLK_q]=true;
+                	return crow::response(200);
+		});
+		CROW_ROUTE(app, "/cmd/R")([this](){
+			cleanKeys();
+			// 
+			HTTPInputPluginV1::keystate[SDLK_r]=true;
+                	return crow::response(200);
+		});
+		CROW_ROUTE(app, "/cmd/F")([this](){
+			cleanKeys();
+			// F de fin
+       			SDL_Event sdlevent = {};
+			sdlevent.type = SDL_QUIT;
+			SDL_PushEvent(&sdlevent);
+			return crow::response(200);
+		});
+
+		// TODO: fusionar con save y hacer un if segn el headeraccept application/json o no
+		CROW_ROUTE(app, "/saveJSON")([](){
+			// ejemplo: curl http://localhost:4477/saveJSON > crow.save.json
+			std::string json;
+
+			json = "{}";
+
+			bool ok=false;//elJuego->save(0);
+			if (ok) { // TODO: falta control errores
+				std::stringstream json;
+				char dump[8192]; //TODO: intentar que sea dinamico
+				std::ifstream savefile("abadia0.save");
+				savefile.read(dump,8192);
+				json << "{\"snapshot\":\"" << dump << "\"}";
+				return crow::response(200, json.str());
+			}
+			else  return crow::response(500, json);
+	        });
+
+	        CROW_ROUTE(app, "/save")([](){
+                        // ejemplo: curl http://localhost:4477/save > crow.save
+
+			bool ok=false;//elJuego->save(0);
+			if (ok) { // TODO: falta control errores
+                        	char dump[8192]; //TODO: intentar que sea dinamico
+                        	std::ifstream savefile("abadia0.save");
+	                        savefile.read(dump,8192);
+				return crow::response(200, dump);
+                	}
+	                else  return crow::response(500);
+	        });
+
+                // TODO: fusionar con load y hacer un if segn el header content-type application/json o no
+	        CROW_ROUTE(app, "/loadJSON").methods("POST"_method)([](const crow::request& req) {
+                	auto x=crow::json::load(req.body);
+	                if (!x) return crow::response(500);
+                	std::ofstream savefile("abadia0.save");
+                        // si se envía asi curl -v -X POST  --data @crow.sav.json http://localhost:4477/loadJSON
+                        // se come los cambios de linea y no nos vale. Se tiene que enviar así
+                        // curl -v -X POST  -T crow.save.json http://localhost:4477/loadJSON
+	                savefile << x["snapshot"].s();
+	                savefile.close();
+
+	                std::string json;
+
+	                json = "{}";
+	                bool ok=false;//elJuego->cargar(0);
+
+	                if (ok) {
+		                //elJuego->reset();
+				return crow::response(200, json);
+                	}
+                	else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
+        	});
+
+	        CROW_ROUTE(app, "/load").methods("POST"_method)([](const crow::request& req) {
+	                std::ofstream savefile("abadia0.save");
+                        // si se enva asi curl -v -X POST  --data @crow.save http://localhost:4477/loa
+                        // se come los cambios de linea y no nos vale. Se tiene que enviar así
+                        // curl -v -X POST  -T crow.save http://localhost:4477/load
+	                savefile << req.body;
+	                savefile.close();
+
+	                std::string json;
+
+	                json = "{}";
+	                bool ok=false;//elJuego->cargar(0);
+
+	                if (ok) {
+		                //elJuego->reset();
+				return crow::response(200, json);
+	                }
+	                else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
+        	});
 
 		app.port(4477).run();
 	});
