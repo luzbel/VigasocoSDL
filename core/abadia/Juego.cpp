@@ -2276,7 +2276,9 @@ void Juego::compruebaSave()
 		{
 			elGestorFrases->actualizaEstado();
 		} 
-
+#ifdef __abadIA__
+		save(0);
+#else
 		// Preguntamos
 		// CPC elMarcador->imprimeFrase("¿GRABAR? S:N", 110, 164, 2, 3);
 		//elMarcador->imprimeFrase(",.WÑ", 110, 164, 4, 0); // VGA
@@ -2301,6 +2303,7 @@ void Juego::compruebaSave()
 			}
 		}
 		while (losControles->estaSiendoPulsado(KEYBOARD_N) == false);
+#endif
 		elGestorFrases->muestraFraseYa(0x38);
 	}
 }
@@ -2323,7 +2326,9 @@ bool Juego::compruebaLoad()
 		{
 			elGestorFrases->actualizaEstado();
 		} 
-
+#ifdef __abadIA__
+		return cargar(0);
+#else
 		// Preguntamos
 		// CPC elMarcador->imprimeFrase("¿CARGAR? S:N", 110, 164, 2, 3);
 		elMarcador->imprimeFrase("¿CARGAR? S:N", 110, 164, 4, 0);  // VGA
@@ -2339,6 +2344,7 @@ bool Juego::compruebaLoad()
 
 		}
 		while (losControles->estaSiendoPulsado(KEYBOARD_N) == false);
+#endif
 		elGestorFrases->muestraFraseYa(0x38);
 	} 
 	return false;
