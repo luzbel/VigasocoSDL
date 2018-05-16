@@ -178,7 +178,10 @@ void VigasocoSDL::addCustomInputPlugins()
 		if (_pluginHandler->loadPlugin(g_inputPluginPath + _sInputPluginsDLLs[i], 
 			_sInputPlugins[i], INPUT_PLUGIN, g_currentInputPluginVersion, &entry)){
 			ip = (IInputPlugin *)entry.plugin;
+fprintf(stderr,"loadPlugin %p\n",ip);
+fprintf(stderr,"_pluginHandler->loadPlugin %s %s\n",_sInputPluginsDLLs[i].c_str(),_sInputPlugins[i].c_str());
 		}
+else fprintf(stderr,"err _pluginHandler->loadPlugin %s %s\n",_sInputPluginsDLLs[i].c_str(),_sInputPlugins[i].c_str());
 
 		if (ip != 0){
 			// TODO: set plugin properties
@@ -188,6 +191,7 @@ void VigasocoSDL::addCustomInputPlugins()
 
 			_inputHandler->addInputPlugin(ip);
 		}
+else fprintf(stderr,"ip NULL\n");
 	}
 }
 

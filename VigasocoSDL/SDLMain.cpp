@@ -319,8 +319,8 @@ bool parseCommandLine(std::string cmdLine)
 		g_inputPluginsDLLs.push_back("libVigasocoSDLInputPlugin.so");
 #ifdef __abadIA__
 		g_inputPlugins.push_back("PollEvent");
-		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
-		g_inputPlugins.push_back("crowV1");
+//		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
+//		g_inputPlugins.push_back("crowV1");
 		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
 		g_inputPlugins.push_back("crowV2");
 #else

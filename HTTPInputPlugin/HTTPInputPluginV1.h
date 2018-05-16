@@ -1,35 +1,39 @@
 // HTTPInputPluginV1.h
 //
-//	Class that handles input using crow
+//      Class that handles input using crow
 //      This interface is deprecated, better use V2
-//
+// 
 /////////////////////////////////////////////////////////////////////////////
 
 #ifndef _HTTP_INPUT_PLUGIN_V1_H_
 #define _HTTP_INPUT_PLUGIN_V1_H_
 
 #include "IInputPlugin.h"
-// Por usar las definiciones de teclas de SDL
 #include "SDL.h"
 
-#include <vector>
+#include "Juego.h"
 
-class HTTPInputPluginV1: public IInputPlugin
+class HTTPInputPluginV1: public IInputPlugin, public INotificationSuscriber<Abadia::Juego>
 {
 // fields
 protected:
 	static const std::string g_properties[];
 	static const int g_paramTypes[];
 
-	Uint8 keystate[SDLK_LAST];                                                    // keys state
+//	UINT8 _keys[256];							// keys state
+	Uint8 keystate[SDLK_LAST];
 	static SDLKey g_keyMapping[END_OF_INPUTS];	// VIGASOCO input to DirectInput mapping
+#if defined _EE || defined _PS3
+	SDL_Joystick *joy;
+#endif
+	std::string _errorMsg;						// error message
 
 // methods
 public:
 	// initialization and cleanup
 	HTTPInputPluginV1();
 	virtual ~HTTPInputPluginV1();
-	virtual bool init();
+	virtual bool init(Abadia::Juego *juego);
 	virtual void end();
 
 	virtual void acquire();
@@ -47,6 +51,7 @@ public:
 
 protected:
 	void initRemapTable();
+	virtual void update(Abadia::Juego* subject, int data);
 private:
 	void cleanKeys();
 };

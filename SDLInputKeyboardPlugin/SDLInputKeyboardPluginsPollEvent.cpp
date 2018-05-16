@@ -24,7 +24,7 @@ SDLInputKeyboardPluginsPollEvent::~SDLInputKeyboardPluginsPollEvent()
 {
 }
 
-bool SDLInputKeyboardPluginsPollEvent::init()
+bool SDLInputKeyboardPluginsPollEvent::init(Abadia::Juego *juego)
 {
 	return true;
 }

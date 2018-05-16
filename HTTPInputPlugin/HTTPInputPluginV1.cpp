@@ -1,15 +1,13 @@
-// HTTPInputPluginV1.cpp
+// HTTPInputKeyboardPluginV1.cpp
 // Mantiene la interfaz web original para ser retrocompatible con agentes
-// antiguos
+// antiguos.
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #include <cassert>
 #include "HTTPInputPluginV1.h"
-// Para elJuego
-#include "Vigasoco.h"
-#include "Juego.h"
 
+#include <vector>
 #include "crow_all.h"
 
 SDLKey HTTPInputPluginV1::g_keyMapping[END_OF_INPUTS];
@@ -28,6 +26,11 @@ HTTPInputPluginV1::~HTTPInputPluginV1()
 {
 }
 
+void HTTPInputPluginV1::update(Abadia::Juego* subject, int data) 
+{
+fprintf(stderr,"HTTPInputPluginV1::update\n");
+}
+
 void HTTPInputPluginV1::cleanKeys() {
   keystate[SDLK_e]=
   keystate[SDLK_UP]=
@@ -41,9 +44,10 @@ void HTTPInputPluginV1::cleanKeys() {
   keystate[SDLK_LEFT]=false;
 }
 
-bool HTTPInputPluginV1::init()
+bool HTTPInputPluginV1::init(Abadia::Juego *juego)
 {
-	elJuego->save(0);//TODO 666
+	juego->attach(this);
+
 	std::thread webThread([this]() {
 		crow::SimpleApp app;
 
@@ -216,6 +220,7 @@ bool HTTPInputPluginV1::init()
 
 void HTTPInputPluginV1::end()
 {
+//	juego->detach(this); // falta copiarse Juego en init en una var privada
 }
 
 void HTTPInputPluginV1::acquire()
@@ -232,7 +237,6 @@ void HTTPInputPluginV1::unAcquire()
 
 bool HTTPInputPluginV1::process(int *inputs)
 {
-//fprintf(stderr,"v1 %d\n",keystate[SDLK_e]);
 	// iterate through the inputs checking associated keys
 	for (int i = 0; i < END_OF_INPUTS; i++){
 		// if we're interested in that input, check it's value
@@ -241,6 +245,7 @@ bool HTTPInputPluginV1::process(int *inputs)
 			// update inputs
 			if (g_keyMapping[i] != 0){
 				if (keystate[g_keyMapping[i]] ){
+fprintf(stderr,"keystate %d keymap %d\n",i,g_keyMapping[i]);
 					inputs[i]++;
 				}
 			}
@@ -251,7 +256,7 @@ bool HTTPInputPluginV1::process(int *inputs)
 	// que se debe devolver false en process para salir del juego
 	// En su lugar inyecta el evento SDL_QUIT para que se procese adecuadamente
 	// con el plugin PollEvent
-	return true; 
+	return true; // este plugin no tiene nada para provocar la salida del juego
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -357,7 +362,8 @@ const std::string HTTPInputPluginV1::g_properties[] = {
 };
 
 const int HTTPInputPluginV1::g_paramTypes[] = {
-	int(PARAM_ARRAY | PARAM_INPUT) // TODO: Estos casts no molan en C++ moderno
+	// TODO: resolver este cast de forma elegante
+	(int)(PARAM_ARRAY | PARAM_INPUT)
 };
 
 const int * HTTPInputPluginV1::getPropertiesType() const

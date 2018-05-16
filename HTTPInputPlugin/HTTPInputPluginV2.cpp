@@ -10,20 +10,22 @@
 
 #include "crow_all.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
 HTTPInputPluginV2::HTTPInputPluginV2()
 {
-	initRemapTable();
 }
 
 HTTPInputPluginV2::~HTTPInputPluginV2()
 {
 }
 
+void HTTPInputPluginV2::update(Abadia::Juego* subject, int data) 
+{
+fprintf(stderr,"HTTPInputPluginV2::update\n");
+}
 
 void HTTPInputPluginV2::simulateKeys(int repeat, int interval, std::vector<char *> keys )
 {
@@ -51,8 +53,9 @@ void HTTPInputPluginV2::simulateKeys(int repeat, int interval, std::vector<char 
 	keyThread.join();  // para esto no montamos un hilo, pero mientras arreglamos lo del contexto
 }
 
-bool HTTPInputPluginV2::init()
+bool HTTPInputPluginV2::init(Abadia::Juego *juego)
 {
+	juego->attach(this);
 	std::thread webThread([this]() {
 		crow::SimpleApp app;
 
@@ -164,6 +167,7 @@ fprintf(stderr,"fuera repeat %d interval %d key0 %s size %d\n",repeat,interval,k
 
 void HTTPInputPluginV2::end()
 {
+// TODO: detach juego
 }
 
 void HTTPInputPluginV2::acquire()
@@ -184,16 +188,12 @@ bool HTTPInputPluginV2::process(int *inputs)
 	// que se debe devolver false en process para salir del juego
 	// En su lugar inyecta el evento SDL_QUIT para que se procese adecuadamente
 	// con el plugin PollEvent
-	return true; 
+	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // helper methods
 /////////////////////////////////////////////////////////////////////////////
-
-void HTTPInputPluginV2::initRemapTable()
-{
-}
 
 /////////////////////////////////////////////////////////////////////////////
 // Custom plugin properties
@@ -203,6 +203,9 @@ const std::string HTTPInputPluginV2::g_properties[] = {
 };
 
 const int HTTPInputPluginV2::g_paramTypes[] = {
+	// TODO: resolver este cast de forma elegante
+	(int)(PARAM_ARRAY | PARAM_INPUT)
+	// TODO ?hace falta o se puede eliminar??
 };
 
 const int * HTTPInputPluginV2::getPropertiesType() const

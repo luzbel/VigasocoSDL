@@ -1706,6 +1706,7 @@ bool Juego::menu()
 
 void Juego::run()
 {
+notify(-1);
 	// obtiene los recursos para el juego
 	timer = VigasocoMain->getTimingHandler();
 	controles->init(VigasocoMain->getInputHandler());
@@ -2428,6 +2429,7 @@ bool Juego::muestraPantallaFinInvestigacion()
 {
 	// si guillermo está vivo, sale
 	if (!logica->haFracasado) return false;
+notify(-1);
 
 	// indica que la cámara siga a guillermo y lo haga ya
 	laLogica->numPersonajeCamara = 0x80;

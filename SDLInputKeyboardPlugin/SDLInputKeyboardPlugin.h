@@ -10,6 +10,8 @@
 #include "IInputPlugin.h"
 #include "SDL.h"
 
+#include "Juego.h"
+
 class SDLInputKeyboardPlugin: public IInputPlugin
 {
 // fields
@@ -30,7 +32,7 @@ public:
 	// initialization and cleanup
 	SDLInputKeyboardPlugin();
 	virtual ~SDLInputKeyboardPlugin();
-	virtual bool init();
+	virtual bool init(Abadia::Juego *juego);
 	virtual void end();
 
 	virtual void acquire();

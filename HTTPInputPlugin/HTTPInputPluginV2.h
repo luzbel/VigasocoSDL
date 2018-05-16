@@ -1,32 +1,30 @@
 // HTTPInputPluginV2.h
 //
-//	Class that handles input using crow
-//	New interface. V1 is deprecated
+//	Class that handles keyboard input using SDLPollEvent
 //
 /////////////////////////////////////////////////////////////////////////////
 
-#ifndef _HTTP_INPUT_PLUGIN_V2_H_
-#define _HTTP_INPUT_PLUGIN_V2_H_
+#ifndef _SDL_INPUT_KEYBOARD_PLUGINS_POLLEVENT_H_
+#define _SDL_INPUT_KEYBOARD_PLUGINS_POLLEVENT_H_
 
 #include "IInputPlugin.h"
-// Por usar las definiciones de teclas de SDL
 #include "SDL.h"
 
+#include "Juego.h"
 #include <vector>
 
-class HTTPInputPluginV2: public IInputPlugin
+class HTTPInputPluginV2: public IInputPlugin , public INotificationSuscriber<Abadia::Juego>
 {
 // fields
 protected:
 	static const std::string g_properties[];
 	static const int g_paramTypes[];
-
 // methods
 public:
 	// initialization and cleanup
 	HTTPInputPluginV2();
 	virtual ~HTTPInputPluginV2();
-	virtual bool init();
+	virtual bool init(Abadia::Juego *juego);
 	virtual void end();
 
 	virtual void acquire();
@@ -43,9 +41,9 @@ public:
 	virtual int getProperty(std::string prop, int index) const;
 
 protected:
-	void initRemapTable();
+	virtual void update(Abadia::Juego* subject, int data);
 private:
-	void simulateKeys(int repeat, int interval, std::vector<char *> keys);
+        void simulateKeys(int repeat, int interval, std::vector<char *> keys);
 };
 
-#endif	// _HTTP_INPUT_PLUGIN_V2_H_
+#endif // _SDL_INPUT_KEYBOARD_PLUGINS_POLLEVENT_H_

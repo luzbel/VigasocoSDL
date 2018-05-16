@@ -10,6 +10,7 @@
 
 #include "../util/Singleton.h"
 #include "../Types.h"
+#include "util/NotificationProvider.h"
 
 class CPC6128;					// definido en CPC6128.h
 class IAudioPlugin;				// definido en IAudioPlugin.h
@@ -31,7 +32,7 @@ class Sprite;					// definido en Sprite.h
 
 #define elJuego Juego::getSingletonPtr()
 
-class Juego : public Singleton<Juego>
+class Juego : public Singleton<Juego>, public NotificationProvider<Juego>
 {
 // constantes
 public:

@@ -27,7 +27,7 @@ SDLInputKeyboardPlugin::~SDLInputKeyboardPlugin()
 {
 }
 
-bool SDLInputKeyboardPlugin::init()
+bool SDLInputKeyboardPlugin::init(Abadia::Juego *juego)
 {
 #if defined _EE || defined _PS3
 	if ( SDL_InitSubSystem(SDL_INIT_JOYSTICK) != -1 )
