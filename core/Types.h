@@ -146,4 +146,9 @@ enum PluginType {
 	LOADER_PLUGIN = 0x4000
 };
 
+enum EventType {
+	evRESET,
+	evEVENT_LAST
+};
+
 #endif	// _VIGASOCO_TYPES_H_

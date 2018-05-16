@@ -250,7 +250,7 @@ bool SDLInputKeyboardPlugin::process(int *inputs)
 			// update inputs
 			if (g_keyMapping[i] != 0){
 				if (keystate[g_keyMapping[i]] ){
-fprintf(stderr,"keystate %d keymap %d\n",i,g_keyMapping[i]);
+//fprintf(stderr,"keystate %d keymap %d\n",i,g_keyMapping[i]);
 					inputs[i]++;
 				}
 			}

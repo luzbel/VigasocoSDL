@@ -37,7 +37,7 @@ fprintf(stderr,"HTTPInputPluginV1::update\n");
 		default: fprintf(stderr,"HTTPInputPluginV1::update Tipo update desconocido\n");
 	}
 */
-	if (data>=0 && data <= EVENT_LAST) {
+	if (data>=0 && data <= evEVENT_LAST) {
 			std::lock_guard<std::mutex> lock(eventMutex);
 			eventos[data]=true; 
 			conditionVariable[data].notify_one();
@@ -69,9 +69,10 @@ bool HTTPInputPluginV1::init(Abadia::Juego *juego)
 		CROW_ROUTE(app, "/reset")([this](){
 			cleanKeys();
 			HTTPInputPluginV1::keystate[SDLK_e]=true;
-
+eventos[evRESET]=false;
 			std::unique_lock<std::mutex> lock(eventMutex);
-			conditionVariable[RESET].wait(lock,[]{ return eventos[RESET]; });
+			conditionVariable[evRESET].wait(lock,[this]{ return eventos[evRESET]; });
+			HTTPInputPluginV1::keystate[SDLK_e]=false;
                 	return crow::response(200);
         	});		
 
@@ -263,7 +264,7 @@ bool HTTPInputPluginV1::process(int *inputs)
 			// update inputs
 			if (g_keyMapping[i] != 0){
 				if (keystate[g_keyMapping[i]] ){
-fprintf(stderr,"keystate %d keymap %d\n",i,g_keyMapping[i]);
+//fprintf(stderr,"keystate %d keymap %d\n",i,g_keyMapping[i]);
 					inputs[i]++;
 				}
 			}

@@ -12,5 +12,5 @@ OBJECTS = HTTPInputPluginV1.o HTTPInputPluginV2.o PluginMain.o
 test: test.o ../VigasocoSDL/input/libVigasocoHTTPInputPlugin.so
 	$(CXX) -g test.o -o test -L ../VigasocoSDL/input/ -l VigasocoHTTPInputPlugin `sdl-config --libs`
 #	$(CXX) -g test.o -o test -L ../VigasocoSDL/input/ -l VigasocoHTTPInputPlugin 
-cclean:
+clean:
 	rm -f $(OBJECTS) ../VigasocoSDL/input/libVigasocoHTTPInputPlugin.so test.o test

@@ -1785,6 +1785,7 @@ logica->inicia();
 
 
 despues_de_cargar_o_iniciar:
+notify(evRESET);
 		ReiniciaPantalla();
 
 

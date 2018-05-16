@@ -12,6 +12,7 @@
 #include "SDL.h"
 
 #include "Juego.h"
+#include <condition_variable>
 #include <mutex>
 
 class HTTPInputPluginV1: public IInputPlugin, public INotificationSuscriber<Abadia::Juego>
@@ -24,14 +25,14 @@ protected:
 //	UINT8 _keys[256];							// keys state
 	Uint8 keystate[SDLK_LAST];
 	static SDLKey g_keyMapping[END_OF_INPUTS];	// VIGASOCO input to DirectInput mapping
-	bool events[EVENT_LAST];
+	bool eventos[evEVENT_LAST];
 #if defined _EE || defined _PS3
 	SDL_Joystick *joy;
 #endif
 	std::string _errorMsg;						// error message
 private:
 	std::mutex eventMutex;
-	std::condition_variable conditionVariable[EVENT_LAST];
+	std::condition_variable conditionVariable[evEVENT_LAST];
 // methods
 public:
 	// initialization and cleanup
