@@ -1,4 +1,4 @@
-FROM ubuntu AS build
+FROM ubuntu:16.04 AS build
 
 RUN apt-get update && apt-get install -y \
  git \
