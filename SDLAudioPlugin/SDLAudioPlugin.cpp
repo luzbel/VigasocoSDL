@@ -78,6 +78,9 @@ void SDLAudioPlugin::Pause(int sample)
 	if (sample>=sounds.size() ) return;
 
 	sounds[sample].active=false;
+#ifdef __abadIA__
+	elJuego->sonidos[sample]=false;
+#endif
 }
 
 void SDLAudioPlugin::Stop(int sample)
@@ -86,6 +89,9 @@ void SDLAudioPlugin::Stop(int sample)
 
 	sounds[sample].active=false;
 	sounds[sample].dpos=0;
+#ifdef __abadIA__
+	elJuego->sonidos[sample]=false;
+#endif
 }
 
 void SDLAudioPlugin::Play(int sample,bool loop)
@@ -96,6 +102,9 @@ void SDLAudioPlugin::Play(int sample,bool loop)
 		sounds.at(sample).active=true;
 		// sounds.at(sample).dpos=0;
 		sounds.at(sample).loop=loop;
+#ifdef __abadIA__
+	elJuego->sonidos[sample]=true;
+#endif
 	}
 	catch (std::out_of_range o)
 	{
@@ -229,7 +238,12 @@ void SDLAudioPlugin::mix(UINT8 *stream,int len)
 			it->dpos+=amount;
 			if (it->dpos==it->dlen)
 			{
-				if (!it->loop) it->active=false;
+				if (!it->loop) {
+					it->active=false;
+#ifdef __abadIA__
+					elJuego->sonidos[it - sounds.begin()]=false;
+#endif
+				 }
 				it->dpos=0;
 			}
 		}
@@ -263,7 +277,8 @@ const std::string SDLAudioPlugin::g_properties[] = {
 };
 
 const int SDLAudioPlugin::g_paramTypes[] = {
-	PARAM_ARRAY | PARAM_INPUT
+	// TODO: resolver este cast de forma elegante
+	(int)(PARAM_ARRAY | PARAM_INPUT)
 };
 
 const int * SDLAudioPlugin::getPropertiesType() const

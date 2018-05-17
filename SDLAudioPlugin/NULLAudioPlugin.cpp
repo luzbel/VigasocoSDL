@@ -45,6 +45,9 @@ void NULLAudioPlugin::Stop(int sample)
 
 void NULLAudioPlugin::Play(int sample,bool loop)
 {
+#ifdef __abadIA__
+elJuego->AudioPlaying=sample;
+#endif
 }
 
 bool NULLAudioPlugin::LoadWAV(const char* file)
@@ -94,7 +97,8 @@ const std::string NULLAudioPlugin::g_properties[] = {
 };
 
 const int NULLAudioPlugin::g_paramTypes[] = {
-	PARAM_ARRAY | PARAM_INPUT
+	// TODO: resolver este cast de forma elegante
+	(int)(PARAM_ARRAY | PARAM_INPUT)
 };
 
 const int * NULLAudioPlugin::getPropertiesType() const
