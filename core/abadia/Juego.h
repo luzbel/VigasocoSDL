@@ -92,7 +92,7 @@ public:
 private:
 	void reinicio();
 	bool cargar(int slot);
-	void save(int slot);
+	bool save(int slot);
 	// TODO sacar todo lo relativo a menus
 	// a una clase para menu y no ensuciar la clase Juego
 	void pintaMenuCargar(int seleccionado,bool efecto=false);
@@ -146,7 +146,7 @@ protected:
 	bool compruebaReinicio();
 	void compruebaPausa();
 	bool compruebaLoad();
-	void compruebaSave();
+	bool compruebaSave();
 };
 
 

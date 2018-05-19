@@ -148,6 +148,9 @@ enum PluginType {
 
 enum EventType {
 	evRESET,
+	evLOAD,
+	evSAVE,
+	evDUMP,
 	evEVENT_LAST
 };
 

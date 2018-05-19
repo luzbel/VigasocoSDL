@@ -1706,7 +1706,6 @@ bool Juego::menu()
 
 void Juego::run()
 {
-notify(-1);
 	// obtiene los recursos para el juego
 	timer = VigasocoMain->getTimingHandler();
 	controles->init(VigasocoMain->getInputHandler());
@@ -1807,10 +1806,26 @@ notify(evRESET);
 
 
 			//comprueba si se intenta cargar/grabar la partida
-			compruebaSave();
+			if ( compruebaSave() ) {
+#ifdef __abadIA__
+				// TODO: hay que cambiar save y compruebaSave
+				// en vez de bool deben devolver un valor
+				// indicando , no se hace nada, graba ok o error graba
+				// y mandar el evento SAVEok o SAVEerr
+				notify(evSAVE);
+#endif
+			}
 
-
-			if ( compruebaLoad() ) goto despues_de_cargar_o_iniciar;
+			if ( compruebaLoad() ) {
+#ifdef __abadIA__
+				// TODO: hay que cambiar cargar y compruebaLoad 
+				// en vez de bool deben devolver un valor
+				// indicando , no se hace nada, carga ok o error carga
+				// y mnadar el evento LOADok o LOADerr
+				notify(evLOAD);
+#endif
+				goto despues_de_cargar_o_iniciar;
+			}
 
 
 			// comprueba si se quieren cambiar de graficos 
@@ -1896,13 +1911,20 @@ notify(evRESET);
 			if (modoInformacion){
 				infoJuego->muestraInfo();
 			} else {
+				// dibuja la pantalla si fuera necesario
+				motor->dibujaPantalla();
 
-			// dibuja la pantalla si fuera necesario
-			motor->dibujaPantalla();
-
-			// dibuja los sprites visibles que hayan cambiado
-			motor->dibujaSprites();
+				// dibuja los sprites visibles que hayan cambiado
+				motor->dibujaSprites();
 			}
+#ifdef __abadIA__
+	// TODO: temporalmente pasamos de F5 y volcamos siempre que lo piden con tecla Dj
+			if (losControles->seHaPulsado(KEYBOARD_D)) {
+				if (infoJuego->dumpInfo()) 
+					notify(evDUMP);
+				// TODO: que pasa si falla al escribir el dump
+			}
+#endif
 
 			// espera un poco para actualizar el estado del juego
 			while (contadorInterrupcion < 0x24){
@@ -2226,7 +2248,7 @@ bool Juego::cargar(int slot)
 	}
 }
 
-void Juego::save(int slot)
+bool Juego::save(int slot)
 {
 #ifdef __native_client__
 	{
@@ -2250,6 +2272,7 @@ void Juego::save(int slot)
 
 	if ( out.fail() )
 	{
+#ifndef __abadIA__
 		/* CPC
 		   elMarcador->imprimeFrase("            ", 110, 164, 2, 3);
 		   elMarcador->imprimeFrase("¡¡¡ERROR!!!", 110, 164, 2, 3); */
@@ -2260,15 +2283,19 @@ void Juego::save(int slot)
 		{
 			losControles->actualizaEstado();
 		}while (losControles->estaSiendoPulsado(P1_BUTTON1) == false);
+#endif
+		return false;
 	}
+	return true;
 }
 
 // comprueba si se desea grabar la partida
-void Juego::compruebaSave()
+bool Juego::compruebaSave()
 {
 	// ESTE FUNCIONAMIENTO NO SE CORRESPONDE
 	// CON EL DE LA VERSION ORIGINAL
 
+	bool res=false;
 	if (controles->seHaPulsado(KEYBOARD_G))
 	{
 		// Frase vacia para parar la frase actual
@@ -2279,7 +2306,7 @@ void Juego::compruebaSave()
 			elGestorFrases->actualizaEstado();
 		} 
 #ifdef __abadIA__
-		save(0);
+		res=save(0);
 #else
 		// Preguntamos
 		// CPC elMarcador->imprimeFrase("¿GRABAR? S:N", 110, 164, 2, 3);
@@ -2300,7 +2327,7 @@ void Juego::compruebaSave()
 
 			if (losControles->estaSiendoPulsado(KEYBOARD_S))
 			{
-				save(0);
+				res=save(0);
 				break;
 			}
 		}
@@ -2308,6 +2335,7 @@ void Juego::compruebaSave()
 #endif
 		elGestorFrases->muestraFraseYa(0x38);
 	}
+	return res;
 }
 
 
@@ -2430,7 +2458,6 @@ bool Juego::muestraPantallaFinInvestigacion()
 {
 	// si guillermo está vivo, sale
 	if (!logica->haFracasado) return false;
-notify(-1);
 
 	// indica que la cámara siga a guillermo y lo haga ya
 	laLogica->numPersonajeCamara = 0x80;
@@ -2504,6 +2531,10 @@ notify(-1);
 	marcador->imprimeFrase(porcentaje[idioma], 88, 48, 4, 0);
 	marcador->imprimeFrase(frase3[idioma], 90, 64, 4, 0);
 	marcador->imprimeFrase(frase4[idioma], 56, 128, 4, 0);
+
+	// TODO: Âtiene sentido un evento evGAMEOVER?
+	// el web server no lo va a estar esperando ...
+	// notify(evGAMEOVER);
 
 	// espera a que se pulse y se suelte el botón
 	bool espera = true;

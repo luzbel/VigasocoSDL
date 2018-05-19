@@ -33,6 +33,7 @@ protected:
 private:
 	std::mutex eventMutex;
 	std::condition_variable conditionVariable[evEVENT_LAST];
+	Abadia::Juego *_juego;
 // methods
 public:
 	// initialization and cleanup

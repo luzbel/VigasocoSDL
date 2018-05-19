@@ -16,6 +16,7 @@
 
 HTTPInputPluginV2::HTTPInputPluginV2()
 {
+	_juego=NULL;
 }
 
 HTTPInputPluginV2::~HTTPInputPluginV2()
@@ -55,7 +56,8 @@ void HTTPInputPluginV2::simulateKeys(int repeat, int interval, std::vector<char 
 
 bool HTTPInputPluginV2::init(Abadia::Juego *juego)
 {
-	juego->attach(this);
+	_juego=juego;
+	_juego->attach(this);
 	std::thread webThread([this]() {
 		crow::SimpleApp app;
 
@@ -79,8 +81,24 @@ bool HTTPInputPluginV2::init(Abadia::Juego *juego)
 			return crow::response(200);
 		});
 
-		CROW_ROUTE(app, "/dump")([](){
-			return crow::response(500,"No implementado");
+		CROW_ROUTE(app, "/dump")([this](){
+			std::unique_lock<std::mutex> lock(eventMutex);
+			eventos[evDUMP]=false;
+			std::vector<char *> keys;
+			char key[]="100"; // SDLK_d , d de Dump
+			keys.push_back(key);
+			simulateKeys(20,25,keys);	
+			conditionVariable[evDUMP].wait(lock,[this]{ return eventos[evDUMP]; });
+// y si el DUMP ha ido mal????
+bool ok=true;
+       			if (ok) { // TODO: falta control errores
+				std::stringstream json;
+				char dump[8192]; //TODO: intentar que sea dinamico
+				std::ifstream dumpfile("abadIA.dump");
+				dumpfile.read(dump,8192);
+				return crow::response(200, dump);
+			}
+			else  return crow::response(500, "ERR dumping state"); 
 		});
 
 #ifdef _CROW_V1_COMPATIBLE_MODE_
@@ -104,38 +122,87 @@ bool HTTPInputPluginV2::init(Abadia::Juego *juego)
 			return crow::response(200);
 		});
 
-		CROW_ROUTE(app, "/loadJSON")([](){
-			return crow::response(500,"No implementado, usa /load");
-		});
-
-		CROW_ROUTE(app, "/saveJSON")([](){
-			return crow::response(500,"No implementado, usa /save");
-		});
-#endif
-
-		CROW_ROUTE(app, "/load").methods("POST"_method)([this](const crow::request& req){
-			std::ofstream savefile("abadia0.save");
-			savefile << req.body;
-			savefile.close();
-			std::vector<char *> keys;
-			char key[]="99";  // SDLK_c , c de Cargar
-			keys.push_back(key);
-			simulateKeys(10,25,keys);
-			return crow::response(500,"No implementado");
-		});
-
-		CROW_ROUTE(app, "/save")([this](){
+		CROW_ROUTE(app, "/saveJSON")([this](){
+			std::unique_lock<std::mutex> lock(eventMutex);
+			eventos[evSAVE]=false;
 			std::vector<char *> keys;
 			char key[]="103"; // SDLK_g , g de Grabar
 			keys.push_back(key);
 			simulateKeys(10,25,keys);	
-			// TODO: devolver error si hay error al grabar
-			// TODO: no devolver nada hasta haber finalizado la grabaci�n
-//quizas mejor llamar a juego->save como en V1
-//se podria tener una critical section en Juego->run y que deje en determinados
-//momentos tiempo para que el webserver actue
+			conditionVariable[evSAVE].wait(lock,[this]{ return eventos[evSAVE]; });
+			   // lo que sigue estÃ¡cubierto por el lock????
+// y si el SAVE ha ido mal????
+bool ok=true;
+       			if (ok) { // TODO: falta control errores
+				std::stringstream json;
+				char dump[8192]; //TODO: intentar que sea dinamico
+				std::ifstream savefile("abadia0.save");
+				savefile.read(dump,8192);
+				json << "{\"snapshot\":\"" << dump << "\"}";
+				return crow::response(200, json.str());
+			}
+			else  return crow::response(500, "ERR saving"); 
+		});
+
+		CROW_ROUTE(app, "/loadJSON").methods("POST"_method)([this](const crow::request& req){
+			auto x=crow::json::load(req.body);
+			if(!x) return crow::response(500);
+			std::ofstream savefile("abadia0.save");
+                        // si se enví�a asi curl -v -X POST  --data @crow.sav.json http://localhost:4477/loadJSON
+                        // se come los cambios de linea y no nos vale. Se tiene que enviar así
+                        // curl -v -X POST  -T crow.save.json http://localhost:4477/loadJSON
+			savefile << x["snapshot"].s();
+			savefile.close();
+			std::unique_lock<std::mutex> lock(eventMutex);
+			std::vector<char *> keys;
+			char key[]="99";  // SDLK_c , c de Cargar
+			keys.push_back(key);
+			simulateKeys(10,25,keys);
+			eventos[evLOAD]=false;
+			conditionVariable[evLOAD].wait(lock,[this]{ return eventos[evLOAD]; });
+// y si el LOAD ha ido mal????
                 	return crow::response(200);
-        	});		
+		});
+#endif
+
+		CROW_ROUTE(app, "/save")([this](){
+			std::unique_lock<std::mutex> lock(eventMutex);
+			eventos[evSAVE]=false;
+			std::vector<char *> keys;
+			char key[]="103"; // SDLK_g , g de Grabar
+			keys.push_back(key);
+			simulateKeys(10,25,keys);	
+			conditionVariable[evSAVE].wait(lock,[this]{ return eventos[evSAVE]; });
+			   // lo que sigue estÃ¡cubierto por el lock????
+// y si el SAVE ha ido mal????
+bool ok=true;
+       			if (ok) { // TODO: falta control errores
+				std::stringstream json;
+				char dump[8192]; //TODO: intentar que sea dinamico
+				std::ifstream savefile("abadia0.save");
+				savefile.read(dump,8192);
+				return crow::response(200, dump);
+			}
+			else  return crow::response(500, "ERR saving"); 
+		});
+
+		CROW_ROUTE(app, "/load").methods("POST"_method)([this](const crow::request& req){
+	                std::ofstream savefile("abadia0.save");
+                        // si se enva asi curl -v -X POST  --data @crow.save http://localhost:4477/loa
+                        // se come los cambios de linea y no nos vale. Se tiene que enviar asÃ­
+                        // curl -v -X POST  -T crow.save http://localhost:4477/load
+	                savefile << req.body;
+	                savefile.close();
+			std::vector<char *> keys;
+			char key[]="99";  // SDLK_c , c de Cargar
+			keys.push_back(key);
+			simulateKeys(10,25,keys);
+			eventos[evLOAD]=false;
+			std::unique_lock<std::mutex> lock(eventMutex);
+			conditionVariable[evLOAD].wait(lock,[this]{ return eventos[evLOAD]; });
+// y si el LOAD ha ido mal????
+			return crow::response(200);
+		});
 
 
 		// ejemplo enviar QR . SDLK_q=113 y SDLK_r=114
@@ -154,20 +221,21 @@ bool HTTPInputPluginV2::init(Abadia::Juego *juego)
 			if (keys.size()<1) crow::response(400);
 fprintf(stderr,"fuera repeat %d interval %d key0 %s size %d\n",repeat,interval,keys[0],(int)keys.size()); 
 
-			simulateKeys(repeat,interval,keys);
+                        simulateKeys(repeat,interval,keys);
 
-                	return crow::response(200);
-		});
+                        return crow::response(200);
+                });
 
-		app.port(8182).run();
-	});
-	webThread.detach();
-	return true;
+                app.port(8182).run();
+        });
+        webThread.detach();
+        return true;
 }
 
 void HTTPInputPluginV2::end()
 {
-// TODO: detach juego
+	if ( _juego )
+		_juego->detach(this); 
 }
 
 void HTTPInputPluginV2::acquire()

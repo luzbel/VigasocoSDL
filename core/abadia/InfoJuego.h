@@ -56,7 +56,8 @@ protected:
 // métodos
 public:
 	void inicia();
-	void muestraInfo();
+	bool dumpInfo();
+	bool muestraInfo();
 
 	// inicialización y limpieza
 	InfoJuego();

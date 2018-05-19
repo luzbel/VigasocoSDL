@@ -25,6 +25,8 @@
 #include "RejillaPantalla.h"
 #include "Sprite.h"
 
+#include <fstream>
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -116,8 +118,24 @@ void InfoJuego::inicia()
 	generaAlturasPlanta();
 }
 
+#ifdef __abadIA__
+bool InfoJuego::dumpInfo()
+{
+	if (losControles->seHaPulsado(KEYBOARD_D)) {
+		std::ofstream out("abadIA.dump",
+				std::ofstream::out|std::ofstream::trunc);
+		out << "test\n";
+		if ( out.fail() ) {
+			return false;	
+		}	
+	}
+
+	return true;
+}
+#endif
+
 // muestra la información del juego que se ha activado
-void InfoJuego::muestraInfo()
+bool InfoJuego::muestraInfo()
 {
 /* las teclas 1 a 7 ahora se usan para hacer trampas y cambiar la camara para seguir a otros personajes 
 	if (losControles->seHaPulsado(KEYBOARD_1)) numPersonaje = (numPersonaje + 1) % (Juego::numPersonajes + 1);
@@ -201,6 +219,20 @@ mostrarMapaRestoPlantas=true;
 		// muestra la información sobre la puerta seleccionada
 		muestraInfoPuerta(numPuerta, 100, 0);
 	}
+
+/*
+#ifdef __abadIA__
+	if (losControles->seHaPulsado(KEYBOARD_D)) {
+		std::ofstream out("abadIA.dump",
+				std::ofstream::out|std::ofstream::trunc);
+		out << "test\n";
+		if ( out.fail() ) {
+			return false;	
+		}	
+	}
+#endif
+*/
+	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////

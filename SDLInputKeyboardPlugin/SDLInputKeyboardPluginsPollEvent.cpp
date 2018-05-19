@@ -64,7 +64,7 @@ SDL_PumpEvents();
 
 		if(event.type == SDL_KEYDOWN) {
 			
-				printf("SDL_KEYDOWN %d %d %d\n",event.key.keysym.sym,inputs[event.key.keysym.sym],g_keyMapping[event.key.keysym.sym]);
+//				printf("SDL_KEYDOWN %d %d %d\n",event.key.keysym.sym,inputs[event.key.keysym.sym],g_keyMapping[event.key.keysym.sym]);
 //		if (inputs[i] >= 0){
 			// if the input is mapped and the key is pressed,
 			// update inputs

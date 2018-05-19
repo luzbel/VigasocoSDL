@@ -12,6 +12,8 @@
 
 #include "Juego.h"
 #include <vector>
+#include <condition_variable>
+#include <mutex>
 
 class HTTPInputPluginV2: public IInputPlugin , public INotificationSuscriber<Abadia::Juego>
 {
@@ -19,6 +21,11 @@ class HTTPInputPluginV2: public IInputPlugin , public INotificationSuscriber<Aba
 protected:
 	static const std::string g_properties[];
 	static const int g_paramTypes[];
+	bool eventos[evEVENT_LAST];
+private:
+	std::mutex eventMutex;
+	std::condition_variable conditionVariable[evEVENT_LAST];
+	Abadia::Juego *_juego;
 // methods
 public:
 	// initialization and cleanup
