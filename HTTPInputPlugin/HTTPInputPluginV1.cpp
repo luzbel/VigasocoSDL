@@ -61,17 +61,21 @@ void HTTPInputPluginV1::cleanKeys() {
   keystate[SDLK_d]=
   keystate[SDLK_LEFT]=false;
 }
-/* falta el .h e invocar desde los CROW_ROUTE
-void HTTPInputPluginV1::sendActionAndWaitForEvent(SDLKey key) 
+
+// TODO: en V2 habr√° que sobrecargar esta funci√n con una variante que acepte varias 
+// teclas a la vez y ver como resolver que evento esperar
+void HTTPInputPluginV1::sendActionAndWaitForEvent(SDLKey key, EventType event) 
 {
+//TODO: faltan asserts para controlar el rango de key dentro de las SDLKeys conocidas
+//TODO: faltan asserts para controlar el rango de eventos
 			std::unique_lock<std::mutex> lock(eventMutex);
 			cleanKeys();
-			HTTPInputPluginV1::keystate[SDLK_e]=true;
-			eventos[evRESET]=false;
-			conditionVariable[evRESET].wait(lock,[this]{ return eventos[evRESET]; });
-			HTTPInputPluginV1::keystate[SDLK_e]=false;
+			HTTPInputPluginV1::keystate[key]=true;
+			eventos[event]=false;
+			conditionVariable[event].wait(lock,[this,event](){ return eventos[event]; });
+			eventos[event]=false; // Para evitar confusiones si se traza el array
+			HTTPInputPluginV1::keystate[key]=false;
 }
-*/
 
 bool HTTPInputPluginV1::init(Abadia::Juego *juego)
 {
@@ -82,12 +86,15 @@ bool HTTPInputPluginV1::init(Abadia::Juego *juego)
 		crow::SimpleApp app;
 
 		CROW_ROUTE(app, "/reset")([this](){
+/*
 			std::unique_lock<std::mutex> lock(eventMutex);
 			cleanKeys();
 			HTTPInputPluginV1::keystate[SDLK_e]=true;
 			eventos[evRESET]=false;
 			conditionVariable[evRESET].wait(lock,[this]{ return eventos[evRESET]; });
 			HTTPInputPluginV1::keystate[SDLK_e]=false;
+*/
+			sendActionAndWaitForEvent(SDLK_e,evRESET);	
                 	return crow::response(200);
         	});		
 
@@ -99,6 +106,7 @@ bool HTTPInputPluginV1::init(Abadia::Juego *juego)
 		});
 
 		CROW_ROUTE(app, "/dump")([this](){
+/*
 fprintf(stderr,"sigue reset activo: %d\n",eventos[evRESET]);
 			cleanKeys();
 //			HTTPInputPluginV1::keystate[SDLK_e]=false;
@@ -116,6 +124,8 @@ fprintf(stderr,"sigue reset activo: %d\n",eventos[evRESET]);
 			conditionVariable[evDUMP].wait(lock,[this]{ return eventos[evDUMP]; });
 			HTTPInputPluginV1::keystate[SDLK_d]=false;
 //			HTTPInputPluginV1::keystate[SDLK_F5]=false;
+*/
+			sendActionAndWaitForEvent(SDLK_d,evDUMP);	
 // y si el DUMP ha ido mal????
 bool ok=true;
        			if (ok) { // TODO: falta control errores
