@@ -131,6 +131,7 @@ bool ok=true;
        			if (ok) { // TODO: falta control errores
 				std::stringstream json;
 				char dump[8192]; //TODO: intentar que sea dinamico
+				memset(dump,'\0',sizeof(dump));
 				std::ifstream dumpfile("abadIA.dump");
 				dumpfile.read(dump,8192);
 				return crow::response(200, dump);
@@ -222,6 +223,8 @@ bool ok=true;
 				return crow::response(200, json.str());
 			}
 			else  return crow::response(500, json); */
+
+/*
 			std::unique_lock<std::mutex> lock(eventMutex);
 			cleanKeys();
 			HTTPInputPluginV1::keystate[SDLK_g]=true;
@@ -229,11 +232,14 @@ bool ok=true;
 			conditionVariable[evSAVE].wait(lock,[this]{ return eventos[evSAVE]; });
 			   // lo que sigue estÃ¡cubierto por el lock????
 			HTTPInputPluginV1::keystate[SDLK_g]=false; // esto estÃ ¡cubierto por el lock????
+*/
+			sendActionAndWaitForEvent(SDLK_g,evSAVE);	
 // y si el SAVE ha ido mal????
 bool ok=true;
        			if (ok) { // TODO: falta control errores
 				std::stringstream json;
 				char dump[8192]; //TODO: intentar que sea dinamico
+				memset(dump,'\0',sizeof(dump));
 				std::ifstream savefile("abadia0.save");
 				savefile.read(dump,8192);
 				json << "{\"snapshot\":\"" << dump << "\"}";
@@ -254,6 +260,8 @@ bool ok=true;
                 	}
 	                else  return crow::response(500);
 */
+
+/*
 			std::unique_lock<std::mutex> lock(eventMutex);
 			cleanKeys();
 			HTTPInputPluginV1::keystate[SDLK_g]=true;
@@ -261,9 +269,14 @@ bool ok=true;
 			conditionVariable[evSAVE].wait(lock,[this]{ return eventos[evSAVE]; });
 				// lo que sigue estÃ ¡cubierto por el lock????
 			HTTPInputPluginV1::keystate[SDLK_g]=false; // esto estÃ¡cubierto por el lock????
-bool ok=false;// y si el SAVE ha ido mal????
+*/
+
+			sendActionAndWaitForEvent(SDLK_g,evSAVE);	
+
+bool ok=true;// y si el SAVE ha ido mal????
 			if (ok) { // TODO: falta control errores
                         	char dump[8192]; //TODO: intentar que sea dinamico
+				memset(dump,'\0',sizeof(dump));
                         	std::ifstream savefile("abadia0.save");
 	                        savefile.read(dump,8192);
 				return crow::response(200, dump);
@@ -293,12 +306,15 @@ bool ok=false;// y si el SAVE ha ido mal????
                 	}
                 	else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
 */
+
+/*
 			std::unique_lock<std::mutex> lock(eventMutex);
 			cleanKeys();
 			HTTPInputPluginV1::keystate[SDLK_c]=true;
 			eventos[evLOAD]=false;
 			conditionVariable[evLOAD].wait(lock,[this]{ return eventos[evLOAD]; });
-			HTTPInputPluginV1::keystate[SDLK_c]=false;
+			HTTPInputPluginV1::keystate[SDLK_c]=false; */
+			sendActionAndWaitForEvent(SDLK_c,evLOAD);	
 // y si el LOAD ha ido mal????
                 	return crow::response(200);
  
@@ -323,12 +339,14 @@ bool ok=false;// y si el SAVE ha ido mal????
 	                }
 	                else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
 */
+/*
 			std::unique_lock<std::mutex> lock(eventMutex);
 			cleanKeys();
 			HTTPInputPluginV1::keystate[SDLK_c]=true;
 			eventos[evLOAD]=false;
 			conditionVariable[evLOAD].wait(lock,[this]{ return eventos[evLOAD]; });
-			HTTPInputPluginV1::keystate[SDLK_c]=false;
+			HTTPInputPluginV1::keystate[SDLK_c]=false; */
+			sendActionAndWaitForEvent(SDLK_c,evLOAD);	
 // y si el LOAD ha ido mal????
                 	return crow::response(200);
         	});
