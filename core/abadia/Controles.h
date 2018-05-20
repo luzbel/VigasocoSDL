@@ -11,6 +11,8 @@
 #include "../InputHandler.h"
 #include "../util/Singleton.h"
 
+#include <fstream>
+
 namespace Abadia {
 
 #define losControles Controles::getSingletonPtr()
@@ -18,6 +20,7 @@ namespace Abadia {
 class Controles : public Singleton<Controles>
 {
 // campos
+
 protected:
 	InputHandler *ih;							// manejador de los controles
 
@@ -25,6 +28,9 @@ protected:
 	int _oldControles[END_OF_INPUTS];			// datos anteriores sobre los controles
 	// TODO: revisar no creo que este sea un buen sitio para meterlo JT 
 	char pathDump[200];
+#ifdef __abadIA__
+	std::fstream replayFile;
+#endif
 	
 // m�todos
 public:
@@ -33,6 +39,10 @@ public:
 
 	bool estaSiendoPulsado(Inputs input) const { return (_controles[input] > 0); }
 	bool seHaPulsado(Inputs input);
+#ifdef __abadIA__
+	bool saveReplay(void);
+	bool loadReplay(void);
+#endif
 
 	// inicializaci�n y limpieza
 	Controles();

@@ -1802,8 +1802,26 @@ _reset=false;
                 while (true){   // el bucle principal del juego empieza aquí
 
 			if (_reset) goto despues_de_cargar_o_iniciar;
+
+#ifdef __abadIA__
+#ifdef __abadIA_REPLAY__ 
+			if (!losControles->loadReplay()) {
+				// fprintf(stderr,"ERR reading replay file\n");
+				elMarcador->imprimeFrase("FIN REPLAY U ERR LEYENDO", 110, 164, 4, 0); // VGA
+			}
+//#else
+//			if (!losControles->saveReplay()) fprintf(stderr,"ERR saving replay\n");
+#endif
+#endif
+
                         // actualiza el estado de los controles
                         controles->actualizaEstado();
+#ifdef __abadIA__
+#ifndef __abadIA_REPLAY__ 
+			if (!losControles->saveReplay()) fprintf(stderr,"ERR saving replay\n");
+#endif
+#endif
+
 
                         // obtiene el contador de la animación de guillermo para saber si se generan caminos en esta iteración
                         elBuscadorDeRutas->contadorAnimGuillermo = laLogica->guillermo->contadorAnimacion;

@@ -1,4 +1,5 @@
-CXXFLAGS=-O3 -D__abadIA__ -g -std=c++14 -I../core `sdl-config --cflags` -L/usr/local/Cellar/boost/1.66.0/lib/ -I /usr/local/Cellar/boost/1.66.0/include -DBOOST_SYSTEM_NO_DEPRECATED -lboost_system -L/usr/lib64 -lstdc++
+CXXFLAGS=-O3 -D__abadIA_REPLAY__ -D__abadIA__ -g -std=c++14 -I../core `sdl-config --cflags` -L/usr/local/Cellar/boost/1.66.0/lib/ -I /usr/local/Cellar/boost/1.66.0/include -DBOOST_SYSTEM_NO_DEPRECATED -lboost_system -L/usr/lib64 -lstdc++
+#CXXFLAGS=-O3 -D__abadIA__ -g -std=c++14 -I../core `sdl-config --cflags` -L/usr/local/Cellar/boost/1.66.0/lib/ -I /usr/local/Cellar/boost/1.66.0/include -DBOOST_SYSTEM_NO_DEPRECATED -lboost_system -L/usr/lib64 -lstdc++
 #CXXFLAGS=-g -I../core `sdl-config --cflags` 
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
