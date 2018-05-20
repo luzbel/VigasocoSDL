@@ -26,6 +26,8 @@
 #include "Sprite.h"
 
 #include <fstream>
+#include "json.hpp"
+#include "Berengario.h"
 
 using namespace Abadia;
 
@@ -124,7 +126,82 @@ bool InfoJuego::dumpInfo()
 	if (losControles->seHaPulsado(KEYBOARD_D)) {
 		std::ofstream out("abadIA.dump",
 				std::ofstream::out|std::ofstream::trunc);
-		out << "test\n";
+//		out << "test\n";
+		nlohmann::json dump;
+		dump["dia"]=laLogica->dia;
+dump["momentoDia"]= laLogica->momentoDia;
+dump["obsequium"]= laLogica->obsequium;
+dump["numeroRomano"]=laLogica->numeroRomano;
+dump["haFracasado"]=laLogica->haFracasado;
+dump["bonus"]=laLogica->bonus;
+dump["investigacionCompleta"]=laLogica->investigacionCompleta;
+dump["porcentaje"]=laLogica->calculaPorcentajeMision();
+dump["numPantalla"]=elJuego->motor->numPantalla;
+dump["planta"]=elMotorGrafico->obtenerPlanta(
+			elMotorGrafico->obtenerAlturaBasePlanta(
+				elMotorGrafico->personaje->altura));
+// TODO falta sonidos y mas cosas
+		// Personajes
+		static const std::string tablaNombresPersonajes[] = {
+			"Guillermo" ,  // 0
+			"Adso", // 1
+			"Malaquias", // 2
+			"Abad", // 3
+			"Berengario", // 4
+			"Severino", // 5
+			"Jorge", // 6
+			"Bernardo" 
+		}; // 7
+		nlohmann::json Personajes = nlohmann::json::array();
+		for(int i=0;i<elJuego->numPersonajes;i++) {
+			Personaje *pers=elJuego->personajes[i];
+			if (pers->sprite->esVisible) {
+				nlohmann::json personaje;
+				personaje["id"]=i;
+				if (i==4) {
+					Berengario *ber=(Berengario *)pers;
+					//Monje*ber=(Monje *)pers;
+					if (ber->datosCara[0]==69308) personaje["nombre"]="Encapuchado";
+					else personaje["nombre"]=tablaNombresPersonajes[i];
+				} else personaje["nombre"]=tablaNombresPersonajes[i];
+				personaje["posX"]=pers->posX;			
+				personaje["posY"]=pers->posY;			
+				personaje["altura"]=pers->altura;			
+				personaje["orientacion"]=pers->orientacion;			
+				if (i==0 || i==1) { // solo sabemos los objetos que tienen Guillermo y Adso
+					personaje["objetos"]=pers->objetos;
+				}
+				Personajes.push_back(personaje);
+			}
+		}
+		dump["Personajes"]=Personajes;
+		// Objetos
+		nlohmann::json Objetos = nlohmann::json::array();
+		for(int i=0;i<elJuego->numObjetos;i++) {
+			Objeto *obj=elJuego->objetos[i];
+			if (obj->sprite->esVisible) {
+				nlohmann::json objeto;
+				objeto["id"]=i;
+				objeto["posX"]=obj->posX;			
+				objeto["posY"]=obj->posX;			
+				objeto["altura"]=obj->altura;			
+				objeto["orientacion"]=obj->orientacion;			
+				Objetos.push_back(objeto);
+			}
+		}
+		dump["Objetos"]=Objetos;
+		// Rejilla
+		nlohmann::json Rejilla = nlohmann::json::array();
+		RejillaPantalla *rejilla = elMotorGrafico->rejilla;
+		for (int j = 0; j < 24; j++) {
+			nlohmann::json Fila = nlohmann::json::array();
+			for (int i = 0; i < 24; i++) {
+				Fila.push_back((int)rejilla->bufAlturas[j][i]);
+			}
+			Rejilla.push_back(Fila);
+		}	
+		// Volcado completo
+		out << dump;
 		if ( out.fail() ) {
 			return false;	
 		}	
