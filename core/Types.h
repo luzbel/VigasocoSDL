@@ -151,6 +151,11 @@ enum EventType {
 	evLOAD,
 	evSAVE,
 	evDUMP,
+	evLEFT,
+	evRIGHT,
+	evUP,
+	evDOWN,
+	evSPACE,
 	evEVENT_LAST
 };
 

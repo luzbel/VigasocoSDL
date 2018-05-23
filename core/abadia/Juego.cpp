@@ -1926,6 +1926,23 @@ notify(evRESET);
 			}
 #endif
 
+#ifdef __abadIA__
+			// Ya hemos hecho todo lo que tenÃamos que hacer
+			// avÃsemos a la IA
+			if (losControles->estaSiendoPulsado(P1_LEFT))
+				notify(evLEFT);
+			if (losControles->estaSiendoPulsado(P1_RIGHT))
+				notify(evRIGHT);
+			if (losControles->estaSiendoPulsado(P1_UP))
+				notify(evUP);
+			if (losControles->estaSiendoPulsado(P1_DOWN))
+				notify(evDOWN);
+			if (losControles->estaSiendoPulsado(P1_BUTTON1))
+				notify(evSPACE);
+			//TODO; que hacer con QR
+			
+#endif			
+
 			// espera un poco para actualizar el estado del juego
 			while (contadorInterrupcion < 0x24){
 				timer->sleep(5);

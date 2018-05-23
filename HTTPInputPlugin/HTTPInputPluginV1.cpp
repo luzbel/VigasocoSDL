@@ -140,34 +140,29 @@ bool ok=true;
 		});
 
 		CROW_ROUTE(app, "/cmd/A")([this](){
-			cleanKeys();
 			// A de arriba
-			HTTPInputPluginV1::keystate[SDLK_UP]=true;
+			sendActionAndWaitForEvent(SDLK_UP,evUP);	
                 	return crow::response(200);
 		});
 
 		CROW_ROUTE(app, "/cmd/D")([this](){
-			cleanKeys();
 			// D de derecha
-			HTTPInputPluginV1::keystate[SDLK_RIGHT]=true;
+			sendActionAndWaitForEvent(SDLK_RIGHT,evRIGHT);	
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/I")([this](){
-			cleanKeys();
 			// I de izquierda
-			HTTPInputPluginV1::keystate[SDLK_LEFT]=true;
+			sendActionAndWaitForEvent(SDLK_LEFT,evLEFT);	
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/B")([this](){
-			cleanKeys();
 			// Cursos aBajo para mover a ADSO
-			HTTPInputPluginV1::keystate[SDLK_DOWN]=true;
+			sendActionAndWaitForEvent(SDLK_DOWN,evDOWN);	
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/_")([this](){
-			cleanKeys();
 			// barra espaciadora
-			HTTPInputPluginV1::keystate[SDLK_SPACE]=true;
+			sendActionAndWaitForEvent(SDLK_SPACE,evSPACE);	
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/E")([this](){
@@ -175,14 +170,14 @@ bool ok=true;
 			// Volcado del estado
 			HTTPInputPluginV1::keystate[SDLK_F5]=true;
 // TODO: falla porque se queda todo el rato activando y desactivando
-                	return crow::response(200);
+                	return crow::response(500);
 		});
 		CROW_ROUTE(app, "/cmd/e")([this](){
 			cleanKeys();
 			// Desactivar el volcado del estado
 			HTTPInputPluginV1::keystate[SDLK_F5]=true;
 // TODO: falla porque se queda todo el rato activando y desactivando
-                	return crow::response(200);
+                	return crow::response(500);
 		});
 		CROW_ROUTE(app, "/cmd/Q")([this](){
 			cleanKeys();
