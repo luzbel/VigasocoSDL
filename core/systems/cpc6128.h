@@ -176,6 +176,7 @@ public:
 	// pixel get/set
 	inline void setPixel(int x, int y, int color)
 	{
+#ifndef __abadIA_HEADLESS__
 		/* CPC
 		// sets pixel and marks the pixel as dirty
 		cs->enter();
@@ -192,6 +193,7 @@ public:
 		UINT8 bit = 1<<((y*640 + x)%8);
 		*p = *p|bit;
 		cs->leave();
+#endif
 	}
 
 	inline int getPixel(int x, int y)

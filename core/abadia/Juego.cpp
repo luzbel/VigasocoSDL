@@ -1713,7 +1713,9 @@ void Juego::run()
 
 	// muestra la imagen de presentación
 
+#ifndef __abadIA__
 	muestraPresentacion();
+#endif
 
 	// para borrar la presentacion antes del menu
 	marcador->limpiaAreaMarcador();
@@ -1764,6 +1766,8 @@ void Juego::run()
 //TODO: cambiar el bucle principal de inicializar
 //porque se esta liando bastante
 logica->inicia();
+
+#ifndef __abadIA__
 	// menu, para permitir cambiar el idioma al empezar
 	// y ver el pergamino inicial en tu idioma
 	if (menu()) goto despues_de_cargar_o_iniciar;
@@ -1771,6 +1775,7 @@ logica->inicia();
 	// muestra el pergamino de presentación
 
 	muestraIntroduccion();
+#endif
 
 	// limpia el área que ocupa el marcador
 	marcador->limpiaAreaMarcador();

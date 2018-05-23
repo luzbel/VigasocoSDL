@@ -124,11 +124,12 @@ void CPC6128::setMode0Pixel(int x, int y, int color)
 	assert((x >= 0) && (x < 160));
 	assert((y >= 0) && (y < 200));
 	assert((color >= 0) && (color < 16));
-
+#ifndef __abadIA_HEADLESS__
 	setPixel(4*x, y, color);
 	setPixel(4*x + 1, y, color);
 	setPixel(4*x + 2, y, color);
 	setPixel(4*x + 3, y, color);
+#endif
 }
 
 // sets a pixel in mode 1 (320x200, x pixels = 2 width, y pixels = 2 height, 4 colors)
@@ -138,9 +139,10 @@ void CPC6128::setMode1Pixel(int x, int y, int color)
 	assert((y >= 0) && (y < 200));
 //CPC	assert((color >= 0) && (color < 4));
 	assert((color >= 0) && (color < 256)); //TODO VGA
-
+#ifndef __abadIA_HEADLESS__
 	setPixel(2*x, y, color);
 	setPixel(2*x + 1, y, color);
+#endif
 }
 
 // TODO: SEPARAR ESTO EN OTRO FUENTE QUE NO SEA CPC
@@ -151,8 +153,10 @@ void CPC6128::setVGAPixel(int x, int y, int color)
 	assert((y >= 0) && (y < 200));
 	assert((color >= 0) && (color < 256));
 
+#ifndef __abadIA_HEADLESS__
 	setPixel(2*x, y, color);
 	setPixel(2*x + 1, y, color);
+#endif
 }
 
 // sets a pixel in mode 2 (640x200, x pixels = 1 width, y pixels = 2 height, 2 colors)
@@ -162,7 +166,9 @@ void CPC6128::setMode2Pixel(int x, int y, int color)
 	assert((y >= 0) && (y < 200));
 	assert((color >= 0) && (color < 2));
 
+#ifndef __abadIA_HEADLESS__
 	setPixel(x, y, color);
+#endif
 }
 
 // gets a pixel in mode 0 (160x200, x pixels = 4 width, y pixels = 2 height, 16 colors)
@@ -200,7 +206,9 @@ void CPC6128::fillMode0Rect(int x, int y, int width, int height, int color)
 	assert((color >= 0) && (color < 16));
 	assert(((x + width) <= 160) && ((y + height) <= 200));
 
+#ifndef __abadIA_HEADLESS__
 	fillRect(x*4, y, width*4, height, color);
+#endif
 }
 
 // sets a pixel in mode 1 (320x200, x pixels = 2 width, y pixels = 2 height, 4 colors)
@@ -212,7 +220,9 @@ void CPC6128::fillMode1Rect(int x, int y, int width, int height, int color)
 	assert((color >= 0) && (color < 256)); // VGA ya que se llama en Marcador::dibujaBarra y ya se usan colores VGA
 	assert(((x + width) <= 320) && ((y + height) <= 200));
 
+#ifndef __abadIA_HEADLESS__
 	fillRect(x*2, y, width*2, height, color);
+#endif
 }
 
 // sets a pixel in mode 2 (640x200, x pixels = 1 width, y pixels = 2 height, 2 colors)
@@ -223,13 +233,16 @@ void CPC6128::fillMode2Rect(int x, int y, int width, int height, int color)
 	assert((color >= 0) && (color < 2));
 	assert(((x + width) <= 640) && ((y + height) <= 200));
 
+#ifndef __abadIA_HEADLESS__
 	fillRect(x, y, width, height, color);
+#endif
 }
 
 
 // shows a screen stored in standard mode 0 format
 void CPC6128::showMode0Screen(const UINT8 *data)
 {
+#ifndef __abadIA_HEADLESS__
 	// scan the rows
 	for (int j = 0; j < 200; j++){
 		// convert from CPC VRAM to standard coordinates
@@ -246,11 +259,13 @@ void CPC6128::showMode0Screen(const UINT8 *data)
 			lineData++;
 		}
 	}
+#endif
 }
 
 // shows a screen stored in 320x200 1 pixel por byte
 void CPC6128::showVGAScreen(const UINT8 *data)
 {
+#ifndef __abadIA_HEADLESS__
 	// scan the rows
 	for (int j = 0; j < 200; j++){
 		// scan the cols
@@ -259,6 +274,7 @@ void CPC6128::showVGAScreen(const UINT8 *data)
 			setVGAPixel(i,j,*data++);
 		}
 	}
+#endif
 // TODO: como en la pantalla de presentacion se usan mas de 127
 // colores, no se puede usar el ultimo bit para marcar
 // un pixel como cambiado
@@ -267,6 +283,7 @@ void CPC6128::showVGAScreen(const UINT8 *data)
 // marks all pixels as dirty
 void CPC6128::markAllPixelsDirty()
 {
+#ifndef __abadIA_HEADLESS__
 /* CPC
 	UINT8 *buf = screenBuffer;
 
@@ -282,6 +299,7 @@ void CPC6128::markAllPixelsDirty()
 	UINT8 *buf = DirtyPixels;
 	memset(DirtyPixels,0xFF,sizeof(DirtyPixels));
 	
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -291,6 +309,7 @@ void CPC6128::markAllPixelsDirty()
 // fill a rectangle
 void CPC6128::fillRect(int x, int y, int width, int height, int color)
 {
+#ifndef __abadIA_HEADLESS__
 	int xLimit = width + x - 1;
 
 	for (; height > 0; height--, y++){
@@ -302,4 +321,5 @@ void CPC6128::fillRect(int x, int y, int width, int height, int color)
 			setPixel(xx, y, color);
 		}
 	}
+#endif
 }
