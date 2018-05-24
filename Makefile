@@ -1,6 +1,6 @@
 .PHONY: all folders build run clean
 
-MAKEOPTIONS = CXX=clang LD=clang
+MAKEOPTIONS = CXX=clang++ LD=clang++
 
 all: folders build
 
