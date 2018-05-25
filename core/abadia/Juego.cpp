@@ -1794,8 +1794,27 @@ notify(evRESET);
 
 
 		while (true){	// el bucle principal del juego empieza aquí
+
+#ifdef __abadIA__
+#ifdef __abadIA_REPLAY__ 
+			if (!losControles->loadReplay()) {
+				// fprintf(stderr,"ERR reading replay file\n");
+				elMarcador->imprimeFrase("FIN REPLAY U ERR", 97, 162, 4, 0); // VGA
+			}
+//#else
+//			if (!losControles->saveReplay()) fprintf(stderr,"ERR saving replay\n");
+#endif
+#endif
+
 			// actualiza el estado de los controles
 			controles->actualizaEstado();
+
+#ifdef __abadIA__
+#ifndef __abadIA_REPLAY__ 
+			if (!losControles->saveReplay()) fprintf(stderr,"ERR saving replay\n");
+#endif
+#endif
+
 
 			if ( compruebaReinicio() ) goto despues_de_cargar_o_iniciar;
 
