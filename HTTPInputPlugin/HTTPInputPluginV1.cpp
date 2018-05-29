@@ -29,15 +29,6 @@ HTTPInputPluginV1::~HTTPInputPluginV1()
 
 void HTTPInputPluginV1::update(Abadia::Juego* subject, int data) 
 {
-fprintf(stderr,"HTTPInputPluginV1::update\n");
-/*
-	switch ((EventType)data) {
-		case RESET:
-			std::lock_guard<std::mutex> lock(eventMutex); 
-			break;
-		default: fprintf(stderr,"HTTPInputPluginV1::update Tipo update desconocido\n");
-	}
-*/
 	if (data>=0 && data <= evEVENT_LAST) {
 			std::lock_guard<std::mutex> lock(eventMutex);
 			eventos[data]=true; 
