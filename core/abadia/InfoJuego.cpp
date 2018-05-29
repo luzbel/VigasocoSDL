@@ -235,6 +235,7 @@ bool InfoJuego::dumpInfo()
 			}
 			Rejilla.push_back(Fila);
 		}
+		dump["Rejilla"]=Rejilla;
 
 		// Volcado completo
 		out << dump;
