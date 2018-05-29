@@ -1,0 +1,17 @@
+CXXFLAGS=-O3 -D_CROW_V1_COMPATIBLE_MODE_ -std=c++11 -fPIC -I../core -I../core/abadia -I../VigasocoSDL/ -lboost_thread-mt -lboost_system-mt `sdl-config --cflags` -L/usr/local/Cellar/boost/1.66.0/lib/ -I /usr/local/Cellar/boost/1.66.0/include
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
+
+all: ../VigasocoSDL/input/libVigasocoHTTPInputPlugin.so 
+
+OBJECTS = HTTPInputPluginV1.o HTTPInputPluginV2.o PluginMain.o
+
+../VigasocoSDL/input/libVigasocoHTTPInputPlugin.so: $(OBJECTS)
+
+	$(CXX) -fPIC -shared $(OBJECTS) -std=c++14 -Wc++11-extensions -L /usr/local/Cellar/boost/1.66.0/lib/ -I /usr/local/Cellar/boost/1.66.0/include -lstdc++ -lboost_thread_mt -lboost_system_mt -pthread -o $@ 
+
+# para comprobar que no le faltan dependencias por resolver a la libreria
+test: test.o ../VigasocoSDL/input/libVigasocoHTTPInputPlugin.so
+	$(CXX) -g test.o -o test -L ../VigasocoSDL/input/ -l VigasocoHTTPInputPlugin  -lboost_thread-mt -lboost_system-mt `sdl-config --libs` -L/usr/local/Cellar/boost/1.66.0/lib/ -I /usr/local/Cellar/boost/1.66.0/include
+#	$(CXX) -g test.o -o test -L ../VigasocoSDL/input/ -l VigasocoHTTPInputPlugin 
+clean:
+	rm -f $(OBJECTS) ../VigasocoSDL/input/libVigasocoHTTPInputPlugin.so test.o test
