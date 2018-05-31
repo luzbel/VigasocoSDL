@@ -25,7 +25,7 @@ HTTPInputPluginV2::~HTTPInputPluginV2()
 
 void HTTPInputPluginV2::update(Abadia::Juego* subject, int data) 
 {
-fprintf(stderr,"HTTPInputPluginV2::update\n");
+//fprintf(stderr,"HTTPInputPluginV2::update\n");
 }
 
 void HTTPInputPluginV2::simulateKeys(int repeat, int interval, std::vector<char *> keys )

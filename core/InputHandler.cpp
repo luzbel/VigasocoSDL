@@ -11,7 +11,6 @@
 
 #ifdef __abadIA__
 #include "abadia/Juego.h"
-#include "fstream" 
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -71,15 +70,12 @@ bool InputHandler::init(GameDriver *gd)
 
 	// if there aren't any input plugins, error
 	if (_plugins.size() == 0){
-fprintf(stderr,"no hay plugins input\n");
 		return false;
 	}
 
 	// init the plugins
 	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
-fprintf(stderr,"aaa\n");
 		if (!(*i)->init(Abadia::elJuego)){
-fprintf(stderr,"init input handler false\n");
 			return false;
 		}
 	}

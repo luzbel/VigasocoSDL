@@ -1,5 +1,5 @@
-#CXXFLAGS=-O3 -std=c++11 -D __abadIA__ -I../core `sdl-config --cflags` 
-CXXFLAGS=-g -std=c++11 -D __abadIA__ -I../core `sdl-config --cflags` 
+CXXFLAGS=-O3 -std=c++11 -D __abadIA__ -I../core `sdl-config --cflags` 
+#CXXFLAGS=-g -std=c++11 -D __abadIA__ -I../core `sdl-config --cflags` 
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 # en OBJECTS_CORE falta Operations.o ??
@@ -9,11 +9,49 @@ OBJECTS_ABADIA = Abad.o AccionesDia.o Adso.o Berengario.o Bernardo.o BuscadorRut
 
 OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLThread.o VigasocoSDL.o SDLMain.o
 
-OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
+OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL)
+
+OBJECTS_headless=$(OBJECTS:.o=.headless.o)
+
+%.headless.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJECTS_headless): CXXFLAGS+=-D __abadIA_HEADLESS__
+
+OBJECTS_STATIC_PLUGINS = video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a audio/libVigasocoSDLAudioPlugin.a
+
+OBJECTS_static=$(OBJECTS:.o=.static.o)
+
+%.static.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJECTS_static): CXXFLAGS+=-D__VIGASOCO_SDL_STATIC__
+
+OBJECTS_replay=$(OBJECTS:.o=.replay.o)
+
+%.replay.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJECTS_replay): CXXFLAGS+=-D__abadIA_REPLAY__
 
 VigasocoSDL: $(OBJECTS)
-	$(CXX) -g $(OBJECTS) `sdl-config --libs` -o VigasocoSDL
-	#strip VigasocoSDL
+	$(CXX) $^ `sdl-config --libs` -o $@
+	strip $@
+
+VigasocoSDL.headless: $(OBJECTS_headless)
+	$(CXX) $^ `sdl-config --libs` -o $@
+	strip $@
+
+VigasocoSDL.static: $(OBJECTS_static) $(OBJECTS_STATIC_PLUGINS)
+	$(CXX) -static $^ `sdl-config --static-libs` -ldl -o $@
+	strip $@
+
+VigasocoSDL.replay: $(OBJECTS_replay)
+	$(CXX) $^ `sdl-config --libs` -o $@
+	strip $@
+
+all: VigasocoSDL VigasocoSDL.headless VigasocoSDL.static
 
 clean:
-	rm -f $(OBJECTS) core VigasocoSDL
+	rm -f	$(OBJECTS) $(OBJECTS_headless) $(OBJECTS_replay) \
+		core VigasocoSDL VigasocoSDL.headless VigasocoSDL.static VigasocoSDL.replay
