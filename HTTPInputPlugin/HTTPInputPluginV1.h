@@ -60,7 +60,7 @@ protected:
 	virtual void update(Abadia::Juego* subject, int data);
 private:
 	void cleanKeys();
-	void sendActionAndWaitForEvent(SDLKey key, EventType event);
+	EventType sendActionAndWaitForEvent(SDLKey key, EventType event);
 };
 
 #endif	// _HTTP_INPUT_PLUGIN_V1_H_

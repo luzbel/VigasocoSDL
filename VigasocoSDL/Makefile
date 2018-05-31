@@ -34,6 +34,13 @@ OBJECTS_replay=$(OBJECTS:.o=.replay.o)
 
 $(OBJECTS_replay): CXXFLAGS+=-D__abadIA_REPLAY__
 
+OBJECTS_megaReplay=$(OBJECTS:.o=.megaReplay.o)
+
+%.megaReplay.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(OBJECTS_megaReplay): CXXFLAGS+=-D__abadIA_MEGAREPLAY__
+
 VigasocoSDL: $(OBJECTS)
 	$(CXX) $^ `sdl-config --libs` -o $@
 	strip $@
@@ -50,8 +57,13 @@ VigasocoSDL.replay: $(OBJECTS_replay)
 	$(CXX) $^ `sdl-config --libs` -o $@
 	strip $@
 
-all: VigasocoSDL VigasocoSDL.headless VigasocoSDL.static
+VigasocoSDL.megaReplay: $(OBJECTS_megaReplay)
+	$(CXX) $^ `sdl-config --libs` -o $@
+	strip $@
+
+
+all: VigasocoSDL VigasocoSDL.headless VigasocoSDL.static VigasocoSDL.replay VigasocoSDL.megaReplay
 
 clean:
-	rm -f	$(OBJECTS) $(OBJECTS_headless) $(OBJECTS_replay) \
-		core VigasocoSDL VigasocoSDL.headless VigasocoSDL.static VigasocoSDL.replay
+	rm -f	$(OBJECTS) $(OBJECTS_headless) $(OBJECTS_replay) $(OBJECTS_megaReplay) \
+		core VigasocoSDL VigasocoSDL.headless VigasocoSDL.static VigasocoSDL.replay VigasocoSDL.megaReplay

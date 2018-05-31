@@ -31,8 +31,19 @@ void HTTPInputPluginV1::update(Abadia::Juego* subject, int data)
 {
 	if (data>=0 && data <= evEVENT_LAST) {
 			std::lock_guard<std::mutex> lock(eventMutex);
-			eventos[data]=true; 
-			conditionVariable[data].notify_one();
+//fprintf(stderr,"HTTPInputPluginV1::update %d\n",data);
+			if (data==evGAMEOVER) {
+				// desbloqueamos cualquier espera de evento
+				for (int i=0;i<evEVENT_LAST;i++) {
+//fprintf(stderr,"HTTPInputPluginV1::update for %d\n",i);
+					eventos[i]=true; 
+					conditionVariable[i].notify_one();
+				}
+			} else {
+//fprintf(stderr,"HTTPInputPluginV1::update non-for %d\n",data);
+				eventos[data]=true; 
+				conditionVariable[data].notify_one();
+			}
 	} else {
 		fprintf(stderr,"HTTPInputPluginV1::update Tipo update desconocido\n");
 	}
@@ -55,17 +66,34 @@ void HTTPInputPluginV1::cleanKeys() {
 
 // TODO: en V2 habrá que sobrecargar esta funci�n con una variante que acepte varias 
 // teclas a la vez y ver como resolver que evento esperar
-void HTTPInputPluginV1::sendActionAndWaitForEvent(SDLKey key, EventType event) 
+EventType HTTPInputPluginV1::sendActionAndWaitForEvent(SDLKey key, EventType event) 
 {
 //TODO: faltan asserts para controlar el rango de key dentro de las SDLKeys conocidas
 //TODO: faltan asserts para controlar el rango de eventos
 			std::unique_lock<std::mutex> lock(eventMutex);
+fprintf(stderr,"HTTPInputPluginV1::sendActionAndWaitForEvent event %d key %d\n",event, key);
 			cleanKeys();
 			HTTPInputPluginV1::keystate[key]=true;
 			eventos[event]=false;
-			conditionVariable[event].wait(lock,[this,event](){ return eventos[event]; });
-			eventos[event]=false; // Para evitar confusiones si se traza el array
+			eventos[evGAMEOVER]=false;
+//fprintf(stderr,"tecla e %d %d\n", HTTPInputPluginV1::keystate[SDLK_e], keystate[SDLK_e]);
+			conditionVariable[event].wait(lock,[this,event]() { 
+				return eventos[event] || eventos[evGAMEOVER]; 
+			});
+
 			HTTPInputPluginV1::keystate[key]=false;
+
+			if (eventos[evGAMEOVER]) {
+				for (int i=0;i<evEVENT_LAST;i++) {
+fprintf(stderr,"HTTPInputPluginV1::sendActionAndWaitForEvent for %d\n",i);
+					eventos[i]=false; 
+				}
+				return evGAMEOVER;
+			} else {
+fprintf(stderr,"HTTPInputPluginV1::sendActionAndWaitForEvent non-for %d\n",event);
+				eventos[event]=false; // Para evitar confusiones si se traza el array
+				return event;
+			}
 }
 
 bool HTTPInputPluginV1::init(Abadia::Juego *juego)
@@ -85,8 +113,11 @@ bool HTTPInputPluginV1::init(Abadia::Juego *juego)
 			conditionVariable[evRESET].wait(lock,[this]{ return eventos[evRESET]; });
 			HTTPInputPluginV1::keystate[SDLK_e]=false;
 */
-			sendActionAndWaitForEvent(SDLK_e,evRESET);	
-                	return crow::response(200);
+			switch (sendActionAndWaitForEvent(SDLK_e,evRESET)) {
+				case evGAMEOVER: return crow::response(599);
+				case evRESET: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			}
         	});		
 
 		CROW_ROUTE(app, "/fin")([](){
@@ -116,7 +147,7 @@ fprintf(stderr,"sigue reset activo: %d\n",eventos[evRESET]);
 			HTTPInputPluginV1::keystate[SDLK_d]=false;
 //			HTTPInputPluginV1::keystate[SDLK_F5]=false;
 */
-			sendActionAndWaitForEvent(SDLK_d,evDUMP);	
+			EventType resSend = sendActionAndWaitForEvent(SDLK_d,evDUMP);	
 // y si el DUMP ha ido mal????
 bool ok=true;
        			if (ok) { // TODO: falta control errores
@@ -125,35 +156,59 @@ bool ok=true;
 				memset(dump,'\0',sizeof(dump));
 				std::ifstream dumpfile("abadIA.dump");
 				dumpfile.read(dump,8192);
-				return crow::response(200, dump);
+				switch (resSend) {
+					case evGAMEOVER: return crow::response(599,dump);
+					case evDUMP: return crow::response(200, dump);
+					default: return crow::response(500,"Evento no esperado");
+				}
 			}
 			else  return crow::response(500, "ERR dumping state"); 
 		});
 
 		CROW_ROUTE(app, "/cmd/A")([this](){
 			// A de arriba
-			sendActionAndWaitForEvent(SDLK_UP,evUP);	
+			switch (sendActionAndWaitForEvent(SDLK_UP,evUP)) {
+				case evGAMEOVER: return crow::response(599);
+				case evUP: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			}
                 	return crow::response(200);
 		});
 
 		CROW_ROUTE(app, "/cmd/D")([this](){
 			// D de derecha
-			sendActionAndWaitForEvent(SDLK_RIGHT,evRIGHT);	
+			switch (sendActionAndWaitForEvent(SDLK_RIGHT,evRIGHT)) {
+				case evGAMEOVER: return crow::response(599);
+				case evRIGHT: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			}
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/I")([this](){
 			// I de izquierda
-			sendActionAndWaitForEvent(SDLK_LEFT,evLEFT);	
+			switch (sendActionAndWaitForEvent(SDLK_LEFT,evLEFT)) {
+				case evGAMEOVER: return crow::response(599);
+				case evLEFT: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			}
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/B")([this](){
 			// Cursos aBajo para mover a ADSO
-			sendActionAndWaitForEvent(SDLK_DOWN,evDOWN);	
+			switch (sendActionAndWaitForEvent(SDLK_DOWN,evDOWN)) {
+				case evGAMEOVER: return crow::response(599);
+				case evDOWN: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			}
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/_")([this](){
 			// barra espaciadora
-			sendActionAndWaitForEvent(SDLK_SPACE,evSPACE);	
+			switch (sendActionAndWaitForEvent(SDLK_SPACE,evSPACE)) {
+				case evGAMEOVER: return crow::response(599);
+				case evSPACE: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			}
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/E")([this](){
@@ -161,6 +216,12 @@ bool ok=true;
 			// Volcado del estado
 			HTTPInputPluginV1::keystate[SDLK_F5]=true;
 // TODO: falla porque se queda todo el rato activando y desactivando
+/*
+			switch (sendActionAndWaitForEvent(SDLK_e,evXXX)) {
+				case evGAMEOVER: return crow::response(599);
+				case evXXX: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			} */ 
                 	return crow::response(500);
 		});
 		CROW_ROUTE(app, "/cmd/e")([this](){
@@ -168,18 +229,36 @@ bool ok=true;
 			// Desactivar el volcado del estado
 			HTTPInputPluginV1::keystate[SDLK_F5]=true;
 // TODO: falla porque se queda todo el rato activando y desactivando
+/*
+			switch (sendActionAndWaitForEvent(SDLK_e,evXXX)) {
+				case evGAMEOVER: return crow::response(599);
+				case evXXX: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			} */
                 	return crow::response(500);
 		});
 		CROW_ROUTE(app, "/cmd/Q")([this](){
 			cleanKeys();
 			//
 			HTTPInputPluginV1::keystate[SDLK_q]=true;
+/*
+			switch (sendActionAndWaitForEvent(SDLK_XXX,evXXX)) {
+				case evGAMEOVER: return crow::response(599);
+				case evXXX: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			} */
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/R")([this](){
 			cleanKeys();
 			// 
 			HTTPInputPluginV1::keystate[SDLK_r]=true;
+/*
+			switch (sendActionAndWaitForEvent(SDLK_XXX,evXXX)) {
+				case evGAMEOVER: return crow::response(599);
+				case evXXX: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			} */
                 	return crow::response(200);
 		});
 		CROW_ROUTE(app, "/cmd/F")([this](){
@@ -219,7 +298,7 @@ bool ok=true;
 			   // lo que sigue estÃ¡cubierto por el lock????
 			HTTPInputPluginV1::keystate[SDLK_g]=false; // esto estÃ ¡cubierto por el lock????
 */
-			sendActionAndWaitForEvent(SDLK_g,evSAVE);	
+			EventType resSend= sendActionAndWaitForEvent(SDLK_g,evSAVE);	
 // y si el SAVE ha ido mal????
 bool ok=true;
        			if (ok) { // TODO: falta control errores
@@ -229,7 +308,11 @@ bool ok=true;
 				std::ifstream savefile("abadia0.save");
 				savefile.read(dump,8192);
 				json << "{\"snapshot\":\"" << dump << "\"}";
-				return crow::response(200, json.str());
+				switch (resSend) {
+					case evGAMEOVER: return crow::response(599);
+					case evSAVE: return crow::response(200,json.str());
+					default: return crow::response(500,"Evento no esperado");
+				}
 			}
 			else  return crow::response(500, "ERR saving"); 
 	        });
@@ -257,15 +340,19 @@ bool ok=true;
 			HTTPInputPluginV1::keystate[SDLK_g]=false; // esto estÃ¡cubierto por el lock????
 */
 
-			sendActionAndWaitForEvent(SDLK_g,evSAVE);	
+			EventType resSend = sendActionAndWaitForEvent(SDLK_g,evSAVE);	
 
 bool ok=true;// y si el SAVE ha ido mal????
 			if (ok) { // TODO: falta control errores
                         	char dump[8192]; //TODO: intentar que sea dinamico
 				memset(dump,'\0',sizeof(dump));
                         	std::ifstream savefile("abadia0.save");
-	                        savefile.read(dump,8192);
-				return crow::response(200, dump);
+				savefile.read(dump,8192);
+				switch (resSend) {
+					case evGAMEOVER: return crow::response(599);
+					case evSAVE: return crow::response(200,dump);
+					default: return crow::response(500,"Evento no esperado");
+				}
                 	}
 	                else  return crow::response(500,"ERR saving");
 	        });
@@ -300,8 +387,13 @@ bool ok=true;// y si el SAVE ha ido mal????
 			eventos[evLOAD]=false;
 			conditionVariable[evLOAD].wait(lock,[this]{ return eventos[evLOAD]; });
 			HTTPInputPluginV1::keystate[SDLK_c]=false; */
-			sendActionAndWaitForEvent(SDLK_c,evLOAD);	
+			//sendActionAndWaitForEvent(SDLK_c,evLOAD);	
 // y si el LOAD ha ido mal????
+			switch (sendActionAndWaitForEvent(SDLK_c,evLOAD)) {
+				case evGAMEOVER: return crow::response(599);
+				case evLOAD: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			}
                 	return crow::response(200);
  
         	});
@@ -332,8 +424,13 @@ bool ok=true;// y si el SAVE ha ido mal????
 			eventos[evLOAD]=false;
 			conditionVariable[evLOAD].wait(lock,[this]{ return eventos[evLOAD]; });
 			HTTPInputPluginV1::keystate[SDLK_c]=false; */
-			sendActionAndWaitForEvent(SDLK_c,evLOAD);	
+//			sendActionAndWaitForEvent(SDLK_c,evLOAD);	
 // y si el LOAD ha ido mal????
+			switch (sendActionAndWaitForEvent(SDLK_c,evLOAD)) {
+				case evGAMEOVER: return crow::response(599);
+				case evLOAD: return crow::response(200);
+				default: return crow::response(500,"Evento no esperado");
+			}
                 	return crow::response(200);
         	});
 
