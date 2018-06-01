@@ -236,6 +236,10 @@ bool InfoJuego::dumpInfo()
 			Rejilla.push_back(Fila);
 		}
 		dump["Rejilla"]=Rejilla;
+		// Una forma de verlo cuadrado en vim es sacar
+		// el array del json y 
+		// :1,$ s/ \([0-9]\)\,/ 0\1\,/g
+		// :1,$ s/\[\([0-9]\)\,/\[0\1\,/g 
 
 		// Volcado completo
 		out << dump;

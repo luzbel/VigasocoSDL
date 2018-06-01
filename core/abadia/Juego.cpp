@@ -168,10 +168,12 @@ Juego::~Juego()
 
 void Juego::ReiniciaPantalla(void)
 {
+#ifndef __abadIA_MEGAREPLAY__
 	// limpia el área de juego y dibuja el marcador
 	// CPC limpiaAreaJuego(0);
 	limpiaAreaJuego(12); // el 0 es el cyan en CPC, no se cual poner en VGA
 	// pongo el 12 que es un amarillo cantoso, para comparar con Abadia32
+#endif
 
 	marcador->dibujaMarcador();
 
@@ -1704,8 +1706,108 @@ bool Juego::menu()
 // método principal del juego
 /////////////////////////////////////////////////////////////////////////////
 
+/*
+#ifdef __abadIA_MEGAREPLAY__
 void Juego::run()
 {
+	// Intento de reproducir a partir del megaSave y no del volcado de controles
+	std::ifstream megaSave("abadIA.megaSave",std::ofstream::in);
+
+	// obtiene los recursos para el juego
+	timer = VigasocoMain->getTimingHandler();
+	controles->init(VigasocoMain->getInputHandler());
+	audio_plugin = VigasocoMain->getAudioPlugin();
+
+
+	// crea las entidades del juego (sprites, personajes, puertas y objetos)
+	creaEntidadesJuego();
+
+
+	// genera los gráficos flipeados en x de las entidades que lo necesiten
+	generaGraficosFlipeados();
+
+
+	// inicialmente la cámara sigue a guillermo
+	motor->personaje = personajes[0];
+
+
+	// inicia el objeto que muestra información interna del juego
+	infoJuego->inicia();
+
+	// obtiene las direcciones de los datos relativos a la habitación del espejo
+	logica->despHabitacionEspejo();
+
+
+	// limpia el área que ocupa el marcador
+	marcador->limpiaAreaMarcador();
+
+	// aquí ya se ha completado la inicialización de datos para el juego
+	// ahora realiza la inicialización para poder empezar a jugar una partida
+	while (true){
+
+		// inicia la lógica del juego
+		logica->inicia();
+
+		ReiniciaPantalla();
+
+		while (true){	// el bucle principal del juego empieza aquí
+			megaSave >> logica;
+fprintf(stderr,"guillermo x %d y %d \n", personajes[0]->posX , personajes[0]->posY );
+			std::string temp;
+			megaSave >> temp;
+//std::cout << temp << std::endl;
+fprintf(stderr,"temp %s\n",temp.c_str());
+			megaSave >> temp;
+fprintf(stderr,"temp %s\n",temp.c_str());
+//std::cout << temp << std::endl;
+			megaSave >> temp;
+fprintf(stderr,"temp %s\n",temp.c_str());
+//std::cout << temp << std::endl;
+			
+			if ( megaSave.fail() ) {
+			 fprintf(stderr,"ERR loading megaSave\n");
+			 while (true) 
+				timer->sleep(500);
+			}
+//		ReiniciaPantalla();
+
+			// comprueba si se ha cambiado de pantalla y actúa en consecuencia
+			motor->compruebaCambioPantalla();
+
+
+			if (modoInformacion){
+				infoJuego->muestraInfo();
+			} else {
+				// dibuja la pantalla si fuera necesario
+				motor->dibujaPantalla();
+
+				// dibuja los sprites visibles que hayan cambiado
+				motor->dibujaSprites();
+			}
+
+			// espera un poco para actualizar el estado del juego
+			while (contadorInterrupcion < 0x24){
+				timer->sleep(5);
+			}
+			// reinicia el contador de la interrupción
+			contadorInterrupcion = 0;
+		}
+	}
+}
+*/
+#ifdef __abadIA_MEGAREPLAY__
+void Juego::run()
+{
+	// Intento de reproducir a partir del megaSave y no del volcado de controles
+	std::ifstream megaSave("abadIA.megaSave",std::ofstream::in);
+#ifdef __abadIA__
+//#ifndef __abadIA_REPLAY__
+	// TODO: generar nombre diferente por cada partida
+	// TODO: Âreiniciar en cada reset o load? 
+//	std::ofstream megaSave("abadIA.megaSave",std::ofstream::out|std::ofstream::trunc);
+//#endif
+#endif
+
 	// obtiene los recursos para el juego
 	timer = VigasocoMain->getTimingHandler();
 	controles->init(VigasocoMain->getInputHandler());
@@ -1794,7 +1896,26 @@ notify(evRESET);
 
 
 		while (true){	// el bucle principal del juego empieza aquí
+			megaSave >> logica;
+fprintf(stderr,"guillermo x %d y %d \n", personajes[0]->posX , personajes[0]->posY );
+			std::string temp;
+			megaSave >> temp;
+//std::cout << temp << std::endl;
+fprintf(stderr,"temp %s\n",temp.c_str());
+			megaSave >> temp;
+fprintf(stderr,"temp %s\n",temp.c_str());
+//std::cout << temp << std::endl;
+			megaSave >> temp;
+fprintf(stderr,"temp %s\n",temp.c_str());
+			if ( megaSave.fail() ) {
+			 fprintf(stderr,"ERR loading megaSave\n");
+			 while (true) 
+				timer->sleep(500);
+			}
+//ReiniciaPantalla();
+//std::cout << temp << std::endl;
 
+/*
 #ifdef __abadIA__
 #ifdef __abadIA_REPLAY__ 
 			if (!losControles->loadReplay()) {
@@ -1805,15 +1926,20 @@ notify(evRESET);
 //			if (!losControles->saveReplay()) fprintf(stderr,"ERR saving replay\n");
 #endif
 #endif
+*/
 
 			// actualiza el estado de los controles
 			controles->actualizaEstado();
-
+/*
 #ifdef __abadIA__
 #ifndef __abadIA_REPLAY__ 
 			if (!losControles->saveReplay()) fprintf(stderr,"ERR saving replay\n");
+			megaSave << logica; 
+			megaSave << std::endl << "SEPARADOR VOLCADO LOGICA" << std::endl;
+			if ( megaSave.fail() ) fprintf(stderr,"ERR saving megaSave\n");
 #endif
 #endif
+*/
 
 
 			if ( compruebaReinicio() ) goto despues_de_cargar_o_iniciar;
@@ -1982,6 +2108,302 @@ notify(evRESET);
 		}
 	}
 }
+#else
+void Juego::run()
+{
+#ifdef __abadIA__
+#ifndef __abadIA_REPLAY__
+	// TODO: generar nombre diferente por cada partida
+	// TODO: Âreiniciar en cada reset o load? 
+	std::ofstream megaSave("abadIA.megaSave",std::ofstream::out|std::ofstream::trunc);
+#endif
+#endif
+
+	// obtiene los recursos para el juego
+	timer = VigasocoMain->getTimingHandler();
+	controles->init(VigasocoMain->getInputHandler());
+	audio_plugin = VigasocoMain->getAudioPlugin();
+
+	// muestra la imagen de presentación
+
+#ifndef __abadIA__
+	muestraPresentacion();
+#endif
+
+	// para borrar la presentacion antes del menu
+	marcador->limpiaAreaMarcador();
+
+	// llevo menu y pergamino mas atras para
+	// que el menu se encuentre ya objetos inicializados
+	//
+	// limpia el área que ocupa el marcador
+	// no se limpia en menu() porque cuando se llame al menu 
+	// dentro del juego, no se debe borrar el marcador
+//	marcador->limpiaAreaMarcador();
+	// menu, sobretodo para permitir cambiar el idioma al empezar
+	// y ver el pergamino inicial en tu idioma
+//	menu();
+
+	// muestra el pergamino de presentación
+//	muestraIntroduccion();
+
+	// crea las entidades del juego (sprites, personajes, puertas y objetos)
+	creaEntidadesJuego();
+
+
+	// genera los gráficos flipeados en x de las entidades que lo necesiten
+	generaGraficosFlipeados();
+
+
+	// inicialmente la cámara sigue a guillermo
+	motor->personaje = personajes[0];
+
+
+	// inicia el objeto que muestra información interna del juego
+	infoJuego->inicia();
+
+	//esto se hacia en muestraIntroduccion
+	//pero ahora muestraIntroduccion va despues
+	// limpia el área que ocupa el marcador
+//	marcador->limpiaAreaMarcador();
+
+
+	// obtiene las direcciones de los datos relativos a la habitación del espejo
+	logica->despHabitacionEspejo();
+
+//iniciar antes del menu, para que si a alguien le da por 
+//grabar antes de empezar una partida, se guarden
+//datos inicializados.
+//otra opcion seria desactivar el menu grabar
+//si se ha entrado en el menu antes de empezar a jugar
+//TODO: cambiar el bucle principal de inicializar
+//porque se esta liando bastante
+logica->inicia();
+
+#ifndef __abadIA__
+	// menu, para permitir cambiar el idioma al empezar
+	// y ver el pergamino inicial en tu idioma
+	if (menu()) goto despues_de_cargar_o_iniciar;
+
+	// muestra el pergamino de presentación
+
+	muestraIntroduccion();
+#endif
+
+	// limpia el área que ocupa el marcador
+	marcador->limpiaAreaMarcador();
+
+	// aquí ya se ha completado la inicialización de datos para el juego
+	// ahora realiza la inicialización para poder empezar a jugar una partida
+	while (true){
+
+		// inicia la lógica del juego
+		logica->inicia();
+
+
+despues_de_cargar_o_iniciar:
+//fprintf(stderr,"despues_de_cargar_o_iniciar\n");
+notify(evRESET);
+		ReiniciaPantalla();
+
+
+		while (true){	// el bucle principal del juego empieza aquí
+
+#ifdef __abadIA__
+#ifdef __abadIA_REPLAY__ 
+			if (!losControles->loadReplay()) {
+				// fprintf(stderr,"ERR reading replay file\n");
+				elMarcador->imprimeFrase("FIN REPLAY U ERR", 97, 162, 4, 0); // VGA
+			}
+//#else
+//			if (!losControles->saveReplay()) fprintf(stderr,"ERR saving replay\n");
+#endif
+#endif
+
+			// actualiza el estado de los controles
+			controles->actualizaEstado();
+
+#ifdef __abadIA__
+#ifndef __abadIA_REPLAY__ 
+			if (!losControles->saveReplay()) fprintf(stderr,"ERR saving replay\n");
+			megaSave << logica; 
+			megaSave << std::endl << "SEPARADOR VOLCADO LOGICA" << std::endl;
+			if ( megaSave.fail() ) fprintf(stderr,"ERR saving megaSave\n");
+#endif
+#endif
+
+//fprintf(stderr,"a %d\n",controles->seHaPulsado(KEYBOARD_E));
+
+			if ( compruebaReinicio() ) goto despues_de_cargar_o_iniciar;
+//fprintf(stderr,"b\n");
+
+			// obtiene el contador de la animación de guillermo para saber si se generan caminos en esta iteración
+			elBuscadorDeRutas->contadorAnimGuillermo = laLogica->guillermo->contadorAnimacion;
+
+			// comprueba si se debe abrir el espejo
+			logica->compruebaAbreEspejo();
+
+
+			// comprueba si se ha pulsado la pausa
+			compruebaPausa();
+
+
+			//comprueba si se intenta cargar/grabar la partida
+			if ( compruebaSave() ) {
+#ifdef __abadIA__
+				// TODO: hay que cambiar save y compruebaSave
+				// en vez de bool deben devolver un valor
+				// indicando , no se hace nada, graba ok o error graba
+				// y mandar el evento SAVEok o SAVEerr
+				notify(evSAVE);
+#endif
+			}
+
+			if ( compruebaLoad() ) {
+#ifdef __abadIA__
+				// TODO: hay que cambiar cargar y compruebaLoad 
+				// en vez de bool deben devolver un valor
+				// indicando , no se hace nada, carga ok o error carga
+				// y mnadar el evento LOADok o LOADerr
+				notify(evLOAD);
+#endif
+//fprintf(stderr,"c\n");
+				goto despues_de_cargar_o_iniciar;
+//fprintf(stderr,"d\n");
+			}
+
+
+			// comprueba si se quieren cambiar de graficos 
+			// CPC a VGA o viceversa
+			compruebaCambioCPC_VGA();
+
+			// comprueba si se quiere entrar al menu
+			if ( compruebaMenu() ) goto despues_de_cargar_o_iniciar;
+
+
+			// actualiza las variables relacionadas con el paso del tiempo
+			logica->actualizaVariablesDeTiempo();
+
+
+			// si guillermo ha muerto, empieza una partida
+			if (muestraPantallaFinInvestigacion()){
+				break;
+			}
+
+
+			// comprueba si guillermo lee el libro, y si lo hace sin guantes, lo mata
+			logica->compruebaLecturaLibro();
+
+
+			// comprueba si hay que avanzar la parte del momento del día en el marcador
+			marcador->realizaScrollMomentoDia();
+
+
+			// comprueba si hay que ejecutar las acciones programadas según el momento del día
+			logica->ejecutaAccionesMomentoDia();
+
+
+			// comprueba si hay opciones de que la cámara siga a otro personaje y calcula los bonus obtenidos
+			logica->compruebaBonusYCambiosDeCamara();
+
+
+			// comprueba si se ha cambiado de pantalla y actúa en consecuencia
+			motor->compruebaCambioPantalla();
+
+
+			// comprueba si los personajes cogen o dejan algún objeto
+			logica->compruebaCogerDejarObjetos();
+
+
+			// comprueba si se abre o se cierra alguna puerta
+			logica->compruebaAbrirCerrarPuertas();
+
+
+			// ejecuta la lógica de los personajes
+			for (int i = 0; i < numPersonajes; i++){
+				personajes[i]->run();
+
+			}
+
+			// indica que en esta iteración no se ha generado ningún camino
+			logica->buscRutas->generadoCamino = false;
+
+			// actualiza el sprite de la luz para que se mueva siguiendo a adso
+			actualizaLuz();
+
+
+			// si guillermo o adso están frente al espejo, muestra su reflejo
+			laLogica->realizaReflejoEspejo();
+
+
+			// si está en modo información, 
+			// muestra la información interna del juego
+			// con transparencia 
+			if (cambioModoInformacion && modoInformacion ) {
+				limpiaAreaJuego(12);
+				cambioModoInformacion=false;
+			}
+
+			if (cambioModoInformacion && !modoInformacion ) {
+				// TODO: Revisar el entrar y salir del modo
+				// informacion con puertas, objetos, 
+				// pantalla con iluminacion y lampara, etc
+				limpiaAreaJuego(12);
+			 	motor->compruebaCambioPantalla(true);	
+				cambioModoInformacion=false;
+			}
+
+			if (modoInformacion){
+				infoJuego->muestraInfo();
+			} else {
+				// dibuja la pantalla si fuera necesario
+				motor->dibujaPantalla();
+
+				// dibuja los sprites visibles que hayan cambiado
+				motor->dibujaSprites();
+			}
+#ifdef __abadIA__
+	// TODO: temporalmente pasamos de F5 y volcamos siempre que lo piden con tecla Dj
+			if (losControles->seHaPulsado(KEYBOARD_D)) {
+				if (infoJuego->dumpInfo()) 
+					notify(evDUMP);
+				// TODO: que pasa si falla al escribir el dump
+			}
+#endif
+
+#ifdef __abadIA__
+			// Ya hemos hecho todo lo que tenÃamos que hacer
+			// avÃsemos a la IA
+			if (losControles->estaSiendoPulsado(P1_LEFT))
+				notify(evLEFT);
+			if (losControles->estaSiendoPulsado(P1_RIGHT))
+				notify(evRIGHT);
+			if (losControles->estaSiendoPulsado(P1_UP))
+				notify(evUP);
+			if (losControles->estaSiendoPulsado(P1_DOWN))
+				notify(evDOWN);
+			if (losControles->estaSiendoPulsado(P1_BUTTON1))
+				notify(evSPACE);
+			//TODO; que hacer con QR
+			
+#endif			
+
+			// espera un poco para actualizar el estado del juego
+			while (contadorInterrupcion < 0x24){
+				timer->sleep(5);
+			}
+
+			if (laLogica->guillermo->contadorAnimacion==1)
+			{
+				audio_plugin->Play(SONIDOS::Pasos);
+			}
+
+			// reinicia el contador de la interrupción
+			contadorInterrupcion = 0;
+		}
+	}
+}
+#endif // megaREPLAY
 
 // limpia el área de juego de color que se le pasa y los bordes de negro
 void Juego::limpiaAreaJuego(int color)
@@ -2572,15 +2994,19 @@ bool Juego::muestraPantallaFinInvestigacion()
 	marcador->imprimeFrase(porcentaje[idioma], 88, 48, 4, 0);
 	marcador->imprimeFrase(frase3[idioma], 90, 64, 4, 0);
 	marcador->imprimeFrase(frase4[idioma], 56, 128, 4, 0);
-
-	// TODO: Âtiene sentido un evento evGAMEOVER?
-	// el web server no lo va a estar esperando ...
-	// notify(evGAMEOVER);
+#ifdef __abadIA__
+	// grabamos para que si se solicita dump
+	// tenga la Ãltima foto con haFracasado=true
+	save(0); 
+#endif
 
 	// espera a que se pulse y se suelte el botón
 	bool espera = true;
 
 	while (espera){
+#ifdef __abadIA__
+		notify(evGAMEOVER);
+#endif
 		controles->actualizaEstado();
 		timer->sleep(1);
 		espera = !(controles->estaSiendoPulsado(P1_BUTTON1) || controles->estaSiendoPulsado(KEYBOARD_SPACE));

@@ -9013,6 +9013,7 @@ namespace crow
                 {501, "HTTP/1.1 501 Not Implemented\r\n"},
                 {502, "HTTP/1.1 502 Bad Gateway\r\n"},
                 {503, "HTTP/1.1 503 Service Unavailable\r\n"},
+                {599, "HTTP/1.1 599 Game Over\r\n"},
             };
 
             static std::string seperator = ": ";
