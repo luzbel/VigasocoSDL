@@ -23,7 +23,7 @@
 0// pergaminoGuardado
 136// numeroAleatorio
 1// hayMovimiento
-257// cntMovimiento
+7// cntMovimiento
 0// numPersonajeCamara
 0// opcionPersonajeCamara
 // SPRITE 0
@@ -37,7 +37,7 @@
 // SPRITE 4
 0// esVisible
 // SPRITE 5
-1// esVisible
+0// esVisible
 // SPRITE 6
 0// esVisible
 // SPRITE 7
@@ -79,17 +79,17 @@
 // SPRITE 25
 0// esVisible
 // GUILLERMO
-1// orientacion
+3// orientacion
 136// posX
-159// posY
+175// posY
 0// altura
 0// estado
-2// contadorAnimacion
+0// contadorAnimacion
 0// bajando
-1// orientacion
+3// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
-0// flipX
+1// flipX
 49152// despFlipX
 -2// despX
 -34// despY
@@ -102,17 +102,17 @@
 8// numFotogramas
 2// incrPosY
 // ADSO
-1// orientacion
-134// posX
-160// posY
+3// orientacion
+137// posX
+173// posY
 0// altura
 0// estado
-0// contadorAnimacion
+2// contadorAnimacion
 0// bajando
-1// orientacion
+3// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
-0// flipX
+1// flipX
 49152// despFlipX
 -2// despX
 -32// despY
@@ -156,7 +156,7 @@
 2// aDondeHaLlegado
 0// estaMuerto
 0// estado2
-1// contadorEnScriptorium
+0// contadorEnScriptorium
 // ABAD
 3// orientacion
 136// posX
@@ -168,7 +168,7 @@
 3// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
-1// flipX
+0// flipX
 49152// despFlipX
 -2// despX
 -34// despY
@@ -184,8 +184,8 @@
 3// aDondeHaLlegado
 0// contador
 0// numFrase
-1768977509// guillermoBienColocado
-100// lleganLosMonjes
+0// guillermoBienColocado
+0// lleganLosMonjes
 0// guillermoHaCogidoElPergamino
 // BERENGARIO
 2// orientacion
@@ -217,14 +217,14 @@
 1// estaVivo
 0// contadorPergamino
 // SEVERINO
-2// orientacion
-135// posX
-137// posY
+1// orientacion
+104// posX
+85// posY
 2// altura
 0// estado
-1// contadorAnimacion
+3// contadorAnimacion
 0// bajando
-2// orientacion
+1// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
 0// flipX
