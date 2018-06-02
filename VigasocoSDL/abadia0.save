@@ -3,7 +3,7 @@
 0// duracionMomentoDia
 4// oldMomentoDia
 0// avanzarMomentoDia
-13// obsequium
+31// obsequium
 0// haFracasado
 0// investigacionCompleta
 0// bonus
@@ -22,10 +22,10 @@
 0// cntLeeLibroSinGuantes
 0// pergaminoGuardado
 136// numeroAleatorio
-0// hayMovimiento
-3// cntMovimiento
+1// hayMovimiento
+7// cntMovimiento
 0// numPersonajeCamara
-3// opcionPersonajeCamara
+0// opcionPersonajeCamara
 // SPRITE 0
 1// esVisible
 // SPRITE 1
@@ -33,11 +33,11 @@
 // SPRITE 2
 0// esVisible
 // SPRITE 3
-1// esVisible
+0// esVisible
 // SPRITE 4
 0// esVisible
 // SPRITE 5
-1// esVisible
+0// esVisible
 // SPRITE 6
 0// esVisible
 // SPRITE 7
@@ -80,9 +80,9 @@
 0// esVisible
 // GUILLERMO
 3// orientacion
-137// posX
-127// posY
-2// altura
+136// posX
+175// posY
+0// altura
 0// estado
 0// contadorAnimacion
 0// bajando
@@ -102,17 +102,17 @@
 8// numFotogramas
 2// incrPosY
 // ADSO
-1// orientacion
-135// posX
-128// posY
-2// altura
+3// orientacion
+137// posX
+173// posY
+0// altura
 0// estado
 2// contadorAnimacion
 0// bajando
-1// orientacion
+3// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
-0// flipX
+1// flipX
 49152// despFlipX
 -2// despX
 -32// despY
@@ -159,16 +159,16 @@
 0// contadorEnScriptorium
 // ABAD
 3// orientacion
-137// posX
-134// posY
+136// posX
+132// posY
 2// altura
-129// estado
-2// contadorAnimacion
+0// estado
+0// contadorAnimacion
 0// bajando
 3// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
-1// flipX
+0// flipX
 49152// despFlipX
 -2// despX
 -34// despY
@@ -180,8 +180,8 @@
 25// permisosPuertas
 8// numFotogramas
 63// mascarasPuertasBusqueda
--1// aDondeVa
--1// aDondeHaLlegado
+3// aDondeVa
+3// aDondeHaLlegado
 0// contador
 0// numFrase
 0// guillermoBienColocado
@@ -218,11 +218,11 @@
 0// contadorPergamino
 // SEVERINO
 1// orientacion
-137// posX
-129// posY
+104// posX
+85// posY
 2// altura
 0// estado
-2// contadorAnimacion
+3// contadorAnimacion
 0// bajando
 1// orientacion
 0// enDesnivel
@@ -239,8 +239,8 @@
 12// permisosPuertas
 8// numFotogramas
 47// mascarasPuertasBusqueda
-3// aDondeVa
-2// aDondeHaLlegado
+2// aDondeVa
+3// aDondeHaLlegado
 1// estaVivo
 // JORGE
 0// orientacion
@@ -383,8 +383,8 @@
 -1// numPersonaje
 // OBJETO 2
 0// orientacion
-138// posX
-168// posY
+0// posX
+0// posY
 0// altura
 0// seEstaCogiendo
 1// seHaCogido
