@@ -3008,9 +3008,21 @@ bool Juego::muestraPantallaFinInvestigacion()
 		notify(evGAMEOVER);
 #endif
 		controles->actualizaEstado();
-		timer->sleep(1);
+		timer->sleep(
+#ifdef __abadIA__
+1000
+#else
+1
+#endif
+		);
 		espera = !(controles->estaSiendoPulsado(P1_BUTTON1) || controles->estaSiendoPulsado(KEYBOARD_SPACE));
+//fprintf(stderr,"espera %d\n", espera);
 	}
+#ifdef __abadIA__
+	notify(evSPACE);
+#endif
+
+#ifndef __abadIA__
 
 	espera = true;
 // TODO Revisar por que esta esto duplicado
@@ -3018,8 +3030,12 @@ bool Juego::muestraPantallaFinInvestigacion()
 		controles->actualizaEstado();
 		timer->sleep(1);
 		espera = controles->estaSiendoPulsado(P1_BUTTON1) || controles->estaSiendoPulsado(KEYBOARD_SPACE);
+//fprintf(stderr,"espera2 %d\n", espera);
 	}
-
+//#ifdef __abadIA__
+//	notify(evSPACE);
+//#endif
+#endif
 	return true;
 }
 
