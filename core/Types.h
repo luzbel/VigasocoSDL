@@ -158,7 +158,10 @@ enum EventType {
 	evDOWN,		// 7
 	evSPACE,	// 8
 	evGAMEOVER,	// 9
-	evEVENT_LAST	// 10
+	evSTART,	// 10
+	evRUNNING,	// 11
+	evREADY, //12
+	evEVENT_LAST	// 12+1
 };
 #endif
 

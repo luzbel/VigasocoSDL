@@ -4,6 +4,14 @@
 
 #include <string>
 
+//TODO, para pruebas sleep
+#include "chrono"
+#include "thread"
+// en realidad, mejor meter un
+// realSleep en TimingHandler.cpp
+// para tener sleep adaptado a velocidad
+// juego o sleep real
+
 #include "../systems/cpc6128.h"
 #include "../IAudioPlugin.h"
 #include "../InputHandler.h"
@@ -1891,6 +1899,7 @@ logica->inicia();
 
 
 despues_de_cargar_o_iniciar:
+//notify(evREADY);
 notify(evRESET);
 		ReiniciaPantalla();
 
@@ -2069,16 +2078,20 @@ fprintf(stderr,"temp %s\n",temp.c_str());
 			}
 #ifdef __abadIA__
 	// TODO: temporalmente pasamos de F5 y volcamos siempre que lo piden con tecla Dj
+	// TODO: revisar, se revisa que se ha pulsado D en Juego e InfoJuego
 			if (losControles->seHaPulsado(KEYBOARD_D)) {
-				if (infoJuego->dumpInfo()) 
+				if (infoJuego->dumpInfo(false)) {
 					notify(evDUMP);
+				}
 				// TODO: que pasa si falla al escribir el dump
 			}
 #endif
+fprintf(stderr,"AAA\n");
 
 #ifdef __abadIA__
 			// Ya hemos hecho todo lo que tenÃamos que hacer
 			// avÃsemos a la IA
+fprintf(stderr,"AAA\n"); 
 			if (losControles->estaSiendoPulsado(P1_LEFT))
 				notify(evLEFT);
 			if (losControles->estaSiendoPulsado(P1_RIGHT))
@@ -2090,7 +2103,10 @@ fprintf(stderr,"temp %s\n",temp.c_str());
 			if (losControles->estaSiendoPulsado(P1_BUTTON1))
 				notify(evSPACE);
 			//TODO; que hacer con QR
-			
+fprintf(stderr,"ievR\n");
+			notify(evRUNNING);  
+			//notify(evREADY); 
+fprintf(stderr,"fevR\n");
 #endif			
 
 			// espera un poco para actualizar el estado del juego
@@ -2203,6 +2219,7 @@ logica->inicia();
 
 despues_de_cargar_o_iniciar:
 //fprintf(stderr,"despues_de_cargar_o_iniciar\n");
+//notify(evREADY);
 notify(evRESET);
 		ReiniciaPantalla();
 
@@ -2287,6 +2304,7 @@ notify(evRESET);
 
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
+fprintf(stderr,"salgo de pantalla fin y reinicio\n");
 				break;
 			}
 
@@ -2365,8 +2383,9 @@ notify(evRESET);
 #ifdef __abadIA__
 	// TODO: temporalmente pasamos de F5 y volcamos siempre que lo piden con tecla Dj
 			if (losControles->seHaPulsado(KEYBOARD_D)) {
-				if (infoJuego->dumpInfo()) 
+				if (infoJuego->dumpInfo(false)) {
 					notify(evDUMP);
+				}
 				// TODO: que pasa si falla al escribir el dump
 			}
 #endif
@@ -2374,6 +2393,7 @@ notify(evRESET);
 #ifdef __abadIA__
 			// Ya hemos hecho todo lo que tenÃamos que hacer
 			// avÃsemos a la IA
+
 			if (losControles->estaSiendoPulsado(P1_LEFT))
 				notify(evLEFT);
 			if (losControles->estaSiendoPulsado(P1_RIGHT))
@@ -2384,8 +2404,13 @@ notify(evRESET);
 				notify(evDOWN);
 			if (losControles->estaSiendoPulsado(P1_BUTTON1))
 				notify(evSPACE);
+			if (losControles->estaSiendoPulsado(START_1))
+				notify(evRUNNING);			
+//				notify(evSTART);
 			//TODO; que hacer con QR
-			
+//			notify(evRUNNING);			
+//			notify(evREADY);
+
 #endif			
 
 			// espera un poco para actualizar el estado del juego
@@ -2997,45 +3022,63 @@ bool Juego::muestraPantallaFinInvestigacion()
 #ifdef __abadIA__
 	// grabamos para que si se solicita dump
 	// tenga la Ãltima foto con haFracasado=true
-	save(0); 
+	//save(0); 
+	// No es grabar, es un dump lo que necesita la IA
+	if(!infoJuego->dumpInfo(true))
+		fprintf(stderr,"Error volcando info en pantalla fin de investigaciÃn\n"); 
 #endif
 
+#ifdef __abadIA__
+	// espera a que se solicite nueva partida
+	// mientras, al resto de comandos se les
+	// notifica GAMEOVER
+
+fprintf(stderr,"bucle espero START_1\n");
+	while (true) {
+fprintf(stderr,"aaaa \n");
+		controles->actualizaEstado();
+fprintf(stderr,"START %d\n",controles->estaSiendoPulsado(START_1));
+fprintf(stderr,"N %d\n",controles->estaSiendoPulsado(KEYBOARD_N));
+fprintf(stderr,"N %d\n",controles->estaSiendoPulsado(KEYBOARD_SPACE));
+		if (controles->estaSiendoPulsado(START_1)) {
+//		if (controles->estaSiendoPulsado(KEYBOARD_SPACE)) {
+//			notify(evSTART);
+fprintf(stderr,"salgo, han pedido START\n");
+			break;
+//			goto tralari; // break;
+		} else {
+//fprintf(stderr,"ni caso, gameover\n");
+			notify(evGAMEOVER);
+			//timer->sleep(1000);
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		}
+	}
+//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+notify(evSTART);
+//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+//tralari:
+#else
 	// espera a que se pulse y se suelte el botón
 	bool espera = true;
 
 	while (espera){
-#ifdef __abadIA__
-		notify(evGAMEOVER);
-#endif
 		controles->actualizaEstado();
-		timer->sleep(
-#ifdef __abadIA__
-1000
-#else
-1
-#endif
-		);
+		timer->sleep(1);
 		espera = !(controles->estaSiendoPulsado(P1_BUTTON1) || controles->estaSiendoPulsado(KEYBOARD_SPACE));
-//fprintf(stderr,"espera %d\n", espera);
+//fprintf(stderr,"espera %d\n",espera);
 	}
-#ifdef __abadIA__
-	notify(evSPACE);
-#endif
 
-#ifndef __abadIA__
-
+	// El bucle anterior espera a que se estÃ ©pulsando espacio
+	// Este espera a que se deje de pulsar
 	espera = true;
-// TODO Revisar por que esta esto duplicado
 	while (espera){
 		controles->actualizaEstado();
 		timer->sleep(1);
 		espera = controles->estaSiendoPulsado(P1_BUTTON1) || controles->estaSiendoPulsado(KEYBOARD_SPACE);
-//fprintf(stderr,"espera2 %d\n", espera);
 	}
-//#ifdef __abadIA__
-//	notify(evSPACE);
-//#endif
 #endif
+
 	return true;
 }
 

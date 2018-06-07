@@ -131,9 +131,9 @@ void InfoJuego::inicia()
 }
 
 #ifdef __abadIA__
-bool InfoJuego::dumpInfo()
+bool InfoJuego::dumpInfo(bool forceDump)
 {
-	if (losControles->seHaPulsado(KEYBOARD_D)) {
+	if (forceDump || losControles->seHaPulsado(KEYBOARD_D)) {
 		std::ofstream out("abadIA.dump",
 				std::ofstream::out|std::ofstream::trunc);
 //		out << "test\n";
