@@ -2102,11 +2102,9 @@ notify(evRESET);
 				notify(evDOWN);
 			if (losControles->estaSiendoPulsado(P1_BUTTON1))
 				notify(evSPACE);
+			if (losControles->estaSiendoPulsado(START_1))
+				notify(evRUNNING);			
 			//TODO; que hacer con QR
-//fprintf(stderr,"ievR\n");
-			notify(evRUNNING);  
-			//notify(evREADY); 
-//fprintf(stderr,"fevR\n");
 #endif			
 
 			// espera un poco para actualizar el estado del juego
@@ -2218,9 +2216,9 @@ logica->inicia();
 
 
 despues_de_cargar_o_iniciar:
-//fprintf(stderr,"despues_de_cargar_o_iniciar\n");
-//notify(evREADY);
-notify(evRESET);
+#ifdef __abadIA__
+		notify(evRESET);
+#endif
 		ReiniciaPantalla();
 
 
@@ -2232,8 +2230,6 @@ notify(evRESET);
 				// fprintf(stderr,"ERR reading replay file\n");
 				elMarcador->imprimeFrase("FIN REPLAY U ERR", 97, 162, 4, 0); // VGA
 			}
-//#else
-//			if (!losControles->saveReplay()) fprintf(stderr,"ERR saving replay\n");
 #endif
 #endif
 
@@ -2249,10 +2245,8 @@ notify(evRESET);
 #endif
 #endif
 
-//fprintf(stderr,"a %d\n",controles->seHaPulsado(KEYBOARD_E));
 
 			if ( compruebaReinicio() ) goto despues_de_cargar_o_iniciar;
-//fprintf(stderr,"b\n");
 
 			// obtiene el contador de la animación de guillermo para saber si se generan caminos en esta iteración
 			elBuscadorDeRutas->contadorAnimGuillermo = laLogica->guillermo->contadorAnimacion;
@@ -2284,9 +2278,7 @@ notify(evRESET);
 				// y mnadar el evento LOADok o LOADerr
 				notify(evLOAD);
 #endif
-//fprintf(stderr,"c\n");
 				goto despues_de_cargar_o_iniciar;
-//fprintf(stderr,"d\n");
 			}
 
 
@@ -2304,10 +2296,8 @@ notify(evRESET);
 
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
-//fprintf(stderr,"salgo de pantalla fin y reinicio\n");
 				break;
 			}
-
 
 			// comprueba si guillermo lee el libro, y si lo hace sin guantes, lo mata
 			logica->compruebaLecturaLibro();
@@ -2388,9 +2378,7 @@ notify(evRESET);
 				}
 				// TODO: que pasa si falla al escribir el dump
 			}
-#endif
 
-#ifdef __abadIA__
 			// Ya hemos hecho todo lo que tenÃamos que hacer
 			// avÃsemos a la IA
 
@@ -2406,11 +2394,7 @@ notify(evRESET);
 				notify(evSPACE);
 			if (losControles->estaSiendoPulsado(START_1))
 				notify(evRUNNING);			
-//				notify(evSTART);
 			//TODO; que hacer con QR
-//			notify(evRUNNING);			
-//			notify(evREADY);
-
 #endif			
 
 			// espera un poco para actualizar el estado del juego

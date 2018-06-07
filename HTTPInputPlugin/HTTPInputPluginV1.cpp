@@ -1,4 +1,4 @@
-// HTTPInputKeyboardPluginV1.cpp
+// HTTPInputPluginV1.cpp
 // Mantiene la interfaz web original para ser retrocompatible con agentes
 // antiguos.
 //
@@ -29,70 +29,29 @@ HTTPInputPluginV1::~HTTPInputPluginV1()
 
 void HTTPInputPluginV1::update(Abadia::Juego* subject, int data) 
 {
-//fprintf(stderr,"HTTPInputPluginV1::update %d\n",data);
 	if (data>=0 && data <= evEVENT_LAST) {
 		std::lock_guard<std::mutex> lock(eventMutex);
 			if (data==evGAMEOVER) {
 				// desbloqueamos cualquier espera de evento
 				for (int i=0;i<evEVENT_LAST;i++) {
-//fprintf(stderr,"HTTPInputPluginV1::update for %d\n",i);
 					eventos[i]=true; 
 					conditionVariable[i].notify_one();
-				} } else 
-if (data==evRUNNING) {
-  eventos[evRUNNING]=true;
-  conditionVariable[evSTART].notify_one();
-} else
-
-{
-		eventos[data]=true;
-		conditionVariable[data].notify_one(); 
-}
-	} else {
-//		fprintf(stderr,"HTTPInputPluginV1::update Tipo update desconocido\n");
-	}
-/*
-	if (data>=0 && data <= evEVENT_LAST) {
-		std::lock_guard<std::mutex> lock(eventMutex);
-		eventos[data]=true;
-		if (data!=evRUNNING) {
-			eventos[data]=true;
-			conditionVariable[data].notify_one();
-		} else {
-			eventos[data]=true;
-//			conditionVariable[evSTART].notify_one();
-		}
-	} else {
-		fprintf(stderr,"HTTPInputPluginV1::update Tipo update desconocido\n");
-	}
-*/
-/*
-
-	if (data>=0 && data <= evEVENT_LAST) {
-			std::lock_guard<std::mutex> lock(eventMutex);
-///fprintf(stderr,"%d HTTPInputPluginV1::update %d\n",(int)std::chrono::high_resolution_clock::now(),data);
-fprintf(stderr,"HTTPInputPluginV1::update %d\n",data);
-			if (data==evGAMEOVER) {
-				// desbloqueamos cualquier espera de evento
-				for (int i=0;i<evEVENT_LAST;i++) {
-//fprintf(stderr,"HTTPInputPluginV1::update for %d\n",i);
-					eventos[i]=true; 
-					conditionVariable[i].notify_one();
-				}
-			} else {
-fprintf(stderr,"HTTPInputPluginV1::update non-for %d\n",data);
-				eventos[data]=true;
+				} 
+			} else 
 				if (data==evRUNNING) {
-fprintf(stderr,"evRUNNING notify START\n"); 
-					eventos[evSTART]=true; 
+					// Este evento sÃlo se usa para 
+					// notificar a una peticiÃn a /start
+					// de que no se estÃ¡ en estado
+					// GAMEOVER y no se espera un /start
+					eventos[evRUNNING]=true;
 					conditionVariable[evSTART].notify_one();
-				} else 
-				conditionVariable[data].notify_one();
+				} else {
+					eventos[data]=true;
+					conditionVariable[data].notify_one(); 
 			}
 	} else {
 		fprintf(stderr,"HTTPInputPluginV1::update Tipo update desconocido\n");
 	}
-*/
 }
 
 void HTTPInputPluginV1::cleanKeys() {
@@ -103,7 +62,7 @@ void HTTPInputPluginV1::cleanKeys() {
   keystate[SDLK_LEFT]=
   keystate[SDLK_DOWN]=
   keystate[SDLK_SPACE]=
-  keystate[SDLK_F5]=             // TODO: esto se hace aquÃÂ­ o solo con el comando \0
+  keystate[SDLK_F5]=             // TODO: esto se hace aquÃ­­ o solo con el comando \0
   keystate[SDLK_q]=
   keystate[SDLK_r]=
   keystate[SDLK_F5]=
@@ -111,64 +70,36 @@ void HTTPInputPluginV1::cleanKeys() {
   keystate[SDLK_LEFT]=false;
 }
 
-// TODO: en V2 habrÃ¡ que sobrecargar esta funciÃn con una variante que acepte varias 
+// TODO: en V2 habrÃa­¡ que sobrecargar esta funÃ³n con una variante que acepte varias 
 // teclas a la vez y ver como resolver que evento esperar
 EventType HTTPInputPluginV1::sendActionAndWaitForEvent(SDLKey key, EventType event) 
 {
 //TODO: faltan asserts para controlar el rango de key dentro de las SDLKeys conocidas
 //TODO: faltan asserts para controlar el rango de eventos
 			std::unique_lock<std::mutex> lock(eventMutex);
-//fprintf(stderr,"HTTPInputPluginV1::sendActionAndWaitForEvent event %d key %d\n",event, key);
 			cleanKeys();
 			HTTPInputPluginV1::keystate[key]=true;
 			eventos[event]=false;
 			eventos[evGAMEOVER]=false;
 			eventos[evRUNNING]=false;
-
 			conditionVariable[event].wait(lock,[this,event]() { 
-//			conditionVariable[evREADY].wait(lock,[this,event]() { 
-//					return eventos[event]; 
-//				if (event==evSTART)
 				return eventos[event] || eventos[evGAMEOVER] || eventos[evRUNNING]; 
-//return eventos[evREADY];
-//				else
-//					return eventos[event] || eventos[evGAMEOVER]; 
 			});
-//if(!eventos[evSTART])			HTTPInputPluginV1::keystate[key]=false;
-//eventos[evSTART]=false;
-//fprintf(stderr,"fuera evSTART %d keyN %d event %d\n",eventos[evSTART],keystate[key],event); 
-//return evSTART;
-/*
-if (eventos[evRUNNING]) {
-	eventos[evRUNNING]=false;
-	keystate[SDLK_n]=false;
-	return evRUNNING;
-} else {
-eventos[event]=false; // Para evitar confusiones si se traza el array
-keystate[key]=false;
-return event;
-} 
-*/
-eventos[event]=false; 
-keystate[key]=false;
-if (eventos[evGAMEOVER]) {
-return evGAMEOVER;
-} else if (eventos[evRUNNING]) return evRUNNING; else
-return event;
-/*
+			eventos[event]=false; 
+			keystate[key]=false;
 			if (eventos[evGAMEOVER]) {
+				// TODO: �hace falta este for?
 				for (int i=0;i<evEVENT_LAST;i++) {
-fprintf(stderr,"HTTPInputPluginV1::sendActionAndWaitForEvent for %d\n",i);
-if(i!=evSTART)
 					eventos[i]=false; 
 				}
 				return evGAMEOVER;
 			} else {
-fprintf(stderr,"HTTPInputPluginV1::sendActionAndWaitForEvent non-for %d\n",event);
-				eventos[event]=false; // Para evitar confusiones si se traza el array
-				if (event==evRUNNING) eventos[evSTART]=false;
-				return event;
-			} */
+				if (eventos[evRUNNING]) {
+					return evRUNNING; 
+				} else {
+					return event;
+				}
+			}
 }
 
 bool HTTPInputPluginV1::init(Abadia::Juego *juego)
@@ -180,14 +111,6 @@ bool HTTPInputPluginV1::init(Abadia::Juego *juego)
 		crow::SimpleApp app;
 
 		CROW_ROUTE(app, "/reset")([this](){
-/*
-			std::unique_lock<std::mutex> lock(eventMutex);
-			cleanKeys();
-			HTTPInputPluginV1::keystate[SDLK_e]=true;
-			eventos[evRESET]=false;
-			conditionVariable[evRESET].wait(lock,[this]{ return eventos[evRESET]; });
-			HTTPInputPluginV1::keystate[SDLK_e]=false;
-*/
 			switch (sendActionAndWaitForEvent(SDLK_e,evRESET)) {
 				case evGAMEOVER: return crow::response(599);
 				case evRESET: return crow::response(200);
@@ -203,25 +126,6 @@ bool HTTPInputPluginV1::init(Abadia::Juego *juego)
 		});
 
 		CROW_ROUTE(app, "/dump")([this](){
-/*
-fprintf(stderr,"sigue reset activo: %d\n",eventos[evRESET]);
-			cleanKeys();
-//			HTTPInputPluginV1::keystate[SDLK_e]=false;
-//llamar a InfoJuego->muestraInfo ... pero y si se toca algo mientras se genera
-//si pulsamos una tecla que genere el dump ?como lo recuperamos luego?
-//?un tocho string con algun tipo de bloqueo para hilos???
-                	//return crow::response(200);
-//                	return crow::response(500,"Sin implementar");
-
-			std::unique_lock<std::mutex> lock(eventMutex);
-			cleanKeys();
-//			HTTPInputPluginV1::keystate[SDLK_F5]=true;
-			HTTPInputPluginV1::keystate[SDLK_d]=true;
-			eventos[evDUMP]=false;
-			conditionVariable[evDUMP].wait(lock,[this]{ return eventos[evDUMP]; });
-			HTTPInputPluginV1::keystate[SDLK_d]=false;
-//			HTTPInputPluginV1::keystate[SDLK_F5]=false;
-*/
 			EventType resSend = sendActionAndWaitForEvent(SDLK_d,evDUMP);	
 // y si el DUMP ha ido mal????
 bool ok=true;
@@ -231,7 +135,6 @@ bool ok=true;
 				memset(dump,'\0',sizeof(dump));
 				std::ifstream dumpfile("abadIA.dump");
 				dumpfile.read(dump,8192);
-//fprintf(stderr,"dump evento %d no esperado\n",resSend);
 				switch (resSend) {
 					case evGAMEOVER: return crow::response(599,dump);
 					case evDUMP: return crow::response(200, dump);
@@ -283,7 +186,7 @@ bool ok=true;
 			switch (sendActionAndWaitForEvent(SDLK_n,evSTART)) {
 				case evGAMEOVER: return crow::response(500,"Recibo GAMEOVER cuando pido START");
 				case evSTART: return crow::response(200);
-				case evRUNNING: return crow::response(400,"Ya estaba en ejecuci�n");
+				case evRUNNING: return crow::response(400,"Ya estaba en ejecuciÃn");
 				default: return crow::response(500,"Evento no esperado");
 			}
 
@@ -359,31 +262,6 @@ bool ok=true;
 		// TODO: fusionar con save y hacer un if segn el headeraccept application/json o no
 		CROW_ROUTE(app, "/saveJSON")([this](){
 			// ejemplo: curl http://localhost:4477/saveJSON > crow.save.json
-/*
-			std::string json;
-
-			json = "{}";
-
-			bool ok=false;//elJuego->save(0);
-			if (ok) { // TODO: falta control errores
-				std::stringstream json;
-				char dump[8192]; //TODO: intentar que sea dinamico
-				std::ifstream savefile("abadia0.save");
-				savefile.read(dump,8192);
-				json << "{\"snapshot\":\"" << dump << "\"}";
-				return crow::response(200, json.str());
-			}
-			else  return crow::response(500, json); */
-
-/*
-			std::unique_lock<std::mutex> lock(eventMutex);
-			cleanKeys();
-			HTTPInputPluginV1::keystate[SDLK_g]=true;
-			eventos[evSAVE]=false;
-			conditionVariable[evSAVE].wait(lock,[this]{ return eventos[evSAVE]; });
-			   // lo que sigue estÃÂ¡cubierto por el lock????
-			HTTPInputPluginV1::keystate[SDLK_g]=false; // esto estÃ Â¡cubierto por el lock????
-*/
 			EventType resSend= sendActionAndWaitForEvent(SDLK_g,evSAVE);	
 // y si el SAVE ha ido mal????
 bool ok=true;
@@ -405,27 +283,6 @@ bool ok=true;
 
 	        CROW_ROUTE(app, "/save")([this](){
                         // ejemplo: curl http://localhost:4477/save > crow.save
-/*
-			bool ok=elJuego->save(0);
-			if (ok) { // TODO: falta control errores
-                        	char dump[8192]; //TODO: intentar que sea dinamico
-                        	std::ifstream savefile("abadia0.save");
-	                        savefile.read(dump,8192);
-				return crow::response(200, dump);
-                	}
-	                else  return crow::response(500);
-*/
-
-/*
-			std::unique_lock<std::mutex> lock(eventMutex);
-			cleanKeys();
-			HTTPInputPluginV1::keystate[SDLK_g]=true;
-			eventos[evSAVE]=false;
-			conditionVariable[evSAVE].wait(lock,[this]{ return eventos[evSAVE]; });
-				// lo que sigue estÃ Â¡cubierto por el lock????
-			HTTPInputPluginV1::keystate[SDLK_g]=false; // esto estÃÂ¡cubierto por el lock????
-*/
-
 			EventType resSend = sendActionAndWaitForEvent(SDLK_g,evSAVE);	
 
 bool ok=true;// y si el SAVE ha ido mal????
@@ -448,32 +305,12 @@ bool ok=true;// y si el SAVE ha ido mal????
                 	auto x=crow::json::load(req.body);
 	                if (!x) return crow::response(500);
                 	std::ofstream savefile("abadia0.save");
-                        // si se envÃ­aasi curl -v -X POST  --data @crow.sav.json http://localhost:4477/loadJSON
-                        // se come los cambios de linea y no nos vale. Se tiene que enviar asÃ­
+                        // si se envÃÂ­aasi curl -v -X POST  --data @crow.sav.json http://localhost:4477/loadJSON
+                        // se come los cambios de linea y no nos vale. Se tiene que enviar asÃÂ­
                         // curl -v -X POST  -T crow.save.json http://localhost:4477/loadJSON
 	                savefile << x["snapshot"].s();
 	                savefile.close();
-/*
-	                std::string json;
 
-	                json = "{}";
-	                bool ok=elJuego->cargar(0);
-
-	                if (ok) {
-		                elJuego->reset();
-				return crow::response(200, json);
-                	}
-                	else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
-*/
-
-/*
-			std::unique_lock<std::mutex> lock(eventMutex);
-			cleanKeys();
-			HTTPInputPluginV1::keystate[SDLK_c]=true;
-			eventos[evLOAD]=false;
-			conditionVariable[evLOAD].wait(lock,[this]{ return eventos[evLOAD]; });
-			HTTPInputPluginV1::keystate[SDLK_c]=false; */
-			//sendActionAndWaitForEvent(SDLK_c,evLOAD);	
 // y si el LOAD ha ido mal????
 			switch (sendActionAndWaitForEvent(SDLK_c,evLOAD)) {
 				case evGAMEOVER: return crow::response(599);
@@ -487,30 +324,10 @@ bool ok=true;// y si el SAVE ha ido mal????
 	        CROW_ROUTE(app, "/load").methods("POST"_method)([this](const crow::request& req) {
 	                std::ofstream savefile("abadia0.save");
                         // si se enva asi curl -v -X POST  --data @crow.save http://localhost:4477/loa
-                        // se come los cambios de linea y no nos vale. Se tiene que enviar asÃÂ­
+                        // se come los cambios de linea y no nos vale. Se tiene que enviar asÃÂÃÂ­
                         // curl -v -X POST  -T crow.save http://localhost:4477/load
 	                savefile << req.body;
 	                savefile.close();
-/*
-	                std::string json;
-
-	                json = "{}";
-	                bool ok=elJuego->cargar(0);
-
-	                if (ok) {
-		                elJuego->reset();
-				return crow::response(200, json);
-	                }
-	                else return crow::response(500, "{ \"MUST RESET\"}" ); // TODO: mandar el reset aqui mismo
-*/
-/*
-			std::unique_lock<std::mutex> lock(eventMutex);
-			cleanKeys();
-			HTTPInputPluginV1::keystate[SDLK_c]=true;
-			eventos[evLOAD]=false;
-			conditionVariable[evLOAD].wait(lock,[this]{ return eventos[evLOAD]; });
-			HTTPInputPluginV1::keystate[SDLK_c]=false; */
-//			sendActionAndWaitForEvent(SDLK_c,evLOAD);	
 // y si el LOAD ha ido mal????
 			switch (sendActionAndWaitForEvent(SDLK_c,evLOAD)) {
 				case evGAMEOVER: return crow::response(599);
@@ -554,7 +371,6 @@ bool HTTPInputPluginV1::process(int *inputs)
 			// update inputs
 			if (g_keyMapping[i] != 0){
 				if (keystate[g_keyMapping[i]] ){
-//fprintf(stderr,"keystate %d keymap %d\n",i,g_keyMapping[i]);
 					inputs[i]++;
 				}
 			}
@@ -595,7 +411,7 @@ void HTTPInputPluginV1::initRemapTable()
 	g_keyMapping[P2_BUTTON2] = SDLK_u;
 
 	//g_keyMapping[START_1] = SDLK_1;
-	//en la abadÃa el 1 se usa para que la cÃmara
+	//en la abadÃa el 1 se usa para que la cÃmara
 	//siga al personaje 1
 	g_keyMapping[START_1] = SDLK_n;
 	g_keyMapping[START_2] = SDLK_2;
