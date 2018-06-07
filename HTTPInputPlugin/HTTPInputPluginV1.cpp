@@ -29,7 +29,7 @@ HTTPInputPluginV1::~HTTPInputPluginV1()
 
 void HTTPInputPluginV1::update(Abadia::Juego* subject, int data) 
 {
-fprintf(stderr,"HTTPInputPluginV1::update %d\n",data);
+//fprintf(stderr,"HTTPInputPluginV1::update %d\n",data);
 	if (data>=0 && data <= evEVENT_LAST) {
 		std::lock_guard<std::mutex> lock(eventMutex);
 			if (data==evGAMEOVER) {
@@ -49,7 +49,7 @@ if (data==evRUNNING) {
 		conditionVariable[data].notify_one(); 
 }
 	} else {
-		fprintf(stderr,"HTTPInputPluginV1::update Tipo update desconocido\n");
+//		fprintf(stderr,"HTTPInputPluginV1::update Tipo update desconocido\n");
 	}
 /*
 	if (data>=0 && data <= evEVENT_LAST) {
@@ -118,7 +118,7 @@ EventType HTTPInputPluginV1::sendActionAndWaitForEvent(SDLKey key, EventType eve
 //TODO: faltan asserts para controlar el rango de key dentro de las SDLKeys conocidas
 //TODO: faltan asserts para controlar el rango de eventos
 			std::unique_lock<std::mutex> lock(eventMutex);
-fprintf(stderr,"HTTPInputPluginV1::sendActionAndWaitForEvent event %d key %d\n",event, key);
+//fprintf(stderr,"HTTPInputPluginV1::sendActionAndWaitForEvent event %d key %d\n",event, key);
 			cleanKeys();
 			HTTPInputPluginV1::keystate[key]=true;
 			eventos[event]=false;
@@ -136,7 +136,7 @@ fprintf(stderr,"HTTPInputPluginV1::sendActionAndWaitForEvent event %d key %d\n",
 			});
 //if(!eventos[evSTART])			HTTPInputPluginV1::keystate[key]=false;
 //eventos[evSTART]=false;
-fprintf(stderr,"fuera evSTART %d keyN %d event %d\n",eventos[evSTART],keystate[key],event); 
+//fprintf(stderr,"fuera evSTART %d keyN %d event %d\n",eventos[evSTART],keystate[key],event); 
 //return evSTART;
 /*
 if (eventos[evRUNNING]) {
@@ -231,7 +231,7 @@ bool ok=true;
 				memset(dump,'\0',sizeof(dump));
 				std::ifstream dumpfile("abadIA.dump");
 				dumpfile.read(dump,8192);
-fprintf(stderr,"dump evento %d no esperado\n",resSend);
+//fprintf(stderr,"dump evento %d no esperado\n",resSend);
 				switch (resSend) {
 					case evGAMEOVER: return crow::response(599,dump);
 					case evDUMP: return crow::response(200, dump);

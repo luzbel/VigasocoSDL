@@ -1906,18 +1906,18 @@ notify(evRESET);
 
 		while (true){	// el bucle principal del juego empieza aquí
 			megaSave >> logica;
-fprintf(stderr,"guillermo x %d y %d \n", personajes[0]->posX , personajes[0]->posY );
+//fprintf(stderr,"guillermo x %d y %d \n", personajes[0]->posX , personajes[0]->posY );
 			std::string temp;
 			megaSave >> temp;
 //std::cout << temp << std::endl;
-fprintf(stderr,"temp %s\n",temp.c_str());
+//fprintf(stderr,"temp %s\n",temp.c_str());
 			megaSave >> temp;
-fprintf(stderr,"temp %s\n",temp.c_str());
+//fprintf(stderr,"temp %s\n",temp.c_str());
 //std::cout << temp << std::endl;
 			megaSave >> temp;
-fprintf(stderr,"temp %s\n",temp.c_str());
+//fprintf(stderr,"temp %s\n",temp.c_str());
 			if ( megaSave.fail() ) {
-			 fprintf(stderr,"ERR loading megaSave\n");
+			 //fprintf(stderr,"ERR loading megaSave\n");
 			 while (true) 
 				timer->sleep(500);
 			}
@@ -2086,12 +2086,12 @@ fprintf(stderr,"temp %s\n",temp.c_str());
 				// TODO: que pasa si falla al escribir el dump
 			}
 #endif
-fprintf(stderr,"AAA\n");
+//fprintf(stderr,"AAA\n");
 
 #ifdef __abadIA__
 			// Ya hemos hecho todo lo que tenÃamos que hacer
 			// avÃsemos a la IA
-fprintf(stderr,"AAA\n"); 
+//fprintf(stderr,"AAA\n"); 
 			if (losControles->estaSiendoPulsado(P1_LEFT))
 				notify(evLEFT);
 			if (losControles->estaSiendoPulsado(P1_RIGHT))
@@ -2103,10 +2103,10 @@ fprintf(stderr,"AAA\n");
 			if (losControles->estaSiendoPulsado(P1_BUTTON1))
 				notify(evSPACE);
 			//TODO; que hacer con QR
-fprintf(stderr,"ievR\n");
+//fprintf(stderr,"ievR\n");
 			notify(evRUNNING);  
 			//notify(evREADY); 
-fprintf(stderr,"fevR\n");
+//fprintf(stderr,"fevR\n");
 #endif			
 
 			// espera un poco para actualizar el estado del juego
@@ -2304,7 +2304,7 @@ notify(evRESET);
 
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
-fprintf(stderr,"salgo de pantalla fin y reinicio\n");
+//fprintf(stderr,"salgo de pantalla fin y reinicio\n");
 				break;
 			}
 
@@ -3033,17 +3033,17 @@ bool Juego::muestraPantallaFinInvestigacion()
 	// mientras, al resto de comandos se les
 	// notifica GAMEOVER
 
-fprintf(stderr,"bucle espero START_1\n");
+//fprintf(stderr,"bucle espero START_1\n");
 	while (true) {
-fprintf(stderr,"aaaa \n");
+//fprintf(stderr,"aaaa \n");
 		controles->actualizaEstado();
-fprintf(stderr,"START %d\n",controles->estaSiendoPulsado(START_1));
-fprintf(stderr,"N %d\n",controles->estaSiendoPulsado(KEYBOARD_N));
-fprintf(stderr,"N %d\n",controles->estaSiendoPulsado(KEYBOARD_SPACE));
+//fprintf(stderr,"START %d\n",controles->estaSiendoPulsado(START_1));
+//fprintf(stderr,"N %d\n",controles->estaSiendoPulsado(KEYBOARD_N));
+//fprintf(stderr,"N %d\n",controles->estaSiendoPulsado(KEYBOARD_SPACE));
 		if (controles->estaSiendoPulsado(START_1)) {
 //		if (controles->estaSiendoPulsado(KEYBOARD_SPACE)) {
 //			notify(evSTART);
-fprintf(stderr,"salgo, han pedido START\n");
+//fprintf(stderr,"salgo, han pedido START\n");
 			break;
 //			goto tralari; // break;
 		} else {
