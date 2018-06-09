@@ -1893,7 +1893,6 @@ logica->inicia();
 	// aquí ya se ha completado la inicialización de datos para el juego
 	// ahora realiza la inicialización para poder empezar a jugar una partida
 	while (true){
-fprintf("INICIO NUEVO JUEGO\n");
 		// inicia la lógica del juego
 		logica->inicia();
 
@@ -2001,7 +2000,6 @@ notify(evRESET);
 
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
-fprintf(stderr,"break\n");
 				break;
 			}
 
@@ -2211,10 +2209,8 @@ logica->inicia();
 	// aquí ya se ha completado la inicialización de datos para el juego
 	// ahora realiza la inicialización para poder empezar a jugar una partida
 	while (true){
-fprintf(stderr,"INICIO NUEVO JUEGO\n");
 		// inicia la lógica del juego
 		logica->inicia();
-fprintf(stderr,"ha fracasado %d investigacion completa %d\n",logica->haFracasado,logica->investigacionCompleta);
 
 despues_de_cargar_o_iniciar:
 #ifdef __abadIA__
@@ -2224,8 +2220,6 @@ despues_de_cargar_o_iniciar:
 
 
 		while (true){	// el bucle principal del juego empieza aquí
-fprintf(stderr,"BUCLE\n");
-fprintf(stderr,"ha fracasado %d investigacion completa %d\n",logica->haFracasado,logica->investigacionCompleta);
 #ifdef __abadIA__
 #ifdef __abadIA_REPLAY__ 
 			if (!losControles->loadReplay()) {
@@ -2271,7 +2265,6 @@ fprintf(stderr,"ha fracasado %d investigacion completa %d\n",logica->haFracasado
 				notify(evSAVE);
 #endif
 			}
-fprintf(stderr,"e  ha fracasado %d investigacion completa %d\n",logica->haFracasado,logica->investigacionCompleta);
 
 			if ( compruebaLoad() ) {
 #ifdef __abadIA__
@@ -2288,27 +2281,22 @@ fprintf(stderr,"e  ha fracasado %d investigacion completa %d\n",logica->haFracas
 			// comprueba si se quieren cambiar de graficos 
 			// CPC a VGA o viceversa
 			compruebaCambioCPC_VGA();
-fprintf(stderr,"d  ha fracasado %d investigacion completa %d\n",logica->haFracasado,logica->investigacionCompleta);
 
 			// comprueba si se quiere entrar al menu
 			if ( compruebaMenu() ) goto despues_de_cargar_o_iniciar;
 
-fprintf(stderr,"c  ha fracasado %d investigacion completa %d\n",logica->haFracasado,logica->investigacionCompleta);
 
 			// actualiza las variables relacionadas con el paso del tiempo
 			logica->actualizaVariablesDeTiempo();
 
-fprintf(stderr,"b  ha fracasado %d investigacion completa %d\n",logica->haFracasado,logica->investigacionCompleta);
 /*
 #ifdef __abadIA__
 			compruebaEscenario();
 #endif
 */
 
-fprintf(stderr,"a  ha fracasado %d investigacion completa %d\n",logica->haFracasado,logica->investigacionCompleta);
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
-fprintf(stderr,"break\n");
 				break;
 			}
 
@@ -2938,36 +2926,6 @@ void Juego::muestraFinal()
 {
 	audio_plugin->Play(SONIDOS::Final,true);
 #ifdef __abadIA__
-	// volcamos la info actualizada para que la IA
-	// tenga la Ãltima foto con haFracasado=true
-	// e investigacionCompleta=true
-
-// esto provoca un bucle anidado infinito, ya que muestraFinal es invocado por 
-// Logica::calculaPorcentajeMision() y dumpInfo
-// llama a su vez a Logica::calculaPorcentajeMision() 
-//	if (!infoJuego->dumpInfo(true))
-//		fprintf(stderr,"Error volcando info en pantalla fin de investigaciÃn\n"); 
-
-	// que se vea por pantalla
-	// mostrar el pergamino es mas problematico
-	// ya que 
-	elMarcador->imprimeFrase("                  ", 96, 32, 4, 0);
-	elMarcador->imprimeFrase("RESUELTO ESCENARIO UNO", 96, 32, 4, 0);
-/* Âhace falta esto?
-Âo con el control que hay en muestraPantallaFinInvestigacion
-es suficiente
-	// esperamos a que la IA requiera una nueva partidaa
-	// y mientras informamos al HTTP Plugin para que devuelva 599
-	while (true) {
-		controles->actualizaEstado();
-		if (controles->estaSiendoPulsado(START_1)) {
-			break;
-		} else {
-			notify(evGAMEOVER);
-			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		}
-	}
-	notify(evSTART); */
 	return;
 #else
 	while (true){
@@ -2980,7 +2938,6 @@ es suficiente
 #ifdef __abadIA__
 void Juego::compruebaEscenario() 
 {
-fprintf(stderr,"numPantalla %d\n",elMotorGrafico->numPantalla);
 	if (elMotorGrafico->numPantalla == 0x16)  //  && (laLogica->guillermo->altura < 0x1e)){
 	{
 		laLogica->haFracasado = true;
@@ -3001,18 +2958,14 @@ bool Juego::muestraPantallaFinInvestigacion()
 	// si está mostrando una frase por el marcador, espera a que se termine de mostrar
 	if (elGestorFrases->mostrandoFrase) return false;
 
-fprintf(stderr,"antes grabar\n"); 
 #ifdef __abadIA__
 	// volcamos la info actualizada para que la IA
 	// tenga la uÃltima foto con haFracasado=true
 	// e investigacionCompleta a true si se ha acabado
 	// el juego o a false en caso contrario
-fprintf(stderr,"eooo\n"); 
 	if(!infoJuego->dumpInfo(true))
 		fprintf(stderr,"Error volcando info en pantalla fin de investigaciÃn\n"); 
-else fprintf(stderr,"grabado\n");
 #endif
-fprintf(stderr,"aaaa\n"); 
 
 	// oculta el área de juego
 	// CPC limpiaAreaJuego(3);
@@ -3061,8 +3014,15 @@ fprintf(stderr,"aaaa\n");
 		"PULSA ESPACIO PARA EMPEZAR", // 6 fines
 		"PULSA ESPACIO PARA EMPEZAR" // 7 portugues
 	};
-	porcentaje[idioma][2] = ((porc/10) % 10) + 0x30;
-	porcentaje[idioma][3] = (porc % 10) + 0x30;
+	if (porc==100) {
+		porcentaje[idioma][1] = 0x31;
+		porcentaje[idioma][2] = 0x30;
+		porcentaje[idioma][3] = 0x30;
+	}
+ 	else {
+		porcentaje[idioma][2] = ((porc/10) % 10) + 0x30;
+		porcentaje[idioma][3] = (porc % 10) + 0x30;
+	}
 
 	// CPC
 	//marcador->imprimeFrase("HAS RESUELTO EL", 96, 32, 2, 3);

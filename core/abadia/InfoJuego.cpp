@@ -252,7 +252,6 @@ bool InfoJuego::dumpInfo(bool forceDump)
 			return false;	
 		}
 		out.close();
-fprintf(stderr,"grabadoooooo\n");	
 	}
 
 	return true;
