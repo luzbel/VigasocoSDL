@@ -2293,6 +2293,9 @@ despues_de_cargar_o_iniciar:
 			// actualiza las variables relacionadas con el paso del tiempo
 			logica->actualizaVariablesDeTiempo();
 
+#ifdef __abadIA__
+			compruebaEscenario();
+#endif
 
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
@@ -2924,6 +2927,18 @@ void Juego::muestraFinal()
 		pergamino->muestraTexto(Pergamino::pergaminoFinal[idioma]);
 	}
 }
+
+#ifdef __abadIA__
+void Juego::compruebaEscenario() 
+{
+//fprintf(stderr,"numPantalla %d\n",elMotorGrafico->numPantalla);
+	if (elMotorGrafico->numPantalla == 0x16)  //  && (laLogica->guillermo->altura < 0x1e)){
+	{
+		laLogica->haFracasado = true;
+		laLogica->investigacionCompleta = true;
+	}
+}
+#endif
 
 // muestra la parte de misión completada. Si se ha completado el juego, muestra el final
 bool Juego::muestraPantallaFinInvestigacion()
