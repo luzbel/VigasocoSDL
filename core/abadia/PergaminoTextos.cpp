@@ -678,7 +678,7 @@ const unsigned char * Pergamino::pergaminoFinal[8] =
 		// texto 0 castellano
 	(const unsigned char*)
 	" Resuelto escenario\x0d"
-        "          1\x0d\x1a"
+        "        dos\x0d\x1a"
 		// fin textos 0 castellano
 	,
 		// textos 1 inglés
@@ -686,13 +686,13 @@ const unsigned char * Pergamino::pergaminoFinal[8] =
 
 	(const unsigned char*)
 	" Resuelto escenario\x0d"
-        "          1\x0d\x1a"
+        "         dos\x0d\x1a"
 	,
 		// fin textos 1 inglés
 		// textos 2 portugues brasil
 	(const unsigned char*)
 	" Resuelto escenario\x0d"
-        "          1\x0d\x1a"
+        "         dos\x0d\x1a"
 		,
 		// fin textos 2 portugues brasil
 		// textos 3 catalán
@@ -701,7 +701,7 @@ const unsigned char * Pergamino::pergaminoFinal[8] =
 
 	(const unsigned char*)
 	" Resuelto escenario\x0d"
-        "          1\x0d\x1a"
+        "         dos\x0d\x1a"
 
 	,
 		// fin textos 3 catalán
@@ -710,7 +710,7 @@ const unsigned char * Pergamino::pergaminoFinal[8] =
 
 	(const unsigned char*)
 	" Resuelto escenario\x0d"
-        "          1\x0d\x1a"
+        "         dos\x0d\x1a"
 
 	,
 		// fin textos 4 gallego
@@ -720,7 +720,7 @@ const unsigned char * Pergamino::pergaminoFinal[8] =
 
 	(const unsigned char*)
 	" Resuelto escenario\x0d"
-        "          1\x0d\x1a"
+        "         dos\x0d\x1a"
 
 
 	,
@@ -731,7 +731,7 @@ const unsigned char * Pergamino::pergaminoFinal[8] =
 	(const unsigned char*)
 
 	" Resuelto escenario\x0d"
-        "          1\x0d\x1a"
+        "         dos\x0d\x1a"
 
 	,
 		// fin textos 6 fines
@@ -740,7 +740,7 @@ const unsigned char * Pergamino::pergaminoFinal[8] =
 
 	(const unsigned char*)
 	" Resuelto escenario\x0d"
-        "          1\x0d\x1a"
+        "         dos\x0d\x1a"
 
 
 	,

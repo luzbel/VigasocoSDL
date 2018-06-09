@@ -79,6 +79,18 @@ const char *Juego::savefile[7] = {
 	"/save/abadia6.save"
 };
 #else
+#ifdef __abadIA__
+const char *Juego::savefile[8] = {
+	 "abadia0.save",
+	 "abadia1.save",
+	 "abadia2.save",
+	 "abadia3.save",
+	 "abadia4.save",
+	 "abadia5.save",
+	 "abadia6.save",
+	 "abadIA.escenario.save"
+};
+#else
 const char *Juego::savefile[7] = {
 	 "abadia0.save",
 	 "abadia1.save",
@@ -88,6 +100,7 @@ const char *Juego::savefile[7] = {
 	 "abadia5.save",
 	 "abadia6.save"
 };
+#endif
 #endif
 #endif
 
@@ -1895,7 +1908,11 @@ logica->inicia();
 	while (true){
 
 		// inicia la lógica del juego
+#ifdef __abadIA__
+		cargar()
+#else
 		logica->inicia();
+#endif
 
 
 despues_de_cargar_o_iniciar:
@@ -2212,7 +2229,11 @@ logica->inicia();
 	while (true){
 
 		// inicia la lógica del juego
+#ifdef __abadIA__
+		cargar(7);
+#else
 		logica->inicia();
+#endif
 
 
 despues_de_cargar_o_iniciar:
@@ -2932,7 +2953,7 @@ void Juego::muestraFinal()
 void Juego::compruebaEscenario() 
 {
 //fprintf(stderr,"numPantalla %d\n",elMotorGrafico->numPantalla);
-	if (elMotorGrafico->numPantalla == 0x16)  //  && (laLogica->guillermo->altura < 0x1e)){
+	if ((personajes[0]->objetos & GAFAS)==GAFAS)
 	{
 		laLogica->haFracasado = true;
 		laLogica->investigacionCompleta = true;

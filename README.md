@@ -1,5 +1,6 @@
-# Escenario 1
+# Escenario 2
 
 Un escenario simple para probar el entrenamiento en el proyecto abadIA.
 
-La partida finaliza al conseguir salir de la pantalla inicial.
+Se carga un .save con las gafas en la pantalla inicial.
+La partida finaliza al conseguir Guillermo las gafas.
