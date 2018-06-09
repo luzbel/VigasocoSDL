@@ -595,7 +595,7 @@ int Logica::calculaPorcentajeMision()
 		// si se ha completado la investigación, muestra el pergamino del final
 		elJuego->muestraFinal();
 
-		return 0;
+		return 100;
 	}
 }
 

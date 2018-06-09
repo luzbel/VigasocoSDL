@@ -145,7 +145,13 @@ bool InfoJuego::dumpInfo(bool forceDump)
 		dump["haFracasado"]=laLogica->haFracasado;
 		dump["bonus"]=laLogica->bonus;
 		dump["investigacionCompleta"]=laLogica->investigacionCompleta;
-		dump["porcentaje"]=laLogica->calculaPorcentajeMision();
+		if (laLogica->investigacionCompleta) 
+			// para evitar llamar a laLogica y entrar
+			// en bucle
+			dump["porcentaje"]=100;
+		else
+			dump["porcentaje"]=laLogica->calculaPorcentajeMision();
+		dump["numPantalla"]=elJuego->motor->numPantalla;
 		dump["numPantalla"]=elJuego->motor->numPantalla;
 		dump["planta"]=elMotorGrafico->obtenerPlanta(
 				elMotorGrafico->obtenerAlturaBasePlanta(

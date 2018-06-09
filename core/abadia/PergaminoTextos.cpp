@@ -672,81 +672,6 @@ const unsigned char * Pergamino::pergaminoInicio[8] =
 /////////////////////////////////////////////////////////////////////////////
 
 //const char * Pergamino::pergaminoFinal[8] = 
-#ifdef __abadIA__
-const unsigned char * Pergamino::pergaminoFinal[8] = 
-	{
-		// texto 0 castellano
-	(const unsigned char*)
-	" Resuelto escenario\x0d"
-        "        dos\x0d\x1a"
-		// fin textos 0 castellano
-	,
-		// textos 1 inglés
-	
-
-	(const unsigned char*)
-	" Resuelto escenario\x0d"
-        "         dos\x0d\x1a"
-	,
-		// fin textos 1 inglés
-		// textos 2 portugues brasil
-	(const unsigned char*)
-	" Resuelto escenario\x0d"
-        "         dos\x0d\x1a"
-		,
-		// fin textos 2 portugues brasil
-		// textos 3 catalán
-	
-
-
-	(const unsigned char*)
-	" Resuelto escenario\x0d"
-        "         dos\x0d\x1a"
-
-	,
-		// fin textos 3 catalán
-		// textos 4 gallego
-	
-
-	(const unsigned char*)
-	" Resuelto escenario\x0d"
-        "         dos\x0d\x1a"
-
-	,
-		// fin textos 4 gallego
-		// textos 5 italiano
-	
-
-
-	(const unsigned char*)
-	" Resuelto escenario\x0d"
-        "         dos\x0d\x1a"
-
-
-	,
-		// fin textos 5 italiano
-		// textos 6 fines
-	
-
-	(const unsigned char*)
-
-	" Resuelto escenario\x0d"
-        "         dos\x0d\x1a"
-
-	,
-		// fin textos 6 fines
-		// textos 7 portugues
-	
-
-	(const unsigned char*)
-	" Resuelto escenario\x0d"
-        "         dos\x0d\x1a"
-
-
-	,
-		// fin textos 7 portugues
-	};
-#else
 const unsigned char * Pergamino::pergaminoFinal[8] = 
 	{
 		// texto 0 castellano
@@ -1725,7 +1650,6 @@ const unsigned char * Pergamino::pergaminoFinal[8] =
 	,
 		// fin textos 7 portugues
 	};
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // pergamino con las referencias mostradas en la ayuda

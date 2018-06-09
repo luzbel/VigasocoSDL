@@ -2314,10 +2314,6 @@ despues_de_cargar_o_iniciar:
 			// actualiza las variables relacionadas con el paso del tiempo
 			logica->actualizaVariablesDeTiempo();
 
-#ifdef __abadIA__
-			compruebaEscenario();
-#endif
-
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
 				break;
@@ -2342,6 +2338,9 @@ despues_de_cargar_o_iniciar:
 			// comprueba si se ha cambiado de pantalla y actúa en consecuencia
 			motor->compruebaCambioPantalla();
 
+#ifdef __abadIA__
+			compruebaEscenario();
+#endif
 
 			// comprueba si los personajes cogen o dejan algún objeto
 			logica->compruebaCogerDejarObjetos();
@@ -2940,13 +2939,19 @@ void Juego::muestraIntroduccion()
 }
 
 // muestra indefinidamente el pergamino del final
+// en abadIA no es indefinido y se vuelve a reiniciar
+// para que la IA juegue otra partida
 void Juego::muestraFinal()
 {
 	audio_plugin->Play(SONIDOS::Final,true);
+#ifdef __abadIA__
+	return;
+#else
 	while (true){
 		// muestra el texto del final
 		pergamino->muestraTexto(Pergamino::pergaminoFinal[idioma]);
 	}
+#endif
 }
 
 #ifdef __abadIA__
@@ -2972,6 +2977,15 @@ bool Juego::muestraPantallaFinInvestigacion()
 
 	// si está mostrando una frase por el marcador, espera a que se termine de mostrar
 	if (elGestorFrases->mostrandoFrase) return false;
+
+#ifdef __abadIA__
+	// grabamos para que si se solicita dump
+	// tenga la Ãltima foto con haFracasado=true
+	//save(0); 
+	// No es grabar, es un dump lo que necesita la IA
+	if(!infoJuego->dumpInfo(true))
+		fprintf(stderr,"Error volcando info en pantalla fin de investigaciÃn\n"); 
+#endif
 
 	// oculta el área de juego
 	// CPC limpiaAreaJuego(3);
@@ -3020,8 +3034,16 @@ bool Juego::muestraPantallaFinInvestigacion()
 		"PULSA ESPACIO PARA EMPEZAR", // 6 fines
 		"PULSA ESPACIO PARA EMPEZAR" // 7 portugues
 	};
-	porcentaje[idioma][2] = ((porc/10) % 10) + 0x30;
-	porcentaje[idioma][3] = (porc % 10) + 0x30;
+
+	if (porc==100) { // este caso solo se da en abadIA
+		porcentaje[idioma][1] = 0x31;
+		porcentaje[idioma][2] = 0x30;
+		porcentaje[idioma][3] = 0x30;
+	}
+ 	else {
+		porcentaje[idioma][2] = ((porc/10) % 10) + 0x30;
+		porcentaje[idioma][3] = (porc % 10) + 0x30;
+	}
 
 	// CPC
 	//marcador->imprimeFrase("HAS RESUELTO EL", 96, 32, 2, 3);
