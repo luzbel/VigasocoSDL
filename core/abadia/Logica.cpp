@@ -593,9 +593,10 @@ int Logica::calculaPorcentajeMision()
 		return porc;
 	} else {
 		// si se ha completado la investigación, muestra el pergamino del final
+fprintf(stderr,"antes de mF\n");
 		elJuego->muestraFinal();
-
-		return 0;
+fprintf(stderr,"despues  de mF\n");
+		return 99; // solo se consideran 2 digitos al pintar
 	}
 }
 

@@ -145,7 +145,10 @@ bool InfoJuego::dumpInfo(bool forceDump)
 		dump["haFracasado"]=laLogica->haFracasado;
 		dump["bonus"]=laLogica->bonus;
 		dump["investigacionCompleta"]=laLogica->investigacionCompleta;
-		dump["porcentaje"]=laLogica->calculaPorcentajeMision();
+		if (laLogica->investigacionCompleta) 
+			dump["porcentaje"]=100;
+		else
+			dump["porcentaje"]=laLogica->calculaPorcentajeMision();
 		dump["numPantalla"]=elJuego->motor->numPantalla;
 		dump["planta"]=elMotorGrafico->obtenerPlanta(
 				elMotorGrafico->obtenerAlturaBasePlanta(
@@ -210,6 +213,7 @@ bool InfoJuego::dumpInfo(bool forceDump)
 			}
 		}
 		dump["Personajes"]=Personajes;
+
 		// Objetos
 		nlohmann::json Objetos = nlohmann::json::array();
 		for(int i=0;i<elJuego->numObjetos;i++) {
@@ -225,6 +229,7 @@ bool InfoJuego::dumpInfo(bool forceDump)
 			}
 		}
 		dump["Objetos"]=Objetos;
+
 		// Rejilla
 		nlohmann::json Rejilla = nlohmann::json::array();
 		RejillaPantalla *rejilla = elMotorGrafico->rejilla;
@@ -245,7 +250,9 @@ bool InfoJuego::dumpInfo(bool forceDump)
 		out << dump;
 		if ( out.fail() ) {
 			return false;	
-		}	
+		}
+		out.close();
+fprintf(stderr,"grabadoooooo\n");	
 	}
 
 	return true;
