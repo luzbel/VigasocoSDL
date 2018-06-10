@@ -1,8 +1,8 @@
 {
 	"variables": [],
 	"info": {
-		"name": "abadIA",
-		"_postman_id": "411a7ef1-fab7-3524-1f2d-7f2303ebd0b4",
+		"name": "abadIA Escenario3",
+		"_postman_id": "d0b07eba-01fc-55d4-7bf2-8d9b4007cef7",
 		"description": "Pruebas interfaz web abadIA",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -504,8 +504,8 @@
 			]
 		},
 		{
-			"name": "Change screen",
-			"description": "Test basic movement",
+			"name": "Resolver escenario 1",
+			"description": "Sólo hay que cambiar de pantalla y verificar que conseguimos la info de que lo hemos logrado",
 			"item": [
 				{
 					"name": "Reset",
@@ -788,6 +788,32 @@
 					"response": []
 				},
 				{
+					"name": "Volcado antes de ganar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"haFracasado FALSE\"] = jsonData.haFracasado === false;",
+									"tests[\"Investigación NO completa\"] = jsonData.investigacionCompleta === false;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/dump",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Volcado posición inicial para verificar estado tras arranque"
+					},
+					"response": []
+				},
+				{
 					"name": "Step 10: Go forward",
 					"event": [
 						{
@@ -813,6 +839,32 @@
 					"response": []
 				},
 				{
+					"name": "Volcado después de ganar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 599\"] = responseCode.code === 599;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"haFracasado true\"] = jsonData.haFracasado === true;",
+									"tests[\"Investigación completa\"] = jsonData.investigacionCompleta === true;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/dump",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Volcado posición inicial para verificar estado tras arranque"
+					},
+					"response": []
+				},
+				{
 					"name": "Step 11: Turn right",
 					"event": [
 						{
@@ -820,7 +872,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+									"tests[\"Status code is 599\"] = responseCode.code === 599;"
 								]
 							}
 						}
@@ -829,10 +881,7 @@
 						"url": "http://{{host}}:{{portV1}}/cmd/D",
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -845,7 +894,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+									"tests[\"Status code is 599\"] = responseCode.code === 599;"
 								]
 							}
 						}
@@ -854,16 +903,35 @@
 						"url": "http://{{host}}:{{portV1}}/cmd/_",
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
 				},
 				{
-					"name": "Step 12+1: Turn right to avoid get glasses again",
+					"name": "Start copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/start",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Comenzar partida"
+					},
+					"response": []
+				},
+				{
+					"name": "Step 12+1: Turn right",
 					"event": [
 						{
 							"listen": "test",
@@ -888,7 +956,7 @@
 					"response": []
 				},
 				{
-					"name": "Volcado final",
+					"name": "Volcado tras empezar nueva partida",
 					"event": [
 						{
 							"listen": "test",
@@ -898,10 +966,465 @@
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
 									"",
 									"var jsonData = JSON.parse(responseBody);",
-									"// falta comprobar tamaño array Objetos y que sea 1",
-									"tests[\"Altura gafas correcta\"] = jsonData.Objetos[0].altura === 0;",
-									"tests[\"PosX Guillermo correcta\"] = jsonData.Personajes[0].posX === 136;",
-									"tests[\"PosY Guillermo correcta\"] = jsonData.Personajes[0].posY === 159;"
+									"tests[\"haFracasado false\"] = jsonData.haFracasado === false;",
+									"tests[\"Investigación NO completa\"] = jsonData.investigacionCompleta === false;",
+									"tests[\"PosX Guillermo correcta\"] = jsonData.Personajes[0].posX === 136;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/dump",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Volcado posición inicial para verificar estado tras arranque"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Resolver escenario 3",
+			"description": "Sólo hay que cambiar de pantalla y verificar que conseguimos la info de que lo hemos logrado",
+			"item": [
+				{
+					"name": "Reset",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/reset",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Reiniciar para partir de una posición conocida en la prueba"
+					},
+					"response": []
+				},
+				{
+					"name": "Volcado inicial",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"// falta comprobar tamaño array Objetos y que sea 0",
+									"//tests[\"Altura gafas correcta\"] = jsonData.Objetos[0].altura === 0;",
+									"tests[\"PosX Guillermo correcta\"] = jsonData.Personajes[0].posX === 136;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/dump",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "Volcado posición inicial para verificar estado tras arranque"
+					},
+					"response": []
+				},
+				{
+					"name": "Step 2: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/A",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Step 3: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/A",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Step 4: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/A",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Step 5: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/A",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Step 6: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/A",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Step 7: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/A",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Step 8: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/A",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Step 9: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/A",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Volcado antes de ganar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"haFracasado FALSE\"] = jsonData.haFracasado === false;",
+									"tests[\"Investigación NO completa\"] = jsonData.investigacionCompleta === false;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/dump",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Volcado posición inicial para verificar estado tras arranque"
+					},
+					"response": []
+				},
+				{
+					"name": "Step 10: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/A",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Volcado después de ganar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 599\"] = responseCode.code === 599;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"haFracasado true\"] = jsonData.haFracasado === true;",
+									"tests[\"Investigación completa\"] = jsonData.investigacionCompleta === true;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/dump",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Volcado posición inicial para verificar estado tras arranque"
+					},
+					"response": []
+				},
+				{
+					"name": "Step 11: Turn right",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 599\"] = responseCode.code === 599;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/D",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Step 12: Drop glasses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 599\"] = responseCode.code === 599;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/_",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Start",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/start",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Comenzar partida"
+					},
+					"response": []
+				},
+				{
+					"name": "Step 12+1: Turn right",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/D",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Volcado tras empezar nueva partida",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"haFracasado false\"] = jsonData.haFracasado === false;",
+									"tests[\"Investigación NO completa\"] = jsonData.investigacionCompleta === false;",
+									"tests[\"PosX Guillermo correcta\"] = jsonData.Personajes[0].posX === 136;"
 								]
 							}
 						}
@@ -921,6 +1444,29 @@
 			"name": "Seguir Abad",
 			"description": "Test basic movement",
 			"item": [
+				{
+					"name": "Start",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//nos da igual, solo queremos salir por si estamos en la pantalla de fin",
+									"//tests[\"Status code is 400\"] = responseCode.code === 400;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/start",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": "Comenzar partida"
+					},
+					"response": []
+				},
 				{
 					"name": "Reset",
 					"event": [
@@ -1602,7 +2148,7 @@
 					"response": []
 				},
 				{
-					"name": "Step 12: Drop glasses",
+					"name": "Step 25: Go forward",
 					"event": [
 						{
 							"listen": "test",
@@ -1618,16 +2164,13 @@
 						"url": "http://{{host}}:{{portV1}}/cmd/_",
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
 				},
 				{
-					"name": "Step 12+1: Turn right to avoid get glasses again",
+					"name": "Step 26: Go forward",
 					"event": [
 						{
 							"listen": "test",
@@ -1640,13 +2183,32 @@
 						}
 					],
 					"request": {
-						"url": "http://{{host}}:{{portV1}}/cmd/D",
+						"url": "http://{{host}}:{{portV1}}/cmd/_",
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Step 27: Go forward",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Status code is 200\"] = responseCode.code === 200;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "http://{{host}}:{{portV1}}/cmd/_",
+						"method": "GET",
+						"header": [],
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -1676,30 +2238,6 @@
 						"header": [],
 						"body": {},
 						"description": "Volcado posición inicial para verificar estado tras arranque"
-					},
-					"response": []
-				},
-				{
-					"name": "Step 25: Go forward",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"tests[\"Status code is 200\"] = responseCode.code === 200;",
-									"",
-									"tests[\"Esperar 10 segundos\"] = setTimeout(function(){}, 10000);"
-								]
-							}
-						}
-					],
-					"request": {
-						"url": "http://{{host}}:{{portV1}}/cmd/A",
-						"method": "GET",
-						"header": [],
-						"body": {},
-						"description": ""
 					},
 					"response": []
 				}

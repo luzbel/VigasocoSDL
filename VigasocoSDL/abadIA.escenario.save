@@ -23,7 +23,7 @@
 0// pergaminoGuardado
 136// numeroAleatorio
 1// hayMovimiento
-39// cntMovimiento
+233// cntMovimiento
 0// numPersonajeCamara
 0// opcionPersonajeCamara
 // SPRITE 0
@@ -61,7 +61,7 @@
 // SPRITE 16
 0// esVisible
 // SPRITE 17
-1// esVisible
+0// esVisible
 // SPRITE 18
 0// esVisible
 // SPRITE 19
@@ -79,14 +79,14 @@
 // SPRITE 25
 0// esVisible
 // GUILLERMO
-0// orientacion
+1// orientacion
 136// posX
-170// posY
+175// posY
 0// altura
 0// estado
 0// contadorAnimacion
 0// bajando
-0// orientacion
+1// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
 0// flipX
@@ -95,24 +95,24 @@
 -34// despY
 16// valorPosicion
 0// puedeQuitarObjetos
-0// objetos
+32// objetos
 252// mascaraObjetos
 0// contadorObjetos
 8// permisosPuertas
 8// numFotogramas
 2// incrPosY
 // ADSO
-0// orientacion
-135// posX
-168// posY
+3// orientacion
+136// posX
+173// posY
 0// altura
 0// estado
-2// contadorAnimacion
+0// contadorAnimacion
 0// bajando
-0// orientacion
+3// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
-0// flipX
+1// flipX
 49152// despFlipX
 -2// despX
 -32// despY
@@ -217,14 +217,14 @@
 1// estaVivo
 0// contadorPergamino
 // SEVERINO
-2// orientacion
-186// posX
-80// posY
-0// altura
+3// orientacion
+201// posX
+65// posY
+2// altura
 0// estado
-0// contadorAnimacion
+3// contadorAnimacion
 0// bajando
-2// orientacion
+3// orientacion
 0// enDesnivel
 0// giradoEnDesnivel
 0// flipX
@@ -382,12 +382,12 @@
 0// seHaCogido
 0// numPersonaje
 // OBJETO 2
-3// orientacion
-129// posX
-173// posY
+0// orientacion
+0// posX
+0// posY
 0// altura
 0// seEstaCogiendo
-0// seHaCogido
+1// seHaCogido
 0// numPersonaje
 // OBJETO 3
 1// orientacion

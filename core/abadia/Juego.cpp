@@ -2229,15 +2229,11 @@ logica->inicia();
 	while (true){
 
 		// inicia la lógica del juego
-#ifdef __abadIA__
-		cargar(7);
-#else
 		logica->inicia();
-#endif
-
 
 despues_de_cargar_o_iniciar:
 #ifdef __abadIA__
+		cargar(7);
 		notify(evRESET);
 #endif
 		ReiniciaPantalla();
@@ -2958,7 +2954,8 @@ void Juego::muestraFinal()
 void Juego::compruebaEscenario() 
 {
 //fprintf(stderr,"numPantalla %d\n",elMotorGrafico->numPantalla);
-	if ((personajes[0]->objetos & GAFAS)==GAFAS)
+//	if ((personajes[0]->objetos & GAFAS)==GAFAS)
+	if (elMotorGrafico->numPantalla == 0x16)
 	{
 		laLogica->haFracasado = true;
 		laLogica->investigacionCompleta = true;
