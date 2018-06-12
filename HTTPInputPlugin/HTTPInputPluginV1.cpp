@@ -55,6 +55,7 @@ void HTTPInputPluginV1::update(Abadia::Juego* subject, int data)
 }
 
 void HTTPInputPluginV1::cleanKeys() {
+  keystate[SDLK_DELETE]= // quito pausa para ejecutar comando
   keystate[SDLK_n]=
   keystate[SDLK_e]=
   keystate[SDLK_UP]=
@@ -79,6 +80,7 @@ EventType HTTPInputPluginV1::sendActionAndWaitForEvent(SDLKey key, EventType eve
 			std::unique_lock<std::mutex> lock(eventMutex);
 			cleanKeys();
 			HTTPInputPluginV1::keystate[key]=true;
+keystate[SDLK_DELETE]=true;
 			eventos[event]=false;
 			eventos[evGAMEOVER]=false;
 			eventos[evRUNNING]=false;
@@ -86,7 +88,10 @@ EventType HTTPInputPluginV1::sendActionAndWaitForEvent(SDLKey key, EventType eve
 				return eventos[event] || eventos[evGAMEOVER] || eventos[evRUNNING]; 
 			});
 			eventos[event]=false; 
-			keystate[key]=false;
+keystate[SDLK_DELETE]=false;
+
+			if (key!=SDLK_UP) 
+				keystate[key]=false;
 			if (eventos[evGAMEOVER]) {
 				// TODO: Âhace falta este for?
 				for (int i=0;i<evEVENT_LAST;i++) {
@@ -109,6 +114,108 @@ bool HTTPInputPluginV1::init(Abadia::Juego *juego)
 
 	std::thread webThread([this]() {
 		crow::SimpleApp app;
+
+// pruebas websocket
+// para probar escenario3 que acaba al salir de la pantalla
+// en una ventana de depuraciÃn de Chrome (F12)
+/* 
+var myWebSocket = new WebSocket("ws://localhost:4477/ws");
+myWebSocket.onmessage = function(event) {
+            var leng;
+            if (event.data.size === undefined) {
+                leng = event.data.length
+            } else {
+                leng = event.data.size
+            }
+            console.log("onmessage. size: " + leng + ", content: " + event.data);
+        }
+for (i=0;i<34;i++) myWebSocket.send("/cmd/A");
+*/
+CROW_ROUTE(app, "/ws")
+        .websocket()
+        .onopen([&](crow::websocket::connection& conn){
+                CROW_LOG_INFO << "new websocket connection";
+                })
+        .onclose([&](crow::websocket::connection& conn, const std::string& reason){
+                CROW_LOG_INFO << "websocket connection closed: " << reason;
+                })
+        .onmessage([&](crow::websocket::connection& conn, const std::string& data, bool is_binary){
+/*
+                CROW_LOG_INFO << "websocket data '" << data <<"'";
+		if (data=="cmd/A") {
+			switch (sendActionAndWaitForEvent(SDLK_UP,evUP)) {
+				case evGAMEOVER: return 
+conn.send_text("game over");
+				case evUP: return 
+conn.send_text("up ok");
+				default: return 
+conn.send_text("algo inesperado ha ocurrido");
+			}
+		} else
+		if (data=="testSLOW") {
+			// para ver si va lento por lo que se tarda en abrir y cerrar 
+			// 30 SDLK_UP  a ver como va
+			// pero la prueba real serÃa enviarlos desde un cliente websocket
+			for (int i=0;i<30;i++)	
+				fprintf(stderr,"testSLOW %d\n",sendActionAndWaitForEvent(SDLK_UP,evUP));
+} else
+conn.send_text("unknown");
+                }
+*/
+//EventType HTTPInputPluginV1::sendActionAndWaitForEvent(SDLKey key, EventType event) 
+                CROW_LOG_INFO << "websocket data '" << data <<"'";
+		SDLKey key=SDLK_DELETE; EventType event=evNOP;
+		if (data=="/nop") { key=SDLK_DELETE; event=evNOP; } else
+		if (data=="/reset") { key=SDLK_e; event=evRESET; } else
+		if (data=="/fin") {
+			SDL_Event sdlevent = {};
+			sdlevent.type = SDL_QUIT;
+			SDL_PushEvent(&sdlevent);
+			return conn.send_text("ok");
+		} else
+		if (data=="/cmd/A") { key=SDLK_UP; event=evUP; } else
+		if (data=="/cmd/D") { key=SDLK_RIGHT; event=evRIGHT; } else
+		if (data=="/cmd/I") { key=SDLK_LEFT; event=evLEFT; } else
+		if (data=="/cmd/D") { key=SDLK_DOWN; event=evDOWN; } else
+		if (data=="/start") { key=SDLK_n; event=evSTART; } else // se pisa con dormimos , s:n? , cambiar key
+		if (data=="/cmd/_") { key=SDLK_SPACE; event=evSPACE; } else 
+		if (data=="/cmd/E") { return conn.send_text("no implementado"); } else 
+		if (data=="/cmd/e") { return conn.send_text("no implementado") ;} else 
+		if (data=="/cmd/Q") { return conn.send_text("no implementado") ;} else 
+		if (data=="/cmd/R") { return conn.send_text("no implementado") ;} else 
+		if (data=="/cmd/F") {
+			SDL_Event sdlevent = {};
+			sdlevent.type = SDL_QUIT;
+			SDL_PushEvent(&sdlevent);
+			return conn.send_text("ok");
+		} else
+		if (data=="/saveJSON") { key=SDLK_g; event=evSAVE;  return conn.send_text("falta codigo"); } else  // falta implementar tras sendAction
+		if (data=="/save") { key=SDLK_g; event=evSAVE; return conn.send_text("falta codigo"); } else  // falta implementar tras sendAction
+		if (data=="/loadJSON") { key=SDLK_c; event=evLOAD;  return conn.send_text("falta codigo"); } else  // falta implementar tras sendAction
+		if (data=="/load") { key=SDLK_c; event=evLOAD;  return conn.send_text("falta codigo"); } else  // falta implementar tras sendAction
+conn.send_text("unknown, mandamos nop");
+/*
+switch (sendActionAndWaitForEvent(key,event)) {
+	case evGAMEOVER: return conn.send_text("game over");
+	case event: return conn.send_text("ok");
+	default: return conn.send_text("algo inesperado ha ocurrido");
+}  */
+auto res=sendActionAndWaitForEvent(key,event);
+if(res==evGAMEOVER) return conn.send_text("game over"); else
+if(res==event) return conn.send_text("ok"); else
+	return conn.send_text("algo inesperado ha ocurrido");
+}
+
+);
+
+		CROW_ROUTE(app, "/nop")([this](){
+			switch (sendActionAndWaitForEvent(SDLK_DELETE,evNOP)) {
+				case evGAMEOVER: return crow::response(599);
+				case evNOP: return crow::response(200);
+				case evRUNNING: return crow::response(500,"running?");
+				default: return crow::response(500,"Evento no esperado");
+			}
+        	});		
 
 		CROW_ROUTE(app, "/reset")([this](){
 			switch (sendActionAndWaitForEvent(SDLK_e,evRESET)) {
@@ -142,6 +249,14 @@ bool ok=true;
 				}
 			}
 			else  return crow::response(500, "ERR dumping state"); 
+		});
+
+		CROW_ROUTE(app, "/testSLOW")([this](){
+			// para ver si va lento por lo que se tarda en abrir y cerrar 
+			// peticiones REST, mando en una 30 SDLK_UP a ver como va
+			for (int i=0;i<30;i++)	
+				fprintf(stderr,"testSLOW %d\n",sendActionAndWaitForEvent(SDLK_UP,evUP));
+                	return crow::response(200);
 		});
 
 		CROW_ROUTE(app, "/cmd/A")([this](){
@@ -183,7 +298,7 @@ bool ok=true;
 		});
 		CROW_ROUTE(app, "/start")([this](){
 			// barra espaciadora
-			switch (sendActionAndWaitForEvent(SDLK_n,evSTART)) {
+			switch (sendActionAndWaitForEvent(SDLK_n,evSTART)) { // se pisa con dormimos s:n, cambiar key
 				case evGAMEOVER: return crow::response(500,"Recibo GAMEOVER cuando pido START");
 				case evSTART: return crow::response(200);
 				case evRUNNING: return crow::response(400,"Ya estaba en ejecuciÃƒn");

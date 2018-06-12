@@ -308,6 +308,7 @@ void Vigasoco::mainLoop()
 			// execute sync game logic
 			_driver->runSync();
 		}
+			if (!_inputHandler->process()) return;
 
 		// if we have to process video
 		if (processVideo){
@@ -317,7 +318,7 @@ void Vigasoco::mainLoop()
 			// process inputs
 			// si alguno de los plugins de entrada nos indica que ha 
 			// recibido el evento de salir, salimos del bucle de juego
-			if (!_inputHandler->process()) return;
+//666			if (!_inputHandler->process()) return;
 
 			// change core state if necessary
 			processCoreInputs();
@@ -378,11 +379,17 @@ void Vigasoco::processCoreInputs()
 		_timingHandler->setVideoFrameSkip(_actualVideoFrameSkip);
 	}
 
+#ifdef __abadIA__
+		_speedThrottle = false;
+		_speedThrottle = true;
+		_timingHandler->setSpeedThrottle(_speedThrottle);
+#else
 	// F10 -> toggle throttling
 	if (_inputHandler->hasBeenPressed(FUNCTION_10)){
 		_speedThrottle = !_speedThrottle;
 		_timingHandler->setSpeedThrottle(_speedThrottle);
 	}
+#endif
 
 	// F3 -> Cambiar entre modo ventana y pantalla completa
 	if (_inputHandler->hasBeenPressed(FUNCTION_3)){

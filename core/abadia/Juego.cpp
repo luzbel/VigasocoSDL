@@ -2413,11 +2413,14 @@ despues_de_cargar_o_iniciar:
 				notify(evSPACE);
 			if (losControles->estaSiendoPulsado(START_1))
 				notify(evRUNNING);			
+
 			//TODO; que hacer con QR
 #endif			
 
+fprintf(stderr,"contadorInterrupcion %d\n",contadorInterrupcion);
 			// espera un poco para actualizar el estado del juego
 			while (contadorInterrupcion < 0x24){
+//fprintf(stderr,"while contadorInterrupcion %d\n",contadorInterrupcion);
 				timer->sleep(5);
 			}
 
@@ -2645,6 +2648,23 @@ bool Juego::compruebaReinicio()
 // comprueba si se debe pausar el juego
 void Juego::compruebaPausa()
 {
+#ifdef __abadIA__
+//TODO, esto deberia ser sincronizacion entre httpplugin y esto
+// con seccion critica, semaforo o similar , asi es muy lento
+pausa = false; 
+		//while (contadorInterrupcion<0x24){ // ||  !controles->seHaPulsado(KEYBOARD_SUPR)){
+		//while (!controles->seHaPulsado(KEYBOARD_SUPR)){
+		while (!controles->estaSiendoPulsado(KEYBOARD_SUPR)){
+//pausa = true;
+//			timer->sleep(10);
+//			timer->sleep(5);
+			timer->sleep(1);
+			controles->actualizaEstado();
+		}
+pausa = false;
+//notify(evRUNNING);
+notify(evNOP);
+#else
 	// si se ha pulsado suprimir, se para hasta que se vuelva a pulsar
 	if (controles->seHaPulsado(KEYBOARD_SUPR)){
 		pausa = true;
@@ -2658,7 +2678,9 @@ void Juego::compruebaPausa()
 			}
 		}
 	}
+#endif
 }
+
 
 // comprueba si se desea cambiar los graficos VGA por CPC
 void Juego::cambioCPC_VGA()
