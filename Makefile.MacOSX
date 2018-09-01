@@ -1,4 +1,11 @@
-all:
+all: folders build
+
+folders:
+	mkdir -p VigasocoSDL/audio
+	mkdir -p VigasocoSDL/video
+	mkdir -p VigasocoSDL/input
+
+build:
 	cd HTTPInputPlugin && make -f Makefile.MacOSX
 	cd SDLInputKeyboardPlugin && make -f Makefile.MacOSX
 	# cd FakeInputPlugin && make -f Makefile.MacOSX
