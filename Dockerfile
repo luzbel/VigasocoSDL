@@ -26,7 +26,8 @@ RUN make clean && make
 # TODO: meter en roms solo la version que se va a usar
 # TODO: compilar en estatico sin boost y crow lo permiten
 
-FROM scratch
+FROM alpine
+RUN apk update && apk add bash busybox
 ENV SDL_VIDEODRIVER dummy
 ENV PATH /bin
 COPY --from=build /home/abadIA/VigasocoSDL/VigasocoSDL/VigasocoSDL /bin/
