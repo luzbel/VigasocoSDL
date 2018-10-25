@@ -1,5 +1,5 @@
 #CXXFLAGS=-O3 -I../core `sdl-config --cflags` 
-CXXFLAGS=-g -I../core `sdl-config --cflags` 
+CXXFLAGS=-g -std=c++11 -I../core `sdl-config --cflags` -D__abadIA__
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 # en OBJECTS_CORE falta Operations.o ??

@@ -110,6 +110,9 @@ void InputHandler::acquire()
 	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
 		(*i)->acquire();
 	}
+#ifdef __abadIA__
+process();
+#endif
 }
 
 void InputHandler::unAcquire()

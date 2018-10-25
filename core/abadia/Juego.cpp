@@ -1710,9 +1710,9 @@ void Juego::run()
 	audio_plugin = VigasocoMain->getAudioPlugin();
 
 	// muestra la imagen de presentación
-
+#ifndef __abadIA__
 	muestraPresentacion();
-
+#endif
 	// para borrar la presentacion antes del menu
 	marcador->limpiaAreaMarcador();
 
@@ -1764,11 +1764,13 @@ void Juego::run()
 logica->inicia();
 	// menu, para permitir cambiar el idioma al empezar
 	// y ver el pergamino inicial en tu idioma
+#ifndef __abadIA__
 	if (menu()) goto despues_de_cargar_o_iniciar;
 
 	// muestra el pergamino de presentación
 
 	muestraIntroduccion();
+#endif
 
 	// limpia el área que ocupa el marcador
 	marcador->limpiaAreaMarcador();
@@ -1786,7 +1788,10 @@ despues_de_cargar_o_iniciar:
 
 
 		while (true){	// el bucle principal del juego empieza aquí
-			// actualiza el estado de los controles
+#ifdef __abadIA__
+VigasocoMain->getInputHandler()->acquire();
+#endif
+
 			controles->actualizaEstado();
 
 			// obtiene el contador de la animación de guillermo para saber si se generan caminos en esta iteración
@@ -1900,7 +1905,9 @@ despues_de_cargar_o_iniciar:
 
 			// espera un poco para actualizar el estado del juego
 			while (contadorInterrupcion < 0x24){
+#ifndef __abadIA__
 				timer->sleep(5);
+#endif
 			}
 
 			if (laLogica->guillermo->contadorAnimacion==1)

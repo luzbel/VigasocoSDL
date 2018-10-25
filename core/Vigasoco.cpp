@@ -314,8 +314,10 @@ void Vigasoco::mainLoop()
 			// calls template method to notify of the start of a frame
 			initFrame();
 
+#ifndef __abadIA__
 			// process inputs
 			_inputHandler->process();
+#endif
 
 			// change core state if necessary
 			processCoreInputs();
