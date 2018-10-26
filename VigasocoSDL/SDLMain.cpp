@@ -46,6 +46,11 @@ Strings g_inputPluginsDLLs;
 Strings g_inputPlugins;
 Strings g_paths;
 
+#ifdef __abadIA__
+bool gb_test(false);  // Âestamos en modo normal o ejecutando tests de pruebas?
+std::string g_test("");  // Escenario de pruebas
+#endif
+
 // parser helper function
 bool parseCommandLine(std::string cmdLine);
 
@@ -189,6 +194,20 @@ void split(std::string source, char splitChar, Strings *strings)
 	} while (index != std::string::npos);
 }
 
+#ifdef __abadIA__
+bool parseTests(Strings &params)
+{
+	if (params.size() != 2){
+		return false;
+	}
+
+	g_test=params[1];
+	gb_test=true;
+	
+	return true;
+}
+#endif
+
 bool parseVideo(Strings &params)
 {
 	for (std::string::size_type i = 1; i < params.size(); i++){
@@ -285,6 +304,10 @@ bool parseCommands(Strings &params)
 			if (!parseAudio(subParams))	return false;
 		} else if (subParams[0] == "-path"){
 			if (!parsePaths(subParams))	return false;
+#ifdef __abadIA__
+		} else if (subParams[0] == "-test"){  // Escenarios de tests
+			if (!parseTests(subParams))	return false;
+#endif
 		} else {	// error
 			return false;
 		}

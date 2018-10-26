@@ -46,6 +46,12 @@
 // memcpy
 #include <string.h>
 
+#ifdef __abadIA__
+//TODO: esto no deberÃan ser variables globales
+extern bool gb_test;
+extern std::string g_test;
+#endif
+
 using namespace Abadia;
 
 #ifdef _EE
@@ -1849,6 +1855,13 @@ VigasocoMain->getInputHandler()->acquire();
 			// comprueba si se ha cambiado de pantalla y actúa en consecuencia
 			motor->compruebaCambioPantalla();
 
+#ifdef __abadIA__
+			if (gb_test) {
+				// Si en vez de estar jugando al juego completo, estamos
+				// ejecutando un escenario simplificado de prueba
+				compruebaEscenarioPrueba();
+			}
+#endif
 
 			// comprueba si los personajes cogen o dejan algún objeto
 			logica->compruebaCogerDejarObjetos();
@@ -2394,6 +2407,21 @@ void Juego::muestraFinal()
 		pergamino->muestraTexto(Pergamino::pergaminoFinal[idioma]);
 	}
 }
+
+#ifdef __abadIA__
+void Juego::compruebaEscenarioPrueba()
+{
+	if (g_test=="Escenario1") {
+		if (elMotorGrafico->numPantalla == 0x16)
+		{
+			laLogica->haFracasado = true;
+			laLogica->investigacionCompleta = true;
+		}
+	} else
+	if (g_test=="Escenario2") {
+	}
+}
+#endif
 
 // muestra la parte de misión completada. Si se ha completado el juego, muestra el final
 bool Juego::muestraPantallaFinInvestigacion()

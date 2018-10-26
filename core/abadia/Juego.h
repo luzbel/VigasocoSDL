@@ -117,6 +117,9 @@ private:
 	void compruebaCambioCPC_VGA(void);
 	bool compruebaMenu(void);
 	void ReiniciaPantalla(void);
+#ifdef __abadIA__
+	void compruebaEscenarioPrueba(void);
+#endif
 public:
 	void muestraFinal();
 	void limpiaAreaJuego(int color);
