@@ -8,6 +8,8 @@ Feature: Interfaz websocket abadIA
   Scenario: Inicializacion del juego
      Given una conexion a la interfaz websocket
       When reinicio el juego
+      And no hago nada
+#      And no hago nada
      Then los valores iniciales son correctos:
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
@@ -16,7 +18,7 @@ Feature: Interfaz websocket abadIA
        | altura | id | nombre    | orientacion | posX | posY |
        |    0   |  0 | Guillermo |       0     |  136 |  168 |
        |    0   |  1 |  Adso     |       1     |  134 |  170 |
-      And la lista de frases tiene "0" elementos
+      And la lista de frases tiene "1" elementos
 #      And los elementos de la lista de frases son:
 #       | id |
 #       | 56 |
@@ -27,7 +29,25 @@ Feature: Interfaz websocket abadIA
          | altura | id | nombre    | orientacion | posX | posY |
          |    0   |  0 | Guillermo |       1     |  136 |  168 |
          |    0   |  1 |  Adso     |       1     |  134 |  169 |
- #	And giro por segunda vez a la izquierda
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
+	And giro a la izquierda:
+         | altura | id | nombre    | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |       2     |  136 |  168 |
+         |    0   |  1 |  Adso     |       1     |  134 |  169 |
+	And giro a la izquierda:
+         | altura | id | nombre    | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |       3     |  136 |  168 |
+         |    0   |  1 |  Adso     |       1     |  134 |  169 |
+	And giro a la izquierda:
+         | altura | id | nombre    | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |       0     |  136 |  168 |
+         |    0   |  1 |  Adso     |       1     |  134 |  169 |
+#	And avanzo:
+#         | altura | id | nombre    | orientacion | posX | posY |
+#         |    0   |  0 | Guillermo |       0     |  137 |  167 |
+#	And giro por segunda vez a la izquierda
 #	And giro por tercera vez a la izquierda
 #	And giro por cuarta vez a la izquierda
 #	And avanzo

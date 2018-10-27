@@ -16,6 +16,7 @@ def step_impl(context):
     context.execute_steps('''
 	Given una conexion a la interfaz websocket
 	When reinicio el juego
+        And no hago nada
         Then los valores iniciales son correctos:
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
@@ -24,7 +25,7 @@ def step_impl(context):
            | altura | id | nombre    | orientacion | posX | posY |
            |    0   |  0 | Guillermo |       0     |  136 |  168 |
            |    0   |  1 |  Adso     |       1     |  134 |  170 |
-        And la lista de frases tiene "0" elementos
+        And la lista de frases tiene "1" elementos
     ''');
 
 @when('reinicio el juego')
@@ -35,6 +36,14 @@ def step_impl(context):
 @when('mando el comando "{comando}"')
 def step_impl(context,comando):
     context.ws.send(comando);
+
+@when('no hago nada')
+def step_impl(context):
+    context.execute_steps('''
+	Given una conexion existente a la interfaz websocket
+	When mando el comando "NOP"
+    ''');
+
 
 @when('VERSION VALORES A FUEGO giro a la izquierda')
 def step_impl(context):
@@ -89,10 +98,11 @@ def step_impl(context):
 
 
 
-@then('los valores iniciales son correctos')
+#@then('los valores iniciales son correctos')
+@step('los valores iniciales son correctos')
 def step_impl(context):
-    context.ws.send("NOP");
-    context.ws.send("NOP");
+#    context.ws.send("NOP");
+#    context.ws.send("NOP");
     context.ws.send("DUMP");
     result = context.ws.recv();
     print("result**"+result);
