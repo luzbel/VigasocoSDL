@@ -564,6 +564,10 @@ void GestorFrases::actualizaEstado()
 // inicia el proceso para mostrar una frase por el marcador 
 void GestorFrases::dibujaFrase(int numFrase)
 {
+#ifdef __abadIA__
+fprintf(stderr,"GestorFrases::dibujaFrase %d\n",numFrase);
+	elJuego->frases.push(numFrase);
+#endif
 	// inicia la frase
 	fraseTerminada = false;
 	reproduciendoFrase = mostrandoFrase = true;

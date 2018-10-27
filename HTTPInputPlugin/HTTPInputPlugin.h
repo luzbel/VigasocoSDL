@@ -21,7 +21,10 @@ class HTTPInputPlugin: public IInputPlugin
 private:
 	std::mutex mtx;
 	std::condition_variable condVar;
+	std::condition_variable condVar2; // para atender solo un mensaje cada vez. TODO: renombrar
 	bool nextGameInterrupt=false;
+        bool atenderMensaje=true;
+	bool atendiendoMensaje=false;
 // fields
 protected:
 	static const std::string g_properties[];

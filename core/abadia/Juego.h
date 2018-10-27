@@ -11,6 +11,10 @@
 #include "../util/Singleton.h"
 #include "../Types.h"
 
+#ifdef __abadIA__
+#include <stack>
+#endif
+
 class CPC6128;					// definido en CPC6128.h
 class IAudioPlugin;				// definido en IAudioPlugin.h
 class TimingHandler;			// definido en TimingHandler.h
@@ -86,9 +90,13 @@ public:
 	bool modoInformacion;					// modo de información del juego
 	bool cambioModoInformacion; // se ha cambiado el estado
 	InfoJuego *infoJuego;					// objeto para mostrar información interna del juego
+#ifdef __abadIA__
+	std::stack<int> frases; // una pila con todas las frases dichas desde el Ãltimo dump
+#endif
 
 // métodos
 private:
+	void reinicio();
 	bool cargar(int slot);
 	void save(int slot);
 	// TODO sacar todo lo relativo a menus
@@ -144,6 +152,7 @@ protected:
 	void generaGraficosFlipeadosVGA();
 	void flipeaGraficosVGA(UINT8 *src, UINT8 *dest, int ancho, int bytes);
 
+	bool compruebaReinicio();
 	void compruebaPausa();
 	bool compruebaLoad();
 	void compruebaSave();

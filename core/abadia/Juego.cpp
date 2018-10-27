@@ -1675,7 +1675,7 @@ bool Juego::menu()
 				pulsado==6 )
 			{
 				// TODO habria que pedir confirmacion S/N
-
+/*
 				// Frase vacia para parar la frase actual
 				elGestorFrases->muestraFraseYa(0x38);
 				// Esperamos a que se limpie el marcador
@@ -1684,6 +1684,8 @@ bool Juego::menu()
 					elGestorFrases->actualizaEstado();
 				}
 				logica->inicia();
+*/
+				reinicio();
 				return true;
 			} else
 			if (losControles->estaSiendoPulsado(KEYBOARD_7) ||
@@ -1784,6 +1786,9 @@ logica->inicia();
 	// aquí ya se ha completado la inicialización de datos para el juego
 	// ahora realiza la inicialización para poder empezar a jugar una partida
 	while (true){
+#ifdef __abadIA__
+bool reiniciando=false;
+#endif
 
 		// inicia la lógica del juego
 		logica->inicia();
@@ -1791,14 +1796,35 @@ logica->inicia();
 
 despues_de_cargar_o_iniciar:
 		ReiniciaPantalla();
+//en abadIA refrescamos por si nos piden un dump nada mÃs empezar no pasar datos de la partida anterior
+//#ifdef __abadIA__
+//				infoJuego->muestraInfo();
+//#endif
 
 
 		while (true){	// el bucle principal del juego empieza aquí
+fprintf(stderr,"bucle principal\n");
 #ifdef __abadIA__
+//infoJuego->muestraInfo();
 VigasocoMain->getInputHandler()->acquire();
+//fprintf(stderr,"muestraInfo\n");
+infoJuego->muestraInfo();
+//if (!reiniciando) VigasocoMain->getInputHandler()->acquire();
+//else reiniciando=false;
 #endif
+fprintf(stderr,"bucle principal despues de acquire\n");
 
 			controles->actualizaEstado();
+
+#ifdef __abadIA__
+			if (compruebaReinicio()) {
+				VigasocoMain->getInputHandler()->unAcquire();
+//reiniciando=true;
+				goto despues_de_cargar_o_iniciar;
+			}
+#else
+			if (compruebaReinicio()) goto despues_de_cargar_o_iniciar;
+#endif
 
 			// obtiene el contador de la animación de guillermo para saber si se generan caminos en esta iteración
 			elBuscadorDeRutas->contadorAnimGuillermo = laLogica->guillermo->contadorAnimacion;
@@ -1905,15 +1931,20 @@ VigasocoMain->getInputHandler()->acquire();
 				cambioModoInformacion=false;
 			}
 
+#ifdef __abadIA__
+//				infoJuego->muestraInfo();
+#else
 			if (modoInformacion){
 				infoJuego->muestraInfo();
-			} else {
+			} else 
+#endif
+			{
 
-			// dibuja la pantalla si fuera necesario
-			motor->dibujaPantalla();
+				// dibuja la pantalla si fuera necesario
+				motor->dibujaPantalla();
 
-			// dibuja los sprites visibles que hayan cambiado
-			motor->dibujaSprites();
+				// dibuja los sprites visibles que hayan cambiado
+				motor->dibujaSprites();
 			}
 
 			// espera un poco para actualizar el estado del juego
@@ -1930,6 +1961,15 @@ VigasocoMain->getInputHandler()->acquire();
 
 			// reinicia el contador de la interrupción
 			contadorInterrupcion = 0;
+//#ifdef __abadIA__
+//VigasocoMain->getInputHandler()->acquire();
+//#endif
+//fprintf(stderr,"bucle principal despues de acquire\n");
+//			if (compruebaReinicio()) goto despues_de_cargar_o_iniciar;
+
+#ifdef __abadIA__
+VigasocoMain->getInputHandler()->unAcquire();
+#endif
 		}
 	}
 }
@@ -2116,6 +2156,33 @@ void Juego::actualizaLuz()
 	// actualiza las características del sprite de la luz según la posición del personaje
 	SpriteLuz *sprLuz = (SpriteLuz *) sprites[spriteLuz];
 	sprLuz->ajustaAPersonaje(personajes[1]);
+}
+
+void Juego::reinicio()
+{
+	// Frase vacia para parar la frase actual
+	elGestorFrases->muestraFraseYa(0x38);
+	// Esperamos a que se limpie el marcador
+	while (elGestorFrases->mostrandoFrase)
+	{
+		elGestorFrases->actualizaEstado();
+	}
+	logica->inicia();
+}
+
+// comprueba si se solicita reiniciar la partida
+// con una pulsacion de tecla (no desde el menu)
+bool Juego::compruebaReinicio()
+{
+        // si se ha pulsado suprimir, se para hasta que se vuelva a pulsar
+        if (controles->seHaPulsado(KEYBOARD_E)){  // ?E de rEset
+fprintf(stderr,"Juego reinicio");
+                reinicio();
+//fprintf(stderr,"Juego reinicio 2");
+                return true;
+        }
+
+        return false;
 }
 
 // comprueba si se debe pausar el juego

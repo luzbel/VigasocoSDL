@@ -30,6 +30,7 @@ HTTPInputPlugin::~HTTPInputPlugin()
 {
 }
 
+
 bool HTTPInputPlugin::init()
 {
 fprintf(stderr,"HTTPInputPlugin::init entro \n");
@@ -50,10 +51,23 @@ fprintf(stderr,"HTTPInputPlugin::init entro \n");
 				})
 		.onmessage([this](crow::websocket::connection& conn, const std::string& data, bool is_binary){
 
+//std::lock_guard<std::mutex> lck(mtx); // prueba a aceptar solo un comando cada vez
+//CROW_LOG_INFO << "esperando a ser el unico atendiendo  mensaje " << atendiendoMensaje ;
+//std::unique_lock<std::mutex> lcx(mtx);
+//condVar2.wait(lcx,[this]{return !atendiendoMensaje;});
+//atendiendoMensaje=true;
+//CROW_LOG_INFO << "soy el unico atendiendo mensaje y prosigo " << atendiendoMensaje ;
 bool peticionValida=true;
 				CROW_LOG_INFO << "websocket onmessage: " << data;
+				CROW_LOG_INFO << "websocket onmessage antes de lock nextGameInterrup: " << nextGameInterrupt;
 //std::lock_guard<std::mutex> _(VigasocoMain->mtx);
 //std::lock_guard<std::mutex> _(mtx);
+
+std::unique_lock<std::mutex> lcx(mtx);
+//condVar.wait(lcx,[this]{return !nextGameInterrupt;});
+condVar.wait(lcx,[this]{return atenderMensaje;});
+atenderMensaje=false;
+				CROW_LOG_INFO << "websocket onmessage despues de lock nextGameInterrup: " << nextGameInterrupt;
 
 
 //				keystate[SDLK_DELETE]=false;
@@ -76,12 +90,34 @@ bool peticionValida=true;
 				} else
 				if (data=="SPACE") {
 					HTTPInputPlugin::keystate[SDLK_SPACE]=true;
+				} else
+				if (data=="DUMP") {
+					//VigasocoMain->getDriver()->showGameLogic();
+					std::ifstream dumpfile("abadIA.dump");
+CROW_LOG_INFO << "vuelco dump: " << data;
+char dump[8192];
+memset(dump,'\0',sizeof(dump));
+//dumpfile.read(dump,8192);
+dumpfile.read(dump,sizeof(dump));
+conn.send_text(dump);
+peticionValida=false; // No queremos desbloquear ni que avance el juego
+CROW_LOG_INFO << "fin vuelco dump: " << data;
+				} else
+				if (data=="RESET"||data=="REINICIO") {
+					HTTPInputPlugin::keystate[SDLK_e]=true; // E de rEset
+				} else
+				if (data=="FIN"||data=="END"||data=="GAMEOVER"||data=="GAME OVER") {
+		                        SDL_Event sdlevent = {};
+		                        sdlevent.type = SDL_QUIT;
+		                        SDL_PushEvent(&sdlevent);					
 				} else peticionValida=false;
 if (peticionValida) {
-std::lock_guard<std::mutex> lck(mtx);
+CROW_LOG_INFO << "dejo seguir al juego: " << data << " nextGI " << nextGameInterrupt;
+//std::lock_guard<std::mutex> lck(mtx);
 nextGameInterrupt=true;
 condVar.notify_one();
-}
+CROW_LOG_INFO << "fin dejo seguir al juego: " << data << " next GI " << nextGameInterrupt;
+} else atenderMensaje=true;
 
 ;
 		});
@@ -100,20 +136,33 @@ void HTTPInputPlugin::end()
 void HTTPInputPlugin::acquire()
 {
 std::unique_lock<std::mutex> lcx(mtx);
+fprintf(stderr,"HTTPInputPlugin::acquire inicio ngi %d\n",nextGameInterrupt);
 //	memset((void *)keystate,0,sizeof(keystate));
 condVar.wait(lcx,[this]{return nextGameInterrupt;});
 nextGameInterrupt=false;
+atenderMensaje=false;
+fprintf(stderr,"HTTPInputPlugin::acquire fin ngi %d\n",nextGameInterrupt);
+//atendiendoMensaje=false;
+//condVar2.notify_one();
 }
 
 void HTTPInputPlugin::unAcquire()
 { 
 //std::lock_guard<std::mutex> _(VigasocoMain->mtx);
+fprintf(stderr,"antes mutex HTTPInputPlugin::unacquire inicio ngi %d\n",nextGameInterrupt);
 std::lock_guard<std::mutex> _(mtx);
+fprintf(stderr,"HTTPInputPlugin::unacquire inicio ngi %d\n",nextGameInterrupt);
 //fprintf(stderr,"HTTPInputPlugin::unAcquire tecla derecha %d\n",keystate[SDLK_RIGHT]);
 	// temporal para borrar pulsaciones anteriores
 	memset((void *)keystate,0,sizeof(keystate));
 //	keystate[SDLK_DELETE]=true;
 //fprintf(stderr,"HTTPInputPlugin::unAcquire tecla derecha %d\n",keystate[SDLK_RIGHT]); 
+nextGameInterrupt=false;
+atenderMensaje=true;
+condVar.notify_one();
+fprintf(stderr,"HTTPInputPlugin::unacquire fin ngi %d\n",nextGameInterrupt);
+//atendiendoMensaje=false;
+//condVar2.notify_one();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -124,7 +173,7 @@ void HTTPInputPlugin::process(int *inputs)
 {
 //std::lock_guard<std::mutex> _(VigasocoMain->mtx);
 std::lock_guard<std::mutex> _(mtx);
-
+//fprintf(stderr,"HTTPInputPlugin::process inicio\n");
 	// iterate through the inputs checking associated keys
 	for (int i = 0; i < END_OF_INPUTS; i++){
 		// if we're interested in that input, check it's value
@@ -138,6 +187,9 @@ std::lock_guard<std::mutex> _(mtx);
 			}
 		}
 	}
+//atendiendoMensaje=false;
+//condVar2.notify_one();
+//fprintf(stderr,"HTTPInputPlugin::process fin\n");
 }
 
 /////////////////////////////////////////////////////////////////////////////
