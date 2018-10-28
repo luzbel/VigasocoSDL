@@ -1808,7 +1808,7 @@ fprintf(stderr,"bucle principal\n");
 //infoJuego->muestraInfo();
 VigasocoMain->getInputHandler()->acquire();
 //fprintf(stderr,"muestraInfo\n");
-infoJuego->muestraInfo();
+//infoJuego->muestraInfo();
 //if (!reiniciando) VigasocoMain->getInputHandler()->acquire();
 //else reiniciando=false;
 #endif
@@ -1932,7 +1932,7 @@ fprintf(stderr,"bucle principal despues de acquire\n");
 			}
 
 #ifdef __abadIA__
-//				infoJuego->muestraInfo();
+				infoJuego->muestraInfo();
 #else
 			if (modoInformacion){
 				infoJuego->muestraInfo();
