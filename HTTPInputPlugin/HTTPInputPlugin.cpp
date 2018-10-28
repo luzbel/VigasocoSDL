@@ -93,6 +93,7 @@ atenderMensaje=false;
 				} else
 				if (data=="DUMP") {
 					//VigasocoMain->getDriver()->showGameLogic();
+					HTTPInputPlugin::keystate[SDLK_d]=true;
 					std::ifstream dumpfile("abadIA.dump");
 CROW_LOG_INFO << "vuelco dump: " << data;
 char dump[8192];
@@ -100,7 +101,8 @@ memset(dump,'\0',sizeof(dump));
 //dumpfile.read(dump,8192);
 dumpfile.read(dump,sizeof(dump));
 conn.send_text(dump);
-peticionValida=false; // No queremos desbloquear ni que avance el juego
+//peticionValida=false; // No queremos desbloquear ni que avance el juego
+//ahora si queremos desbloquear el juego para que se borre la lista de frases tras volcar
 CROW_LOG_INFO << "fin vuelco dump: " << data;
 				} else
 				if (data=="RESET"||data=="REINICIO") {

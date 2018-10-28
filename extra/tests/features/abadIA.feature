@@ -18,11 +18,8 @@ Feature: Interfaz websocket abadIA
        | altura | id | nombre    | orientacion | posX | posY |
        |    0   |  0 | Guillermo |       0     |  136 |  168 |
        |    0   |  1 |  Adso     |       1     |  134 |  170 |
-      And la lista de "frases" tiene "1" elementos
+      And la lista de "frases" tiene "0" elementos
       And la lista de "Objetos" tiene "0" elementos
-#      And los elementos de la lista de frases son:
-#       | id |
-#       | 56 |
 
   Scenario: Movimientos basicos con NOP tras avanzar
 	Given una partida recien iniciada
@@ -243,7 +240,7 @@ Feature: Interfaz websocket abadIA
         And la lista de "Objetos" tiene "1" elementos
 
 
-  Scenario:  Seguir al abad
+  Scenario: Llegar al abad
 	Given una partida recien iniciada
 	When giro a la izquierda
 	And avanzo "18" pasos
@@ -309,11 +306,85 @@ Feature: Interfaz websocket abadIA
         And los elementos de la lista de frases son:
          | id |
          |  2 |
-	And espero "16" iteraciones 
+	And espero "14" iteraciones 
 	And los valores iniciales son correctos:
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "frases" tiene "0" elementos
+	And no hago nada
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     29    |    0   |      0     |
+        And la lista de "frases" tiene "1" elementos
+# el temido "os ordeno que vengais"
+        And los elementos de la lista de frases son:
+         | id |
+         |  8 | 
+
+  Scenario: Varias frases desde un dump a otro
+	Given una partida recien iniciada
+	When giro a la izquierda
+	And avanzo "19" pasos
+	And espero "116" iteraciones 
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     29    |    0   |      0     |
+        And la lista de "frases" tiene "3" elementos
+#es una LIFO, primero esta la ultima frase
+        And los elementos de la lista de frases son:
+         | id |
+         |  8 |
+	 |  2 |
+	 |  1 |
+	And espero "38" iteraciones 
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     29    |    0   |      0     |
+        And la lista de "frases" tiene "1" elementos
+#es una LIFO, primero esta la ultima frase
+        And los elementos de la lista de frases son:
+         | id |
+	 |  2 |
+#	And espero "53" iteraciones 
+	And espero "54" iteraciones 
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     27    |    0   |      0     |
         And la lista de "frases" tiene "2" elementos
+#es una LIFO, primero esta la ultima frase
+        And los elementos de la lista de frases son:
+         | id |
+	 |  2 |
+	 |  8 |
+	And espero "120" iteraciones 
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     21    |    0   |      0     |
+        And la lista de "frases" tiene "5" elementos
+#es una LIFO, primero esta la ultima frase
+        And los elementos de la lista de frases son:
+         | id |
+	 |  8 |
+	 |  2 |
+	 |  8 |
+	 |  2 |
+	 |  8 |
+
+  Scenario: Seguir al abad
+	Given una partida recien iniciada
+	When giro a la izquierda
+	And avanzo "19" pasos
+	And espero "101" iteraciones 
+	And avanzo "10" pasos
+	And no hago nada
+	And giro a la derecha
+	And avanzo "27" pasos
+	And no hago nada
+	And giro a la izquierda
+	And avanzo "36" pasos
+#	And espero "5" iteraciones
+
+
 # la frase 2 es
 # "TEMO QUE UNO DE LOS MONJES HA COMETIDO UN CRIMEN. OS RUEGO QUE LO ENCONTREIS ANTES DE QUE LLEGUE BERNARDO GUI, PUES NO DESEO QUE SE MANCHE EL NOMBRE DE ESTA ABADIA"
 # 163+16=179 + otro paso para pasar a la sig. frase

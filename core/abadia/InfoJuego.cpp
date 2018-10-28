@@ -166,11 +166,23 @@ void InfoJuego::muestraInfo()
 
                 // Frases
                 nlohmann::json Frases = nlohmann::json::array();
+// se vacia en el bucle principal de juego,no aqui  
+// se vacia solo cuando el agente ha pedido un dump 
+/*
                 while (!elJuego->frases.empty()) {
                         nlohmann::json frase = elJuego->frases.top();
                         Frases.push_back(frase);
                         elJuego->frases.pop();
                 }
+*/
+//TODO: optimizar , esto de copar la lista entera para recorrerla no mola
+		std::stack <int> duplicadoFrases = elJuego->frases;
+                while (!duplicadoFrases.empty()) {
+                        nlohmann::json frase = duplicadoFrases.top();
+                        Frases.push_back(frase);
+                        duplicadoFrases.pop();
+                }
+
                 dump["frases"]=Frases;
 
                 // Personajes

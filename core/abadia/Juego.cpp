@@ -1814,7 +1814,9 @@ fprintf(stderr,"bucle principal\n");
 VigasocoMain->getInputHandler()->acquire();
 //pausa=false;
 //fprintf(stderr,"muestraInfo\n");
-//infoJuego->muestraInfo();
+
+
+
 //if (!reiniciando) VigasocoMain->getInputHandler()->acquire();
 //else reiniciando=false;
 #endif
@@ -1823,6 +1825,18 @@ fprintf(stderr,"bucle principal despues de acquire\n");
 			controles->actualizaEstado();
 
 #ifdef __abadIA__
+        if (controles->seHaPulsado(KEYBOARD_D)){  // D de DUMP
+//		infoJuego->muestraInfo();
+// si ha pedido volcado el agente, borramos la lista de frases
+// para que la siguiente vez tenga solo las frases desde la ultima
+// vez que nos pidio un dump
+                while (!elJuego->frases.empty()) {
+fprintf(stderr,"borro de la lista la frase %d\n",elJuego->frases.top());
+                        elJuego->frases.pop();
+		}
+				VigasocoMain->getInputHandler()->unAcquire();
+		continue;
+	}
 			if (compruebaReinicio()) {
 //pausa=true;
 				VigasocoMain->getInputHandler()->unAcquire();
@@ -1941,6 +1955,17 @@ fprintf(stderr,"bucle principal despues de acquire\n");
 
 #ifdef __abadIA__
 				infoJuego->muestraInfo();
+
+//        if (controles->seHaPulsado(KEYBOARD_D)){  // D de DUMP
+//        if (controles->estaSiendoPulsado(KEYBOARD_D)){  // D de DUMP
+// si ha pedido volcado el agente, borramos la lista de frases
+// para que la siguiente vez tenga solo las frases desde la ultima
+// vez que nos pidio un dump
+ //               while (!elJuego->frases.empty()) {
+//fprintf(stderr,"borro de la lista la frase %d\n",elJuego->frases.top());
+ //                       elJuego->frases.pop();
+//		}
+//	}
 #else
 			if (modoInformacion){
 				infoJuego->muestraInfo();
@@ -2171,19 +2196,20 @@ void Juego::actualizaLuz()
 
 void Juego::reinicio()
 {
-//fprintf(stderr,"Juego::reinicio 1\n");
 	// Frase vacia para parar la frase actual
 	elGestorFrases->muestraFraseYa(0x38);
-//fprintf(stderr,"Juego::reinicio 2\n");
 	// Esperamos a que se limpie el marcador
 	while (elGestorFrases->mostrandoFrase)
 	{
-//fprintf(stderr,"Juego::reinicio 3\n");
 		elGestorFrases->actualizaEstado();
 	}
-//fprintf(stderr,"Juego::reinicio 4\n");
+#ifdef __abadIA__
+	// borramos las frases que pudieran quedar de la partida anterior
+	while (!elJuego->frases.empty()) {
+		elJuego->frases.pop();
+	}
+#endif
 	logica->inicia();
-//fprintf(stderr,"Juego::reinicio 5\n");
 }
 
 // comprueba si se solicita reiniciar la partida
@@ -2192,9 +2218,7 @@ bool Juego::compruebaReinicio()
 {
         // si se ha pulsado suprimir, se para hasta que se vuelva a pulsar
         if (controles->seHaPulsado(KEYBOARD_E)){  // ?E de rEset
-fprintf(stderr,"Juego reinicio");
                 reinicio();
-//fprintf(stderr,"Juego reinicio 2");
                 return true;
         }
 

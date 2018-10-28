@@ -31,7 +31,7 @@ def step_impl(context):
            | altura | id | nombre    | orientacion | posX | posY |
            |    0   |  0 | Guillermo |       0     |  136 |  168 |
            |    0   |  1 |  Adso     |       1     |  134 |  170 |
-        And la lista de "frases" tiene "1" elementos
+        And la lista de "frases" tiene "0" elementos
     ''');
 
 @when('reinicio el juego')
