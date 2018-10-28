@@ -243,6 +243,98 @@ Feature: Interfaz websocket abadIA
         And la lista de "Objetos" tiene "1" elementos
 
 
+  Scenario:  Seguir al abad
+	Given una partida recien iniciada
+	When giro a la izquierda
+	And avanzo "18" pasos
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "2" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |    32   |      1      |  136 |  150 |
+         |    0   |  1 |  Adso     |     0   |      1      |  134 |  151 |
+        And la lista de "Objetos" tiene "0" elementos
+        And la lista de "frases" tiene "0" elementos
+	And avanzo
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "2" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |    32   |      1      |  136 |  149 |
+         |    0   |  1 |  Adso     |     0   |      1      |  134 |  151 |
+        And la lista de "Objetos" tiene "0" elementos
+        And la lista de "frases" tiene "1" elementos
+        And los elementos de la lista de frases son:
+         | id |
+         |  1 |
+# Aqui ha pintado la B inicial de la frase "BIENVENIDO A ESTA ABADIA, HERMANO. OS RUEGO QUE ME SIGAIS. HA SUCEDIDO ALGO TERRIBLE",
+# En cada ciclo pinta otra letra
+# "BIENVENIDO A ESTA ABADIA, HERMANO. OS RUEGO QUE ME SIGAIS. HA SUCEDIDO ALGO TERRIBLE"
+#  1234567890          1234567890          1234567890          1234567890          1234
+#            1234567890          1234567890          1234567890          1234567890
+# 84 caracteres
+# pero luego tienen que desplazarse y desaparecer
+# en la zona de texto cabe ?16?
+# "O ALGO TERRIBLE "
+#  1234567890123456
+# 84+16=100
+	And espero "100" iteraciones 
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "3" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos          | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |    32            |      1      |  136 |  149 |
+         |    0   |  1 |  Adso     |     0            |      1      |  134 |  150 |
+	 |    0   |  3 |  Abad     | __DO_NOT_CHECK__ |      3      |  136 |  147 |  
+        And la lista de "Objetos" tiene "0" elementos
+        And la lista de "frases" tiene "0" elementos
+	And no hago nada
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "3" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos          | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |    32            |      1      |  136 |  149 |
+         |    0   |  1 |  Adso     |     0            |      1      |  134 |  150 |
+	 |    0   |  3 |  Abad     | __DO_NOT_CHECK__ |      3      |  136 |  147 |  
+        And la lista de "Objetos" tiene "0" elementos
+        And la lista de "frases" tiene "1" elementos
+        And los elementos de la lista de frases son:
+         | id |
+         |  2 |
+	And espero "16" iteraciones 
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "frases" tiene "2" elementos
+# la frase 2 es
+# "TEMO QUE UNO DE LOS MONJES HA COMETIDO UN CRIMEN. OS RUEGO QUE LO ENCONTREIS ANTES DE QUE LLEGUE BERNARDO GUI, PUES NO DESEO QUE SE MANCHE EL NOMBRE DE ESTA ABADIA"
+# 163+16=179 + otro paso para pasar a la sig. frase
+# pues no ... el abad empieza a moverse y ya hay que seguirlo
+#	And espero "180" iteraciones 
+#	And los valores iniciales son correctos:
+#           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+#           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+#        And la lista de "Personajes" tiene "3" elementos
+#        And los valores de los "Personajes" son correctos:
+#         | altura | id | nombre    | objetos          | orientacion | posX | posY |
+#         |    0   |  0 | Guillermo |    32            |      1      |  136 |  149 |
+#         |    0   |  1 |  Adso     |     0            |      1      |  134 |  150 |
+#	 |    0   |  3 |  Abad     | __DO_NOT_CHECK__ |      3      |  136 |  147 |  
+#        And la lista de "Objetos" tiene "0" elementos
+#	And la lista de "frases" tiene "1" elementos
+#        And los elementos de la lista de frases son:
+#         | id |
+#         |  3 |
+
+
 
 
 #	And espero "14" iteraciones 

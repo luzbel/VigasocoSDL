@@ -554,6 +554,9 @@ void GestorFrases::muestraFraseYa(int numFrase)
 // actualiza el estado de la reproducción de las frases
 void GestorFrases::actualizaEstado()
 {
+#ifdef __abadIA__
+procesaFraseActual();
+#endif
 	mostrandoFrase = reproduciendoFrase;
 }
 
@@ -587,6 +590,8 @@ fprintf(stderr,"GestorFrases::dibujaFrase %d\n",numFrase);
 
 void GestorFrases::procesaFraseActual()
 {
+//fprintf(stderr,"GestorFrases::procesaFraseActual contadorActualizacion %d\n",contadorActualizacion);
+#ifndef __abadIA__
 	contadorActualizacion++;
 
 	// sólo actualiza las frases 1 vez cada 45 llamadas
@@ -595,6 +600,7 @@ void GestorFrases::procesaFraseActual()
 	} else {
 		contadorActualizacion = 0;
 	}
+#endif
 
 	// si no se está mostrando una frase en el marcador, sale
 	if (!reproduciendoFrase){

@@ -136,7 +136,11 @@ Juego::Juego(UINT8 *romData, CPC6128 *cpc)
 	infoJuego = new InfoJuego();
 	controles = new Controles();
 
+#ifdef __abadIA__
+	pausa = true;
+#else
 	pausa = false;
+#endif
 	modoInformacion = false;
 }
 
@@ -1806,7 +1810,9 @@ despues_de_cargar_o_iniciar:
 fprintf(stderr,"bucle principal\n");
 #ifdef __abadIA__
 //infoJuego->muestraInfo();
+//pausa=true;
 VigasocoMain->getInputHandler()->acquire();
+//pausa=false;
 //fprintf(stderr,"muestraInfo\n");
 //infoJuego->muestraInfo();
 //if (!reiniciando) VigasocoMain->getInputHandler()->acquire();
@@ -1818,7 +1824,9 @@ fprintf(stderr,"bucle principal despues de acquire\n");
 
 #ifdef __abadIA__
 			if (compruebaReinicio()) {
+//pausa=true;
 				VigasocoMain->getInputHandler()->unAcquire();
+//pausa=false;
 //reiniciando=true;
 				goto despues_de_cargar_o_iniciar;
 			}
@@ -1832,10 +1840,10 @@ fprintf(stderr,"bucle principal despues de acquire\n");
 			// comprueba si se debe abrir el espejo
 			logica->compruebaAbreEspejo();
 
-
+#ifndef __abadIA__
 			// comprueba si se ha pulsado la pausa
 			compruebaPausa();
-
+#endif
 
 			//comprueba si se intenta cargar/grabar la partida
 			compruebaSave();
@@ -1947,12 +1955,12 @@ fprintf(stderr,"bucle principal despues de acquire\n");
 				motor->dibujaSprites();
 			}
 
+#ifndef __abadIA__
 			// espera un poco para actualizar el estado del juego
 			while (contadorInterrupcion < 0x24){
-#ifndef __abadIA__
 				timer->sleep(5);
-#endif
 			}
+#endif
 
 			if (laLogica->guillermo->contadorAnimacion==1)
 			{
@@ -1968,7 +1976,10 @@ fprintf(stderr,"bucle principal despues de acquire\n");
 //			if (compruebaReinicio()) goto despues_de_cargar_o_iniciar;
 
 #ifdef __abadIA__
+//pausa=true;
+//		elGestorFrases->actualizaEstado();
 VigasocoMain->getInputHandler()->unAcquire();
+//pausa=false;
 #endif
 		}
 	}
@@ -2160,14 +2171,19 @@ void Juego::actualizaLuz()
 
 void Juego::reinicio()
 {
+//fprintf(stderr,"Juego::reinicio 1\n");
 	// Frase vacia para parar la frase actual
 	elGestorFrases->muestraFraseYa(0x38);
+//fprintf(stderr,"Juego::reinicio 2\n");
 	// Esperamos a que se limpie el marcador
 	while (elGestorFrases->mostrandoFrase)
 	{
+//fprintf(stderr,"Juego::reinicio 3\n");
 		elGestorFrases->actualizaEstado();
 	}
+//fprintf(stderr,"Juego::reinicio 4\n");
 	logica->inicia();
+//fprintf(stderr,"Juego::reinicio 5\n");
 }
 
 // comprueba si se solicita reiniciar la partida

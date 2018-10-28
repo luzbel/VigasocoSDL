@@ -188,17 +188,18 @@ def step_impl(context,nombreLista):
     for row in dump:
      if (i<len(context.table.rows)):
       for head in context.table[i].headings:
-        print("***"+head+"***"+type(row[head]).__name__+"***valor volcado***"+str(row[head])+"***valor esperado***"+str(context.table[i][head])); 
-        if (type(row[head]).__name__=="bool"):
-         assert str(row[head])==(context.table[i][head])
-        else:
-         if (type(row[head]).__name__=="int"):
-          assert row[head]==int(context.table[i][head])
+        if (context.table[i][head] != "__DO_NOT_CHECK__"):
+         print("***"+head+"***"+type(row[head]).__name__+"***valor volcado***"+str(row[head])+"***valor esperado***"+str(context.table[i][head])); 
+         if (type(row[head]).__name__=="bool"):
+          assert str(row[head])==(context.table[i][head])
          else:
-          if (type(row[head]).__name__=="str"):
-           assert row[head]==context.table[i][head]
+          if (type(row[head]).__name__=="int"):
+           assert row[head]==int(context.table[i][head])
           else:
-           assert False 
+           if (type(row[head]).__name__=="str"):
+            assert row[head]==context.table[i][head]
+           else:
+            assert False 
      i=i+1;
 
 #@then('la lista de frases tiene "{numeroElementos}" elementos')
@@ -207,19 +208,22 @@ def step_impl(context,nombreLista):
 #    print("dump "+str(context.dump));
 #    assert(len(context.dump["frases"])==int(numeroElementos));
 
-@then('los elementos de la lista de frases son')
+#@then('los elementos de la lista de frases son')
+@step('los elementos de la lista de frases son')
 def step_impl(context):
 #TODO falta revisar implementacion
-    assert False;
-#    i=0;
-#    for row in context.dump["frases"]:
-#     for head in context.table[i].headings:
-#       print("***"+head+"***"+type(row[head]).__name__+"***"+str(row[head])+"***"+str(context.table[i][head])); 
-#       if (type(row[head]).__name__=="int"):
-#        assert row==int(context.table[i][head])
-#       else:
-#        assert False 
-#     i=i+1;
+#    assert False;
+    i=0;
+    for row in context.dump["frases"]:
+     for head in context.table[i].headings:
+       print("***"+head+"***"+type(row).__name__+"***recibido***"+str(row)+"***esperado***"+str(context.table[i][head])); 
+       if (type(row).__name__=="int"):
+        assert row==int(context.table[i][head])
+       else:
+        assert False 
+     i=i+1;
+
+# TypeError: 'int' object is not subscriptable
 
 # esto no parece servir para cortar las desconexiones abruptas
 def after_scenario(context,scenario):
