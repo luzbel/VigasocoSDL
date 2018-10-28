@@ -9,9 +9,9 @@ import json
 
 @given('una conexion a la interfaz websocket')
 def step_impl(context):
-    print("hay patatas y melaza");
+    print("conectando al websocket");
     context.ws = create_connection("ws://localhost:4477/ws")
-    pass
+    assert context.ws is not None 
 
 @given('una conexion existente a la interfaz websocket')
 def step_impl(context):
@@ -27,7 +27,7 @@ def step_impl(context):
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
         And la lista de "Personajes" tiene "2" elementos
-        And los valores de los personajes son correctos:
+        And los valores de los "Personajes" son correctos:
            | altura | id | nombre    | orientacion | posX | posY |
            |    0   |  0 | Guillermo |       0     |  136 |  168 |
            |    0   |  1 |  Adso     |       1     |  134 |  170 |
@@ -62,7 +62,7 @@ def step_impl(context):
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
         And la lista de "Personajes" tiene "2" elementos
-        And los valores de los personajes son correctos:
+        And los valores de los "Personajes" son correctos:
            | altura | id | nombre    | orientacion | posX | posY |
            |    0   |  0 | Guillermo |       1     |  136 |  168 |
            |    0   |  1 |  Adso     |       1     |  134 |  169 |
@@ -97,6 +97,13 @@ def step_impl(context,numeroPasos):
      context.ws.send("UP"); 
      i+=1;
 
+@when('espero "{numeroIteraciones}" iteraciones')
+def step_impl(context,numeroIteraciones):
+    i=0;
+    while i < int(numeroIteraciones):
+     context.ws.send("NOP");
+     i+=1;
+
 @when('pulso espacio')
 def step_impl(context):
     context.ws.send("SPACE");
@@ -112,7 +119,7 @@ def step_impl(context):
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
         And la lista de "Personajes" tiene "2" elementos
-        And los valores de los personajes son correctos:
+        And los valores de los "Personajes" son correctos:
            | altura | id | nombre    | orientacion | posX | posY |''';
     for row in context.table:
      fila='\n|';
@@ -155,9 +162,7 @@ def step_impl(context):
         assert dump[head]==int(context.table[0][head])
        else:
         assert False 
-# 666
-#        And la lista de objetos tiene "1" elementos
-#	And los valores de los objetos son correctos:
+
 @step('la lista de "{nombreLista}" tiene "{numeroElementos}" elementos')
 def step_impl(context,nombreLista,numeroElementos):
     print("la lista de "+nombreLista+" tiene "+numeroElementos+ " elementos");
@@ -168,13 +173,16 @@ def step_impl(context,nombreLista,numeroElementos):
 #def step_impl(context,numeroElementos):
 #    assert(len(context.dump["Personajes"])==int(numeroElementos));
 
-#@then('los valores de los personajes son correctos')
-@step('los valores de los personajes son correctos')
-def step_impl(context):
+##@then('los valores de los personajes son correctos')
+#@step('los valores de los personajes son correctos')
+#def step_impl(context):
+@step('los valores de los "{nombreLista}" son correctos')
+def step_impl(context,nombreLista):
 #    print("len tabla "+str(len(context.table.rows)));
 #    assert False
 #    assert( context.dump["Personajes"][0]["nombre"] == "Guillermo" );
-    dump = context.dump["Personajes"];
+#    dump = context.dump["Personajes"];
+    dump = context.dump[nombreLista];
 #    assert( dump[0]["nombre"] == "Guillermo" );
     i=0;
     for row in dump:
