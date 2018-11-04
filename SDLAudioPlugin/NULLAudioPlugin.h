@@ -17,6 +17,9 @@ class NULLAudioPlugin: public IAudioPlugin
 	private:
 		bool mute;
 		bool _isInitialized;
+#ifdef __abadIA__
+                bool sonidos[12]; //TODO: eliminar constante
+#endif
 
 protected:
 	static const std::string g_properties[];

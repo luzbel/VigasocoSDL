@@ -96,6 +96,10 @@ void SDLAudioPlugin::Play(int sample,bool loop)
 		sounds.at(sample).active=true;
 		// sounds.at(sample).dpos=0;
 		sounds.at(sample).loop=loop;
+#ifdef __abadIA__
+	// TODO: falta assert para comprobar rango
+	sonidos[sample]=true;
+#endif
 	}
 	catch (std::out_of_range o)
 	{
@@ -294,6 +298,14 @@ void SDLAudioPlugin::setProperty(std::string prop, int index, int data)
 		}
 	}
 */
+#ifdef __abadIA__
+        if (prop == "sonidos"){
+                //if ((index >= 0) && (index < SONIDOS::END_OF_SOUNDS)){
+                if ((index >= 0) && (index < 12)){ // TODO: no usar constante 12
+                        sonidos[index]=data;
+                }
+        }
+#endif
 }
 
 int SDLAudioPlugin::getProperty(std::string prop) const
@@ -303,6 +315,14 @@ int SDLAudioPlugin::getProperty(std::string prop) const
 
 int SDLAudioPlugin::getProperty(std::string prop, int index) const
 {
+#ifdef __abadIA__
+        if (prop == "sonidos"){
+                //if ((index >= 0) && (index < SONIDOS::END_OF_SOUNDS)){
+                if ((index >= 0) && (index < 12)){ // TODO: no usar constante 1
+                        return sonidos[index];
+                }
+        }
+#endif
 //TODO: usar propiedades interesantes para este plugin
 /*
 	if (prop == "keyConfig"){

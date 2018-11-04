@@ -45,6 +45,10 @@ void NULLAudioPlugin::Stop(int sample)
 
 void NULLAudioPlugin::Play(int sample,bool loop)
 {
+#ifdef __abadIA__
+	//TODO: falta assert para no salirse del rango
+        sonidos[sample]=true;
+#endif
 }
 
 bool NULLAudioPlugin::LoadWAV(const char* file)
@@ -125,6 +129,14 @@ void NULLAudioPlugin::setProperty(std::string prop, int index, int data)
 		}
 	}
 */
+#ifdef __abadIA__
+        if (prop == "sonidos"){
+                //if ((index >= 0) && (index < SONIDOS::END_OF_SOUNDS)){
+                if ((index >= 0) && (index < 12)){ // TODO: no usar constante 12
+                        sonidos[index]=data;
+                }
+        }
+#endif
 }
 
 int NULLAudioPlugin::getProperty(std::string prop) const
@@ -134,6 +146,14 @@ int NULLAudioPlugin::getProperty(std::string prop) const
 
 int NULLAudioPlugin::getProperty(std::string prop, int index) const
 {
+#ifdef __abadIA__
+        if (prop == "sonidos"){
+                //if ((index >= 0) && (index < SONIDOS::END_OF_SOUNDS)){
+                if ((index >= 0) && (index < 12)){ // TODO: no usar constante 1
+                        return sonidos[index];
+                }
+        }
+#endif
 //TODO: usar propiedades interesantes para este plugin
 /*
 	if (prop == "keyConfig"){

@@ -1,4 +1,4 @@
-CXXFLAGS=-O3 -fPIC -I../core -I../VigasocoSDL/ 
+CXXFLAGS=-O3 -fPIC -I../core -I../VigasocoSDL/ -D__abadIA__
 #CXXFLAGS=-g -fPIC -I../core -I../VigasocoSDL/ 
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 

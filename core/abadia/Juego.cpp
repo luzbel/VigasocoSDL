@@ -1834,7 +1834,14 @@ fprintf(stderr,"bucle principal despues de acquire\n");
 fprintf(stderr,"borro de la lista la frase %d\n",elJuego->frases.top());
                         elJuego->frases.pop();
 		}
-				VigasocoMain->getInputHandler()->unAcquire();
+// si ha pedido volcado el agente, reiniciamos a false todo el array de sonidos
+// para que la siguiente vez tenga solo los sonidos que han sonado
+// desde la ultima vez que nos pidio un dump
+                // reiniciamos para volver a guardar solo los sonidos entre dump y dump
+                for (int index=0;index<12;index++)
+                        VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
+		
+		VigasocoMain->getInputHandler()->unAcquire();
 		continue;
 	}
 			if (compruebaReinicio()) {

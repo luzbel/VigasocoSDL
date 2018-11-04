@@ -31,6 +31,9 @@ class SDLAudioPlugin: public IAudioPlugin
 		tSounds sounds;
 		bool _isInitialized;
 		SDL_AudioSpec fmt_real; //Formato de audio obtenido del hardware
+#ifdef __abadIA__
+		bool sonidos[12]; //TODO: eliminar constante
+#endif
 
 protected:
 	static const std::string g_properties[];

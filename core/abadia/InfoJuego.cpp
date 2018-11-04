@@ -161,8 +161,11 @@ void InfoJuego::muestraInfo()
                 }
                 dump["sonidos"]=Sonidos;
                 // reiniciamos para volver a guardar solo los sonidos entre dump y dump
-                for (int index=0;index<12;index++)
-                        VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
+// NO, ahora
+// se vacia en el bucle principal de juego,no aqui  
+// se vacia solo cuando el agente ha pedido un dump 
+//                for (int index=0;index<12;index++)
+//                        VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
 
                 // Frases
                 nlohmann::json Frases = nlohmann::json::array();

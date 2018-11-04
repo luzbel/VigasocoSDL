@@ -484,3 +484,73 @@ Feature: Interfaz websocket abadIA
 ##           |    0   |  0 | Guillermo |       0     |  136 |  168 |
 ##           |    0   |  1 |  Adso     |       1     |  134 |  170 |
 ## 	And la lista de frases tiene "0" elementos
+
+  Scenario: Probar sonidos
+     Given una conexion a la interfaz websocket
+      When reinicio el juego
+      And avanzo
+      And avanzo
+      And avanzo
+      And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
+      And la lista de "sonidos" tiene "12" elementos
+      # Debe estar activo el sonido de tintineo y el de los pasos
+      And los elementos de la lista de "sonidos" son:
+	| sonando |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     1   |
+	|     1   |
+      And no hago nada
+      And giro a la izquierda
+      And avanzo
+      And avanzo
+      And avanzo
+      And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
+      And la lista de "sonidos" tiene "12" elementos
+      # El sonido de tintineo ya no estara activo al limpiar despues del DUMP
+      And los elementos de la lista de "sonidos" son:
+	| sonando |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     1   |
+	|     0   |
+      And no hago nada
+      And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
+      And la lista de "sonidos" tiene "12" elementos
+      # El sonido de pasos ya no estara activo al limpiar despues del DUMP
+      And los elementos de la lista de "sonidos" son:
+	| sonando |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |

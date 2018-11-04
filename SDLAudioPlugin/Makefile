@@ -1,4 +1,4 @@
-CXXFLAGS=-O3 -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
+CXXFLAGS=-O3 -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags` -D__abadIA__
 #CXXFLAGS=-g -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 

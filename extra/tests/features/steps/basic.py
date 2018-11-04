@@ -209,14 +209,15 @@ def step_impl(context,nombreLista):
 #    assert(len(context.dump["frases"])==int(numeroElementos));
 
 #@then('los elementos de la lista de frases son')
-@step('los elementos de la lista de frases son')
-def step_impl(context):
+#@step('los elementos de la lista de frases son')
+@step('los elementos de la lista de "{nombreLista}" son')
+def step_impl(context,nombreLista):
 #TODO falta revisar implementacion
 #    assert False;
     i=0;
-    for row in context.dump["frases"]:
+    for row in context.dump[nombreLista]:
      for head in context.table[i].headings:
-       print("***"+head+"***"+type(row).__name__+"***recibido***"+str(row)+"***esperado***"+str(context.table[i][head])); 
+       print("***i:"+str(i)+"***"+head+"***"+type(row).__name__+"***recibido***"+str(row)+"***esperado***"+str(context.table[i][head])); 
        if (type(row).__name__=="int"):
         assert row==int(context.table[i][head])
        else:
