@@ -381,8 +381,53 @@ Feature: Interfaz websocket abadIA
 	And avanzo "27" pasos
 	And no hago nada
 	And giro a la izquierda
-	And avanzo "36" pasos
-#	And espero "5" iteraciones
+	And avanzo "66" pasos
+	And no hago nada
+	And giro a la derecha
+	And avanzo "30" pasos
+	And no hago nada
+	And giro a la izquierda
+	And avanzo "17" pasos
+	And espero "10" iteraciones 
+	And avanzo "10" pasos
+	And no hago nada
+	And giro a la derecha
+	And avanzo "4" pasos
+	And no hago nada
+	And giro a la izquierda
+	And avanzo "7" pasos
+	And no hago nada
+	And giro a la izquierda
+	And avanzo "5" pasos
+	And no hago nada
+	And giro a la derecha
+	And avanzo "2" pasos
+	And no hago nada
+	And giro a la izquierda
+	And avanzo "25" pasos
+	And no hago nada
+	And giro a la derecha
+	And avanzo "10" pasos
+	And no hago nada
+	And giro a la izquierda
+	And espero "2" iteraciones
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     55      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "3" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos          | orientacion | posX | posY |
+         |    2   |  0 | Guillermo |    32            |      2      |  169 |   33 |
+         |    2   |  1 |  Adso     |     0            |      1      |  169 |   35 |
+	 |    2   |  3 |  Abad     | __DO_NOT_CHECK__ |      0      |  165 |   33 |  
+        And la lista de "Objetos" tiene "0" elementos
+        And la lista de "frases" tiene "4" elementos
+        And los elementos de la lista de frases son:
+         | id |
+         |  7 |
+         |  3 |
+         |  2 |
+         |  1 |
 
 
 # la frase 2 es
