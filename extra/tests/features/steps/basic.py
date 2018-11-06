@@ -3,24 +3,30 @@
 # hay que poner dump tras cada paso o explicitamente en la definicion de pasos
 # TODO: ?si los params van sin entrecomillar se consideran enteros y no hay que hacer conversion?
 
+#TODO: mirar el directorio a con una prueba usando
+# https://github.com/behave/behave/blob/master/features/step.use_step_library.feature
+# https://github.com/behave/behave/blob/master/features/userdata.feature
+# para poder usar distintas implementaciones de los steps segun estéusando
+# websocket o rest
+# viene de https://github.com/behave/behave/issues/279
+
 from behave import *
-from websocket import create_connection
+#from websocket import create_connection
 import json
+import requests
 
-@given('una conexion a la interfaz websocket')
+@step('prueba HTTP')
 def step_impl(context):
-    print("conectando al websocket");
-    context.ws = create_connection("ws://localhost:4477/ws")
-    assert context.ws is not None 
-
-@given('una conexion existente a la interfaz websocket')
-def step_impl(context):
-    assert context.ws is not None 
+	r=requests.get('http://localhost:4477/')
+	print("status:***"+str(r.status_code)+"***text***"+r.text+"***");
+	assert r.status_code==200
+	assert r.text=="Hola mundo"
+	
 
 @given('una partida recien iniciada')
 def step_impl(context):
     context.execute_steps('''
-	Given una conexion a la interfaz websocket
+	Given una conexion a la interfaz
 	When reinicio el juego
         And no hago nada
         Then los valores iniciales son correctos:
@@ -33,135 +39,6 @@ def step_impl(context):
            |    0   |  1 |  Adso     |       1     |  134 |  170 |
         And la lista de "frases" tiene "0" elementos
     ''');
-
-@when('reinicio el juego')
-def step_impl(context):
-    context.ws.send("RESET");
-    assert True is not False
-
-@when('mando el comando "{comando}"')
-def step_impl(context,comando):
-    context.ws.send(comando);
-
-@when('no hago nada')
-def step_impl(context):
-    context.execute_steps('''
-	Given una conexion existente a la interfaz websocket
-	When mando el comando "NOP"
-    ''');
-
-
-@when('VERSION VALORES A FUEGO giro a la izquierda')
-def step_impl(context):
-#    context.ws.send("LEFT");
-    print("giro a la izquierda "+context.table[0]["posX"]);
-    context.execute_steps('''
-	Given una conexion existente a la interfaz websocket
-	When mando el comando "LEFT"
-        Then los valores iniciales son correctos:
-           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
-           |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
-        And la lista de "Personajes" tiene "2" elementos
-        And los valores de los "Personajes" son correctos:
-           | altura | id | nombre    | orientacion | posX | posY |
-           |    0   |  0 | Guillermo |       1     |  136 |  168 |
-           |    0   |  1 |  Adso     |       1     |  134 |  169 |
-        And la lista de "frases" tiene "0" elementos
-    ''');
-    assert True is not False
-
-@when('giro a la izquierda')
-def step_impl(context):
-    context.ws.send("LEFT");
-#    context.execute_steps('''
-#	Given una conexion existente a la interfaz websocket
-#	When mando el comando "LEFT"
-#    ''');
-
-@when('giro a la derecha')
-def step_impl(context):
-    context.ws.send("RIGHT");
-
-@when('avanzo')
-def step_impl(context):
-    context.ws.send("UP");
-
-@when('avanzo "{numeroPasos}" pasos')
-def step_impl(context,numeroPasos):
-    i=0;
-    while i < int(numeroPasos):
-     context.ws.send("UP");
-# El segundo UP es porque el movimiento de avanzar necesita de 2 ciclos para completar la animacion de dar pasos
-# Tambien vale con enviar un NOP
-# Pero es mas realista enviar 2 UP, que es lo que haria un jugador humano, dejar pulsado UP hasta que ve ha terminado de avanzar
-     context.ws.send("UP"); 
-     i+=1;
-
-@when('espero "{numeroIteraciones}" iteraciones')
-def step_impl(context,numeroIteraciones):
-    i=0;
-    while i < int(numeroIteraciones):
-     context.ws.send("NOP");
-     i+=1;
-
-@when('pulso espacio')
-def step_impl(context):
-    context.ws.send("SPACE");
-
-@when('VERSION SEMI giro a la izquierda')
-def step_impl(context):
-#    context.ws.send("LEFT");
-    print("giro a la izquierda "+context.table[0]["posX"]);
-    steps='''
-	Given una conexion existente a la interfaz websocket
-	When mando el comando "LEFT"
-        Then los valores iniciales son correctos:
-           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
-           |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
-        And la lista de "Personajes" tiene "2" elementos
-        And los valores de los "Personajes" son correctos:
-           | altura | id | nombre    | orientacion | posX | posY |''';
-    for row in context.table:
-     fila='\n|';
-     for head in context.table[0].headings:
-       fila=fila+'%s|' % row[head];
-     #esto falla si no hay tabla con al menos una columna ya que queda un \n| suelto
-#       fila='\n|'+row["altura"]+'|'+row["id"]+'|'+row["nombre"]+'|';
-     steps=steps+'%s' % (fila);
-    print("giro a la izquierda ***"+steps+"***");
-    context.execute_steps(steps);
-    
-#           | altura | id | nombre    | orientacion | posX | posY |
-#           |    0   |  0 | Guillermo |       1     |  136 |  168 |
-#           |    0   |  1 |  Adso     |       1     |  134 |  169 |
-#        And la lista de frases tiene "0" elementos
-#    ''');
-
-#    assert True is False
-#    assert True is not False
-
-
-
-#@then('los valores iniciales son correctos')
-@step('los valores iniciales son correctos')
-def step_impl(context):
-#    context.ws.send("NOP");
-#    context.ws.send("NOP");
-    context.ws.send("DUMP");
-    result = context.ws.recv();
-    print("result**"+result);
-    dump = json.loads(result)
-    context.dump=dump;
-    for head in context.table[0].headings:
-      print("***"+head+"***"+type(dump[head]).__name__+"***"+str(dump[head])+"***"+str(context.table[0][head])); 
-      if (type(dump[head]).__name__=="bool"):
-       #assert dump[head]==bool(context.table[0][head])
-       assert str(dump[head])==(context.table[0][head])
-      else:
-       if (type(dump[head]).__name__=="int"):
-        assert dump[head]==int(context.table[0][head])
-       else:
-        assert False 
 
 @step('la lista de "{nombreLista}" tiene "{numeroElementos}" elementos')
 def step_impl(context,nombreLista,numeroElementos):
@@ -223,10 +100,4 @@ def step_impl(context,nombreLista):
        else:
         assert False 
      i=i+1;
-
-# TypeError: 'int' object is not subscriptable
-
-# esto no parece servir para cortar las desconexiones abruptas
-def after_scenario(context,scenario):
-    context.ws.close();
 

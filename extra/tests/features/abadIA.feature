@@ -3,10 +3,14 @@
 # y empezar con una partida limpia
 # ?se podria pasar argumento al RESET para cargar un escenario u otro???
 
-Feature: Interfaz websocket abadIA
+Feature: Interfaz abadIA
+# ejecutar con -Dinterfaz=websocket o -Dinterfaz=http segun la interfaz a probar
+
+  Scenario: HTTP
+	Given prueba HTTP
 
   Scenario: Inicializacion del juego
-     Given una conexion a la interfaz websocket
+     Given una conexion a la interfaz
       When reinicio el juego
       And no hago nada
 ##      And no hago nada
@@ -265,7 +269,7 @@ Feature: Interfaz websocket abadIA
          |    0   |  1 |  Adso     |     0   |      1      |  134 |  151 |
         And la lista de "Objetos" tiene "0" elementos
         And la lista de "frases" tiene "1" elementos
-        And los elementos de la lista de frases son:
+        And los elementos de la lista de "frases" son:
          | id |
          |  1 |
 # Aqui ha pintado la B inicial de la frase "BIENVENIDO A ESTA ABADIA, HERMANO. OS RUEGO QUE ME SIGAIS. HA SUCEDIDO ALGO TERRIBLE",
@@ -303,7 +307,7 @@ Feature: Interfaz websocket abadIA
 	 |    0   |  3 |  Abad     | __DO_NOT_CHECK__ |      3      |  136 |  147 |  
         And la lista de "Objetos" tiene "0" elementos
         And la lista de "frases" tiene "1" elementos
-        And los elementos de la lista de frases son:
+        And los elementos de la lista de "frases" son:
          | id |
          |  2 |
 	And espero "14" iteraciones 
@@ -317,7 +321,7 @@ Feature: Interfaz websocket abadIA
            |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     29    |    0   |      0     |
         And la lista de "frases" tiene "1" elementos
 # el temido "os ordeno que vengais"
-        And los elementos de la lista de frases son:
+        And los elementos de la lista de "frases" son:
          | id |
          |  8 | 
 
@@ -331,7 +335,7 @@ Feature: Interfaz websocket abadIA
            |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     29    |    0   |      0     |
         And la lista de "frases" tiene "3" elementos
 #es una LIFO, primero esta la ultima frase
-        And los elementos de la lista de frases son:
+        And los elementos de la lista de "frases" son:
          | id |
          |  8 |
 	 |  2 |
@@ -342,7 +346,7 @@ Feature: Interfaz websocket abadIA
            |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     29    |    0   |      0     |
         And la lista de "frases" tiene "1" elementos
 #es una LIFO, primero esta la ultima frase
-        And los elementos de la lista de frases son:
+        And los elementos de la lista de "frases" son:
          | id |
 	 |  2 |
 #	And espero "53" iteraciones 
@@ -352,7 +356,7 @@ Feature: Interfaz websocket abadIA
            |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     27    |    0   |      0     |
         And la lista de "frases" tiene "2" elementos
 #es una LIFO, primero esta la ultima frase
-        And los elementos de la lista de frases son:
+        And los elementos de la lista de "frases" son:
          | id |
 	 |  2 |
 	 |  8 |
@@ -362,7 +366,7 @@ Feature: Interfaz websocket abadIA
            |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     21    |    0   |      0     |
         And la lista de "frases" tiene "5" elementos
 #es una LIFO, primero esta la ultima frase
-        And los elementos de la lista de frases son:
+        And los elementos de la lista de "frases" son:
          | id |
 	 |  8 |
 	 |  2 |
@@ -422,7 +426,7 @@ Feature: Interfaz websocket abadIA
 	 |    2   |  3 |  Abad     | __DO_NOT_CHECK__ |      0      |  165 |   33 |  
         And la lista de "Objetos" tiene "0" elementos
         And la lista de "frases" tiene "4" elementos
-        And los elementos de la lista de frases son:
+        And los elementos de la lista de "frases" son:
          | id |
          |  7 |
          |  3 |
@@ -486,7 +490,7 @@ Feature: Interfaz websocket abadIA
 ## 	And la lista de frases tiene "0" elementos
 
   Scenario: Probar sonidos
-     Given una conexion a la interfaz websocket
+     Given una conexion a la interfaz
       When reinicio el juego
       And avanzo
       And avanzo

@@ -59,6 +59,8 @@ public:
 
 protected:
 	void initRemapTable();
+private:
+	std::string atenderComando(const std::string& comando, const std::string& data="");
 };
 
 #endif	// _HTTP_INPUT_PLUGIN_H_

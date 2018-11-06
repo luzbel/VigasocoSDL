@@ -1870,7 +1870,12 @@ fprintf(stderr,"borro de la lista la frase %d\n",elJuego->frases.top());
 			compruebaSave();
 
 
-			if ( compruebaLoad() ) goto despues_de_cargar_o_iniciar;
+			if ( compruebaLoad() ) {
+#ifdef __abadIA__
+				VigasocoMain->getInputHandler()->unAcquire();
+#endif
+				goto despues_de_cargar_o_iniciar;
+			}
 
 
 			// comprueba si se quieren cambiar de graficos 
@@ -2416,34 +2421,43 @@ bool Juego::compruebaLoad()
 {
 	// ESTE FUNCIONAMIENTO NO SE CORRESPONDE
 	// CON EL DE LA VERSION ORIGINAL
-
+fprintf(stderr,"Juego::compruebaLoad()\n");
 	if (controles->seHaPulsado(KEYBOARD_C))
 	{
+fprintf(stderr,"Juego::compruebaLoad() se ha pulsado la tecla c de Cargar\n");
 
 		// Frase vacia para parar la frase actual
 		elGestorFrases->muestraFraseYa(0x38);
+fprintf(stderr,"Juego::compruebaLoad() despues de muestraFraseYa\n");
 
 		// Esperamos a que se limpie el marcador
 		while (elGestorFrases->mostrandoFrase)
 		{
+fprintf(stderr,"Juego::compruebaLoad() bucle espera a que se limpie el marcador\n");
 			elGestorFrases->actualizaEstado();
+fprintf(stderr,"Juego::compruebaLoad() bucle espera a que se limpie el marcador despues de actualizaEstado\n");
 		} 
+fprintf(stderr,"Juego::compruebaLoad() salimos de bucle espera a que se limpie el marcador\n");
 
 		// Preguntamos
 		// CPC elMarcador->imprimeFrase("¿CARGAR? S:N", 110, 164, 2, 3);
 		elMarcador->imprimeFrase("¿CARGAR? S:N", 110, 164, 4, 0);  // VGA
+fprintf(stderr,"Juego::compruebaLoad() despues de imprimirFrase\n");
 
 		do
 		{
 			losControles->actualizaEstado();
+fprintf(stderr,"Juego::compruebaLoad() despues de actualizarEstado controles\n");
 
 			if (losControles->estaSiendoPulsado(KEYBOARD_S))
 			{
+fprintf(stderr,"Juego::compruebaLoad() han confirmado la carga\n");
 				return cargar(0);
 			}
 
 		}
 		while (losControles->estaSiendoPulsado(KEYBOARD_N) == false);
+fprintf(stderr,"Juego::compruebaLoad() antes de mostraFraseYa para limpiar marcador al final\n");
 		elGestorFrases->muestraFraseYa(0x38);
 	} 
 	return false;

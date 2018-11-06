@@ -31,6 +31,105 @@ HTTPInputPlugin::~HTTPInputPlugin()
 }
 
 
+std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std::string& data)
+{
+//crow::websocket::connection conn; // 666 tmp para pruebaas compilacion, falta recibirlo y tener alternativa para 
+// cuando no es websocket
+	std::string res="OK";
+	bool peticionValida=true;
+	CROW_LOG_INFO << "atenderComando(" << comando << "," << data <<")";
+	CROW_LOG_INFO << "atenderComando antes de lock atenderMensaje: " << atenderMensaje;
+
+	std::unique_lock<std::mutex> lcx(mtx);
+	condVar.wait(lcx,[this]{return atenderMensaje;});
+	atenderMensaje=false;
+
+	CROW_LOG_INFO << "atenderComando despues de lock atenderMensaje: " << atenderMensaje;
+
+	memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃa hacerse despues de ver que el comando es valido
+	if (comando=="NOP") {
+		;
+	} else 
+	if (comando=="RIGHT") {
+		HTTPInputPlugin::keystate[SDLK_RIGHT]=true;
+	} else 
+	if (comando=="LEFT") {
+		HTTPInputPlugin::keystate[SDLK_LEFT]=true;
+	} else 
+	if (comando=="UP") {
+		HTTPInputPlugin::keystate[SDLK_UP]=true;
+	} else
+	if (comando=="DOWN") {
+		HTTPInputPlugin::keystate[SDLK_DOWN]=true;
+	} else
+	if (comando=="SPACE") {
+		HTTPInputPlugin::keystate[SDLK_SPACE]=true;
+	} else
+	if (comando=="DUMP") {
+		HTTPInputPlugin::keystate[SDLK_d]=true;
+		std::ifstream dumpfile("abadIA.dump");
+		CROW_LOG_INFO << "vuelco dump: " << data;
+		char dump[8192];
+		memset(dump,'\0',sizeof(dump));
+		dumpfile.read(dump,sizeof(dump));
+res=dump;
+//666conn.send_text(dump);
+		CROW_LOG_INFO << "fin vuelco dump: " << data;
+	} else
+	if (comando=="RESET"||comando=="REINICIO") {
+		HTTPInputPlugin::keystate[SDLK_e]=true; // E de rEset
+	} else
+	if (comando=="SAVEJSON") {
+		std::stringstream json;
+		char dump[8192]; //TODO: intentar que sea dinamico
+		memset(dump,'\0',sizeof(dump));
+		std::ifstream savefile("abadia0.save");
+		savefile.read(dump,8192);
+		json << "{\"snapshot\":\"" << dump << "\"}";
+res=dump;
+//666conn.send_text(json.str());
+	} else
+	if (comando=="SAVE") {
+		char dump[8192]; //TODO: intentar que sea dinamico
+		memset(dump,'\0',sizeof(dump));
+		std::ifstream savefile("abadia0.save");
+		savefile.read(dump,8192);
+res=dump;
+//666conn.send_text(dump);
+	} else
+	if (comando.find("LOADJSON")==0) {
+		CROW_LOG_INFO << "LOADJSON***" << data << "***";
+		auto x=crow::json::load(data);
+if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
+		CROW_LOG_INFO << "LOADJSON***" << x["snapshot"].s() << "***";
+		std::ofstream savefile("abadia0.save");
+		savefile << x["snapshot"].s();
+		savefile.close();
+	} else
+	if (comando.find("LOAD")==0) {
+		std::ofstream savefile("abadia0.save");
+		CROW_LOG_INFO << "LOAD***" << data << "***";
+		savefile << data;
+		savefile.close();
+	} else
+	if (comando=="FIN"||comando=="END"||comando=="GAMEOVER"||comando=="GAME OVER") {
+		SDL_Event sdlevent = {};
+		sdlevent.type = SDL_QUIT;
+		SDL_PushEvent(&sdlevent);					
+	} else peticionValida=false;
+
+
+	if (peticionValida) {
+		CROW_LOG_INFO << "dejo seguir al juego: " << comando << " nextGI " << nextGameInterrupt;
+		nextGameInterrupt=true;
+		condVar.notify_one();
+		CROW_LOG_INFO << "fin dejo seguir al juego: " << comando << " next GI " << nextGameInterrupt;
+	} else atenderMensaje=true;
+
+	return res;
+}
+
+
 bool HTTPInputPlugin::init()
 {
 fprintf(stderr,"HTTPInputPlugin::init entro \n");
@@ -39,6 +138,65 @@ fprintf(stderr,"HTTPInputPlugin::init entro \n");
 
 		CROW_ROUTE(app, "/")([]{
 		 return "Hola mundo";
+		});
+
+		CROW_ROUTE(app, "/status")([]{
+		 return "OK";
+		});
+
+		CROW_ROUTE(app,"/loadOLD").methods("POST"_method)([this](const crow::request& req) {
+					std::ofstream savefile("abadia0.save");
+CROW_LOG_INFO << "LOAD***" << req.body << "***";
+std::unique_lock<std::mutex> lcx(mtx);
+condVar.wait(lcx,[this]{return atenderMensaje;});
+atenderMensaje=false;
+CROW_LOG_INFO << "load despues de lock nextGameInterrup: " << nextGameInterrupt;
+memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃa hacerse despues de ver que el comando es valido
+					savefile << req.body;
+					savefile.close();
+HTTPInputPlugin::keystate[SDLK_c]=true;
+HTTPInputPlugin::keystate[SDLK_s]=true;
+CROW_LOG_INFO << "load-dejo seguir al juego: " << "nextGI " << nextGameInterrupt;
+nextGameInterrupt=true;
+condVar.notify_one();
+CROW_LOG_INFO << "load-fin dejo seguir al juego: " << " next GI " << nextGameInterrupt;
+			return crow::response(200);
+		});
+
+		CROW_ROUTE(app,"/load").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200,this->atenderComando("LOAD",req.body));
+		});
+
+		CROW_ROUTE(app,"/cmd/NOP").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200,this->atenderComando("NOP",req.body));
+		});
+
+		CROW_ROUTE(app,"/cmd/RIGHT").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200, this->atenderComando("RIGHT",req.body));
+		});
+
+		CROW_ROUTE(app,"/cmd/LEFT").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200, this->atenderComando("LEFT",req.body));
+		});
+
+		CROW_ROUTE(app,"/cmd/UP").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200, this->atenderComando("UP",req.body));
+		});
+
+		CROW_ROUTE(app,"/cmd/DOWN").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200, this->atenderComando("DOWN",req.body));
+		});
+
+		CROW_ROUTE(app,"/cmd/SPACE").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200, this->atenderComando("SPACE",req.body));
+		});
+
+		CROW_ROUTE(app,"/cmd/DUMP").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200, this->atenderComando("DUMP",req.body));
+		});
+
+		CROW_ROUTE(app,"/cmd/RESET").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200, this->atenderComando("RESET",req.body));
 		});
 
 		CROW_ROUTE(app,"/ws")
@@ -50,84 +208,24 @@ fprintf(stderr,"HTTPInputPlugin::init entro \n");
 				CROW_LOG_INFO << "websocket connection closed: " << reason;
 				})
 		.onmessage([this](crow::websocket::connection& conn, const std::string& data, bool is_binary){
-
-//std::lock_guard<std::mutex> lck(mtx); // prueba a aceptar solo un comando cada vez
-//CROW_LOG_INFO << "esperando a ser el unico atendiendo  mensaje " << atendiendoMensaje ;
-//std::unique_lock<std::mutex> lcx(mtx);
-//condVar2.wait(lcx,[this]{return !atendiendoMensaje;});
-//atendiendoMensaje=true;
-//CROW_LOG_INFO << "soy el unico atendiendo mensaje y prosigo " << atendiendoMensaje ;
-bool peticionValida=true;
 				CROW_LOG_INFO << "websocket onmessage: " << data;
-				CROW_LOG_INFO << "websocket onmessage antes de lock nextGameInterrup: " << nextGameInterrupt;
-//std::lock_guard<std::mutex> _(VigasocoMain->mtx);
-//std::lock_guard<std::mutex> _(mtx);
-
-std::unique_lock<std::mutex> lcx(mtx);
-//condVar.wait(lcx,[this]{return !nextGameInterrupt;});
-condVar.wait(lcx,[this]{return atenderMensaje;});
-atenderMensaje=false;
-				CROW_LOG_INFO << "websocket onmessage despues de lock nextGameInterrup: " << nextGameInterrupt;
-
-
-//				keystate[SDLK_DELETE]=false;
-
-	memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃa hacerse despues de ver que el comando es valido
-				if (data=="NOP") {
-					;
-				} else 
-				if (data=="RIGHT") {
-					HTTPInputPlugin::keystate[SDLK_RIGHT]=true;
-				} else 
-				if (data=="LEFT") {
-					HTTPInputPlugin::keystate[SDLK_LEFT]=true;
-				} else 
-				if (data=="UP") {
-					HTTPInputPlugin::keystate[SDLK_UP]=true;
-				} else
-				if (data=="DOWN") {
-					HTTPInputPlugin::keystate[SDLK_DOWN]=true;
-				} else
-				if (data=="SPACE") {
-					HTTPInputPlugin::keystate[SDLK_SPACE]=true;
-				} else
-				if (data=="DUMP") {
-					//VigasocoMain->getDriver()->showGameLogic();
-					HTTPInputPlugin::keystate[SDLK_d]=true;
-					std::ifstream dumpfile("abadIA.dump");
-CROW_LOG_INFO << "vuelco dump: " << data;
-char dump[8192];
-memset(dump,'\0',sizeof(dump));
-//dumpfile.read(dump,8192);
-dumpfile.read(dump,sizeof(dump));
-conn.send_text(dump);
-//peticionValida=false; // No queremos desbloquear ni que avance el juego
-//ahora si queremos desbloquear el juego para que se borre la lista de frases tras volcar
-CROW_LOG_INFO << "fin vuelco dump: " << data;
-				} else
-				if (data=="RESET"||data=="REINICIO") {
-					HTTPInputPlugin::keystate[SDLK_e]=true; // E de rEset
-				} else
-				if (data=="FIN"||data=="END"||data=="GAMEOVER"||data=="GAME OVER") {
-		                        SDL_Event sdlevent = {};
-		                        sdlevent.type = SDL_QUIT;
-		                        SDL_PushEvent(&sdlevent);					
-				} else peticionValida=false;
-if (peticionValida) {
-CROW_LOG_INFO << "dejo seguir al juego: " << data << " nextGI " << nextGameInterrupt;
-//std::lock_guard<std::mutex> lck(mtx);
-nextGameInterrupt=true;
-condVar.notify_one();
-CROW_LOG_INFO << "fin dejo seguir al juego: " << data << " next GI " << nextGameInterrupt;
-} else atenderMensaje=true;
-
-;
-		});
+				std::string res="OK";
+				std::string::size_type pos=data.find(" ");
+				if (pos==std::string::npos) {
+					res=this->atenderComando(data,"");
+				} else {
+					res=this->atenderComando(
+						data.substr(0,pos-1),
+						data.substr(pos+1,std::string::npos)
+					);
+				}
+				CROW_LOG_INFO << "websocket res: " << res;
+				conn.send_text(res);
+		}); 
 
 		app.port(4477).run();
         });
         webThread.detach(); 
-fprintf(stderr,"HTTPInputPlugin::init salgo\n");
         return true;
 }
 
