@@ -9,7 +9,7 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Sprite::Sprite()
@@ -48,23 +48,23 @@ Sprite::~Sprite()
 // ajuste de las dimensiones para el dibujado
 /////////////////////////////////////////////////////////////////////////////
 
-// dadas la posiciÛn y dimensiones del sprite, calcula la posiciÛn y dimensiones ampliados a los tiles que ocupa (x en bytes, y en tiles)
+// dadas la posici√≥n y dimensiones del sprite, calcula la posici√≥n y dimensiones ampliados a los tiles que ocupa (x en bytes, y en tiles)
 void Sprite::ajustaATiles()
 {
-	// calcula la posiciÛn inicial del tile que contiene al sprite
+	// calcula la posici√≥n inicial del tile que contiene al sprite
 	posXTile = posXPant & 0xfc;
 	posYTile = posYPant & 0xf8;
 
-	// calcula la posiciÛn del sprite dentro del tile
+	// calcula la posici√≥n del sprite dentro del tile
 	int despXTile = posXPant & 0x03;
 	int despYTile = posYPant & 0x07;
 
-	// calcula la dimensiÛn ampliada del sprite para que abarque todos los tiles en los que se va a dibujar
+	// calcula la dimensi√≥n ampliada del sprite para que abarque todos los tiles en los que se va a dibujar
 	anchoFinal = (ancho + despXTile + 3) & 0xfc;
 	altoFinal = (alto + despYTile + 7) & 0xf8;
 }
 
-// amplia las dimensiones a dibujar para que se redibuje el ·rea ocupada anteriormente por el sprite
+// amplia las dimensiones a dibujar para que se redibuje el √°rea ocupada anteriormente por el sprite
 void Sprite::ampliaDimViejo()
 {
 	// ajusta en x
@@ -74,28 +74,28 @@ void Sprite::ampliaDimViejo()
 
 	// si empieza primero el sprite antiguo
 	if (difX >= 0){
-		// obtiene la m·xima anchura del sprite antiguo que se cubre con el ancho ampliado actual
+		// obtiene la m√°xima anchura del sprite antiguo que se cubre con el ancho ampliado actual
 		int anchoCubierto = difX + anchoFinal;
 
-		// obtiene el mÌnimo ancho que debe cubrirse para limpiar el sprite antiguo
+		// obtiene el m√≠nimo ancho que debe cubrirse para limpiar el sprite antiguo
 		int oldAnchoAmpliado = oldAncho;
 
-		// si el sprite antiguo termina antes que el ·rea cubierta, amplia el ancho del sprite antiguo
+		// si el sprite antiguo termina antes que el √°rea cubierta, amplia el ancho del sprite antiguo
 		if (anchoCubierto >= oldAnchoAmpliado){
 			oldAnchoAmpliado = anchoCubierto;
 		}
 
-		// como empieza primero el sprite antiguo, cambia la posiciÛn inicial del tile y amplia su ancho
+		// como empieza primero el sprite antiguo, cambia la posici√≥n inicial del tile y amplia su ancho
 		posXTile = oldPosXPant & 0xfc;
 		int oldDespXTile = oldPosXPant & 0x03;
 		anchoFinal = (oldAnchoAmpliado + oldDespXTile + 3) & 0xfc;
 	} else {
 		// si empieza primero el sprite actual
 
-		// obtiene la m·xima anchura que ocupa el sprite antiguo dentro del sprite ampliado
+		// obtiene la m√°xima anchura que ocupa el sprite antiguo dentro del sprite ampliado
 		int anchoCubierto = -difX + oldAncho;
 
-		// si el ancho ampliado no cubre el ancho del sprite viejo, amplÌa el ancho
+		// si el ancho ampliado no cubre el ancho del sprite viejo, ampl√≠a el ancho
 		if (anchoFinal < anchoCubierto){
 			anchoFinal = (anchoCubierto + 3) & 0xfc;
 		}
@@ -108,28 +108,28 @@ void Sprite::ampliaDimViejo()
 
 	// si empieza primero el sprite antiguo
 	if (difY >= 0){
-		// obtiene la m·xima altura del sprite antiguo que se cubre con el alto ampliado actual
+		// obtiene la m√°xima altura del sprite antiguo que se cubre con el alto ampliado actual
 		int altoCubierto = difY + altoFinal;
 
-		// obtiene el mÌnimo alto que debe cubrirse para limpiar el sprite antiguo
+		// obtiene el m√≠nimo alto que debe cubrirse para limpiar el sprite antiguo
 		int oldAltoAmpliado = oldAlto;
 
-		// si el sprite antiguo termina antes que el ·rea cubierta, amplia el alto del sprite antiguo
+		// si el sprite antiguo termina antes que el √°rea cubierta, amplia el alto del sprite antiguo
 		if (altoCubierto >= oldAltoAmpliado){
 			oldAltoAmpliado = altoCubierto;
 		}
 
-		// como empieza primero el sprite antiguo, cambia la posiciÛn inicial del tile y amplia su alto
+		// como empieza primero el sprite antiguo, cambia la posici√≥n inicial del tile y amplia su alto
 		posYTile = oldPosYPant & 0xf8;
 		int oldDespYTile = oldPosYPant & 0x07;
 		altoFinal = (oldAltoAmpliado + oldDespYTile + 7) & 0xf8;
 	} else {
 		// si empieza primero el sprite actual
 
-		// obtiene la m·xima altura que ocupa el sprite antiguo dentro del sprite ampliado
+		// obtiene la m√°xima altura que ocupa el sprite antiguo dentro del sprite ampliado
 		int altoCubierto = -difY + oldAlto;
 
-		// si el alto ampliado no cubre el alto del sprite viejo, amplÌa el alto
+		// si el alto ampliado no cubre el alto del sprite viejo, ampl√≠a el alto
 		if (altoFinal < altoCubierto){
 			altoFinal = (altoCubierto + 7) & 0xf8;
 		}
@@ -140,7 +140,7 @@ void Sprite::ampliaDimViejo()
 // dibujado del sprite
 /////////////////////////////////////////////////////////////////////////////
 
-// dibuja la parte visible del sprite actual en el ·rea ocupada por el sprite que se le pasa como par·metro
+// dibuja la parte visible del sprite actual en el √°rea ocupada por el sprite que se le pasa como par√°metro
 void Sprite::dibuja(Sprite *spr, UINT8 *bufferMezclas, int lgtudClipX, int lgtudClipY, int dist1X, int dist2X, int dist1Y, int dist2Y)
 {
 	dibujaVGA(spr,bufferMezclas,lgtudClipX,lgtudClipY,dist1X,dist2X,dist1Y,dist2Y);
@@ -150,10 +150,10 @@ void Sprite::dibuja(Sprite *spr, UINT8 *bufferMezclas, int lgtudClipX, int lgtud
 	UINT8 *roms = elJuego->roms;
 	CPC6128 *cpc6128 = elJuego->cpc6128;
 
-	// calcula la direcciÛn de inicio de los gr·ficos visibles del sprite a mezclar en el ·rea ocupada por el sprite que se est· procesando
+	// calcula la direcci√≥n de inicio de los gr√°ficos visibles del sprite a mezclar en el √°rea ocupada por el sprite que se est√° procesando
 	int despSrc = despGfx + dist2Y*ancho + dist2X;
 
-	// calcula la direcciÛn de destino de los gr·ficos en el buffer de sprites
+	// calcula la direcci√≥n de destino de los gr√°ficos en el buffer de sprites
 	int despDest = spr->despBuffer + (dist1Y*spr->anchoFinal + dist1X)*4;
 
 	// recorre los pixels visibles en Y
@@ -162,7 +162,7 @@ void Sprite::dibuja(Sprite *spr, UINT8 *bufferMezclas, int lgtudClipX, int lgtud
 		UINT8 *dest = &bufferMezclas[despDest];
 		// recorre los pixels visibles en X
 		for (int lgtudX = 0; lgtudX < lgtudClipX; lgtudX++){
-			// lee un byte del gr·fico (4 pixels)
+			// lee un byte del gr√°fico (4 pixels)
 			int data = *src;
 
 			// para cada pixel del byte leido
@@ -185,7 +185,7 @@ void Sprite::dibuja(Sprite *spr, UINT8 *bufferMezclas, int lgtudClipX, int lgtud
 */
 }
 
-// dibuja la parte visible del sprite actual en el ·rea ocupada por el sprite que se le pasa como par·metro
+// dibuja la parte visible del sprite actual en el √°rea ocupada por el sprite que se le pasa como par√°metro
 void Sprite::dibujaVGA(Sprite *spr, UINT8 *bufferMezclas, int lgtudClipX, int lgtudClipY, int dist1X, int dist2X, int dist1Y, int dist2Y)
 {
 	//assert(VGA); // todos los graficos ya son VGA
@@ -194,10 +194,10 @@ void Sprite::dibujaVGA(Sprite *spr, UINT8 *bufferMezclas, int lgtudClipX, int lg
 	UINT8 *roms = elJuego->roms+0x20000-1; // pasamos de la rom del CPC a GraficosVGA
 	CPC6128 *cpc6128 = elJuego->cpc6128;
 
-	// calcula la direcciÛn de inicio de los gr·ficos visibles del sprite a mezclar en el ·rea ocupada por el sprite que se est· procesando
+	// calcula la direcci√≥n de inicio de los gr√°ficos visibles del sprite a mezclar en el √°rea ocupada por el sprite que se est√° procesando
 	int despSrc = despGfx + dist2Y*ancho*4 + dist2X*4;
 
-	// calcula la direcciÛn de destino de los gr·ficos en el buffer de sprites
+	// calcula la direcci√≥n de destino de los gr√°ficos en el buffer de sprites
 	int despDest = spr->despBuffer + (dist1Y*spr->anchoFinal + dist1X)*4;
 
 	// recorre los pixels visibles en Y
@@ -206,7 +206,7 @@ void Sprite::dibujaVGA(Sprite *spr, UINT8 *bufferMezclas, int lgtudClipX, int lg
 		UINT8 *dest = &bufferMezclas[despDest];
 		// recorre los pixels visibles en X
 		for (int lgtudX = 0; lgtudX < lgtudClipX*4; lgtudX++){
-			// lee un byte del gr·fico (1 pixel)
+			// lee un byte del gr√°fico (1 pixel)
 			int data = *src++;
 
 			if(data!=255) *dest=data;
@@ -218,10 +218,10 @@ void Sprite::dibujaVGA(Sprite *spr, UINT8 *bufferMezclas, int lgtudClipX, int lg
 	}
 }
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos de ayuda
+// m√©todos de ayuda
 /////////////////////////////////////////////////////////////////////////////
 
-// pone la posiciÛn y dimensiones actuales como posiciÛn y dimensiones antiguas
+// pone la posici√≥n y dimensiones actuales como posici√≥n y dimensiones antiguas
 void Sprite::preparaParaCambio()
 {
 	oldPosXPant = posXPant;

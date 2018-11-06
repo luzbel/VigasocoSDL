@@ -21,16 +21,16 @@ class Marcador : public Singleton<Marcador>
 {
 // campos
 public:
-	CPC6128	*cpc6128;			// objeto que presta ayuda para realizar operaciones gráficas del cpc6128
+	CPC6128	*cpc6128;			// objeto que presta ayuda para realizar operaciones grÃ¡ficas del cpc6128
 	UINT8 *roms;				// puntero a las roms originales
 
-	int numPosScrollDia;		// número de posiciones para completar el scroll del nombre del día
-	UINT8 *nombreMomentoDia;	// apunta al nombre del momento actual del día
+	int numPosScrollDia;		// nÃºmero de posiciones para completar el scroll del nombre del dÃ­a
+	UINT8 *nombreMomentoDia;	// apunta al nombre del momento actual del dÃ­a
 
 protected:
 	static int duracionEtapasDia[7][7];
 
-// métodos
+// mÃ©todos
 public:
 	void dibujaMarcador();
 	void limpiaAreaMarcador();
@@ -46,7 +46,7 @@ public:
 	void imprimeFrase(std::string frase, int x, int y, int colorTexto, int colorFondo);
 	void imprimirCaracter(int caracter, int x, int y, int colorTexto, int colorFondo);
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Marcador();
 	~Marcador();
 

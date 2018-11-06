@@ -17,16 +17,16 @@ class Severino : public Monje
 {
 // campos
 public:
-	bool estaVivo;								// indica si el personaje está vivo
+	bool estaVivo;								// indica si el personaje estÃ¡ vivo
 
 protected:
-	static PosicionJuego posicionesPredef[4];	// posiciones a las que puede ir el personaje según el estado
+	static PosicionJuego posicionesPredef[4];	// posiciones a las que puede ir el personaje segÃºn el estado
 
-// métodos
+// mÃ©todos
 public:
 	virtual void piensa();
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Severino(SpriteMonje *spr);
 	virtual ~Severino();
 };

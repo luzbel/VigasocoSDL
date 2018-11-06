@@ -19,22 +19,22 @@ class Abad : public Monje
 public:
 	int contador;								// contador usado en varias situaciones
 	int numFrase;								// indica la frase que debe decir en varias situaciones
-	int guillermoBienColocado;					// indica si guillermo está bien colocado en misa o en el refectorio
+	int guillermoBienColocado;					// indica si guillermo estÃ¡ bien colocado en misa o en el refectorio
 	int lleganLosMonjes;						// indica si los monjes han llegado a misa o al refectorio
 	bool guillermoHaCogidoElPergamino;			// indica si guillermo ha cogido el pergamino cuando lo vigilaba berengario
 
 protected:
-	static PosicionJuego posicionesPredef[10];	// posiciones a las que puede ir el personaje según el estado
-	static int monjesIglesiaEnPrima[7];			// indica los personajes que deben estar en la misa de prima según el día
-	static int frasesIglesiaEnPrima[7];			// indica los frases que se dicen después de la misa de prima según el día
-	static int monjesEnRefectorio[7];			// indica los personajes que deben estar en el refectorio de prima según el día
-	static int monjesIglesiaEnVisperas[7];		// indica los personajes que deben estar en la misa de vísperas según el día
+	static PosicionJuego posicionesPredef[10];	// posiciones a las que puede ir el personaje segÃºn el estado
+	static int monjesIglesiaEnPrima[7];			// indica los personajes que deben estar en la misa de prima segÃºn el dÃ­a
+	static int frasesIglesiaEnPrima[7];			// indica los frases que se dicen despuÃ©s de la misa de prima segÃºn el dÃ­a
+	static int monjesEnRefectorio[7];			// indica los personajes que deben estar en el refectorio de prima segÃºn el dÃ­a
+	static int monjesIglesiaEnVisperas[7];		// indica los personajes que deben estar en la misa de vÃ­speras segÃºn el dÃ­a
 
-// métodos
+// mÃ©todos
 public:
 	virtual void piensa();
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Abad(SpriteMonje *spr);
 	virtual ~Abad();
 

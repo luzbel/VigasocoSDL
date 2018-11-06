@@ -92,7 +92,7 @@ void RDTSCTimer::sleep(UINT32 milliseconds)
 INT64 RDTSCTimer::calcTicksPerSecond()
 {
 	// raise the priority for accurate timing
-	// ¡¡¡ FALTA POR IMPLEMENTAR !!!
+	// Â¡Â¡Â¡ FALTA POR IMPLEMENTAR !!!
 
 	// wait for 0.25 seconds
 	INT64 begin = RDTSCTimer::getTime();
@@ -102,7 +102,7 @@ INT64 RDTSCTimer::calcTicksPerSecond()
 	INT64 end = RDTSCTimer::getTime();
 
 	// restore the previous priority
-	// ¡¡¡ FALTA POR IMPLEMENTAR !!!
+	// Â¡Â¡Â¡ FALTA POR IMPLEMENTAR !!!
 
 	return (end - begin)*4;
 }

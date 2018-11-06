@@ -6,7 +6,7 @@
 #TODO: mirar el directorio a con una prueba usando
 # https://github.com/behave/behave/blob/master/features/step.use_step_library.feature
 # https://github.com/behave/behave/blob/master/features/userdata.feature
-# para poder usar distintas implementaciones de los steps segun estéusando
+# para poder usar distintas implementaciones de los steps segun estÃ©usando
 # websocket o rest
 # viene de https://github.com/behave/behave/issues/279
 

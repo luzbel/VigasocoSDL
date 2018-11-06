@@ -15,11 +15,11 @@ class GeneradorPantallas;			// definido en GeneradorPantallas.h
 
 class Comando
 {
-// métodos
+// mÃ©todos
 public:
 	virtual bool ejecutar(GeneradorPantallas *gen) = 0;
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Comando(){}
 	virtual ~Comando(){}
 };

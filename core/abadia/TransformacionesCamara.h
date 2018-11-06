@@ -1,6 +1,6 @@
 // TransformacionesCamara.h
 //
-//	Clases que definen las transformaciones de coordenadas según la posición de la cámara
+//	Clases que definen las transformaciones de coordenadas segÃºn la posiciÃ³n de la cÃ¡mara
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -12,11 +12,11 @@ namespace Abadia {
 
 class TransformacionCamara
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void transforma(int &x, int &y) = 0;
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	TransformacionCamara(){}
 	virtual ~TransformacionCamara(){}
 };
@@ -24,28 +24,28 @@ public:
 
 class Camara0 : public TransformacionCamara
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void transforma(int &x, int &y);
 };
 
 class Camara1 : public TransformacionCamara
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void transforma(int &x, int &y);
 };
 
 class Camara2 : public TransformacionCamara
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void transforma(int &x, int &y);
 };
 
 class Camara3 : public TransformacionCamara
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void transforma(int &x, int &y);
 };

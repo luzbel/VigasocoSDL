@@ -46,7 +46,7 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 
 	CROW_LOG_INFO << "atenderComando despues de lock atenderMensaje: " << atenderMensaje;
 
-	memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃa hacerse despues de ver que el comando es valido
+	memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃƒa hacerse despues de ver que el comando es valido
 	if (comando=="NOP") {
 		;
 	} else 
@@ -151,7 +151,7 @@ std::unique_lock<std::mutex> lcx(mtx);
 condVar.wait(lcx,[this]{return atenderMensaje;});
 atenderMensaje=false;
 CROW_LOG_INFO << "load despues de lock nextGameInterrup: " << nextGameInterrupt;
-memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃa hacerse despues de ver que el comando es valido
+memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃƒa hacerse despues de ver que el comando es valido
 					savefile << req.body;
 					savefile.close();
 HTTPInputPlugin::keystate[SDLK_c]=true;

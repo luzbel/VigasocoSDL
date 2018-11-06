@@ -1,6 +1,6 @@
 // AccionesDia.h
 //
-//	Clase para ejecutar las acciones programadas depnediendo del momento del día
+//	Clase para ejecutar las acciones programadas depnediendo del momento del dÃ­a
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -14,11 +14,11 @@ class AccionesDia;
 
 class AccionProgramada
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void ejecuta(AccionesDia *ad) = 0;
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	AccionProgramada(){}
 	virtual ~AccionProgramada(){}
 };
@@ -32,18 +32,18 @@ class AccionesDia
 protected:
 	static AccionProgramada *acciones[7];	// acciones programadas
 
-// métodos
+// mÃ©todos
 public:
 	void ejecutaAccionesProgramadas();
 	void dibujaEfectoEspiral();
 	void colocaObjeto(Objeto *obj, int posX, int posY, int altura);
 	void colocaPersonaje(Personaje *pers, int posX, int posY, int altura, int orientacion);
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	AccionesDia();
 	virtual ~AccionesDia();
 
-// métodos de ayuda
+// mÃ©todos de ayuda
 protected:
 	void dibujaEspiral(int color);
 	void dibujaBloque(int posX, int posY, int color);
@@ -52,49 +52,49 @@ protected:
 
 class AccionesNoche : public AccionProgramada
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void ejecuta(AccionesDia *ad);
 };
 
 class AccionesPrima : public AccionProgramada
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void ejecuta(AccionesDia *ad);
 };
 
 class AccionesTercia : public AccionProgramada
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void ejecuta(AccionesDia *ad);
 };
 
 class AccionesSexta : public AccionProgramada
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void ejecuta(AccionesDia *ad);
 };
 
 class AccionesNona : public AccionProgramada
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void ejecuta(AccionesDia *ad);
 };
 
 class AccionesVisperas : public AccionProgramada
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void ejecuta(AccionesDia *ad);
 };
 
 class AccionesCompletas : public AccionProgramada
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void ejecuta(AccionesDia *ad);
 };
