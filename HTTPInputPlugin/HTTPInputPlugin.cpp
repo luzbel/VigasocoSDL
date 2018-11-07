@@ -111,6 +111,8 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 		CROW_LOG_INFO << "LOAD***" << data << "***";
 		savefile << data;
 		savefile.close();
+		HTTPInputPlugin::keystate[SDLK_c]=true; // c de Cargar
+		HTTPInputPlugin::keystate[SDLK_s]=true; // s de Si, para confirmar la carga
 	} else
 	if (comando=="FIN"||comando=="END"||comando=="GAMEOVER"||comando=="GAME OVER") {
 		SDL_Event sdlevent = {};
@@ -215,7 +217,7 @@ CROW_LOG_INFO << "load-fin dejo seguir al juego: " << " next GI " << nextGameInt
 					res=this->atenderComando(data,"");
 				} else {
 					res=this->atenderComando(
-						data.substr(0,pos-1),
+						data.substr(0,pos),
 						data.substr(pos+1,std::string::npos)
 					);
 				}

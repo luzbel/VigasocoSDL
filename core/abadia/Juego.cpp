@@ -47,7 +47,7 @@
 #include <string.h>
 
 #ifdef __abadIA__
-//TODO: esto no deberÃan ser variables globales
+//TODO: esto no deberían ser variables globales
 extern bool gb_test;
 extern std::string g_test;
 #endif

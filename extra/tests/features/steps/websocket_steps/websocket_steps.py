@@ -80,6 +80,12 @@ def step_impl(context):
     context.ws.send("SPACE");
     assert context.ws.recv()=="OK"
 
+@when('cargo una partida')
+def step_impl(context):
+    context.ws.send("LOAD "+context.text);
+    assert context.ws.recv()=="OK"
+
+
 #@then('los valores iniciales son correctos')
 @step('los valores iniciales son correctos')
 def step_impl(context):

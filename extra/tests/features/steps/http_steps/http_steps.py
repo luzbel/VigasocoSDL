@@ -76,6 +76,11 @@ def step_impl(context):
     r=requests.post('http://localhost:4477/cmd/SPACE')
     assert r.status_code==200
 
+@when('cargo una partida')
+def step_impl(context):
+    r=requests.post('http://localhost:4477/load',context.text)
+    assert r.status_code==200
+
 #@then('los valores iniciales son correctos')
 @step('los valores iniciales son correctos')
 def step_impl(context):

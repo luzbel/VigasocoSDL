@@ -558,3 +558,445 @@ Feature: Interfaz abadIA
 	|     0   |
 	|     0   |
 	|     0   |
+
+
+  Scenario: Cargar partida
+     Given una conexion a la interfaz
+      When cargo una partida:
+	"""
+        2// dia
+        6// momentoDia
+        0// duracionMomentoDia
+        6// oldMomentoDia
+        0// avanzarMomentoDia
+        25// obsequium
+        0// haFracasado
+        0// investigacionCompleta
+        0// bonus
+        223// mascaraPuertas
+        1// espejoCerrado
+        0// numeroRomano
+        103444// despDatosAlturaEspejo
+        123468// despBloqueEspejo
+        0// seAcabaLaNoche
+        0// haAmanecido
+        0// usandoLampara
+        1// lamparaDesaparecida
+        0// tiempoUsoLampara
+        0// cambioEstadoLampara
+        0// cntTiempoAOscuras
+        0// cntLeeLibroSinGuantes
+        0// pergaminoGuardado
+        173// numeroAleatorio
+        1// hayMovimiento
+        9// cntMovimiento
+        0// numPersonajeCamara
+        0// opcionPersonajeCamara
+        // SPRITE 0
+        1// esVisible
+        // SPRITE 1
+        1// esVisible
+        // SPRITE 2
+        1// esVisible
+        // SPRITE 3
+        1// esVisible
+        // SPRITE 4
+        1// esVisible
+        // SPRITE 5
+        1// esVisible
+        // SPRITE 6
+        0// esVisible
+        // SPRITE 7
+        0// esVisible
+        // SPRITE 8
+        0// esVisible
+        // SPRITE 9
+        0// esVisible
+        // SPRITE 10
+        0// esVisible
+        // SPRITE 11
+        0// esVisible
+        // SPRITE 12
+        0// esVisible
+        // SPRITE 13
+        0// esVisible
+        // SPRITE 14
+        0// esVisible
+        // SPRITE 15
+        0// esVisible
+        // SPRITE 16
+        0// esVisible
+        // SPRITE 17
+        0// esVisible
+        // SPRITE 18
+        0// esVisible
+        // SPRITE 19
+        0// esVisible
+        // SPRITE 20
+        0// esVisible
+        // SPRITE 21
+        0// esVisible
+        // SPRITE 22
+        0// esVisible
+        // SPRITE 23
+        0// esVisible
+        // SPRITE 24
+        0// esVisible
+        // SPRITE 25
+        0// esVisible
+        // GUILLERMO
+        1// orientacion
+        132// posX
+        75// posY
+        2// altura
+        0// estado
+        2// contadorAnimacion
+        0// bajando
+        1// orientacion
+        0// enDesnivel
+        0// giradoEnDesnivel
+        0// flipX
+        49152// despFlipX
+        -2// despX
+        -34// despY
+        16// valorPosicion
+        0// puedeQuitarObjetos
+        32// objetos
+        252// mascaraObjetos
+        0// contadorObjetos
+        8// permisosPuertas
+        8// numFotogramas
+        2// incrPosY
+        // ADSO
+        1// orientacion
+        134// posX
+        77// posY
+        2// altura
+        6// estado
+        0// contadorAnimacion
+        0// bajando
+        1// orientacion
+        0// enDesnivel
+        0// giradoEnDesnivel
+        0// flipX
+        49152// despFlipX
+        -2// despX
+        -32// despY
+        32// valorPosicion
+        0// puedeQuitarObjetos
+        0// objetos
+        3// mascaraObjetos
+        0// contadorObjetos
+        8// permisosPuertas
+        8// numFotogramas
+        60// mascarasPuertasBusqueda
+        2// aDondeVa
+        0// aDondeHaLlegado
+        1// oldEstado
+        0// movimientosFrustados
+        0// cntParaDormir
+        // MALAQUIAS
+        1// orientacion
+        132// posX
+        67// posY
+        3// altura
+        8// estado
+        3// contadorAnimacion
+        0// bajando
+        1// orientacion
+        1// enDesnivel
+        0// giradoEnDesnivel
+        0// flipX
+        49152// despFlipX
+        -2// despX
+        -34// despY
+        16// valorPosicion
+        0// puedeQuitarObjetos
+        2// objetos
+        2// mascaraObjetos
+        0// contadorObjetos
+        31// permisosPuertas
+        8// numFotogramas
+        63// mascarasPuertasBusqueda
+        7// aDondeVa
+        0// aDondeHaLlegado
+        0// estaMuerto
+        0// estado2
+        0// contadorEnScriptorium
+        // ABAD
+        3// orientacion
+        136// posX
+        60// posY
+        4// altura
+        6// estado
+        2// contadorAnimacion
+        0// bajando
+        3// orientacion
+        0// enDesnivel
+        0// giradoEnDesnivel
+        1// flipX
+        49152// despFlipX
+        -2// despX
+        -34// despY
+        16// valorPosicion
+        1// puedeQuitarObjetos
+        0// objetos
+        16// mascaraObjetos
+        0// contadorObjetos
+        25// permisosPuertas
+        8// numFotogramas
+        63// mascarasPuertasBusqueda
+        0// aDondeVa
+        0// aDondeHaLlegado
+        0// contador
+        23// numFrase
+        1// guillermoBienColocado
+        0// lleganLosMonjes
+        0// guillermoHaCogidoElPergamino
+        // BERENGARIO
+        1// orientacion
+        140// posX
+        69// posY
+        2// altura
+        1// estado
+        0// contadorAnimacion
+        0// bajando
+        1// orientacion
+        0// enDesnivel
+        0// giradoEnDesnivel
+        0// flipX
+        49152// despFlipX
+        -2// despX
+        -34// despY
+        16// valorPosicion
+        0// puedeQuitarObjetos
+        0// objetos
+        0// mascaraObjetos
+        0// contadorObjetos
+        31// permisosPuertas
+        8// numFotogramas
+        63// mascarasPuertasBusqueda
+        3// aDondeVa
+        0// aDondeHaLlegado
+        0// encapuchado
+        0// estado2
+        1// estaVivo
+        0// contadorPergamino
+        // SEVERINO
+        3// orientacion
+        140// posX
+        77// posY
+        2// altura
+        0// estado
+        3// contadorAnimacion
+        0// bajando
+        3// orientacion
+        0// enDesnivel
+        0// giradoEnDesnivel
+        1// flipX
+        49152// despFlipX
+        -2// despX
+        -34// despY
+        16// valorPosicion
+        0// puedeQuitarObjetos
+        0// objetos
+        0// mascaraObjetos
+        0// contadorObjetos
+        12// permisosPuertas
+        8// numFotogramas
+        47// mascarasPuertasBusqueda
+        2// aDondeVa
+        2// aDondeHaLlegado
+        1// estaVivo
+        // JORGE
+        0// orientacion
+        0// posX
+        0// posY
+        0// altura
+        0// estado
+        0// contadorAnimacion
+        0// bajando
+        0// orientacion
+        0// enDesnivel
+        0// giradoEnDesnivel
+        0// flipX
+        49152// despFlipX
+        -2// despX
+        -34// despY
+        16// valorPosicion
+        0// puedeQuitarObjetos
+        0// objetos
+        0// mascaraObjetos
+        0// contadorObjetos
+        31// permisosPuertas
+        8// numFotogramas
+        63// mascarasPuertasBusqueda
+        0// aDondeVa
+        -6// aDondeHaLlegado
+        0// estaActivo
+        0// contadorHuida
+        // BERNARDO
+        0// orientacion
+        0// posX
+        0// posY
+        0// altura
+        0// estado
+        0// contadorAnimacion
+        0// bajando
+        0// orientacion
+        0// enDesnivel
+        0// giradoEnDesnivel
+        0// flipX
+        49152// despFlipX
+        -2// despX
+        -34// despY
+        16// valorPosicion
+        1// puedeQuitarObjetos
+        0// objetos
+        0// mascaraObjetos
+        0// contadorObjetos
+        31// permisosPuertas
+        8// numFotogramas
+        63// mascarasPuertasBusqueda
+        0// aDondeVa
+        -6// aDondeHaLlegado
+        0// estaEnLaAbadia
+        // PUERTA 0
+        1// orientacion
+        97// posX
+        55// posY
+        2// altura
+        1// identificador
+        0// estaAbierta
+        1// haciaDentro
+        0// estaFija
+        0// hayQueRedibujar
+        // PUERTA 1
+        2// orientacion
+        183// posX
+        30// posY
+        2// altura
+        2// identificador
+        0// estaAbierta
+        1// haciaDentro
+        0// estaFija
+        0// hayQueRedibujar
+        // PUERTA 2
+        0// orientacion
+        102// posX
+        95// posY
+        2// altura
+        4// identificador
+        0// estaAbierta
+        0// haciaDentro
+        0// estaFija
+        0// hayQueRedibujar
+        // PUERTA 3
+        3// orientacion
+        158// posX
+        40// posY
+        2// altura
+        8// identificador
+        0// estaAbierta
+        1// haciaDentro
+        0// estaFija
+        0// hayQueRedibujar
+        // PUERTA 4
+        3// orientacion
+        126// posX
+        38// posY
+        2// altura
+        16// identificador
+        0// estaAbierta
+        0// haciaDentro
+        0// estaFija
+        0// hayQueRedibujar
+        // PUERTA 5
+        3// orientacion
+        96// posX
+        118// posY
+        0// altura
+        0// identificador
+        0// estaAbierta
+        1// haciaDentro
+        0// estaFija
+        0// hayQueRedibujar
+        // PUERTA 6
+        1// orientacion
+        96// posX
+        123// posY
+        0// altura
+        0// identificador
+        0// estaAbierta
+        0// haciaDentro
+        0// estaFija
+        0// hayQueRedibujar
+        // OBJETO 0
+        1// orientacion
+        52// posX
+        94// posY
+        19// altura
+        0// seEstaCogiendo
+        0// seHaCogido
+        -1// numPersonaje
+        // OBJETO 1
+        0// orientacion
+        107// posX
+        85// posY
+        6// altura
+        0// seEstaCogiendo
+        0// seHaCogido
+        -1// numPersonaje
+        // OBJETO 2
+        0// orientacion
+        0// posX
+        0// posY
+        0// altura
+        0// seEstaCogiendo
+        1// seHaCogido
+        0// numPersonaje
+        // OBJETO 3
+        1// orientacion
+        54// posX
+        94// posY
+        19// altura
+        0// seEstaCogiendo
+        0// seHaCogido
+        -1// numPersonaje
+        // OBJETO 4
+        0// orientacion
+        0// posX
+        0// posY
+        0// altura
+        0// seEstaCogiendo
+        0// seHaCogido
+        -1// numPersonaje
+        // OBJETO 5
+        0// orientacion
+        0// posX
+        0// posY
+        0// altura
+        0// seEstaCogiendo
+        0// seHaCogido
+        -1// numPersonaje
+        // OBJETO 6
+        0// orientacion
+        53// posX
+        53// posY
+        19// altura
+        0// seEstaCogiendo
+        1// seHaCogido
+        2// numPersonaje
+        // OBJETO 7
+        0// orientacion
+        8// posX
+        8// posY
+        2// altura
+        0// seEstaCogiendo
+        0// seHaCogido
+        -1// numPersonaje
+      	"""
+      And no hago nada
+      Then los valores iniciales son correctos:
+        | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
+        |   0   |  2  |   False     |         False         |      6     |     34      |        0     |     25    |     13     |
