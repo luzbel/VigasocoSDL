@@ -341,7 +341,6 @@ void Logica::compruebaCogerObjetos()
 	// para cada personaje
 	for (int i = 0; i < Juego::numPersonajes; i++){
 		Personaje *pers = elJuego->personajes[i];
-// fprintf(stderr,"Logica::compruebaCogerObjetos %d %d\n",i,pers->contadorObjetos);	
 		// si el personaje está cogiendo o dejando un objeto, pasa al siguiente personaje
 		pers->contadorObjetos--;
 		if (pers->contadorObjetos != -1) return;

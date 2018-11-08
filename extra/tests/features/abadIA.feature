@@ -1000,3 +1000,31 @@ Feature: Interfaz abadIA
       Then los valores iniciales son correctos:
         | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
         |   0   |  2  |   False     |         False         |      6     |     34      |        0     |     25    |     13     |
+      And la lista de "sonidos" tiene "12" elementos
+      And los elementos de la lista de "sonidos" son:
+	| sonando |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+        And la lista de "Personajes" tiene "6" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre     | objetos          | orientacion | posX | posY |
+         |    2   |  0 | Guillermo  |    32            |      1      |  132 |   75 |
+         |    2   |  1 | Adso       |     0            |      1      |  134 |   77 |
+	 |    3   |  2 | Malaquias  | __DO_NOT_CHECK__ |      1      |  132 |   67 |  
+	 |    4   |  3 | Abad       | __DO_NOT_CHECK__ |      3      |  136 |   60 |  
+	 |    2   |  4 | Berengario | __DO_NOT_CHECK__ |      1      |  140 |   69 |  
+	 |    2   |  5 | Severino   | __DO_NOT_CHECK__ |      3      |  140 |   77 |  
+
+
+
+

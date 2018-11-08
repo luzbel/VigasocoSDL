@@ -13,8 +13,6 @@ SDLKey HTTPInputPlugin::g_keyMapping[END_OF_INPUTS];
 
 #include "/abadIA/VigasocoSDL/core/Vigasoco.h"
 
-//std::mutex mtx;
-
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
@@ -33,8 +31,11 @@ HTTPInputPlugin::~HTTPInputPlugin()
 
 std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std::string& data)
 {
-//crow::websocket::connection conn; // 666 tmp para pruebaas compilacion, falta recibirlo y tener alternativa para 
-// cuando no es websocket
+fprintf(stderr,"atenderComando thread id %d\n",std::this_thread::get_id());
+std::this_thread::sleep_for(std::chrono::milliseconds(5));
+//std::this_thread::sleep_for(std::chrono::milliseconds(20000));
+
+	//TODO cambiar res a un JSON indicando resultado, número de partida y número de paso
 	std::string res="OK";
 	bool peticionValida=true;
 	CROW_LOG_INFO << "atenderComando(" << comando << "," << data <<")";
@@ -90,6 +91,17 @@ res=dump;
 //666conn.send_text(json.str());
 	} else
 	if (comando=="SAVE") {
+		HTTPInputPlugin::keystate[SDLK_g]=true; // g de Grabar
+		HTTPInputPlugin::keystate[SDLK_s]=true; // s de Si, para confirmar la carga
+// uhm, para que esto funcione NO puede entrar ningún otro comando (websocket o http) mientras
+// y eso está pendiente ... TODO 
+		CROW_LOG_INFO << "dejo seguir al juego para que GRABE: " << comando << " nextGI " << nextGameInterrupt;
+		nextGameInterrupt=true;
+		condVar.notify_one();
+		CROW_LOG_INFO << "fin dejo seguir al juego para que GRABE: " << comando << " next GI " << nextGameInterrupt;
+	// Espero otra vez a que el juego me de paso 
+	condVar.wait(lcx,[this]{return atenderMensaje;});
+	atenderMensaje=false;
 		char dump[8192]; //TODO: intentar que sea dinamico
 		memset(dump,'\0',sizeof(dump));
 		std::ifstream savefile("abadia0.save");
@@ -134,36 +146,13 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 
 bool HTTPInputPlugin::init()
 {
-fprintf(stderr,"HTTPInputPlugin::init entro \n");
 	std::thread webThread([this]() {
 		crow::SimpleApp app;
 
-		CROW_ROUTE(app, "/")([]{
-		 return "Hola mundo";
-		});
-
-		CROW_ROUTE(app, "/status")([]{
-		 return "OK";
-		});
-
-		CROW_ROUTE(app,"/loadOLD").methods("POST"_method)([this](const crow::request& req) {
-					std::ofstream savefile("abadia0.save");
-CROW_LOG_INFO << "LOAD***" << req.body << "***";
-std::unique_lock<std::mutex> lcx(mtx);
-condVar.wait(lcx,[this]{return atenderMensaje;});
-atenderMensaje=false;
-CROW_LOG_INFO << "load despues de lock nextGameInterrup: " << nextGameInterrupt;
-memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃa hacerse despues de ver que el comando es valido
-					savefile << req.body;
-					savefile.close();
-HTTPInputPlugin::keystate[SDLK_c]=true;
-HTTPInputPlugin::keystate[SDLK_s]=true;
-CROW_LOG_INFO << "load-dejo seguir al juego: " << "nextGI " << nextGameInterrupt;
-nextGameInterrupt=true;
-condVar.notify_one();
-CROW_LOG_INFO << "load-fin dejo seguir al juego: " << " next GI " << nextGameInterrupt;
-			return crow::response(200);
-		});
+//		CROW_ROUTE(app, "/status")([]{
+//		 // TODO: cambiar a JSON con el mismo formato del 
+//		 return "OK";
+//		});
 
 		CROW_ROUTE(app,"/load").methods("POST"_method)([this](const crow::request& req) {
 			return crow::response(200,this->atenderComando("LOAD",req.body));
@@ -237,34 +226,27 @@ void HTTPInputPlugin::end()
 
 void HTTPInputPlugin::acquire()
 {
-std::unique_lock<std::mutex> lcx(mtx);
+fprintf(stderr,"acquire thread id %d\n",std::this_thread::get_id());
+	std::unique_lock<std::mutex> lcx(mtx);
 fprintf(stderr,"HTTPInputPlugin::acquire inicio ngi %d\n",nextGameInterrupt);
-//	memset((void *)keystate,0,sizeof(keystate));
-condVar.wait(lcx,[this]{return nextGameInterrupt;});
-nextGameInterrupt=false;
-atenderMensaje=false;
+	condVar.wait(lcx,[this]{return nextGameInterrupt;});
+	nextGameInterrupt=false;
+	atenderMensaje=false;
 fprintf(stderr,"HTTPInputPlugin::acquire fin ngi %d\n",nextGameInterrupt);
-//atendiendoMensaje=false;
-//condVar2.notify_one();
 }
 
 void HTTPInputPlugin::unAcquire()
 { 
+fprintf(stderr,"unAcquire thread id %d\n",std::this_thread::get_id());
 //std::lock_guard<std::mutex> _(VigasocoMain->mtx);
 fprintf(stderr,"antes mutex HTTPInputPlugin::unacquire inicio ngi %d\n",nextGameInterrupt);
 std::lock_guard<std::mutex> _(mtx);
 fprintf(stderr,"HTTPInputPlugin::unacquire inicio ngi %d\n",nextGameInterrupt);
-//fprintf(stderr,"HTTPInputPlugin::unAcquire tecla derecha %d\n",keystate[SDLK_RIGHT]);
-	// temporal para borrar pulsaciones anteriores
 	memset((void *)keystate,0,sizeof(keystate));
-//	keystate[SDLK_DELETE]=true;
-//fprintf(stderr,"HTTPInputPlugin::unAcquire tecla derecha %d\n",keystate[SDLK_RIGHT]); 
-nextGameInterrupt=false;
-atenderMensaje=true;
-condVar.notify_one();
+	nextGameInterrupt=false;
+	atenderMensaje=true;
+	condVar.notify_one();
 fprintf(stderr,"HTTPInputPlugin::unacquire fin ngi %d\n",nextGameInterrupt);
-//atendiendoMensaje=false;
-//condVar2.notify_one();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -273,9 +255,7 @@ fprintf(stderr,"HTTPInputPlugin::unacquire fin ngi %d\n",nextGameInterrupt);
 
 void HTTPInputPlugin::process(int *inputs)
 {
-//std::lock_guard<std::mutex> _(VigasocoMain->mtx);
-std::lock_guard<std::mutex> _(mtx);
-//fprintf(stderr,"HTTPInputPlugin::process inicio\n");
+	std::lock_guard<std::mutex> _(mtx);
 	// iterate through the inputs checking associated keys
 	for (int i = 0; i < END_OF_INPUTS; i++){
 		// if we're interested in that input, check it's value
@@ -289,9 +269,6 @@ std::lock_guard<std::mutex> _(mtx);
 			}
 		}
 	}
-//atendiendoMensaje=false;
-//condVar2.notify_one();
-//fprintf(stderr,"HTTPInputPlugin::process fin\n");
 }
 
 /////////////////////////////////////////////////////////////////////////////

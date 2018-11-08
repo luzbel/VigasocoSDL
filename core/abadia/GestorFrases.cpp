@@ -568,7 +568,6 @@ procesaFraseActual();
 void GestorFrases::dibujaFrase(int numFrase)
 {
 #ifdef __abadIA__
-fprintf(stderr,"GestorFrases::dibujaFrase %d\n",numFrase);
 	elJuego->frases.push(numFrase);
 #endif
 	// inicia la frase
@@ -590,7 +589,13 @@ fprintf(stderr,"GestorFrases::dibujaFrase %d\n",numFrase);
 
 void GestorFrases::procesaFraseActual()
 {
-//fprintf(stderr,"GestorFrases::procesaFraseActual contadorActualizacion %d\n",contadorActualizacion);
+// TODO: revisar si activando esto para abadIA 
+// y lanzando NOPs desde la interfaz web se consigue 
+// mejor simulación. El problema puede estar en
+// situaciones interactivas como cuando se pide guardar
+// y se limpia el marcador de frases
+// o se elimina la confirmacion pulsando S/N para __abadIA__
+// o se mantiene este ifndef
 #ifndef __abadIA__
 	contadorActualizacion++;
 

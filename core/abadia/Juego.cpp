@@ -1807,36 +1807,23 @@ despues_de_cargar_o_iniciar:
 
 
 		while (true){	// el bucle principal del juego empieza aquí
-fprintf(stderr,"bucle principal\n");
 #ifdef __abadIA__
-//infoJuego->muestraInfo();
-//pausa=true;
-VigasocoMain->getInputHandler()->acquire();
-//pausa=false;
-//fprintf(stderr,"muestraInfo\n");
-
-
-
-//if (!reiniciando) VigasocoMain->getInputHandler()->acquire();
-//else reiniciando=false;
+			VigasocoMain->getInputHandler()->acquire();
 #endif
-fprintf(stderr,"bucle principal despues de acquire\n");
 
 			controles->actualizaEstado();
 
 #ifdef __abadIA__
         if (controles->seHaPulsado(KEYBOARD_D)){  // D de DUMP
-//		infoJuego->muestraInfo();
-// si ha pedido volcado el agente, borramos la lista de frases
-// para que la siguiente vez tenga solo las frases desde la ultima
-// vez que nos pidio un dump
+		// si ha pedido volcado el agente, borramos la lista de frases
+		// para que la siguiente vez tenga solo las frases desde la ultima
+		// vez que nos pidio un dump
                 while (!elJuego->frases.empty()) {
-fprintf(stderr,"borro de la lista la frase %d\n",elJuego->frases.top());
                         elJuego->frases.pop();
 		}
-// si ha pedido volcado el agente, reiniciamos a false todo el array de sonidos
-// para que la siguiente vez tenga solo los sonidos que han sonado
-// desde la ultima vez que nos pidio un dump
+		// si ha pedido volcado el agente, reiniciamos a false todo el array de sonidos
+		// para que la siguiente vez tenga solo los sonidos que han sonado
+		// desde la ultima vez que nos pidio un dump
                 // reiniciamos para volver a guardar solo los sonidos entre dump y dump
                 for (int index=0;index<12;index++)
                         VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
@@ -1845,10 +1832,7 @@ fprintf(stderr,"borro de la lista la frase %d\n",elJuego->frases.top());
 		continue;
 	}
 			if (compruebaReinicio()) {
-//pausa=true;
 				VigasocoMain->getInputHandler()->unAcquire();
-//pausa=false;
-//reiniciando=true;
 				goto despues_de_cargar_o_iniciar;
 			}
 #else
@@ -1967,17 +1951,6 @@ fprintf(stderr,"borro de la lista la frase %d\n",elJuego->frases.top());
 
 #ifdef __abadIA__
 				infoJuego->muestraInfo();
-
-//        if (controles->seHaPulsado(KEYBOARD_D)){  // D de DUMP
-//        if (controles->estaSiendoPulsado(KEYBOARD_D)){  // D de DUMP
-// si ha pedido volcado el agente, borramos la lista de frases
-// para que la siguiente vez tenga solo las frases desde la ultima
-// vez que nos pidio un dump
- //               while (!elJuego->frases.empty()) {
-//fprintf(stderr,"borro de la lista la frase %d\n",elJuego->frases.top());
- //                       elJuego->frases.pop();
-//		}
-//	}
 #else
 			if (modoInformacion){
 				infoJuego->muestraInfo();
@@ -2006,17 +1979,8 @@ fprintf(stderr,"borro de la lista la frase %d\n",elJuego->frases.top());
 
 			// reinicia el contador de la interrupción
 			contadorInterrupcion = 0;
-//#ifdef __abadIA__
-//VigasocoMain->getInputHandler()->acquire();
-//#endif
-//fprintf(stderr,"bucle principal despues de acquire\n");
-//			if (compruebaReinicio()) goto despues_de_cargar_o_iniciar;
-
 #ifdef __abadIA__
-//pausa=true;
-//		elGestorFrases->actualizaEstado();
-VigasocoMain->getInputHandler()->unAcquire();
-//pausa=false;
+			VigasocoMain->getInputHandler()->unAcquire();
 #endif
 		}
 	}
@@ -2421,43 +2385,32 @@ bool Juego::compruebaLoad()
 {
 	// ESTE FUNCIONAMIENTO NO SE CORRESPONDE
 	// CON EL DE LA VERSION ORIGINAL
-fprintf(stderr,"Juego::compruebaLoad()\n");
 	if (controles->seHaPulsado(KEYBOARD_C))
 	{
-fprintf(stderr,"Juego::compruebaLoad() se ha pulsado la tecla c de Cargar\n");
 
 		// Frase vacia para parar la frase actual
 		elGestorFrases->muestraFraseYa(0x38);
-fprintf(stderr,"Juego::compruebaLoad() despues de muestraFraseYa\n");
 
 		// Esperamos a que se limpie el marcador
 		while (elGestorFrases->mostrandoFrase)
 		{
-fprintf(stderr,"Juego::compruebaLoad() bucle espera a que se limpie el marcador\n");
 			elGestorFrases->actualizaEstado();
-fprintf(stderr,"Juego::compruebaLoad() bucle espera a que se limpie el marcador despues de actualizaEstado\n");
 		} 
-fprintf(stderr,"Juego::compruebaLoad() salimos de bucle espera a que se limpie el marcador\n");
 
 		// Preguntamos
 		// CPC elMarcador->imprimeFrase("¿CARGAR? S:N", 110, 164, 2, 3);
 		elMarcador->imprimeFrase("¿CARGAR? S:N", 110, 164, 4, 0);  // VGA
-fprintf(stderr,"Juego::compruebaLoad() despues de imprimirFrase\n");
-
 		do
 		{
 			losControles->actualizaEstado();
-fprintf(stderr,"Juego::compruebaLoad() despues de actualizarEstado controles\n");
 
 			if (losControles->estaSiendoPulsado(KEYBOARD_S))
 			{
-fprintf(stderr,"Juego::compruebaLoad() han confirmado la carga\n");
 				return cargar(0);
 			}
 
 		}
 		while (losControles->estaSiendoPulsado(KEYBOARD_N) == false);
-fprintf(stderr,"Juego::compruebaLoad() antes de mostraFraseYa para limpiar marcador al final\n");
 		elGestorFrases->muestraFraseYa(0x38);
 	} 
 	return false;
