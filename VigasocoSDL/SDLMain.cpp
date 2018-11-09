@@ -16,10 +16,6 @@
 #include <errno.h>
 #endif
 
-//666 777 TODO
-//#include <SDL_main.h>
-//666 777 Â¿es necesario? Â¿no lo incluye ya SDL.h?
-
 typedef std::vector<std::string> Strings;
 
 // default options
@@ -37,10 +33,15 @@ std::string g_drawPlugin("win8");
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,wingris8 -audio:libVigasocoSDLAudioPlugin.so,SDLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoNULLAudioPlugin.so,NULLAudioPlugin
+
+// abadIA se suele ejecutar en entornes headless sin tarjeta de sonido
+#ifdef __abadIA__
+std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
+std::string g_audioPlugin("NULLAudioPlugin");
+#else
 std::string g_audioPluginsDLL("libVigasocoSDLAudioPlugin.so");
 std::string g_audioPlugin("SDLAudioPlugin");
-//std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
-//std::string g_audioPlugin("NULLAudioPlugin");
+#endif
 
 Strings g_inputPluginsDLLs;
 Strings g_inputPlugins;
@@ -336,8 +337,13 @@ bool parseCommandLine(std::string cmdLine)
 
 	// if the user hasn't set any input plugin, set the default one
 	if (g_inputPluginsDLLs.size() == 0){
+#ifdef __abadIA__
+		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
+		g_inputPlugins.push_back("crowV3");
+#else
 		g_inputPluginsDLLs.push_back("libVigasocoSDLInputPlugin.so");
 		g_inputPlugins.push_back("SDLInputPlugin");
+#endif
 	}
 
 	return true;
