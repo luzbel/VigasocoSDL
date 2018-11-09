@@ -31,10 +31,6 @@ HTTPInputPlugin::~HTTPInputPlugin()
 
 std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std::string& data)
 {
-fprintf(stderr,"atenderComando thread id %d\n",std::this_thread::get_id());
-std::this_thread::sleep_for(std::chrono::milliseconds(5));
-//std::this_thread::sleep_for(std::chrono::milliseconds(20000));
-
 	//TODO cambiar res a un JSON indicando resultado, número de partida y número de paso
 	std::string res="OK";
 	bool peticionValida=true;
@@ -73,8 +69,7 @@ std::this_thread::sleep_for(std::chrono::milliseconds(5));
 		char dump[8192];
 		memset(dump,'\0',sizeof(dump));
 		dumpfile.read(dump,sizeof(dump));
-res=dump;
-//666conn.send_text(dump);
+		res=dump;
 		CROW_LOG_INFO << "fin vuelco dump: " << data;
 	} else
 	if (comando=="RESET"||comando=="REINICIO") {
@@ -82,32 +77,45 @@ res=dump;
 	} else
 	if (comando=="SAVEJSON") {
 		std::stringstream json;
-		char dump[8192]; //TODO: intentar que sea dinamico
-		memset(dump,'\0',sizeof(dump));
-		std::ifstream savefile("abadia0.save");
-		savefile.read(dump,8192);
-		json << "{\"snapshot\":\"" << dump << "\"}";
-res=dump;
-//666conn.send_text(json.str());
-	} else
-	if (comando=="SAVE") {
 		HTTPInputPlugin::keystate[SDLK_g]=true; // g de Grabar
 		HTTPInputPlugin::keystate[SDLK_s]=true; // s de Si, para confirmar la carga
-// uhm, para que esto funcione NO puede entrar ningún otro comando (websocket o http) mientras
-// y eso está pendiente ... TODO 
+		// uhm, para que esto funcione NO puede entrar ningún otro comando (websocket o http) mientras
+		// y eso está pendiente ... TODO 
 		CROW_LOG_INFO << "dejo seguir al juego para que GRABE: " << comando << " nextGI " << nextGameInterrupt;
 		nextGameInterrupt=true;
 		condVar.notify_one();
 		CROW_LOG_INFO << "fin dejo seguir al juego para que GRABE: " << comando << " next GI " << nextGameInterrupt;
-	// Espero otra vez a que el juego me de paso 
-	condVar.wait(lcx,[this]{return atenderMensaje;});
-	atenderMensaje=false;
+		// Espero otra vez a que el juego me de paso 
+		condVar.wait(lcx,[this]{return atenderMensaje;});
+		atenderMensaje=false;
+
 		char dump[8192]; //TODO: intentar que sea dinamico
 		memset(dump,'\0',sizeof(dump));
 		std::ifstream savefile("abadia0.save");
 		savefile.read(dump,8192);
-res=dump;
-//666conn.send_text(dump);
+		
+		json << "{\"snapshot\":\"" << dump << "\"}";
+		res=json.str();
+	} else
+	if (comando=="SAVE") {
+		HTTPInputPlugin::keystate[SDLK_g]=true; // g de Grabar
+		HTTPInputPlugin::keystate[SDLK_s]=true; // s de Si, para confirmar la carga
+		// uhm, para que esto funcione NO puede entrar ningún otro comando (websocket o http) mientras
+		// y eso está pendiente ... TODO 
+		CROW_LOG_INFO << "dejo seguir al juego para que GRABE: " << comando << " nextGI " << nextGameInterrupt;
+		nextGameInterrupt=true;
+		condVar.notify_one();
+		CROW_LOG_INFO << "fin dejo seguir al juego para que GRABE: " << comando << " next GI " << nextGameInterrupt;
+		// Espero otra vez a que el juego me de paso 
+		condVar.wait(lcx,[this]{return atenderMensaje;});
+		atenderMensaje=false;
+
+		char dump[8192]; //TODO: intentar que sea dinamico
+		memset(dump,'\0',sizeof(dump));
+		std::ifstream savefile("abadia0.save");
+		savefile.read(dump,8192);
+
+		res=dump;
 	} else
 	if (comando.find("LOADJSON")==0) {
 		CROW_LOG_INFO << "LOADJSON***" << data << "***";
@@ -138,7 +146,10 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 		nextGameInterrupt=true;
 		condVar.notify_one();
 		CROW_LOG_INFO << "fin dejo seguir al juego: " << comando << " next GI " << nextGameInterrupt;
-	} else atenderMensaje=true;
+	} else {
+		atenderMensaje=true;
+		res="COMANDO DESCONOCIDO"; // TODO: no hay que devolver 200 en la interfaz http
+	}
 
 	return res;
 }
@@ -154,6 +165,71 @@ bool HTTPInputPlugin::init()
 //		 return "OK";
 //		});
 
+		CROW_ROUTE(app,"/abadIA/game").methods("POST"_method)([this](const crow::request& req) {
+			return crow::response(200, this->atenderComando("RESET",req.body));
+		});
+
+// TODO: ver si añadir el charset al final del accept y content-type ; charset=UTF-8
+		CROW_ROUTE(app, "/abadIA/game/current").methods("GET"_method,"PUT"_method)([this](const crow::request& req) {
+			if (req.method=="GET"_method) {
+				std::string accept = req.get_header_value("Accept");
+				if (accept=="application/json") {
+					crow::response response = 
+						crow::response(200, this->atenderComando("DUMP",req.body));
+					response.set_header("Content-Type", "application/json");
+					return response;
+				} else
+					if (accept=="text/x.abadIA+plain") {
+						crow::response response = 
+							crow::response(200, this->atenderComando("SAVE",""));
+						response.set_header("Content-Type", "text/x.abadIA+plain");
+						return response;
+					} else 
+					if (accept=="text/x.abadIA+json") {
+						crow::response response = 
+							crow::response(200, this->atenderComando("SAVEJSON",""));
+						response.set_header("Content-Type", "text/x.abadIA+json");
+						return response;
+					} 
+					else return crow::response(400,"Unsupported type");
+			} else 
+				if (req.method == "PUT"_method) {
+					return crow::response(200,this->atenderComando("LOAD",req.body));
+				} else  return crow::response(404);
+		});
+
+//		CROW_ROUTE(app,"/abadIA/game/current").methods("PUT"_method)([this](const crow::request& req) {
+//			return crow::response(200,this->atenderComando("LOAD",req.body));
+//		});
+
+		CROW_ROUTE(app,"/abadIA/game/current/actions/<string>").methods("POST"_method)([this](const crow::request& req, std::string command) {
+			CROW_LOG_INFO << "action " << command;
+			// TODO: comprobar que el comando es valido antes 
+			if (	command=="NOP" ||
+				command=="RIGHT" ||
+				command=="LEFT" ||
+				command=="UP" ||
+				command=="DOWN" ||
+				command=="SPACE" ||
+				command=="DUMP" ||
+				command=="RESET" ||
+				command=="SAVEJSON" ||
+				command=="SAVE" ||
+				command=="LOADJSON" ||
+				command=="LOAD" ||
+				command=="FIN" ||
+				command=="END" ||
+				command=="GAME OVER" ||
+				command=="GAMEOVER" 
+			) return crow::response(200,this->atenderComando(command,req.body));
+			else return crow::response(400,"Comando desconocido"); // TODO: adaptar a formato REST
+//			return crow::response(200,this->atenderComando("LOAD",req.body));
+//			return crow::response(200,command);
+//TODO: comprobar que pasa cuando mandas .../actions/LOAD con un body vacio, sale lo de pulsar espacio
+// y creo que se queda en juego y no vuelve el control a la interfaz web
+		});
+
+#ifdef 0
 		CROW_ROUTE(app,"/load").methods("POST"_method)([this](const crow::request& req) {
 			return crow::response(200,this->atenderComando("LOAD",req.body));
 		});
@@ -189,6 +265,7 @@ bool HTTPInputPlugin::init()
 		CROW_ROUTE(app,"/cmd/RESET").methods("POST"_method)([this](const crow::request& req) {
 			return crow::response(200, this->atenderComando("RESET",req.body));
 		});
+#endif
 
 		CROW_ROUTE(app,"/ws")
 		.websocket()
@@ -214,6 +291,8 @@ bool HTTPInputPlugin::init()
 				conn.send_text(res);
 		}); 
 
+		// no queremos que sea multithreaded para que se atienda
+		// solo un comando a la vez
 		app.port(4477).run();
         });
         webThread.detach(); 
@@ -226,7 +305,6 @@ void HTTPInputPlugin::end()
 
 void HTTPInputPlugin::acquire()
 {
-fprintf(stderr,"acquire thread id %d\n",std::this_thread::get_id());
 	std::unique_lock<std::mutex> lcx(mtx);
 fprintf(stderr,"HTTPInputPlugin::acquire inicio ngi %d\n",nextGameInterrupt);
 	condVar.wait(lcx,[this]{return nextGameInterrupt;});
@@ -237,7 +315,6 @@ fprintf(stderr,"HTTPInputPlugin::acquire fin ngi %d\n",nextGameInterrupt);
 
 void HTTPInputPlugin::unAcquire()
 { 
-fprintf(stderr,"unAcquire thread id %d\n",std::this_thread::get_id());
 //std::lock_guard<std::mutex> _(VigasocoMain->mtx);
 fprintf(stderr,"antes mutex HTTPInputPlugin::unacquire inicio ngi %d\n",nextGameInterrupt);
 std::lock_guard<std::mutex> _(mtx);

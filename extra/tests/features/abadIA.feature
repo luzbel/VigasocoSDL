@@ -6,9 +6,6 @@
 Feature: Interfaz abadIA
 # ejecutar con -Dinterfaz=websocket o -Dinterfaz=http segun la interfaz a probar
 
-  Scenario: HTTP
-	Given prueba HTTP
-
   Scenario: Inicializacion del juego
      Given una conexion a la interfaz
       When reinicio el juego

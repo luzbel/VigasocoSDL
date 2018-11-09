@@ -15,14 +15,6 @@ from behave import *
 import json
 import requests
 
-@step('prueba HTTP')
-def step_impl(context):
-	r=requests.get('http://localhost:4477/')
-	print("status:***"+str(r.status_code)+"***text***"+r.text+"***");
-	assert r.status_code==200
-	assert r.text=="Hola mundo"
-	
-
 @given('una partida recien iniciada')
 def step_impl(context):
     context.execute_steps('''
@@ -64,6 +56,7 @@ def step_impl(context,nombreLista):
     i=0;
     for row in dump:
      if (i<len(context.table.rows)):
+      print("\nrow "+str(i)+"\n");
       for head in context.table[i].headings:
         if (context.table[i][head] != "__DO_NOT_CHECK__"):
          print("***"+head+"***"+type(row[head]).__name__+"***valor volcado***"+str(row[head])+"***valor esperado***"+str(context.table[i][head])); 

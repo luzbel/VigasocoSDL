@@ -5,8 +5,10 @@ import json
 @given('una conexion a la interfaz')
 def step_impl(context):
     print("conectando al websocket");
-    context.ws = create_connection("ws://localhost:4477/ws")
+    context.ws = create_connection(context.url)
     assert context.ws is not None 
+    context.ws.settimeout(context.timeout)
+    assert context.ws.gettimeout()==context.timeout
 
 @given('una conexion existente a la interfaz')
 def step_impl(context):
