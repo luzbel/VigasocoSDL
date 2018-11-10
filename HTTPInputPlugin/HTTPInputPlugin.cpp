@@ -229,7 +229,7 @@ bool HTTPInputPlugin::init()
 // y creo que se queda en juego y no vuelve el control a la interfaz web
 		});
 
-#ifdef 0
+#ifdef DEFINICION_INVENTADA_PARA_QUE_ESTO_NO_COMPILE
 		CROW_ROUTE(app,"/load").methods("POST"_method)([this](const crow::request& req) {
 			return crow::response(200,this->atenderComando("LOAD",req.body));
 		});
