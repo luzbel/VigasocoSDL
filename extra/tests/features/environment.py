@@ -1,3 +1,7 @@
+# TODO: añadir constantes, como el 431 del numero de líneas
+# de una partida grabada, para poder cambiar todos los tests
+# facilmente si cambia el formato
+
 import sys
 
 def before_all(context):

@@ -87,6 +87,30 @@ def step_impl(context):
     context.ws.send("LOAD "+context.text);
     assert context.ws.recv()=="OK"
 
+@step('grabo la partida')
+def step_impl(context):
+    context.ws.send("SAVE");
+    partida = context.ws.recv();
+    print("***partida recibida***");
+    print(partida); 
+# TODO: no se por que hay una línea en blanco al final extra al
+# final de la respuesta
+    assert partida.count('\n')==431;
+
+@step('grabo la partida y comparo el volcado')
+def step_impl(context):
+    assert context.text.count('\n')+1==431;
+    context.ws.send("SAVE");
+    partida = context.ws.recv();
+    print("***partida recibida***");
+    print(partida);
+    print("***partida esperada***");
+    print(context.text);
+# TODO: no se por que hay una línea en blanco al final extra al
+# final de la respuesta
+    assert partida.count('\n')==431;
+    assert context.text==partida
+
 
 #@then('los valores iniciales son correctos')
 @step('los valores iniciales son correctos')
@@ -99,7 +123,7 @@ def step_impl(context):
     dump = json.loads(result)
     context.dump=dump;
     for head in context.table[0].headings:
-      print("***"+head+"***"+type(dump[head]).__name__+"***"+str(dump[head])+"***"+str(context.table[0][head])); 
+      print("***"+head+"***"+type(dump[head]).__name__+"***Valor recibido***"+str(dump[head])+"***Valor esperado***"+str(context.table[0][head])+"***"); 
       if (type(dump[head]).__name__=="bool"):
        #assert dump[head]==bool(context.table[0][head])
        assert str(dump[head])==(context.table[0][head])

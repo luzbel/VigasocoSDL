@@ -21,7 +21,7 @@ Feature: Escenario1 abadIA
          |    0   |  0 | Guillermo |    32   |      1      |  136 |  159 |
          |    0   |  1 |  Adso     |     0   |      1      |  134 |  160 |
 #	And giro a la derecha
-	And no hago nada
+#	And no hago nada
 	And pulso espacio
 #	And los valores iniciales son correctos:
 #           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |

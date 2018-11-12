@@ -1790,6 +1790,7 @@ logica->inicia();
 	// aquí ya se ha completado la inicialización de datos para el juego
 	// ahora realiza la inicialización para poder empezar a jugar una partida
 	while (true){
+//TODO: ?se sigue usando esta variable, ?borrar?
 #ifdef __abadIA__
 bool reiniciando=false;
 #endif
@@ -1873,7 +1874,12 @@ despues_de_cargar_o_iniciar:
 			// actualiza las variables relacionadas con el paso del tiempo
 			logica->actualizaVariablesDeTiempo();
 
-
+#ifdef __abadIA__
+// este parte solo la ejecutamos mientras no haya acabado la partida
+// si ha acabado se siguen atendiendo peticiones para grabar, cargar, dump, etc.
+// pero el resto como movimientos se ignoran
+if (!logica->haFracasado) {
+#endif
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
 				break;
@@ -1980,6 +1986,7 @@ despues_de_cargar_o_iniciar:
 			// reinicia el contador de la interrupción
 			contadorInterrupcion = 0;
 #ifdef __abadIA__
+} // cerramos el if de !(logica->haFracasado)
 			VigasocoMain->getInputHandler()->unAcquire();
 #endif
 		}
@@ -2267,6 +2274,10 @@ void Juego::compruebaCambioCPC_VGA()
 
 bool Juego::cargar(int slot)
 {
+#ifdef __abadIA__
+//igual esto se debe aplicar en todo caso
+logica->inicia();
+#endif
 	std::ifstream in(savefile[slot]);
 	in >> logica;
 	if ( in.fail() )
@@ -2354,6 +2365,7 @@ void Juego::compruebaSave()
 		// Preguntamos
 		// CPC elMarcador->imprimeFrase("¿GRABAR? S:N", 110, 164, 2, 3);
 		//elMarcador->imprimeFrase(",.WÑ", 110, 164, 4, 0); // VGA
+//		elMarcador->imprimeFrase("¿GRABAR? S:N", 110, 164, 4, 0); // VGA
 		elMarcador->imprimeFrase("¿GRABAR? S:N", 110, 164, 4, 0); // VGA
 		//se estaba guardando el ¿ como multibyte c2bf 
 		// en vez de un simple char bf
@@ -2483,10 +2495,12 @@ void Juego::muestraIntroduccion()
 void Juego::muestraFinal()
 {
 	audio_plugin->Play(SONIDOS::Final,true);
+#ifndef __abadIA__
 	while (true){
 		// muestra el texto del final
 		pergamino->muestraTexto(Pergamino::pergaminoFinal[idioma]);
 	}
+#endif
 }
 
 #ifdef __abadIA__

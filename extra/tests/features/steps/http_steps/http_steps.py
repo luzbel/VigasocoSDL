@@ -87,6 +87,30 @@ def step_impl(context):
     r=requests.put(context.url+'/current',context.text,timeout=context.timeout)
     assert r.status_code==200
 
+@step('grabo la partida')
+def step_impl(context):
+    r=requests.get(context.url+'/current', headers={"accept":"text/x.abadIA+plain"},timeout=context.timeout)
+    print("***partida recibida***");
+    print(r.text);
+    assert r.status_code==200
+# TODO: no se por que en el body hay una línea en blanco al final
+    assert r.text.count('\n')==431
+
+@step('grabo la partida y comparo el volcado')
+def step_impl(context):
+    print("lineas partida esperada: "+context.text.count('\n')+1);
+    assert context.text.count('\n')+1==431;
+    r=requests.get(context.url+'/current', headers={"accept":"text/x.abadIA+plain"},timeout=context.timeout)
+    print("***partida recibida***");
+    print(r.text);
+    print("***partida esperada***");
+    print(context.text);
+    assert r.status_code==200
+# TODO: no se por que en el body hay una línea en blanco al final
+    assert r.text.count('\n')==431
+    assert context.text==r.text
+
+
 #@then('los valores iniciales son correctos')
 @step('los valores iniciales son correctos')
 def step_impl(context):
