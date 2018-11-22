@@ -1878,8 +1878,9 @@ despues_de_cargar_o_iniciar:
 // este parte solo la ejecutamos mientras no haya acabado la partida
 // si ha acabado se siguen atendiendo peticiones para grabar, cargar, dump, etc.
 // pero el resto como movimientos se ignoran
-if (!logica->haFracasado) {
+//if (!logica->haFracasado&&(!elGestorFrases->mostrandoFrase)) {
 #endif
+
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
 				break;
@@ -1888,8 +1889,14 @@ if (!logica->haFracasado) {
 
 			// comprueba si guillermo lee el libro, y si lo hace sin guantes, lo mata
 			logica->compruebaLecturaLibro();
-
-
+/*
+#ifdef __abadIA__
+// este parte solo la ejecutamos mientras no haya acabado la partida
+// si ha acabado se siguen atendiendo peticiones para grabar, cargar, dump, etc.
+// pero el resto como movimientos se ignoran
+if (!logica->haFracasado) {
+#endif
+*/
 			// comprueba si hay que avanzar la parte del momento del día en el marcador
 			marcador->realizaScrollMomentoDia();
 
@@ -1986,7 +1993,7 @@ if (!logica->haFracasado) {
 			// reinicia el contador de la interrupción
 			contadorInterrupcion = 0;
 #ifdef __abadIA__
-} // cerramos el if de !(logica->haFracasado)
+//} // cerramos el if de !(logica->haFracasado)
 			VigasocoMain->getInputHandler()->unAcquire();
 #endif
 		}
@@ -2599,7 +2606,16 @@ bool Juego::muestraPantallaFinInvestigacion()
 
 	// espera a que se pulse y se suelte el botón
 	bool espera = true;
-
+#ifdef __abadIA__
+	while(1) {
+		controles->actualizaEstado();
+		if (controles->estaSiendoPulsado(P1_BUTTON1) || controles->estaSiendoPulsado(KEYBOARD_SPACE)) break;
+		VigasocoMain->getInputHandler()->unAcquire();
+		timer->sleep(1);
+		VigasocoMain->getInputHandler()->acquire();
+	}
+	VigasocoMain->getInputHandler()->unAcquire();
+#else
 	while (espera){
 		controles->actualizaEstado();
 		timer->sleep(1);
@@ -2613,8 +2629,9 @@ bool Juego::muestraPantallaFinInvestigacion()
 		timer->sleep(1);
 		espera = controles->estaSiendoPulsado(P1_BUTTON1) || controles->estaSiendoPulsado(KEYBOARD_SPACE);
 	}
-
+#endif
 	return true;
+
 }
 
 /////////////////////////////////////////////////////////////////////////////

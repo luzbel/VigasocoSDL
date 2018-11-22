@@ -61,6 +61,13 @@ def step_impl(context):
     r=requests.post(context.url+'/current/actions/RIGHT',timeout=context.timeout)
     assert r.status_code==200
 
+@when('doy media vuelta')
+def step_impl(context):
+    r=requests.post(context.url+'/current/actions/RIGHT',timeout=context.timeout)
+    assert r.status_code==200
+    r=requests.post(context.url+'/current/actions/RIGHT',timeout=context.timeout)
+    assert r.status_code==200
+
 @when('avanzo')
 def step_impl(context):
     r=requests.post(context.url+'/current/actions/UP',timeout=context.timeout)
@@ -78,6 +85,15 @@ def step_impl(context,numeroPasos):
      r=requests.post(context.url+'/current/actions/UP',timeout=context.timeout)
      assert r.status_code==200
      i+=1;
+
+@when('Adso avanza "{numeroPasos}" pasos')
+def step_impl(context,numeroPasos):
+    i=0;
+    while i < int(numeroPasos):
+     r=requests.post(context.url+'/current/actions/DOWN',timeout=context.timeout)
+     assert r.status_code==200
+     i+=1;
+
 
 @when('espero "{numeroIteraciones}" iteraciones')
 def step_impl(context,numeroIteraciones):

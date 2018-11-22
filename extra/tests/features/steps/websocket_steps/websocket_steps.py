@@ -18,15 +18,15 @@ def step_impl(context):
 def step_impl(context):
     context.ws.send("RESET");
 #    print(context.ws.recv());
-#    assert context.ws.recv() is "OK"
+#    assert context.ws.recv() is '{ "resultado": "OK" }'
     res=context.ws.recv();
     print("al reiniciar recibo: ***"+res+"***");
-    assert res == "OK"
+    assert res == '{ "resultado": "OK" }'
 
 @when('mando el comando "{comando}"')
 def step_impl(context,comando):
     context.ws.send(comando);
-    assert context.ws.recv() == "OK"
+    assert context.ws.recv() == '{ "resultado": "OK" }'
 
 @when('no hago nada')
 def step_impl(context):
@@ -35,23 +35,23 @@ def step_impl(context):
 #	When mando el comando "NOP"
 #    ''');
     context.ws.send("NOP");
-    assert context.ws.recv()=="OK"
+    assert context.ws.recv()=='{ "resultado": "OK" }'
 
 @when('digo que SI')
 def step_impl(context):
     context.ws.send("SI");
-    assert context.ws.recv()=="OK"
+    assert context.ws.recv()=='{ "resultado": "OK" }'
 
 # TODO: ver si combinar los dos digo en un solo when
 @when('digo que NO')
 def step_impl(context):
     context.ws.send("NO");
-    assert context.ws.recv()=="OK"
+    assert context.ws.recv()=='{ "resultado": "OK" }'
 
 @when('giro a la izquierda')
 def step_impl(context):
     context.ws.send("LEFT");
-    assert context.ws.recv()=="OK"
+    assert context.ws.recv()=='{ "resultado": "OK" }'
 #    context.execute_steps('''
 #	Given una conexion existente a la interfaz
 #	When mando el comando "LEFT"
@@ -60,24 +60,39 @@ def step_impl(context):
 @when('giro a la derecha')
 def step_impl(context):
     context.ws.send("RIGHT");
-    assert context.ws.recv()=="OK"
+    assert context.ws.recv()=='{ "resultado": "OK" }'
+
+@when('doy media vuelta')
+def step_impl(context):
+    context.ws.send("RIGHT");
+    assert context.ws.recv()=='{ "resultado": "OK" }'
+    context.ws.send("RIGHT");
+    assert context.ws.recv()=='{ "resultado": "OK" }'
 
 @when('avanzo')
 def step_impl(context):
     context.ws.send("UP");
-    assert context.ws.recv()=="OK"
+    assert context.ws.recv()=='{ "resultado": "OK" }'
 
 @when('avanzo "{numeroPasos}" pasos')
 def step_impl(context,numeroPasos):
     i=0;
     while i < int(numeroPasos):
      context.ws.send("UP");
-     assert context.ws.recv()=="OK"
+     assert context.ws.recv()=='{ "resultado": "OK" }'
 # El segundo UP es porque el movimiento de avanzar necesita de 2 ciclos para completar la animacion de dar pasos
 # Tambien vale con enviar un NOP
 # Pero es mas realista enviar 2 UP, que es lo que haria un jugador humano, dejar pulsado UP hasta que ve ha terminado de avanzar
      context.ws.send("UP"); 
-     assert context.ws.recv()=="OK"
+     assert context.ws.recv()=='{ "resultado": "OK" }'
+     i+=1;
+
+@when('Adso avanza "{numeroPasos}" pasos')
+def step_impl(context,numeroPasos):
+    i=0;
+    while i < int(numeroPasos):
+     context.ws.send("DOWN");
+     assert context.ws.recv()=='{ "resultado": "OK" }'
      i+=1;
 
 @when('espero "{numeroIteraciones}" iteraciones')
@@ -85,18 +100,18 @@ def step_impl(context,numeroIteraciones):
     i=0;
     while i < int(numeroIteraciones):
      context.ws.send("NOP");
-     assert context.ws.recv()=="OK"
+     assert context.ws.recv()=='{ "resultado": "OK" }'
      i+=1;
 
 @when('pulso espacio')
 def step_impl(context):
     context.ws.send("SPACE");
-    assert context.ws.recv()=="OK"
+    assert context.ws.recv()=='{ "resultado": "OK" }'
 
 @when('cargo una partida')
 def step_impl(context):
     context.ws.send("LOAD "+context.text);
-    assert context.ws.recv()=="OK"
+    assert context.ws.recv()=='{ "resultado": "OK" }'
 
 @step('grabo la partida')
 def step_impl(context):
