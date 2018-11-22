@@ -32,7 +32,7 @@ HTTPInputPlugin::~HTTPInputPlugin()
 std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std::string& data)
 {
 	//TODO cambiar res a un JSON indicando resultado, número de partida y número de paso
-	std::string res="OK";
+	std::string res="{ \"resultado\": \"OK\" }";
 	bool peticionValida=true;
 	CROW_LOG_INFO << "atenderComando(" << comando << "," << data <<")";
 	CROW_LOG_INFO << "atenderComando antes de lock atenderMensaje: " << atenderMensaje;
@@ -46,6 +46,12 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 	memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃa hacerse despues de ver que el comando es valido
 	if (comando=="NOP") {
 		;
+	} else 
+	if (comando=="SI") {
+		HTTPInputPlugin::keystate[SDLK_s]=true;
+	} else 
+	if (comando=="NO") {
+		HTTPInputPlugin::keystate[SDLK_n]=true;
 	} else 
 	if (comando=="RIGHT") {
 		HTTPInputPlugin::keystate[SDLK_RIGHT]=true;
@@ -170,6 +176,7 @@ bool HTTPInputPlugin::init()
 		});
 
 // TODO: ver si añadir el charset al final del accept y content-type ; charset=UTF-8
+// TODO: añadir método delete equivalente a QUIT o GAME_OVER para salir del juego actual
 		CROW_ROUTE(app, "/abadIA/game/current").methods("GET"_method,"PUT"_method)([this](const crow::request& req) {
 			if (req.method=="GET"_method) {
 				std::string accept = req.get_header_value("Accept");
@@ -220,7 +227,9 @@ bool HTTPInputPlugin::init()
 				command=="FIN" ||
 				command=="END" ||
 				command=="GAME OVER" ||
-				command=="GAMEOVER" 
+				command=="GAMEOVER" ||
+				command=="SI" ||
+				command=="NO"
 			) return crow::response(200,this->atenderComando(command,req.body));
 			else return crow::response(400,"Comando desconocido"); // TODO: adaptar a formato REST
 //			return crow::response(200,this->atenderComando("LOAD",req.body));

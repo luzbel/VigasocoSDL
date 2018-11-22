@@ -37,6 +37,17 @@ def step_impl(context):
     context.ws.send("NOP");
     assert context.ws.recv()=="OK"
 
+@when('digo que SI')
+def step_impl(context):
+    context.ws.send("SI");
+    assert context.ws.recv()=="OK"
+
+# TODO: ver si combinar los dos digo en un solo when
+@when('digo que NO')
+def step_impl(context):
+    context.ws.send("NO");
+    assert context.ws.recv()=="OK"
+
 @when('giro a la izquierda')
 def step_impl(context):
     context.ws.send("LEFT");

@@ -41,6 +41,16 @@ def step_impl(context):
     r=requests.post(context.url+'/current/actions/NOP',timeout=context.timeout)
     assert r.status_code==200
 
+@when('digo que SI')
+def step_impl(context):
+    r=requests.post(context.url+'/current/actions/SI',timeout=context.timeout)
+    assert r.status_code==200
+
+@when('digo que NO')
+def step_impl(context):
+    r=requests.post(context.url+'/current/actions/NO',timeout=context.timeout)
+    assert r.status_code==200
+
 @when('giro a la izquierda')
 def step_impl(context):
     r=requests.post(context.url+'/current/actions/LEFT',timeout=context.timeout)
