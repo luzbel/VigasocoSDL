@@ -389,6 +389,13 @@ void Marcador::imprimeFrase(std::string frase, int x, int y, int colorTexto, int
 //	}
 
 	// Los ficheros fuente están ahora guardados en UTF8 y no en ASCII
+	// aquí convertimos a utf32 para poder iterar facilmente
+	// En gestofrases he optado por recorrer el char* sacando cada 
+	// caracter ya sea de 1-4 bytes y metiendolo todo en un int
+	// porque no hago todo en el mismo bucle y tengo que ir iterando por
+	// la frase
+	// Aquí convierto a utf32 y ya puedo sacar cada int con el valor de cada
+	// caracter en cada paso del for
         std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
         std::u32string utf32str = conv.from_bytes(frase);
         int i=0;
