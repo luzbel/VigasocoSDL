@@ -4264,7 +4264,7 @@ Scenario: Ir a comer DIA II
 #	And giro a la izquierda
 	
 # despues de coger el manuscrito
-  Scenario: DIA III NOCHE VOLVER A LA CELDA A DORMIR
+  Scenario: DIA III NOCHE SALIR DEL PASADIZO Y ESPERAR A QUE AMANEZCA
 	Given una conexion a la interfaz
 	When cargo una partida:
 """
@@ -4700,7 +4700,7 @@ Scenario: Ir a comer DIA II
 0// seHaCogido
 -1// numPersonaje
 """	
-#	And no hago nada
+	And no hago nada
 	And los valores iniciales son correctos:
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
            |  4099 |  3  |   False     |         False         |      0     |     64      |        0     |     31    |    1   |     26     |
@@ -4710,13 +4710,1065 @@ Scenario: Ir a comer DIA II
          |   15   |  0 | Guillermo   |    16            |      0      |   54 |   92 |
          |   15   |  1 |  Adso       |     2            |      2      |   58 |   92 |
 	 |   15   |  4 | Encapuchado | __DO_NOT_CHECK__ |      3      |   52 |   92 |  
+	And giro a la izquierda
+	And avanzo "1" pasos
+	And giro a la derecha
+	And avanzo "24" pasos
+	And giro a la derecha
+	And avanzo "14" pasos
+	And giro a la izquierda
+	And avanzo "12" pasos
+	And giro a la izquierda
+	And avanzo "5" pasos
+	And giro a la derecha
+	And avanzo "5" pasos
+	And giro a la derecha
+	And avanzo "3" pasos
+	And giro a la derecha
+	# TODO: pueden ser menos de 20 pasos
+	And avanzo "20" pasos
+	And giro a la derecha
+	And avanzo "3" pasos
+	And giro a la derecha
+	And avanzo "1" pasos
+	And giro a la izquierda
+	And avanzo "54" pasos
+	And giro a la izquierda
+	And avanzo "3" pasos
+	And giro a la derecha
+	And avanzo "7" pasos
+	And giro a la derecha
+#ultimo paso comprobado , el de 20
+	And avanzo "20" pasos
+	And giro a la derecha
+	And avanzo "3" pasos
+	And giro a la izquierda
+	And avanzo "1" pasos
+	And giro a la derecha
+	And avanzo "4" pasos
+	And giro a la izquierda
+	And avanzo "5" pasos
+	And giro a la izquierda
+	And avanzo "3" pasos
+	And giro a la derecha
+	And avanzo "9" pasos
+	And giro a la izquierda
+	And avanzo "5" pasos
+	And giro a la izquierda
+	And avanzo "6" pasos
+	And giro a la derecha
+	And avanzo "2" pasos
+	And giro a la derecha
+	And avanzo "16" pasos
+	And giro a la derecha
+	And avanzo "13" pasos
+	And giro a la izquierda
+# en el camino de ida eran 8
+# pero prefiero esperar el encapuchado
+# y que me abra la puerta en vez de 
+# manejar a Adso
+	And avanzo "6" pasos
+	And giro a la izquierda
+	And avanzo "7" pasos
+	And giro a la derecha
+	And espero "98" iteraciones 
+# muchos no avanzan, nos bloquea el encapuchado
+# 	And avanzo "3" pasos
+#podría ir a la celda, pero espero en la puerta a
+#que sea hora de ir a misa
+# uhmmm, no funciona, nos expulsa el abad
+# ver vídeo de Manuel Pazos a ver como lo hace él
+
+#	And Adso avanza "14" pasos
+#	And giro a la izquierda
+#	And Adso avanza "4" pasos
+#	And giro a la derecha
+# esto provoca un error en la busqueda de caminos
+# TODO: aprovechar para depurar
+#	And avanzo "4" pasos
+# probemos saliendo un poco menos
+# y lo que pasa es que el tonto de Adso
+# se empeña en ir en esta dirección 
+# y no dejarme avanzar
+#	And avanzo "3" pasos
+
+#14D , LEFT  , 4D , RIGHT , 8UP
 
 
+#probemos de otra forma
 
 
+#	And avanzo "1" pasos
+	# en realidad no avanza, se da la vuelta y me deja espacio para avanzar
+#	And Adso avanza "5" pasos
+#	And avanzo "23" pasos
+#	And giro a la derecha
+#	And avanzo "14" pasos
+#	And giro a la izquierda
+#	And avanzo "12" pasos
+#	And giro a la izquierda
+	
 
 
+# no consigo que funcione el truco de dejar la puerta del pasadizo abierta
+# en vez de ir a la celda o seguir al encapuchado al herbolario
+# que son muchos pasos
+# voy a probar el truco de quedarse al norte de la iglesiz
+# a la izquierda al salir del pasadizo
+# que es uno de los trucos del juego
+# si te quedas allí pegado a una pared el abad no te expulsa
+	And avanzo "8" pasos
+	And giro a la izquierda
+	And avanzo "10" pasos
+	And giro a la izquierda
+	And avanzo "2" pasos
+	And espero "424" iteraciones 
+	And giro a la derecha
+	And giro a la derecha
+	And espero "1" iteraciones 
+	And avanzo "2" pasos
+	And giro a la derecha
+	# en algunos me molesta Adso y no avanzo
+	And avanzo "11" pasos
+	And giro a la izquierda
+	And espero "2" iteraciones 
+	And avanzo "21" pasos
+	And giro a la derecha
+	And espero "3" iteraciones 
+	And avanzo "17" pasos
+	And giro a la derecha
+	And avanzo "5" pasos
+	#Adso parece un jueves
+	And espero "6" iteraciones 
+	And avanzo "6" pasos
+	And giro a la izquierda
+	# a ver si me coloco bien para misa
+	And avanzo "17" pasos
+	And giro a la derecha
+	And avanzo "8" pasos
+	And giro a la derecha
+	# empieza a decir "HERMANOS, BERENGARIO HA DESAPARECIDO..."
+	And espero "126" iteraciones 
+	# el abad nos llama
+	And espero "91" iteraciones
+	# espero a que un monje nos deje hueco para pasar
+	And espero "9" iteraciones
+	And avanzo "17" pasos
+	And giro a la derecha
+	# espero mientras el abad me dice que
+	# vamos a conocer a Jorge
+	And espero "88" iteraciones
+	And grabo la partida 
 
+
+Scenario: DIA III TERCIA CONOCER A JORGE
+	Given una conexion a la interfaz
+	When cargo una partida:
+"""
+3// dia
+2// momentoDia
+1149// duracionMomentoDia
+2// oldMomentoDia
+0// avanzarMomentoDia
+31// obsequium
+0// haFracasado
+0// investigacionCompleta
+4099// bonus
+239// mascaraPuertas
+1// espejoCerrado
+0// numeroRomano
+103444// despDatosAlturaEspejo
+123468// despBloqueEspejo
+0// seAcabaLaNoche
+0// haAmanecido
+0// usandoLampara
+0// lamparaDesaparecida
+0// tiempoUsoLampara
+0// cambioEstadoLampara
+0// cntTiempoAOscuras
+0// cntLeeLibroSinGuantes
+0// pergaminoGuardado
+136// numeroAleatorio
+1// hayMovimiento
+88// cntMovimiento
+0// numPersonajeCamara
+0// opcionPersonajeCamara
+// SPRITE 0
+1// esVisible
+// SPRITE 1
+1// esVisible
+// SPRITE 2
+0// esVisible
+// SPRITE 3
+1// esVisible
+// SPRITE 4
+0// esVisible
+// SPRITE 5
+0// esVisible
+// SPRITE 6
+0// esVisible
+// SPRITE 7
+0// esVisible
+// SPRITE 8
+0// esVisible
+// SPRITE 9
+0// esVisible
+// SPRITE 10
+0// esVisible
+// SPRITE 11
+0// esVisible
+// SPRITE 12
+0// esVisible
+// SPRITE 13
+0// esVisible
+// SPRITE 14
+0// esVisible
+// SPRITE 15
+0// esVisible
+// SPRITE 16
+0// esVisible
+// SPRITE 17
+0// esVisible
+// SPRITE 18
+0// esVisible
+// SPRITE 19
+0// esVisible
+// SPRITE 20
+0// esVisible
+// SPRITE 21
+0// esVisible
+// SPRITE 22
+0// esVisible
+// SPRITE 23
+0// esVisible
+// SPRITE 24
+0// esVisible
+// SPRITE 25
+0// esVisible
+// GUILLERMO
+0// orientacion
+132// posX
+57// posY
+4// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+1// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+16// objetos
+252// mascaraObjetos
+0// contadorObjetos
+8// permisosPuertas
+8// numFotogramas
+2// incrPosY
+// ADSO
+1// orientacion
+132// posX
+59// posY
+4// altura
+1// estado
+0// contadorAnimacion
+0// bajando
+1// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-32// despY
+32// valorPosicion
+0// puedeQuitarObjetos
+2// objetos
+3// mascaraObjetos
+0// contadorObjetos
+24// permisosPuertas
+8// numFotogramas
+60// mascarasPuertasBusqueda
+-1// aDondeVa
+0// aDondeHaLlegado
+1// oldEstado
+0// movimientosFrustados
+3// cntParaDormir
+// MALAQUIAS
+3// orientacion
+135// posX
+130// posY
+2// altura
+10// estado
+1// contadorAnimacion
+0// bajando
+3// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+1// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+2// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+2// aDondeVa
+0// aDondeHaLlegado
+0// estaMuerto
+192// estado2
+0// contadorEnScriptorium
+// ABAD
+0// orientacion
+136// posX
+57// posY
+4// altura
+16// estado
+0// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+1// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+1// puedeQuitarObjetos
+0// objetos
+16// mascaraObjetos
+0// contadorObjetos
+25// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+7// aDondeVa
+0// aDondeHaLlegado
+0// contador
+48// numFrase
+1// guillermoBienColocado
+0// lleganLosMonjes
+0// guillermoHaCogidoElPergamino
+// BERENGARIO
+3// orientacion
+0// posX
+0// posY
+0// altura
+6// estado
+0// contadorAnimacion
+0// bajando
+3// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+128// objetos
+128// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+5// aDondeVa
+5// aDondeHaLlegado
+1// encapuchado
+24// estado2
+0// estaVivo
+0// contadorPergamino
+// SEVERINO
+3// orientacion
+137// posX
+132// posY
+2// altura
+6// estado
+2// contadorAnimacion
+0// bajando
+3// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+1// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+0// mascaraObjetos
+0// contadorObjetos
+12// permisosPuertas
+8// numFotogramas
+47// mascarasPuertasBusqueda
+2// aDondeVa
+0// aDondeHaLlegado
+1// estaVivo
+// JORGE
+0// orientacion
+200// posX
+36// posY
+0// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+128// objetos
+0// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+0// aDondeVa
+-6// aDondeHaLlegado
+1// estaActivo
+0// contadorHuida
+// BERNARDO
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+1// puedeQuitarObjetos
+0// objetos
+0// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+0// aDondeVa
+-6// aDondeHaLlegado
+0// estaEnLaAbadia
+// PUERTA 0
+1// orientacion
+97// posX
+55// posY
+2// altura
+1// identificador
+0// estaAbierta
+1// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 1
+2// orientacion
+183// posX
+30// posY
+2// altura
+2// identificador
+0// estaAbierta
+1// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 2
+0// orientacion
+102// posX
+95// posY
+2// altura
+4// identificador
+0// estaAbierta
+0// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 3
+3// orientacion
+158// posX
+40// posY
+2// altura
+8// identificador
+0// estaAbierta
+1// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 4
+3// orientacion
+126// posX
+38// posY
+2// altura
+16// identificador
+0// estaAbierta
+0// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 5
+2// orientacion
+96// posX
+118// posY
+0// altura
+0// identificador
+1// estaAbierta
+1// haciaDentro
+1// estaFija
+0// hayQueRedibujar
+// PUERTA 6
+2// orientacion
+96// posX
+123// posY
+0// altura
+0// identificador
+1// estaAbierta
+0// haciaDentro
+1// estaFija
+0// hayQueRedibujar
+// OBJETO 0
+0// orientacion
+15// posX
+46// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 1
+0// orientacion
+107// posX
+85// posY
+6// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 2
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 3
+1// orientacion
+54// posX
+94// posY
+19// altura
+0// seEstaCogiendo
+1// seHaCogido
+0// numPersonaje
+// OBJETO 4
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 5
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 6
+0// orientacion
+53// posX
+53// posY
+19// altura
+0// seEstaCogiendo
+1// seHaCogido
+1// numPersonaje
+// OBJETO 7
+0// orientacion
+90// posX
+42// posY
+4// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+"""
+	And espero "6" iteraciones
+	And avanzo "20" pasos
+	And giro a la izquierda
+	And avanzo "13" pasos
+	And espero "4" iteraciones
+	And avanzo "2" pasos
+	And giro a la derecha
+	And avanzo "10" pasos
+	And giro a la izquierda
+	And avanzo "7" pasos
+	# el abad me interrumpe
+	And espero "2" iteraciones
+	And avanzo "2" pasos
+# aqui si insisto en avanzar y darme con la pared
+# coredump por
+# VigasocoSDL: ../core/abadia/BuscadorRutas.cpp:515: int Abadia::BuscadorRutas::compruebaFinCamino(Abadia::PersonajeConIA*, bool): Assertion `noHayError' failed.
+#	And avanzo "9" pasos # descomentar para forzar el error y depurar TODO
+	And giro a la derecha
+	And avanzo "19" pasos
+	And espero "4" iteraciones
+	And avanzo "3" pasos
+	And giro a la derecha
+	And avanzo "6" pasos
+	And giro a la izquierda
+	And avanzo "15" pasos
+	# ya ha empezado a soltar "VENERABLE JOR..."
+	And espero "268" iteraciones
+	# el siguiente paso ya cambia a SEXTA y
+	# hay que ir al refectorio
+	And grabo la partida 
+
+
+Scenario: DIA III SEXTA IR AL REFECTORIO
+	Given una conexion a la interfaz
+	When cargo una partida:
+"""
+3// dia
+3// momentoDia
+0// duracionMomentoDia
+3// oldMomentoDia
+0// avanzarMomentoDia
+31// obsequium
+0// haFracasado
+0// investigacionCompleta
+4099// bonus
+239// mascaraPuertas
+1// espejoCerrado
+0// numeroRomano
+103444// despDatosAlturaEspejo
+123468// despBloqueEspejo
+0// seAcabaLaNoche
+0// haAmanecido
+0// usandoLampara
+0// lamparaDesaparecida
+0// tiempoUsoLampara
+0// cambioEstadoLampara
+0// cntTiempoAOscuras
+0// cntLeeLibroSinGuantes
+0// pergaminoGuardado
+136// numeroAleatorio
+1// hayMovimiento
+1// cntMovimiento
+0// numPersonajeCamara
+0// opcionPersonajeCamara
+// SPRITE 0
+1// esVisible
+// SPRITE 1
+1// esVisible
+// SPRITE 2
+0// esVisible
+// SPRITE 3
+1// esVisible
+// SPRITE 4
+0// esVisible
+// SPRITE 5
+0// esVisible
+// SPRITE 6
+1// esVisible
+// SPRITE 7
+0// esVisible
+// SPRITE 8
+0// esVisible
+// SPRITE 9
+0// esVisible
+// SPRITE 10
+0// esVisible
+// SPRITE 11
+0// esVisible
+// SPRITE 12
+0// esVisible
+// SPRITE 13
+0// esVisible
+// SPRITE 14
+0// esVisible
+// SPRITE 15
+0// esVisible
+// SPRITE 16
+0// esVisible
+// SPRITE 17
+0// esVisible
+// SPRITE 18
+0// esVisible
+// SPRITE 19
+0// esVisible
+// SPRITE 20
+0// esVisible
+// SPRITE 21
+0// esVisible
+// SPRITE 22
+0// esVisible
+// SPRITE 23
+0// esVisible
+// SPRITE 24
+0// esVisible
+// SPRITE 25
+0// esVisible
+// GUILLERMO
+0// orientacion
+200// posX
+40// posY
+0// altura
+0// estado
+2// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+252// mascaraObjetos
+0// contadorObjetos
+8// permisosPuertas
+8// numFotogramas
+2// incrPosY
+// ADSO
+0// orientacion
+198// posX
+39// posY
+0// altura
+7// estado
+2// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-32// despY
+32// valorPosicion
+0// puedeQuitarObjetos
+2// objetos
+3// mascaraObjetos
+0// contadorObjetos
+24// permisosPuertas
+8// numFotogramas
+60// mascarasPuertasBusqueda
+1// aDondeVa
+0// aDondeHaLlegado
+7// oldEstado
+0// movimientosFrustados
+3// cntParaDormir
+// MALAQUIAS
+1// orientacion
+76// posX
+75// posY
+15// altura
+10// estado
+3// contadorAnimacion
+0// bajando
+1// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+1// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+2// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+2// aDondeVa
+0// aDondeHaLlegado
+0// estaMuerto
+192// estado2
+0// contadorEnScriptorium
+// ABAD
+3// orientacion
+201// posX
+38// posY
+0// altura
+16// estado
+0// contadorAnimacion
+0// bajando
+3// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+1// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+1// puedeQuitarObjetos
+16// objetos
+16// mascaraObjetos
+0// contadorObjetos
+25// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+1// aDondeVa
+0// aDondeHaLlegado
+0// contador
+25// numFrase
+0// guillermoBienColocado
+1// lleganLosMonjes
+0// guillermoHaCogidoElPergamino
+// BERENGARIO
+3// orientacion
+0// posX
+0// posY
+0// altura
+6// estado
+0// contadorAnimacion
+0// bajando
+3// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+128// objetos
+128// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+5// aDondeVa
+5// aDondeHaLlegado
+1// encapuchado
+24// estado2
+0// estaVivo
+0// contadorPergamino
+// SEVERINO
+1// orientacion
+135// posX
+83// posY
+2// altura
+6// estado
+0// contadorAnimacion
+0// bajando
+1// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+1// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+0// mascaraObjetos
+0// contadorObjetos
+12// permisosPuertas
+8// numFotogramas
+47// mascarasPuertasBusqueda
+1// aDondeVa
+2// aDondeHaLlegado
+1// estaVivo
+// JORGE
+0// orientacion
+200// posX
+36// posY
+0// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+128// objetos
+0// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+0// aDondeVa
+-6// aDondeHaLlegado
+1// estaActivo
+0// contadorHuida
+// BERNARDO
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+1// puedeQuitarObjetos
+0// objetos
+0// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+0// aDondeVa
+-6// aDondeHaLlegado
+0// estaEnLaAbadia
+// PUERTA 0
+1// orientacion
+97// posX
+55// posY
+2// altura
+1// identificador
+0// estaAbierta
+1// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 1
+2// orientacion
+183// posX
+30// posY
+2// altura
+2// identificador
+0// estaAbierta
+1// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 2
+0// orientacion
+102// posX
+95// posY
+2// altura
+4// identificador
+0// estaAbierta
+0// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 3
+3// orientacion
+158// posX
+40// posY
+2// altura
+8// identificador
+0// estaAbierta
+1// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 4
+3// orientacion
+126// posX
+38// posY
+2// altura
+16// identificador
+0// estaAbierta
+0// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 5
+2// orientacion
+96// posX
+118// posY
+0// altura
+0// identificador
+1// estaAbierta
+1// haciaDentro
+1// estaFija
+0// hayQueRedibujar
+// PUERTA 6
+2// orientacion
+96// posX
+123// posY
+0// altura
+0// identificador
+1// estaAbierta
+0// haciaDentro
+1// estaFija
+0// hayQueRedibujar
+// OBJETO 0
+0// orientacion
+15// posX
+46// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 1
+0// orientacion
+107// posX
+85// posY
+6// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 2
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 3
+1// orientacion
+54// posX
+94// posY
+19// altura
+0// seEstaCogiendo
+1// seHaCogido
+3// numPersonaje
+// OBJETO 4
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 5
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 6
+0// orientacion
+53// posX
+53// posY
+19// altura
+0// seEstaCogiendo
+1// seHaCogido
+1// numPersonaje
+// OBJETO 7
+0// orientacion
+90// posX
+42// posY
+4// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+"""
+	And giro a la derecha
+# continuar ...
+
+	
 
 
 
