@@ -202,7 +202,10 @@ void MotorGrafico::compruebaCambioPantalla(bool forzarCambio)
 			}
 		}
 	}
-
+#ifdef __abadIA_CHEAT__
+// TRAMPAS MIENTRAS PRUEBO EL LABERINTO
+pantallaIluminada=true;
+#endif
 	// marca el sprite de la luz como no visible
 	elJuego->sprites[Juego::spriteLuz]->esVisible = false;
 

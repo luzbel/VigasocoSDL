@@ -222,7 +222,10 @@ void Jorge::piensa()
 				aDondeVa = 1;
 
 				// apaga la luza de la pantalla y le quita el libro a guillermo
+#ifndef __abadIA_CHEAT__
+// TODO:quitar estas trampas mientras revisamos el laberinto
 				elMotorGrafico->pantallaIluminada = false;
+#endif
 				laLogica->guillermo->objetos &= 0x7f;
 
 				// quita el libro del marcador
