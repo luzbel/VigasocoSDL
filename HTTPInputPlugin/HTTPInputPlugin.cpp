@@ -11,8 +11,6 @@
 
 SDLKey HTTPInputPlugin::g_keyMapping[END_OF_INPUTS];
 
-#include "/abadIA/VigasocoSDL/core/Vigasoco.h"
-
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
@@ -44,6 +42,11 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 	CROW_LOG_INFO << "atenderComando despues de lock atenderMensaje: " << atenderMensaje;
 
 	memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃa hacerse despues de ver que el comando es valido
+	if (comando=="QR") { // TODO: esto es mucha ayuda para el agente, quizás poner interfaz para enviar
+			     // cualquier combinación de teclas posibles en un CPC464
+		HTTPInputPlugin::keystate[SDLK_q]=true;
+		HTTPInputPlugin::keystate[SDLK_r]=true;
+	} else 
 	if (comando=="NOP") {
 		;
 	} else 
@@ -213,6 +216,7 @@ bool HTTPInputPlugin::init()
 			CROW_LOG_INFO << "action " << command;
 			// TODO: comprobar que el comando es valido antes 
 			if (	command=="NOP" ||
+				command=="QR" || // TODO: mucha ayuda para la IA. Ver alternativas para esto
 				command=="RIGHT" ||
 				command=="LEFT" ||
 				command=="UP" ||

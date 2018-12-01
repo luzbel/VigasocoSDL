@@ -593,8 +593,11 @@ int Logica::calculaPorcentajeMision()
 	} else {
 		// si se ha completado la investigación, muestra el pergamino del final
 		elJuego->muestraFinal();
-
+#ifndef __abadIA__
 		return 0;
+#else
+		return 100;
+#endif
 	}
 }
 

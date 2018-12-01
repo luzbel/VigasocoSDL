@@ -1806,7 +1806,6 @@ despues_de_cargar_o_iniciar:
 //				infoJuego->muestraInfo();
 //#endif
 
-
 		while (true){	// el bucle principal del juego empieza aquí
 #ifdef __abadIA__
 			VigasocoMain->getInputHandler()->acquire();
@@ -2332,7 +2331,6 @@ void Juego::save(int slot)
 		out.close();
 	}
 #endif
-
 	std::ofstream out(savefile[slot],
 			std::ofstream::out|std::ofstream::trunc);
 
@@ -2586,6 +2584,13 @@ bool Juego::muestraPantallaFinInvestigacion()
 	};
 	porcentaje[idioma][2] = ((porc/10) % 10) + 0x30;
 	porcentaje[idioma][3] = (porc % 10) + 0x30;
+#ifdef __abadIA__
+	// en un juego normal si se llega al 100
+	// sale el pergamino final antes de llegar aquí
+	// en abadIA preferimos sacar la pantalla resumen
+	// y mostrar el porcentaje
+	if (porc==100) porcentaje[idioma][1]=1+0x30;
+#endif
 
 	// CPC
 	//marcador->imprimeFrase("HAS RESUELTO EL", 96, 32, 2, 3);
