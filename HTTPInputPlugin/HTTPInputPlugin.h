@@ -14,6 +14,8 @@
 #include <condition_variable>
 #include <mutex>
 
+#include <fstream>
+
 class HTTPInputPlugin: public IInputPlugin
 {
 private:
@@ -22,6 +24,7 @@ private:
 	// TODO, cambiar por una sola variable que indique el estado
 	bool nextGameInterrupt=false;
         bool atenderMensaje=true;
+        std::fstream replayFile;
 // fields
 protected:
 	static const std::string g_properties[];

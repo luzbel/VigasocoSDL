@@ -20,6 +20,18 @@ HTTPInputPlugin::HTTPInputPlugin()
 	_errorMsg = "";
 
 	initRemapTable();
+// TODO: en vez de compilando cada versión
+// usando setProperty se puede poner modo 
+// grabar o en modo reproducir
+// aunque siendo un plugin
+// pues es cuestión de cargar un plugin  u otro
+// pueden ser la misma lib, aunque con distinto
+// nombre de plugin a seleccionar en PluginMain
+#ifdef __abadIA_REPLAY__
+        replayFile.open("abadIA.rec",std::ifstream::in);
+#else
+        replayFile.open("abadIA.rec",std::ofstream::out|std::ofstream::trunc); //|std::ofstream::app);
+#endif
 }
 
 HTTPInputPlugin::~HTTPInputPlugin()
@@ -29,6 +41,7 @@ HTTPInputPlugin::~HTTPInputPlugin()
 
 std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std::string& data)
 {
+
 	//TODO cambiar res a un JSON indicando resultado, número de partida y número de paso
 	std::string res="{ \"resultado\": \"OK\" }";
 	bool peticionValida=true;
@@ -151,7 +164,10 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 
 
 	if (peticionValida) {
-		CROW_LOG_INFO << "dejo seguir al juego: " << comando << " nextGI " << nextGameInterrupt;
+#ifndef __abadIA_REPLAY__
+	replayFile << comando << " " << data << std::endl;
+#endif
+			CROW_LOG_INFO << "dejo seguir al juego: " << comando << " nextGI " << nextGameInterrupt;
 		nextGameInterrupt=true;
 		condVar.notify_one();
 		CROW_LOG_INFO << "fin dejo seguir al juego: " << comando << " next GI " << nextGameInterrupt;
@@ -166,6 +182,7 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 
 bool HTTPInputPlugin::init()
 {
+#ifndef __abadIA_REPLAY__
 	std::thread webThread([this]() {
 		crow::SimpleApp app;
 
@@ -310,6 +327,33 @@ bool HTTPInputPlugin::init()
         });
         webThread.detach(); 
         return true;
+#else
+	std::thread replayThread([this]() {
+
+	std::string line;
+	std::string res="OK";
+	// TODO: falta control errores al leer
+	// ver https://gehrcke.de/2011/06/reading-files-in-c-using-ifstream-dealing-correctly-with-badbit-failbit-eofbit-and-perror/
+	// TODO: comprobar los resultados de atenderComando 
+	// TODO: este bucle en vez de en ::init en un hilo desacoplado
+	// debería ir en ::process
+	// que se llama desde fuera del bucle principal de juego
+	// TODO: esto no funciona en comandos multilínea como LOAD
+	while(getline(replayFile, line)) {
+		std::string::size_type pos=line.find(" ");
+		if (pos==std::string::npos) {
+			res=this->atenderComando(line,"");
+		} else {
+			res=this->atenderComando(
+					line.substr(0,pos),
+					line.substr(pos+1,std::string::npos)
+					);
+		}
+	}
+        });
+        replayThread.detach(); 
+        return true;
+#endif
 }
 
 void HTTPInputPlugin::end()
