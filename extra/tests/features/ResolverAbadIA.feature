@@ -3148,6 +3148,7 @@ Scenario: Ir a comer DIA II
 
 # despues de robar la llave usamos el pasadizo de la cocina
 # TODO: ESTO AHORA FALLA ????
+# parece que era una espera de 1810 iteraciones puestas para alguna prueba
   Scenario: DIA II NONA Usar pasadizo
 	Given una conexion a la interfaz
 	When cargo una partida:
@@ -3624,7 +3625,8 @@ Scenario: Ir a comer DIA II
 	And avanzo "25" pasos
 	And giro a la derecha
 ###
-	And espero "1810" iteraciones
+# esto se ha debido quedar de alguna prueba
+###	And espero "1810" iteraciones
 ###
 	And avanzo "3" pasos
 	And giro a la izquierda
@@ -3645,7 +3647,8 @@ Scenario: Ir a comer DIA II
 	And avanzo "2" pasos
 	And giro a la derecha
 	# aquí va a la escalera con recoveco
-	And avanzo "16" pasos
+#	And avanzo "16" pasos ?por que esto antes era 20 y se puso 16?
+	And avanzo "20" pasos
 	And giro a la derecha
 	And avanzo "13" pasos
 	And giro a la izquierda
