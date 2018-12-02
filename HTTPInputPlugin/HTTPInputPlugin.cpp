@@ -165,9 +165,12 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 
 	if (peticionValida) {
 #ifndef __abadIA_REPLAY__
-	replayFile << comando << " " << data << std::endl;
+	nlohmann::json accion;
+	accion["comando"] = comando;
+	accion["data"] = data;
+	acciones.push_back(accion);
 #endif
-			CROW_LOG_INFO << "dejo seguir al juego: " << comando << " nextGI " << nextGameInterrupt;
+		CROW_LOG_INFO << "dejo seguir al juego: " << comando << " nextGI " << nextGameInterrupt;
 		nextGameInterrupt=true;
 		condVar.notify_one();
 		CROW_LOG_INFO << "fin dejo seguir al juego: " << comando << " next GI " << nextGameInterrupt;
@@ -330,6 +333,17 @@ bool HTTPInputPlugin::init()
 #else
 	std::thread replayThread([this]() {
 
+	std::string res="OK";
+	replayJSON = nlohmann::json::parse(replayFile); // TODO: controlar excepciones
+	nlohmann::json accionesJSON = replayJSON["acciones"]; // ?usar variable acciones declarado en .h
+	for (nlohmann::json::iterator it = accionesJSON.begin(); it != accionesJSON.end(); ++it) {
+		// std::cout << (*it)["comando"] << " : " << (*it)["data"] << "\n*****\n";
+		// TODO: comprobar los resultados de atenderComando 
+		res = this->atenderComando((*it)["comando"],(*it)["data"]); 
+	}
+
+		
+/*
 	std::string line;
 	std::string res="OK";
 	// TODO: falta control errores al leer
@@ -349,7 +363,7 @@ bool HTTPInputPlugin::init()
 					line.substr(pos+1,std::string::npos)
 					);
 		}
-	}
+	} */
         });
         replayThread.detach(); 
         return true;
@@ -358,6 +372,10 @@ bool HTTPInputPlugin::init()
 
 void HTTPInputPlugin::end()
 {
+#ifndef __abadIA_REPLAY__
+	replayJSON["acciones"] = acciones;
+	replayFile << replayJSON;
+#endif
 }
 
 void HTTPInputPlugin::acquire()

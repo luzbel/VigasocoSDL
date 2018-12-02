@@ -16,6 +16,8 @@
 
 #include <fstream>
 
+#include "json.hpp"
+
 class HTTPInputPlugin: public IInputPlugin
 {
 private:
@@ -25,6 +27,8 @@ private:
 	bool nextGameInterrupt=false;
         bool atenderMensaje=true;
         std::fstream replayFile;
+	nlohmann::json replayJSON;
+	nlohmann::json acciones = nlohmann::json::array();
 // fields
 protected:
 	static const std::string g_properties[];
