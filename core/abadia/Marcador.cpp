@@ -410,9 +410,6 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 	switch(caracter) {
 		case L',': caracter=0x3c; break;
 		case L'.': caracter=0x3d; break;
-// 666 el . se usa en las nuevas traducciones
-// pero en el original se usaba para que COMPLETAS
-// entrase en el marcador
 		case L'¿': caracter=0x40; break;
 		case L'Ñ': caracter=0x57; break;
 		case L'W': caracter=0xd1; break;
@@ -490,9 +487,6 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 		case L'Ú': data=da; break;
 		case 0xd1: data=d1; break; // la ñ se cambia por la w y la w por esta
 		case L'-': data=ui; break;
-//666		case L'-': data=ui; break;
-// ¿en que texto uso - para que haya creado gráfico y me haya cargado el truco para que
-// entre COMPLETAS en el Marcador ???
 		case L'\'': data=uj; break; 
 		// En la ROM original el caracter - se usa para representar
 		// una combinación de más de una letra
@@ -503,9 +497,6 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 		// a - en el original
 		case L'#': caracter='-'; // no hacer break, queremos que busque el grafico original asociado a -
 		default: {
-
-fprintf(stderr,"voy a imprimir un ASCII %c [%d] y el rarito es %c [%d]\n",caracter,(int)caracter,'-',int('-'));
-
 				 if ((unsigned int)caracter>127) 
 					printf("ERROR, no existe grafico para el caracter "
 						"%c %u \n", caracter, (unsigned char)caracter);
@@ -537,13 +528,6 @@ fprintf(stderr,"voy a imprimir un ASCII %c [%d] y el rarito es %c [%d]\n",caract
 			 }
 
 	}
-// 6666
-//caracter='-';
-//caracter='.';
-//if (caracter != 0x20){
-//data = &roms[0xb400 + 8*(caracter - 0x2d)];
-//}
-// el misterio de COMPLETAS
 	// los caracteres normales son de 8x8 pixels
 	// los añadidos para las traducciones son de 8x10
 	for (int j = 0; j < largo; j++){

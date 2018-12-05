@@ -188,30 +188,6 @@ void AbadiaDriver::filesLoaded()
 	memcpy(&romsPtr[0x24000-1+(_gameFiles[1]->getTotalSize()+21600)*2],_gameFiles[2]->getData(),_gameFiles[1]->getTotalSize());
 	// Los sonidos no se copian, y se cargan directamente en Audioplugin
 
-// sumando 0x4000 se ve mal , que raro, al principio de la rom esta la imagen de presentacion que ocupa ese tamaño
-//UINT8*tmp=&romsPtr[0x4000+0x4fbc + 7*0];
-//fprintf(stderr,"AbadiaDriver momento 0 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
-//tmp=&romsPtr[0x4000+0x4fbc + 7*1];
-//fprintf(stderr,"AbadiaDriver momento 1 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
-//tmp=&romsPtr[0x4000+0x4fbc + 7*2];
-//fprintf(stderr,"AbadiaDriver momento 2 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
-//tmp=&romsPtr[0x4000+0x4fbc + 7*3];
-//fprintf(stderr,"AbadiaDriver momento 3 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
-//tmp=&romsPtr[0x4000+0x4fbc + 7*4];
-//fprintf(stderr,"AbadiaDriver momento 4 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
-//tmp=&romsPtr[0x4000+0x4fbc + 7*5];
-//fprintf(stderr,"AbadiaDriver momento 5 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
-//tmp=&romsPtr[0x4000+0x4fbc + 7*6];
-//fprintf(stderr,"AbadiaDriver momento 6 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
-
-// Para comprimir el texto en el Marcado, cada caracter no se corresponde con una letra en pantalla
-// hay gráficos para algunos caracteres que incluyen 2 letras
-// Así que el texto de COMPLETAS en la ROM es "COM-./>"
-// Pero - y . ahora se usan como caracteres normales
-// Así que parcheamos el texto de la ROM para que los caracteres especiales sean otros
-//*(tmp+3)='#';
-//*(tmp+4)='~';
-
         // En la versión 0.09 se incluyeron nuevos caracteres para soportar nuevos idiomas
         // Esos nuevos caracteres incluian '-' y '.' , a los que se le añadio nuevo gráfico
         // Pero en el código original algunos caracteres como - . > /
