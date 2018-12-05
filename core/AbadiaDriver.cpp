@@ -22,6 +22,10 @@
 //para memcpy
 #include <string.h>
 
+//666 pruebas bug corrupcion texto dia
+#include <sys/mman.h>
+
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -164,6 +168,7 @@ void AbadiaDriver::filesLoaded()
 	// reordena los datos y los copia al destino
 	reOrderAndCopy(&auxBuffer[0x0000], &romsPtr[0x14000], 0x4000);	// abadia5.bin
 
+
 	// obtiene los datos de las pistas 0x21-0x25
 	for (int i = 0x21; i <= 0x25; i++){
 		dsk.getTrackData(i, &auxBuffer[(i - 0x21)*0x0f00], 0x0f00, bytesWritten);
@@ -171,6 +176,7 @@ void AbadiaDriver::filesLoaded()
 
 	// reordena los datos y los copia al destino
 	reOrderAndCopy(&auxBuffer[0x0000], &romsPtr[0x08000], 0x4000);	// abadia2.bin
+
 
 	// TODO: VGA
 	// Copiamos de primeras los graficos VGA despues de la rom
@@ -181,6 +187,56 @@ void AbadiaDriver::filesLoaded()
 	memcpy(&romsPtr[0x24000-1+_gameFiles[1]->getTotalSize()+21600],_gameFiles[1]->getData(),_gameFiles[1]->getTotalSize());
 	memcpy(&romsPtr[0x24000-1+(_gameFiles[1]->getTotalSize()+21600)*2],_gameFiles[2]->getData(),_gameFiles[1]->getTotalSize());
 	// Los sonidos no se copian, y se cargan directamente en Audioplugin
+
+// sumando 0x4000 se ve mal , que raro, al principio de la rom esta la imagen de presentacion que ocupa ese tamaño
+//UINT8*tmp=&romsPtr[0x4000+0x4fbc + 7*0];
+//fprintf(stderr,"AbadiaDriver momento 0 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
+//tmp=&romsPtr[0x4000+0x4fbc + 7*1];
+//fprintf(stderr,"AbadiaDriver momento 1 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
+//tmp=&romsPtr[0x4000+0x4fbc + 7*2];
+//fprintf(stderr,"AbadiaDriver momento 2 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
+//tmp=&romsPtr[0x4000+0x4fbc + 7*3];
+//fprintf(stderr,"AbadiaDriver momento 3 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
+//tmp=&romsPtr[0x4000+0x4fbc + 7*4];
+//fprintf(stderr,"AbadiaDriver momento 4 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
+//tmp=&romsPtr[0x4000+0x4fbc + 7*5];
+//fprintf(stderr,"AbadiaDriver momento 5 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
+//tmp=&romsPtr[0x4000+0x4fbc + 7*6];
+//fprintf(stderr,"AbadiaDriver momento 6 #%c%c%c%c%c%c%c%c%c#\n",*tmp,*(tmp+1),*(tmp+2),*(tmp+3),*(tmp+4),*(tmp+5),*(tmp+6),*(tmp+7));
+
+// Para comprimir el texto en el Marcado, cada caracter no se corresponde con una letra en pantalla
+// hay gráficos para algunos caracteres que incluyen 2 letras
+// Así que el texto de COMPLETAS en la ROM es "COM-./>"
+// Pero - y . ahora se usan como caracteres normales
+// Así que parcheamos el texto de la ROM para que los caracteres especiales sean otros
+//*(tmp+3)='#';
+//*(tmp+4)='~';
+
+        // En la versión 0.09 se incluyeron nuevos caracteres para soportar nuevos idiomas
+        // Esos nuevos caracteres incluian '-' y '.' , a los que se le añadio nuevo gráfico
+        // Pero en el código original algunos caracteres como - . > /
+        // se usan para representar varios caracteres a la vez
+        // Por ejemplo, COMPLETAS no cabe en el hueco del Marcador
+        // donde se muestra el día
+        // Y en la ROM está grabado como COM-./>
+        // El gráfico del guión es el texto PL comprimido y ajustado para que
+        // COMPLETAS entre en el marcador
+        //
+        // Parcheamos el texto de COMPLETAS en la ROM para que en vez de usar - y .
+        // como caracteres especiales que representan varias letras a la vez,
+        // se usen @ y ~  , que son códigos ASCII que no se usan en ninguno de los
+        // nuevos textos multiidioma
+        // Junto a este cambio, se modifica Marcador::imprimirCaracter para que
+        // se tenga en cuenta este parche y cuando se imprima @ o ~
+        // se usan los antiguos gráficos asociados a - y .
+        //
+        // Accedemos a la posición de la ROM dónd está el texto COM-./>
+        UINT8*tmp=&romsPtr[0x4000+0x4fbc + 7*6];
+        // Modificamos el tercer byte cambiando - por #
+        *(tmp+3)='#';
+        // Modificamos el cuarto byte cambiando . por ~
+        *(tmp+4)='~';
+
 }
 
 // reordena los datos gráficos y los copia en el destino

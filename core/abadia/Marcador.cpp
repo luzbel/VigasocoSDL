@@ -208,7 +208,7 @@ void Marcador::realizaScrollMomentoDia()
 				cpc6128->setVGAPixel(44 + i - 8, 180 + j, cpc6128->getMode1Pixel(44 + i, 180 + j));
 			}
 		}
-		
+fprintf(stderr,"Marcador::realizaScrollMomentoDia %c [%d] y el rarito es - [%d]\n",caracter,(int)caracter,(int)'-');		
 		// imprime el caracter que toca
 		// CPC imprimirCaracter(caracter, 84, 180, 3, 2);
 		imprimirCaracter(caracter, 84, 180, 0, 4); // VGA
@@ -410,9 +410,20 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 	switch(caracter) {
 		case L',': caracter=0x3c; break;
 		case L'.': caracter=0x3d; break;
+// 666 el . se usa en las nuevas traducciones
+// pero en el original se usaba para que COMPLETAS
+// entrase en el marcador
 		case L'¿': caracter=0x40; break;
 		case L'Ñ': caracter=0x57; break;
 		case L'W': caracter=0xd1; break;
+		// En la ROM original el caracter . se usa para representar
+		// una combinación de más de una letra
+		// Pero el . también se usa ahora para algunas frases multiidiona
+		// en AbadiaDriver::filesLoaded se parchea la ROM para usar
+		// el caracter ~ en vez del .
+		// Aquí deshacemos el cambio para que se imprima el gráfico asociado
+		// a . en el original
+		case L'~': caracter='.' ; break;
 	}
 
 
@@ -479,8 +490,21 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 		case L'Ú': data=da; break;
 		case 0xd1: data=d1; break; // la ñ se cambia por la w y la w por esta
 		case L'-': data=ui; break;
+//666		case L'-': data=ui; break;
+// ¿en que texto uso - para que haya creado gráfico y me haya cargado el truco para que
+// entre COMPLETAS en el Marcador ???
 		case L'\'': data=uj; break; 
+		// En la ROM original el caracter - se usa para representar
+		// una combinación de más de una letra
+		// Pero el - también se usa ahora para algunas frases multiidiona
+		// en AbadiaDriver::filesLoaded se parchea la ROM para usar
+		// el caracter # en vez del -
+		// Aquí deshacemos el cambio para que se imprima el gráfico asociado
+		// a - en el original
+		case L'#': caracter='-'; // no hacer break, queremos que busque el grafico original asociado a -
 		default: {
+
+fprintf(stderr,"voy a imprimir un ASCII %c [%d] y el rarito es %c [%d]\n",caracter,(int)caracter,'-',int('-'));
 
 				 if ((unsigned int)caracter>127) 
 					printf("ERROR, no existe grafico para el caracter "
@@ -513,7 +537,13 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 			 }
 
 	}
-
+// 6666
+//caracter='-';
+//caracter='.';
+//if (caracter != 0x20){
+//data = &roms[0xb400 + 8*(caracter - 0x2d)];
+//}
+// el misterio de COMPLETAS
 	// los caracteres normales son de 8x8 pixels
 	// los añadidos para las traducciones son de 8x10
 	for (int j = 0; j < largo; j++){
