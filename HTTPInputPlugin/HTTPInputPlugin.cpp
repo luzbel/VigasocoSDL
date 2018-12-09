@@ -202,14 +202,14 @@ bool HTTPInputPlugin::init()
 						response.set_header("Content-Type", "text/x.abadIA+json");
 						return response;
 					} 
-					else return crow::response(400,"Unsupported type");
+					else return crow::response(400,"{ \"resultado\": \"KO\" , \"descripcion\": \"Unsupported type\" }");
 			} else 
 				if (req.method == "PUT"_method) {
 					return crow::response(200,this->atenderComando("LOAD",req.body));
 				} else
 					if (req.method == "DELETE"_method) {
 						return crow::response(200,this->atenderComando("FIN",""));
-					} else  return crow::response(404);
+					} else  return crow::response(500,"{ \"resultado\": \"KO\" , \"descripcion\": \"crow debería haber rechazado previamente esta petición porque el método no está implementado para el recurso\" }");
 		});
 
 //		CROW_ROUTE(app,"/abadIA/game/current").methods("PUT"_method)([this](const crow::request& req) {
@@ -239,7 +239,7 @@ bool HTTPInputPlugin::init()
 				command=="SI" ||
 				command=="NO"
 			) return crow::response(200,this->atenderComando(command,req.body));
-			else return crow::response(400,"Comando desconocido"); // TODO: adaptar a formato REST
+			else return crow::response(400,"{ \"resultado\": \"KO\" , \"descripcion\": \"Comando desconocido\" }");
 //			return crow::response(200,this->atenderComando("LOAD",req.body));
 //			return crow::response(200,command);
 //TODO: comprobar que pasa cuando mandas .../actions/LOAD con un body vacio, sale lo de pulsar espacio

@@ -26,6 +26,28 @@ def step_impl(context):
 	Given una conexion a la interfaz
     ''');
 
+@when('hago una peticion con un Accept invalido')
+def step_impl(context):
+    r=requests.get(context.url+'/current', headers={"accept":"FAKE"},timeout=context.timeout)
+# TODO: este assert debería ir en el then
+    assert r.status_code==400
+    context.dump=r.json()
+
+@when('hago un POST al juego actual')
+def step_impl(context):
+    r=requests.post(context.url+'/current', timeout=context.timeout)
+# TODO: este assert debería ir en el then
+    assert r.status_code==404
+    context.dump=r.text.rstrip()
+
+@when('mando un comando desconocido')
+def step_impl(context):
+    r=requests.post(context.url+'/current/actions/'+'FAKE',timeout=context.timeout)
+# TODO: este assert debería ir en el then
+    assert r.status_code==400
+    context.dump=r.json()
+
+
 @when('reinicio el juego')
 def step_impl(context):
     r=requests.post(context.url,timeout=context.timeout)
@@ -136,6 +158,16 @@ def step_impl(context):
     assert r.text.count('\n')==431
     assert context.text==r.text
 
+# TODO: comparar contra tabla para poder ampliar lo que se comprueba
+@then('el resultado es "{resultado}" con descripcion "{descripcion}"')
+def step_impl(context,resultado,descripcion):
+	assert context.dump["resultado"]==resultado
+	assert context.dump["descripcion"]==descripcion
+
+@then('el resultado es "{resultado}"')
+def step_impl(context,resultado):
+	print("mmmm *"+context.dump+"**"+resultado+"**");
+	assert context.dump==resultado
 
 #@then('los valores iniciales son correctos')
 @step('los valores iniciales son correctos')
