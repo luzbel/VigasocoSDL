@@ -181,7 +181,7 @@ bool HTTPInputPlugin::init()
 
 // TODO: ver si añadir el charset al final del accept y content-type ; charset=UTF-8
 // TODO: añadir método delete equivalente a QUIT o GAME_OVER para salir del juego actual
-		CROW_ROUTE(app, "/abadIA/game/current").methods("GET"_method,"PUT"_method)([this](const crow::request& req) {
+		CROW_ROUTE(app, "/abadIA/game/current").methods("GET"_method,"PUT"_method,"DELETE"_method)([this](const crow::request& req) {
 			if (req.method=="GET"_method) {
 				std::string accept = req.get_header_value("Accept");
 				if (accept=="application/json") {
@@ -206,7 +206,10 @@ bool HTTPInputPlugin::init()
 			} else 
 				if (req.method == "PUT"_method) {
 					return crow::response(200,this->atenderComando("LOAD",req.body));
-				} else  return crow::response(404);
+				} else
+					if (req.method == "DELETE"_method) {
+						return crow::response(200,this->atenderComando("FIN",""));
+					} else  return crow::response(404);
 		});
 
 //		CROW_ROUTE(app,"/abadIA/game/current").methods("PUT"_method)([this](const crow::request& req) {
