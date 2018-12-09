@@ -14,14 +14,19 @@
 #include <condition_variable>
 #include <mutex>
 
+enum ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN {
+	ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN=0,
+	ATENDIENDO_MENSAJE_EN_EL_HTTPINPUTPLUGIN=1,
+	AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO=2,
+	AVANZANDO_UNA_INTERRUPCION_EN_EL_JUEGO=3
+};
+
 class HTTPInputPlugin: public IInputPlugin
 {
 private:
 	std::mutex mtx;
 	std::condition_variable condVar;
-	// TODO, cambiar por una sola variable que indique el estado
-	bool nextGameInterrupt=false;
-        bool atenderMensaje=true;
+	int estado=ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
 // fields
 protected:
 	static const std::string g_properties[];

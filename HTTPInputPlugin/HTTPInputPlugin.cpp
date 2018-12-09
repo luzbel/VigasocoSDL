@@ -32,14 +32,14 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 	//TODO cambiar res a un JSON indicando resultado, número de partida y número de paso
 	std::string res="{ \"resultado\": \"OK\" }";
 	bool peticionValida=true;
-	CROW_LOG_INFO << "atenderComando(" << comando << "," << data <<")";
-	CROW_LOG_INFO << "atenderComando antes de lock atenderMensaje: " << atenderMensaje;
+	CROW_LOG_DEBUG << "atenderComando(" << comando << "," << data <<")";
+	CROW_LOG_DEBUG << "Estado antes de lock atenderMensaje: " << estado;
 
 	std::unique_lock<std::mutex> lcx(mtx);
-	condVar.wait(lcx,[this]{return atenderMensaje;});
-	atenderMensaje=false;
+	condVar.wait(lcx,[this]{return estado==ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;});
+	estado=ATENDIENDO_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
 
-	CROW_LOG_INFO << "atenderComando despues de lock atenderMensaje: " << atenderMensaje;
+	CROW_LOG_DEBUG << "Estado despues de lock atenderMensaje: " << estado;
 
 	memset((void *)keystate,0,sizeof(keystate)); // esto solo deberÃa hacerse despues de ver que el comando es valido
 	if (comando=="QR") { // TODO: esto es mucha ayuda para el agente, quizás poner interfaz para enviar
@@ -90,13 +90,13 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 		HTTPInputPlugin::keystate[SDLK_s]=true; // s de Si, para confirmar la carga
 		// uhm, para que esto funcione NO puede entrar ningún otro comando (websocket o http) mientras
 		// y eso está pendiente ... TODO 
-		CROW_LOG_INFO << "dejo seguir al juego para que GRABE: " << comando << " nextGI " << nextGameInterrupt;
-		nextGameInterrupt=true;
+		CROW_LOG_DEBUG << "dejo seguir al juego para que GRABE: " << comando << " estado " << estado;
+		estado=AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;
 		condVar.notify_one();
-		CROW_LOG_INFO << "fin dejo seguir al juego para que GRABE: " << comando << " next GI " << nextGameInterrupt;
+		CROW_LOG_DEBUG << "fin dejo seguir al juego para que GRABE: " << comando << " estado " << estado;
 		// Espero otra vez a que el juego me de paso 
-		condVar.wait(lcx,[this]{return atenderMensaje;});
-		atenderMensaje=false;
+		condVar.wait(lcx,[this]{return estado==ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;});
+		estado=ATENDIENDO_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
 
 		char dump[8192]; //TODO: intentar que sea dinamico
 		memset(dump,'\0',sizeof(dump));
@@ -111,13 +111,13 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 		HTTPInputPlugin::keystate[SDLK_s]=true; // s de Si, para confirmar la carga
 		// uhm, para que esto funcione NO puede entrar ningún otro comando (websocket o http) mientras
 		// y eso está pendiente ... TODO 
-		CROW_LOG_INFO << "dejo seguir al juego para que GRABE: " << comando << " nextGI " << nextGameInterrupt;
-		nextGameInterrupt=true;
+		CROW_LOG_DEBUG << "dejo seguir al juego para que GRABE: " << comando << " estado " << estado;
+		estado=AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;
 		condVar.notify_one();
-		CROW_LOG_INFO << "fin dejo seguir al juego para que GRABE: " << comando << " next GI " << nextGameInterrupt;
+		CROW_LOG_DEBUG << "fin dejo seguir al juego para que GRABE: " << comando << " estado " << estado;
 		// Espero otra vez a que el juego me de paso 
-		condVar.wait(lcx,[this]{return atenderMensaje;});
-		atenderMensaje=false;
+		condVar.wait(lcx,[this]{return estado==ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;});
+		estado=ATENDIENDO_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
 
 		char dump[8192]; //TODO: intentar que sea dinamico
 		memset(dump,'\0',sizeof(dump));
@@ -151,12 +151,13 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 
 
 	if (peticionValida) {
-		CROW_LOG_INFO << "dejo seguir al juego: " << comando << " nextGI " << nextGameInterrupt;
-		nextGameInterrupt=true;
+		CROW_LOG_DEBUG << "dejo seguir al juego: " << comando << " estado " << estado;
+		estado=AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;
+		CROW_LOG_DEBUG << "dejo seguir al juego antes de notify_one: " << comando << " estado " << estado << "literal " << AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;
 		condVar.notify_one();
-		CROW_LOG_INFO << "fin dejo seguir al juego: " << comando << " next GI " << nextGameInterrupt;
+		CROW_LOG_DEBUG << "fin dejo seguir al juego: " << comando << " estado " << estado;
 	} else {
-		atenderMensaje=true;
+		estado=ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
 		res="COMANDO DESCONOCIDO"; // TODO: no hay que devolver 200 en la interfaz http
 	}
 
@@ -319,24 +320,21 @@ void HTTPInputPlugin::end()
 void HTTPInputPlugin::acquire()
 {
 	std::unique_lock<std::mutex> lcx(mtx);
-fprintf(stderr,"HTTPInputPlugin::acquire inicio ngi %d\n",nextGameInterrupt);
-	condVar.wait(lcx,[this]{return nextGameInterrupt;});
-	nextGameInterrupt=false;
-	atenderMensaje=false;
-fprintf(stderr,"HTTPInputPlugin::acquire fin ngi %d\n",nextGameInterrupt);
+	CROW_LOG_DEBUG << "HTTPInputPlugin::acquire inicio estado " << estado;
+	condVar.wait(lcx,[this]{return estado==AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;});
+	estado=AVANZANDO_UNA_INTERRUPCION_EN_EL_JUEGO;
+	CROW_LOG_DEBUG << "HTTPInputPlugin::acquire fin estado " << estado;
 }
 
 void HTTPInputPlugin::unAcquire()
-{ 
-//std::lock_guard<std::mutex> _(VigasocoMain->mtx);
-fprintf(stderr,"antes mutex HTTPInputPlugin::unacquire inicio ngi %d\n",nextGameInterrupt);
-std::lock_guard<std::mutex> _(mtx);
-fprintf(stderr,"HTTPInputPlugin::unacquire inicio ngi %d\n",nextGameInterrupt);
+{
+	CROW_LOG_DEBUG << "antes mutex HTTPInputPlugin::unacquire inicio ngi " << estado;
+	std::lock_guard<std::mutex> _(mtx);
+	CROW_LOG_DEBUG << "HTTPInputPlugin::unacquire inicio ngi " << estado;
 	memset((void *)keystate,0,sizeof(keystate));
-	nextGameInterrupt=false;
-	atenderMensaje=true;
+	estado=ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
 	condVar.notify_one();
-fprintf(stderr,"HTTPInputPlugin::unacquire fin ngi %d\n",nextGameInterrupt);
+	CROW_LOG_DEBUG << "HTTPInputPlugin::unacquire fin ngi " << estado;
 }
 
 /////////////////////////////////////////////////////////////////////////////
