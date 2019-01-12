@@ -9,57 +9,36 @@ https://github.com/luzbel/VigasocoSDL/blob/pruebasAbadIA/extra/Docker/dev/Docker
 Ahora está en la rama oficial VigasocoSDL-ng
 
 
-34 respuestas
-VigasocoSDL [hace 2 meses]
+
+## Pasos ##
+ 
 Parto de lanzar un contenedor basado en ubuntu:xenial
 
-
-VigasocoSDL [hace 2 meses]
+```
 docker run -ti -p 5900:5900 -p 4477:4477 -p 8182:8182 ubuntu bash
+```
 
 
-VigasocoSDL [hace 2 meses]
-los puertos son los que usan VNC y la interfaz web
+Los puertos exportados son los que usan VNC y la interfaz web.
 
-VigasocoSDL [hace 2 meses]
-dentro de ese bash hago
+Dentro de ese bash hago:
 
+```
+apt-get update
+apt-get install -y git vim xvfb make g++ libsdl1.2-dev x11vnc libboost-all-dev virtualenv
 
-VigasocoSDL [hace 2 meses]
-# apt-get update
-
-
-VigasocoSDL [hace 2 meses]
-# apt-get install -y git vim xvfb make g++ libsdl1.2-dev x11vnc libboost-all-dev virtualenv
+virtualenv -p python3 python3
+source python3/bin/activate
 
 
-VigasocoSDL [hace 2 meses]
-# virtualenv -p python3 python3
+pip install behave websocket-client requests
+
+git clone https://github.com/luzbel/VigasocoSDL.git
+cd VigasocoSDL/
 
 
-VigasocoSDL [hace 2 meses]
-# source python3/bin/activate
-
-
-VigasocoSDL [hace 2 meses]
-# pip install behave websocket-client requests (editado)
-
-
-VigasocoSDL [hace 2 meses]
-# git clone https://github.com/luzbel/VigasocoSDL.git
-GitHub
-luzbel/VigasocoSDL
-Temporal workspace for newest version of VigasocoSDL while the full history is recovered - luzbel/VigasocoSDL
- 
-
-
-VigasocoSDL [hace 2 meses]
-# cd VigasocoSDL/
-
-
-VigasocoSDL [hace 2 meses]
-# git checkout abadIA-timing-by-webserver
-
+git checkout abadIA-timing-by-webserver
+```
 
 VigasocoSDL [hace 2 meses]
 # export DISPLAY=:0
