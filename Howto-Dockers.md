@@ -33,11 +33,10 @@ source python3/bin/activate
 
 pip install behave websocket-client requests
 
-git clone https://github.com/luzbel/VigasocoSDL.git
+git clone https://github.com/LaAbadIAdelCrimen/VigasocoSDL-AI.git
 cd VigasocoSDL/
 
-
-git checkout abadIA-timing-by-webserver
+git checkout AbadIA
 export DISPLAY=:0
 Xvfb -screen 0 800x600x16 &
 x11vnc &
