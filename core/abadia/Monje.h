@@ -19,22 +19,35 @@ class Monje : public PersonajeConIA
 // campos
 protected:
 #ifndef __abadIA__
+<<<<<<< HEAD
 	int datosCara[2];							// direcci�n de los gr�ficos de la cara
+=======
+	int datosCara[2];							// dirección de los gráficos de la cara
+>>>>>>> luzbel/abadIA-timing-by-webserver
 #endif
 	SpriteMonje *sprMonje;						// sprite del monje
 
-	static DatosFotograma tablaAnimacion[8];	// tabla con los distintos fotogramas de animaci�n
+	static DatosFotograma tablaAnimacion[8];	// tabla con los distintos fotogramas de animación
 
-// m�todos
+// métodos
 public:
 #ifdef __abadIA__
+<<<<<<< HEAD
 	// En abadIA es publico para que en el dump (InfoJuego.cpp) se pueda saber si 
 	// Berengario es el encapuchado
 	int datosCara[2];							// direcci�n de los gr�ficos de la cara
 #endif
+=======
+// TODO, arreglar para que no sea publico y estÃ© expuesto
+        // En abadIA es publico para que en el dump (InfoJuego.cpp) se pueda saber si
+        // Berengario es el encapuchado
+        int datosCara[2];                                                       // direcciï¿½n de los grï¿½ficos de la cara
+#endif
+
+>>>>>>> luzbel/abadIA-timing-by-webserver
 	virtual DatosFotograma *calculaFotograma();
 
-	// inicializaci�n y limpieza
+	// inicialización y limpieza
 	Monje(SpriteMonje *spr);
 	virtual ~Monje();
 };

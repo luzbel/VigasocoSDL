@@ -314,10 +314,16 @@ void Vigasoco::mainLoop()
 			// calls template method to notify of the start of a frame
 			initFrame();
 
+#ifndef __abadIA__
 			// process inputs
+<<<<<<< HEAD
 			// si alguno de los plugins de entrada nos indica que ha 
 			// recibido el evento de salir, salimos del bucle de juego
 			if (!_inputHandler->process()) return;
+=======
+			_inputHandler->process();
+#endif
+>>>>>>> luzbel/abadIA-timing-by-webserver
 
 			// change core state if necessary
 			processCoreInputs();

@@ -16,10 +16,6 @@
 #include <errno.h>
 #endif
 
-//666 777 TODO
-//#include <SDL_main.h>
-//666 777 ¿es necesario? ¿no lo incluye ya SDL.h?
-
 typedef std::vector<std::string> Strings;
 
 // default options
@@ -27,16 +23,21 @@ std::string g_game("abadia");
 std::string g_drawPluginsDLL("libVigasocoSDLDrawPlugin.so");
 std::string g_drawPlugin("win8");
 
-// Se añade plugin NULLAudio sin salida de sonido
+// Se aÃ±ade plugin NULLAudio sin salida de sonido
 // para poder compilar en Windows Services for Linux que no tiene soporte ALSA
 // "Audio isnt supported at this time. Were currently focusing on supporting developer scenarios."
 // https://blogs.msdn.microsoft.com/commandline/2016/04/06/bash-on-ubuntu-on-windows-download-now-3/
-// NULLAudio existe como un plugin dentro de la libreria dinámica SDLAudioPlugin
+// NULLAudio existe como un plugin dentro de la libreria dinÃ¡mica SDLAudioPlugin
 // o como libreria independiente sin ninguna dependencia con SDL
 // Ejemplos invocaciones cambiado plugins
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,wingris8 -audio:libVigasocoSDLAudioPlugin.so,SDLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoNULLAudioPlugin.so,NULLAudioPlugin
+<<<<<<< HEAD
+=======
+
+// abadIA se suele ejecutar en entornes headless sin tarjeta de sonido
+>>>>>>> luzbel/abadIA-timing-by-webserver
 #ifdef __abadIA__
 std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
 std::string g_audioPlugin("NULLAudioPlugin");
@@ -48,6 +49,11 @@ std::string g_audioPlugin("SDLAudioPlugin");
 Strings g_inputPluginsDLLs;
 Strings g_inputPlugins;
 Strings g_paths;
+
+#ifdef __abadIA__
+bool gb_test(false);  // Âestamos en modo normal o ejecutando tests de pruebas?
+std::string g_test("");  // Escenario de pruebas
+#endif
 
 // parser helper function
 bool parseCommandLine(std::string cmdLine);
@@ -71,7 +77,7 @@ int main(int argc,char **argv)
 
 			// la rom, archivos de sonido, graficos VGA,etc.
 			// se descargan via http 
-//¿funciona con el http mount por defecto de SDL_Main ???
+//Â¿funciona con el http mount por defecto de SDL_Main ???
 // en el servidor web esta directamente el directorio abadia
 // y SDL_Main monta el /
 // pero si creamos un directorio roms en la raiz del servidor web, y dentro va el directorio abadia, entonces si va
@@ -192,6 +198,20 @@ void split(std::string source, char splitChar, Strings *strings)
 	} while (index != std::string::npos);
 }
 
+#ifdef __abadIA__
+bool parseTests(Strings &params)
+{
+	if (params.size() != 2){
+		return false;
+	}
+
+	g_test=params[1];
+	gb_test=true;
+	
+	return true;
+}
+#endif
+
 bool parseVideo(Strings &params)
 {
 	for (std::string::size_type i = 1; i < params.size(); i++){
@@ -288,6 +308,10 @@ bool parseCommands(Strings &params)
 			if (!parseAudio(subParams))	return false;
 		} else if (subParams[0] == "-path"){
 			if (!parsePaths(subParams))	return false;
+#ifdef __abadIA__
+		} else if (subParams[0] == "-test"){  // Escenarios de tests
+			if (!parseTests(subParams))	return false;
+#endif
 		} else {	// error
 			return false;
 		}
@@ -316,6 +340,10 @@ bool parseCommandLine(std::string cmdLine)
 
 	// if the user hasn't set any input plugin, set the default one
 	if (g_inputPluginsDLLs.size() == 0){
+#ifdef __abadIA__
+		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
+		g_inputPlugins.push_back("crowV3");
+#else
 		g_inputPluginsDLLs.push_back("libVigasocoSDLInputPlugin.so");
 #ifdef __abadIA__
 		g_inputPlugins.push_back("PollEvent");

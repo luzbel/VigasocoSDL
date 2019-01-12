@@ -1,25 +1,19 @@
-all: folders build
+#CXXFLAGS=-O3 -I../core `sdl-config --cflags` 
+CXXFLAGS=-g -std=c++11 -I../core `sdl-config --cflags` -D__abadIA__
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
-folders:
-	mkdir -p VigasocoSDL/audio
-	mkdir -p VigasocoSDL/video
-	mkdir -p VigasocoSDL/input
+# en OBJECTS_CORE falta Operations.o ??
+OBJECTS_CORE = AbadiaDriver.o FontManager.o GameDriver.o ICriticalSection.o InputPort.o IThread.o TimingHandler.o Vigasoco.o FileLoader.o GameDataEntity.o GfxData.o InputHandler.o IPalette.o NormalLoadHandler.o UncompressedLoader.o cpc6128.o DskReader.o
 
-build:
-	cd SDLInputKeyboardPlugin && make
-	cd HTTPInputPlugin && make
-	cd SDLVideoPlugins && make
-	cd NULLVideoPlugin && make
-	cd SDLAudioPlugin && make
-	cd NULLAudioPlugin && make
-	cd VigasocoSDL && make
+OBJECTS_ABADIA = Abad.o AccionesDia.o Adso.o Berengario.o Bernardo.o BuscadorRutas.o Comandos.o Controles.o EntidadJuego.o FijarOrientacion.o GeneradorPantallas.o GestorFrases.o Guillermo.o InfoJuego.o Jorge.o Juego.o Logica.o Malaquias.o Marcador.o MezcladorSprites.o Monje.o MotorGrafico.o Objeto.o Paleta.o Pergamino.o PergaminoTextos.o PersonajeConIA.o Personaje.o Puerta.o RejillaPantalla.o Severino.o Sprite.o SpriteLuz.o SpriteMonje.o TransformacionesCamara.o Serializar.o
+
+OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLThread.o VigasocoSDL.o SDLMain.o
+
+OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
+
+VigasocoSDL: $(OBJECTS)
+	$(CXX) -g $(OBJECTS) `sdl-config --libs` -o VigasocoSDL
+	#strip VigasocoSDL
 
 clean:
-	cd SDLInputKeyboardPlugin && make clean
-	cd HTTPInputPlugin && make clean
-	cd SDLVideoPlugins && make clean
-	cd NULLVideoPlugin && make clean
-	cd SDLAudioPlugin && make clean
-	cd NULLAudioPlugin && make clean
-	cd VigasocoSDL && make clean
-	
+	rm -f $(OBJECTS) core VigasocoSDL

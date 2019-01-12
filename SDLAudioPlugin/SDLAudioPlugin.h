@@ -32,7 +32,11 @@ class SDLAudioPlugin: public IAudioPlugin
 		bool _isInitialized;
 		SDL_AudioSpec fmt_real; //Formato de audio obtenido del hardware
 #ifdef __abadIA__
+<<<<<<< HEAD
                 bool sonidos[12]; //TODO: eliminar constante
+=======
+		bool sonidos[12]; //TODO: eliminar constante
+>>>>>>> luzbel/abadIA-timing-by-webserver
 #endif
 
 protected:

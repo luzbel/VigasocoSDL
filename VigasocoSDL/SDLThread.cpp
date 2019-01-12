@@ -65,11 +65,11 @@ void SDLThread::end()
 void SDLThread::pause()
 {
 //SuspendThread(_handle);
-// TODO:  ¡¡¡ FALTA POR IMPLEMENTAR !!!
+// TODO:  Â¡Â¡Â¡ FALTA POR IMPLEMENTAR !!!
 }
 
 void SDLThread::resume()
 {
 //ResumeThread(_handle);
-// TODO: ¡¡¡ FALTA POR IMPLEMENTAR !!!
+// TODO: Â¡Â¡Â¡ FALTA POR IMPLEMENTAR !!!
 }

@@ -21,7 +21,7 @@ class Puerta : public EntidadJuego
 // campos
 public:
 	int identificador;					// identificador de la puerta
-	bool estaAbierta;					// indica si la puerta est· abierta
+	bool estaAbierta;					// indica si la puerta est√° abierta
 	bool haciaDentro;					// indica si la puerta se abre hacia dentro o hacia fuera
 	bool estaFija;						// indica si la puerta se queda fija
 	bool hayQueRedibujar;				// indica si hay que redibujar la puerta
@@ -29,17 +29,17 @@ public:
 protected:
 	static int despOrientacion[4][12];
 
-// mÈtodos
+// m√©todos
 public:
 	virtual void notificaVisibleEnPantalla(int posXPant, int posYPant, int profundidad);
 	void compruebaAbrirCerrar(Personaje **personajes, int numPersonajes);
 	void marcaPosiciones(RejillaPantalla *rejilla, int valor);
 
-	// inicializaciÛn y limpieza
+	// inicializaci√≥n y limpieza
 	Puerta(Sprite *spr);
 	virtual ~Puerta();
 
-// mÈtodos de ayuda
+// m√©todos de ayuda
 protected:
 	bool puedeAbrir(Personaje *pers);
 	bool accionesAbrirCerrar(bool abrir);

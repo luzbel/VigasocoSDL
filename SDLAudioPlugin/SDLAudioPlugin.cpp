@@ -105,8 +105,13 @@ void SDLAudioPlugin::Play(int sample,bool loop)
 		// sounds.at(sample).dpos=0;
 		sounds.at(sample).loop=loop;
 #ifdef __abadIA__
+<<<<<<< HEAD
 		// TODO: falta assert para comprobar rango
 	        sonidos[sample]=true;
+=======
+	// TODO: falta assert para comprobar rango
+	sonidos[sample]=true;
+>>>>>>> luzbel/abadIA-timing-by-webserver
 #endif
 	}
 	catch (std::out_of_range o)
@@ -173,9 +178,9 @@ bool SDLAudioPlugin::LoadWAV_internal(const SDL_AudioSpec &wave,Uint8 *audio_buf
 		return false;
 	}
 			
-	// TODO: esto de AUDIO_S8,1,22050 deberían ser diferente según el tipo
+	// TODO: esto de AUDIO_S8,1,22050 deberÃ­an ser diferente segÃºn el tipo
 	// de plugin ...
-	// asi se podrían tener distintos plugins para distintos hardwares...
+	// asi se podrÃ­an tener distintos plugins para distintos hardwares...
 	
 	cvt.buf = NULL;
 	cvt.buf=(Uint8*) malloc(dlen*cvt.len_mult);

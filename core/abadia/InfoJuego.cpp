@@ -30,12 +30,18 @@
 #include "json.hpp"
 #include "Berengario.h"
 #include "sonidos.h"
+<<<<<<< HEAD
+=======
+
+// para pruebas cout 
+#include <iostream>
+>>>>>>> luzbel/abadIA-timing-by-webserver
 #endif
 
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 InfoJuego::InfoJuego()
@@ -77,10 +83,10 @@ int InfoJuego::alturaBasePlanta[3] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos para mostrar informaciÛn interna del juego
+// m√©todos para mostrar informaci√≥n interna del juego
 /////////////////////////////////////////////////////////////////////////////
 
-// inicia los datos necesarios para poder mostrar la informaciÛn sobre el comportamiento del juego m·s tarde
+// inicia los datos necesarios para poder mostrar la informaci√≥n sobre el comportamiento del juego m√°s tarde
 void InfoJuego::inicia()
 {
 	// inicia la paleta (los colores colores 0-3 no pueden usarse ya que los usa el juego)
@@ -93,7 +99,7 @@ void InfoJuego::inicia()
 	int colores[8][3] = {
 		{ 0xff, 0x00, 0x00 },	// guillermo (rojo)
 		{ 0xff, 0x00, 0x00 },	// adso (rojo)
-		{ 0x00, 0xff, 0x00 },	// malaquÌas (verde)
+		{ 0x00, 0xff, 0x00 },	// malaqu√≠as (verde)
 		{ 0x00, 0x00, 0x00 },	// el abad (negro)
 		{ 0x00, 0xff, 0xff },	// berengario (azul celeste)
 		{ 0x00, 0x00, 0xff },	// severino (azul)
@@ -130,6 +136,7 @@ void InfoJuego::inicia()
 
 }
 
+<<<<<<< HEAD
 #ifdef __abadIA__
 bool InfoJuego::dumpInfo(bool forceDump)
 {
@@ -254,7 +261,145 @@ bool InfoJuego::dumpInfo(bool forceDump)
 
 // muestra la informaciÛn del juego que se ha activado
 bool InfoJuego::muestraInfo()
+=======
+// muestra la informaci√≥n del juego que se ha activado
+void InfoJuego::muestraInfo()
+>>>>>>> luzbel/abadIA-timing-by-webserver
 {
+#ifdef __abadIA__
+                std::ofstream out("abadIA.dump",
+                                std::ofstream::out|std::ofstream::trunc);
+//              out << "test\n";
+                nlohmann::json dump;
+                dump["dia"]=laLogica->dia;
+                dump["momentoDia"]= laLogica->momentoDia;
+                dump["obsequium"]= laLogica->obsequium;
+                dump["numeroRomano"]=laLogica->numeroRomano;
+                dump["haFracasado"]=laLogica->haFracasado;
+                dump["bonus"]=laLogica->bonus;
+                dump["investigacionCompleta"]=laLogica->investigacionCompleta;
+                if (laLogica->investigacionCompleta)
+                        // para evitar llamar a laLogica y entrar
+                        // en bucle
+                        dump["porcentaje"]=100;
+                else
+                        dump["porcentaje"]=laLogica->calculaPorcentajeMision();
+                dump["numPantalla"]=elJuego->motor->numPantalla;
+                dump["numPantalla"]=elJuego->motor->numPantalla;
+                dump["planta"]=elMotorGrafico->obtenerPlanta(
+                                elMotorGrafico->obtenerAlturaBasePlanta(
+                                elMotorGrafico->personaje->altura));
+                // Sonidos
+                nlohmann::json Sonidos = nlohmann::json::array();
+                for (int index=0;index<12;index++) { // TODO quitar el 12 a fuego
+                        nlohmann::json sonido =
+                                VigasocoMain->getAudioPlugin()->getProperty("sonidos",index);
+                        Sonidos.push_back(sonido);
+                }
+                dump["sonidos"]=Sonidos;
+                // reiniciamos para volver a guardar solo los sonidos entre dump y dump
+// NO, ahora
+// se vacia en el bucle principal de juego,no aqui  
+// se vacia solo cuando el agente ha pedido un dump 
+//                for (int index=0;index<12;index++)
+//                        VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
+
+                // Frases
+                nlohmann::json Frases = nlohmann::json::array();
+// se vacia en el bucle principal de juego,no aqui  
+// se vacia solo cuando el agente ha pedido un dump 
+/*
+                while (!elJuego->frases.empty()) {
+                        nlohmann::json frase = elJuego->frases.top();
+                        Frases.push_back(frase);
+                        elJuego->frases.pop();
+                }
+*/
+//TODO: optimizar , esto de copar la lista entera para recorrerla no mola
+		std::stack <int> duplicadoFrases = elJuego->frases;
+                while (!duplicadoFrases.empty()) {
+                        nlohmann::json frase = duplicadoFrases.top();
+                        Frases.push_back(frase);
+                        duplicadoFrases.pop();
+                }
+
+                dump["frases"]=Frases;
+
+                // Personajes
+                static const std::string tablaNombresPersonajes[] = {
+                        "Guillermo" ,  // 0
+                        "Adso", // 1
+                        "Malaquias", // 2
+                        "Abad", // 3
+                        "Berengario", // 4
+                        "Severino", // 5
+                        "Jorge", // 6
+                        "Bernardo" // 7
+                };
+                nlohmann::json Personajes = nlohmann::json::array();
+                for(int i=0;i<elJuego->numPersonajes;i++) {
+                        Personaje *pers=elJuego->personajes[i];
+                        if (pers->sprite->esVisible) {
+                                nlohmann::json personaje;
+                                personaje["id"]=i;
+                                if (i==4) {
+                                        Berengario *ber=(Berengario *)pers;
+                                        //Monje*ber=(Monje *)pers;
+                                        if (ber->datosCara[0]==69308) personaje["nombre"]="Encapuchado";
+                                        else personaje["nombre"]=tablaNombresPersonajes[i];
+                                } else personaje["nombre"]=tablaNombresPersonajes[i];
+                                personaje["posX"]=pers->posX;
+                                personaje["posY"]=pers->posY;
+                                personaje["altura"]=pers->altura;
+                                personaje["orientacion"]=pers->orientacion;
+                                if (i==0 || i==1) { // solo sabemos los objetos que tienen Guillermo y Adso
+                                        personaje["objetos"]=pers->objetos;
+                                }
+                                Personajes.push_back(personaje);
+                        }
+                }
+                dump["Personajes"]=Personajes;
+                // Objetos
+                nlohmann::json Objetos = nlohmann::json::array();
+                for(int i=0;i<elJuego->numObjetos;i++) {
+                        Objeto *obj=elJuego->objetos[i];
+                        if (obj->sprite->esVisible) {
+                                nlohmann::json objeto;
+                                objeto["id"]=i;
+                                objeto["posX"]=obj->posX;
+                                objeto["posY"]=obj->posX;
+                                objeto["altura"]=obj->altura;
+                                objeto["orientacion"]=obj->orientacion;
+                                Objetos.push_back(objeto);
+                        }
+                }
+                dump["Objetos"]=Objetos;
+                // Rejilla
+                // Rejilla
+                nlohmann::json Rejilla = nlohmann::json::array();
+                RejillaPantalla *rejilla = elMotorGrafico->rejilla;
+                for (int j = 0; j < 24; j++) {
+                        nlohmann::json Fila = nlohmann::json::array();
+                        for (int i = 0; i < 24; i++) {
+                                Fila.push_back((int)rejilla->bufAlturas[j][i]);
+                        }
+                        Rejilla.push_back(Fila);
+                }
+                dump["Rejilla"]=Rejilla;
+                // Una forma de verlo cuadrado en vim es sacar
+                // el array del json y
+                // :1,$ s/ \([0-9]\)\,/ 0\1\,/g
+                // :1,$ s/\[\([0-9]\)\,/\[0\1\,/g
+
+                // Volcado completo
+		out << dump;
+
+/*
+std::string a("numPantalla");
+std::cout << "numPantalla " << dump["numPantalla"] << std::endl;
+std::cout << "numPantalla " << dump[a] << std::endl;
+*/
+#else
 /* las teclas 1 a 7 ahora se usan para hacer trampas y cambiar la camara para seguir a otros personajes 
 	if (losControles->seHaPulsado(KEYBOARD_1)) numPersonaje = (numPersonaje + 1) % (Juego::numPersonajes + 1);
 	if (losControles->seHaPulsado(KEYBOARD_2)) numObjeto = (numObjeto + 1) % (Juego::numObjetos + 1);
@@ -290,15 +435,15 @@ mostrarMapaRestoPlantas=true;
 	int planta = elMotorGrafico->obtenerPlanta(elMotorGrafico->obtenerAlturaBasePlanta(elMotorGrafico->personaje->altura));
 
 	if (mostrarMapaPlantaActual){
-		// dibuja el mapa de la planta actual del personaje al que sigue la c·mara
+		// dibuja el mapa de la planta actual del personaje al que sigue la c√°mara
 		dibujaAlturaPlanta(planta);
 
-		// dibuja la posiciÛn de los personajes en el mapa de la planta actual
+		// dibuja la posici√≥n de los personajes en el mapa de la planta actual
 		muestraPosicionMapaAlturas(planta);
 	}
 
 	if (mostrarMapaRestoPlantas){
-		// para las plantas que no se muestran, dibuja el mapa pequeÒo de Èstas
+		// para las plantas que no se muestran, dibuja el mapa peque√±o de √©stas
 		int numMapas = 0;
 		for (int i = 0; i < 3; i++){
 			if (i != planta){
@@ -308,7 +453,7 @@ mostrarMapaRestoPlantas=true;
 		}
 
 
-		// dibuja la posiciÛn de los personajes en el mapa del resto de plantas
+		// dibuja la posici√≥n de los personajes en el mapa del resto de plantas
 		numMapas = 0;
 		for (int i = 0; i < 3; i++){
 			if (i != planta){
@@ -319,24 +464,25 @@ mostrarMapaRestoPlantas=true;
 	}
 
 	if (mostrarLogica){
-		// muestra la lÛgica general del juego
+		// muestra la l√≥gica general del juego
 		muestraInfoLogica(100, 0);
 	}
 
 	if (numPersonaje != Juego::numPersonajes){
-		// muestra la informaciÛn sobre el personaje seleccionado
+		// muestra la informaci√≥n sobre el personaje seleccionado
 		muestraInfoPersonaje(numPersonaje, 500, 0);
 	}
 
 	if (numObjeto != Juego::numObjetos){
-		// muestra la informaciÛn sobre el objeto seleccionado
+		// muestra la informaci√≥n sobre el objeto seleccionado
 		muestraInfoObjeto(numObjeto, 300, 0);
 	}
 
 	if (numPuerta != Juego::numPuertas){
-		// muestra la informaciÛn sobre la puerta seleccionada
+		// muestra la informaci√≥n sobre la puerta seleccionada
 		muestraInfoPuerta(numPuerta, 100, 0);
 	}
+<<<<<<< HEAD
 
 /*
 #ifdef __abadIA__
@@ -351,10 +497,13 @@ mostrarMapaRestoPlantas=true;
 #endif
 */
 	return true;
+=======
+#endif
+>>>>>>> luzbel/abadIA-timing-by-webserver
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos para dibujar la rejilla
+// m√©todos para dibujar la rejilla
 /////////////////////////////////////////////////////////////////////////////
 
 // dibuja la rejilla
@@ -371,12 +520,12 @@ void InfoJuego::dibujaRejilla()
 	}
 }
 
-// dibuja una posiciÛn de la rejilla
+// dibuja una posici√≥n de la rejilla
 void InfoJuego::dibujaPosicionRejilla(int x, int y, int valor)
 {
 	int color = (valor & 0x0f) + 16;
 
-	// si en esa posiciÛn no hay un personaje, dibuja la altura
+	// si en esa posici√≥n no hay un personaje, dibuja la altura
 	if (valor < 0x10){
 		for (int j = 0; j < 4; j++){
 			for (int i = 0; i < 4; i++){
@@ -384,7 +533,7 @@ void InfoJuego::dibujaPosicionRejilla(int x, int y, int valor)
 			}
 		}
 	} else {
-		// si hay un personaje, dibuja un sÌmbolo
+		// si hay un personaje, dibuja un s√≠mbolo
 		static int gfxPosPersonaje[4][4] = {
 			{ 15,  0,  0, 15 },
 			{  0, 15, 15,  0 },
@@ -401,10 +550,10 @@ void InfoJuego::dibujaPosicionRejilla(int x, int y, int valor)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos para dibujar la altura del mapa de una planta
+// m√©todos para dibujar la altura del mapa de una planta
 /////////////////////////////////////////////////////////////////////////////
 
-// genera el mapa de alturas de cada pantalla y lo graba para despuÈs
+// genera el mapa de alturas de cada pantalla y lo graba para despu√©s
 void InfoJuego::generaAlturasPlanta()
 {
 	// crea un personaje ficticio para generar la altura de todas las pantallas de la planta
@@ -449,7 +598,7 @@ void InfoJuego::generaAlturasPlanta()
 		for (int j = minY; j <= maxY; j++){
 			for (int i = minX; i <= maxX; i++){
 
-				// si la pantalla actual est· definida, guarda su altura
+				// si la pantalla actual est√° definida, guarda su altura
 				if ((mapa[16*j + i] != 0) || ((numPlanta == 0) && (i == 0x04) && (j == 0x03))){
 
 					pers.posX = 16*i;
@@ -471,10 +620,10 @@ void InfoJuego::generaAlturasPlanta()
 	}
 }
 
-// dibuja el mapa completo de la planta en una posiciÛn determinada
+// dibuja el mapa completo de la planta en una posici√≥n determinada
 void InfoJuego::dibujaAlturaPlanta(int numPlanta)
 {
-	// calcula el zoom a usar seg˙n la planta que se muestra
+	// calcula el zoom a usar seg√∫n la planta que se muestra
 	int zoom = (numPlanta == 0) ? 1 : 2;
 
 	// obtiene el mapa de la planta
@@ -494,7 +643,7 @@ void InfoJuego::dibujaAlturaPlanta(int numPlanta)
 	// pinta las casillas del mapa que tienen una pantalla asociada
 	for (int j = minY; j <= maxY; j++){
 		for (int i = minX; i <= maxX; i++){
-			// si la pantalla actual est· definida, la pinta
+			// si la pantalla actual est√° definida, la pinta
 			if ((mapa[16*j + i] != 0) || ((numPlanta == 0) && (i == 0x04) && (j == 0x03))){
 
 				UINT8 *alturaPantalla = &alturas[(longX*(j - minY) + i - minX)*16*16];
@@ -519,13 +668,13 @@ void InfoJuego::dibujaAlturaPosicionPlanta(int posX, int posY, int i, int j, int
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos para dibujar el mapa de una planta
+// m√©todos para dibujar el mapa de una planta
 /////////////////////////////////////////////////////////////////////////////
 
-// dibuja el mapa completo de la planta en una posiciÛn determinada
+// dibuja el mapa completo de la planta en una posici√≥n determinada
 void InfoJuego::dibujaMapa(int posX, int numPlanta)
 {
-	// calcula el zoom a usar seg˙n la planta que se muestra
+	// calcula el zoom a usar seg√∫n la planta que se muestra
 	int zoom = (numPlanta == 0) ? 6 : 8;
 
 	// obtiene el mapa de la planta
@@ -543,7 +692,7 @@ void InfoJuego::dibujaMapa(int posX, int numPlanta)
 	// pinta las casillas del mapa que tienen una pantalla asociada
 	for (int j = minY; j <= maxY; j++){
 		for (int i = minX; i <= maxX; i++){
-			// si la pantalla actual est· definida, la pinta
+			// si la pantalla actual est√° definida, la pinta
 			if ((mapa[16*j + i] != 0) || ((numPlanta == 0) && (i == 0x04) && (j == 0x03))){
 				dibujaPixelCuadradoZoom(posX, posY, i - minX, j - minY, zoom, 0x1f);
 			}
@@ -552,13 +701,13 @@ void InfoJuego::dibujaMapa(int posX, int numPlanta)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos para dibujar las posiciones en los mapas
+// m√©todos para dibujar las posiciones en los mapas
 /////////////////////////////////////////////////////////////////////////////
 
-// muestra la posiciÛn de los personajes que est·n en el mapa de alturas
+// muestra la posici√≥n de los personajes que est√°n en el mapa de alturas
 void InfoJuego::muestraPosicionMapaAlturas(int numPlanta)
 {
-	// calcula el zoom a usar seg˙n la planta que se muestra
+	// calcula el zoom a usar seg√∫n la planta que se muestra
 	int zoom = (numPlanta == 0) ? 1 : 2;
 
 	// obtiene la zona visible de la planta
@@ -569,29 +718,29 @@ void InfoJuego::muestraPosicionMapaAlturas(int numPlanta)
 	int longX = maxX - minX + 1;
 	int posX = 320 - 4 - longX*16*zoom;
 
-	// recorre los personajes pintando la posiciÛn que ocupan
+	// recorre los personajes pintando la posici√≥n que ocupan
 	for (int i = 0; i < Juego::numPersonajes; i++){
 		Personaje *pers = elJuego->personajes[i];
 
-		// si el personaje no est· en la abadÌa, pasa al siguiente personaje
+		// si el personaje no est√° en la abad√≠a, pasa al siguiente personaje
 		if ((pers->posX == 0) && (pers->posY == 0) && (pers->altura == 0)) continue;
 
-		// si el personaje no est· en esta planta, pasa al siguiente
+		// si el personaje no est√° en esta planta, pasa al siguiente
 		if (elMotorGrafico->obtenerPlanta(elMotorGrafico->obtenerAlturaBasePlanta(pers->altura)) != numPlanta) continue;
 
 		// calcula el desplazamiento dentro del mapa
 		int despX = (((pers->posX & 0xf0) >> 4) - minX)*16 + (pers->posX & 0x0f);
 		int despY = (((pers->posY & 0xf0) >> 4) - minY)*16 + (pers->posY & 0x0f);
 
-		// dibuja la posiciÛn dentro del mapa
+		// dibuja la posici√≥n dentro del mapa
 		dibujaPixelCuadradoZoom(posX, 0, despX, despY, zoom, 4 + i);
 	}
 }
 
-// muestra la posiciÛn de los personajes que est·n en los mapas pequeÒos
+// muestra la posici√≥n de los personajes que est√°n en los mapas peque√±os
 void InfoJuego::muestraPosicionMapa(int posX, int numPlanta)
 {
-	// calcula el zoom a usar seg˙n la planta que se muestra
+	// calcula el zoom a usar seg√∫n la planta que se muestra
 	int zoom = (numPlanta == 0) ? 6 : 8;
 
 	// obtiene la zona visible de la planta
@@ -603,14 +752,14 @@ void InfoJuego::muestraPosicionMapa(int posX, int numPlanta)
 	int longY = maxY - minY + 1;
 	int posY = 100 + (160 - 100 - longY*zoom)/2;
 
-	// recorre los personajes pintando la posiciÛn que ocupan
+	// recorre los personajes pintando la posici√≥n que ocupan
 	for (int i = 0; i < Juego::numPersonajes; i++){
 		Personaje *pers = elJuego->personajes[i];
 
-		// si el personaje no est· en la abadÌa, pasa al siguiente personaje
+		// si el personaje no est√° en la abad√≠a, pasa al siguiente personaje
 		if ((pers->posX == 0) && (pers->posY == 0) && (pers->altura == 0)) continue;
 
-		// si el personaje no est· en esta planta, pasa al siguiente
+		// si el personaje no est√° en esta planta, pasa al siguiente
 		if (elMotorGrafico->obtenerPlanta(elMotorGrafico->obtenerAlturaBasePlanta(pers->altura)) != numPlanta) continue;
 
 		// calcula el desplazamiento dentro del mapa
@@ -622,17 +771,17 @@ void InfoJuego::muestraPosicionMapa(int posX, int numPlanta)
 		//assert(pixelValido);
 
 		if (pixelValido){
-			// dibuja la posiciÛn dentro del mapa
+			// dibuja la posici√≥n dentro del mapa
 			dibujaPixelCuadrado(posX + despX, posY + despY, 4 + i);
 		}
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos para mostrar informaciÛn sobre la lÛgica y las entidades del juego
+// m√©todos para mostrar informaci√≥n sobre la l√≥gica y las entidades del juego
 /////////////////////////////////////////////////////////////////////////////
 
-// muestra por pantalla la informaciÛn relativa a la lÛgica del juego
+// muestra por pantalla la informaci√≥n relativa a la l√≥gica del juego
 void InfoJuego::muestraInfoLogica(int x, int y)
 {
 	std::ostringstream strBuf;
@@ -672,7 +821,7 @@ void InfoJuego::muestraInfoLogica(int x, int y)
 	theFontManager->print(VigasocoMain->getDrawPlugin(), strBuf.str(), x, y);
 }
 
-// muestra por pantalla la informaciÛn relativa a el personaje i
+// muestra por pantalla la informaci√≥n relativa a el personaje i
 void InfoJuego::muestraInfoPersonaje(int i, int x, int y)
 {
 	Personaje *pers = elJuego->personajes[i];
@@ -687,7 +836,7 @@ void InfoJuego::muestraInfoPersonaje(int i, int x, int y)
 	theFontManager->print(VigasocoMain->getDrawPlugin(), strBuf.str(), x, y);
 }
 
-// muestra por pantalla la informaciÛn relativa a la puerta i
+// muestra por pantalla la informaci√≥n relativa a la puerta i
 void InfoJuego::muestraInfoPuerta(int i, int x, int y)
 {
 	Puerta *puerta = elJuego->puertas[i];
@@ -702,7 +851,7 @@ void InfoJuego::muestraInfoPuerta(int i, int x, int y)
 	theFontManager->print(VigasocoMain->getDrawPlugin(), strBuf.str(), x, y);
 }
 
-// muestra por pantalla la informaciÛn relativa al objeto i
+// muestra por pantalla la informaci√≥n relativa al objeto i
 void InfoJuego::muestraInfoObjeto(int i, int x, int y)
 {
 	Objeto *obj = elJuego->objetos[i];
@@ -718,10 +867,10 @@ void InfoJuego::muestraInfoObjeto(int i, int x, int y)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// conversiÛn de tipos a cadenas
+// conversi√≥n de tipos a cadenas
 /////////////////////////////////////////////////////////////////////////////
 
-// muestra la informaciÛn relativa a una entidad
+// muestra la informaci√≥n relativa a una entidad
 std::string InfoJuego::muestraEntidad(EntidadJuego *entidad)
 {
 	std::ostringstream strBuf;
@@ -730,7 +879,7 @@ std::string InfoJuego::muestraEntidad(EntidadJuego *entidad)
 	return strBuf.str();
 }
 
-// muestra la informaciÛn relativa a un personaje
+// muestra la informaci√≥n relativa a un personaje
 std::string InfoJuego::muestraPersonaje(int i, Personaje *pers)
 {
 	std::ostringstream strBuf;
@@ -758,7 +907,7 @@ std::string InfoJuego::muestraPersonaje(int i, Personaje *pers)
 	return strBuf.str();
 }
 
-// muestra la informaciÛn relativa a una puerta
+// muestra la informaci√≥n relativa a una puerta
 std::string InfoJuego::muestraPuerta(Puerta *puerta)
 {
 	std::ostringstream strBuf;
@@ -771,7 +920,7 @@ std::string InfoJuego::muestraPuerta(Puerta *puerta)
 	return strBuf.str();
 }
 
-// muestra la informaciÛn relativa a un objeto
+// muestra la informaci√≥n relativa a un objeto
 std::string InfoJuego::muestraObjeto(Objeto *obj)
 {
 	std::ostringstream strBuf;
@@ -789,7 +938,7 @@ std::string InfoJuego::muestraObjeto(Objeto *obj)
 	return strBuf.str();
 }
 
-// muestra la informaciÛn relativa a un sprite
+// muestra la informaci√≥n relativa a un sprite
 std::string InfoJuego::muestraSprite(Sprite *spr)
 {
 	std::ostringstream strBuf;
@@ -810,7 +959,7 @@ std::string InfoJuego::muestraSprite(Sprite *spr)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// conversiÛn de valores a cadenas
+// conversi√≥n de valores a cadenas
 /////////////////////////////////////////////////////////////////////////////
 
 std::string InfoJuego::muestra(int valor)
@@ -826,7 +975,7 @@ std::string InfoJuego::muestra(bool valor)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos auxiliares
+// m√©todos auxiliares
 /////////////////////////////////////////////////////////////////////////////
 
 // dibuja un pixel que ocupe 2x2 posiciones en el bitmap final
@@ -840,7 +989,7 @@ void InfoJuego::dibujaPixelCuadrado(int x, int y, int color)
 	cpc6128->setPixel(2*x + 1, y, color);
 }
 
-// igual que el mÈtodo anterior pero con un factor de zoom
+// igual que el m√©todo anterior pero con un factor de zoom
 void InfoJuego::dibujaPixelCuadradoZoom(int posX, int posY, int i, int j, int zoom, int color)
 {
 	for (int zoomY = 0; zoomY < zoom; zoomY++){

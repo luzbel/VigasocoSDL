@@ -26,37 +26,37 @@ class PersonajeConIA : public Personaje
 {
 // campos
 public:
-	int numBitAcciones;					// indica el número de bits procesados del byte de acciones actual
+	int numBitAcciones;					// indica el nÃºmero de bits procesados del byte de acciones actual
 	bool pensarNuevoMovimiento;			// indica si hay que pensar un nuevo movimiento
-	UINT8 accionActual;					// indica las acciones que el personaje está procesando actualmente
-	int posAcciones;					// posición de la acción actual en el buffer de acciones del personaje
+	UINT8 accionActual;					// indica las acciones que el personaje estÃ¡ procesando actualmente
+	int posAcciones;					// posiciÃ³n de la acciÃ³n actual en el buffer de acciones del personaje
 	UINT8 bufAcciones[0x30];			// buffer de acciones del personaje actual
 
-	UINT8 *lugares;						// datos de posición de los lugares a los que puede ir
-	int mascarasPuertasBusqueda;		// máscara de las puertas que se comprobarán en la búsqueda
+	UINT8 *lugares;						// datos de posiciÃ³n de los lugares a los que puede ir
+	int mascarasPuertasBusqueda;		// mÃ¡scara de las puertas que se comprobarÃ¡n en la bÃºsqueda
 	int aDondeVa;						// indica al lugar que trata de ir actualmente
 	int aDondeHaLlegado;				// indica a donde ha llegado el personaje
 
 	PosicionJuego *posiciones;			// posiciones a las que puede ir el personaje
 
 protected:
-	static UINT16 comandosGirar[4][2];	// tabla con los comandos para cambiar de orientación
+	static UINT16 comandosGirar[4][2];	// tabla con los comandos para cambiar de orientaciÃ³n
 	static UINT16 comandosAvanzar[5][2];// tabla con los comandos para avanzar
 	static int bufferDatosPersonaje[10];// buffer para guardar los datos del personaje por si hay que deshacer
-	static int distanciasOri[4][4];		// tabla con las distancias permisibles según la orientación
+	static int distanciasOri[4][4];		// tabla con las distancias permisibles segÃºn la orientaciÃ³n
 
-// métodos
+// mÃ©todos
 public:
 	virtual void run();
 
-	// métodos relacionados con la generación de comandos de movimiento
+	// mÃ©todos relacionados con la generaciÃ³n de comandos de movimiento
 	void modificaOrientacion(int oriDeseada);
 	void avanzaPosicion(int difAltura1, int difAltura2, int avanceX, int avanceY);
 	void reiniciaPosicionBuffer();
 	void descartarMovimientosPensados();
 	void escribeComandos(UINT16 comandos, int bits);
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	PersonajeConIA(Sprite *spr);
 	virtual ~PersonajeConIA();
 
@@ -64,7 +64,7 @@ protected:
 	// comportamiento del personaje
 	virtual void piensa() = 0;
 
-	// métodos relacionados con la ejecución de comandos de movimiento
+	// mÃ©todos relacionados con la ejecuciÃ³n de comandos de movimiento
 	virtual void ejecutaMovimiento();
 
 	int leeBit();
@@ -73,7 +73,7 @@ protected:
 	void grabaEstado();
 	void cargaEstado();
 
-	// métodos auxiliares para la lógica
+	// mÃ©todos auxiliares para la lÃ³gica
 	bool estaCerca(Personaje *pers);
 	bool siHaLlegadoAvanzaEstado();
 };

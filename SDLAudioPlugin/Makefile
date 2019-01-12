@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 CXXFLAGS=-O3 -D__abadIA__ -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
 #CXXFLAGS=-g -D__abadIA__ -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
+=======
+CXXFLAGS=-O3 -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags` -D__abadIA__
+#CXXFLAGS=-g -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
+>>>>>>> luzbel/abadIA-timing-by-webserver
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 OBJECTS = SDLAudioPlugin.o NULLAudioPlugin.o PluginMain.o

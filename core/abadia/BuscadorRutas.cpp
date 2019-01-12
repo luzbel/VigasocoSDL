@@ -18,7 +18,7 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// mapa de las conexiones de las plantas de la abadÌa
+// mapa de las conexiones de las plantas de la abad√≠a
 /////////////////////////////////////////////////////////////////////////////
 
 UINT8 BuscadorRutas::habitaciones[3][256] = {
@@ -91,7 +91,7 @@ UINT8 BuscadorRutas::habitaciones[3][256] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// posiciones alternativas para la b˙squeda del camino
+// posiciones alternativas para la b√∫squeda del camino
 /////////////////////////////////////////////////////////////////////////////
 
 PosicionJuego BuscadorRutas::alternativas[5];	
@@ -101,16 +101,16 @@ PosicionJuego BuscadorRutas::alternativas[5];
 /////////////////////////////////////////////////////////////////////////////
 
 UINT8 BuscadorRutas::habitacionesPuerta[6][4] = {
-	{ 0x35, 0x01, 0x36, 0x04 },	// puerta de la habitaciÛn del abad (entre la pantalla 0x3e y la 0x3d)
-	{ 0x1b, 0x08, 0x2b, 0x02 },	// puerta de la habitaciÛn de los monjes (entre la pantalla 0 y la 0x38)
-	{ 0x56, 0x08, 0x66, 0x02 },	// puerta de la habitaciÛn de severino (entre la pantalla 0x3d y la 0x3c)
+	{ 0x35, 0x01, 0x36, 0x04 },	// puerta de la habitaci√≥n del abad (entre la pantalla 0x3e y la 0x3d)
+	{ 0x1b, 0x08, 0x2b, 0x02 },	// puerta de la habitaci√≥n de los monjes (entre la pantalla 0 y la 0x38)
+	{ 0x56, 0x08, 0x66, 0x02 },	// puerta de la habitaci√≥n de severino (entre la pantalla 0x3d y la 0x3c)
 	{ 0x29, 0x01, 0x2a, 0x04 },	// puerta de la salida de las habitaciones hacia la iglesia (entre la pantalla 0x29 y la 0x37)
-	{ 0x27, 0x01, 0x28, 0x04 },	// puerta del pasadizo de detr·s de la cocina (entre la pantalla 0x28 y la 0x26)
-	{ 0x75, 0x01, 0x76, 0x04 }	// puertas que cierran el paso al ala izquierda de la abadÌa (entre la pantalla 0x11 y la 0x12)
+	{ 0x27, 0x01, 0x28, 0x04 },	// puerta del pasadizo de detr√°s de la cocina (entre la pantalla 0x28 y la 0x26)
+	{ 0x75, 0x01, 0x76, 0x04 }	// puertas que cierran el paso al ala izquierda de la abad√≠a (entre la pantalla 0x11 y la 0x12)
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// tablas seg˙n la orientaciÛn
+// tablas seg√∫n la orientaci√≥n
 /////////////////////////////////////////////////////////////////////////////
 
 int BuscadorRutas::despOrientacion[4][2] = {
@@ -128,7 +128,7 @@ int BuscadorRutas::posDestinoOrientacion[4][2] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 BuscadorRutas::BuscadorRutas(UINT8 *buf, int lgtud)
@@ -139,7 +139,7 @@ BuscadorRutas::BuscadorRutas(UINT8 *buf, int lgtud)
 
 	rejilla = new RejillaPantalla(elMotorGrafico);
 
-	// crea los objetos para indicar las posiciones a las que hay que ir seg˙n la orientaciÛn a coger
+	// crea los objetos para indicar las posiciones a las que hay que ir seg√∫n la orientaci√≥n a coger
 	fijaPosOri[0] = new FijaOrientacion0();
 	fijaPosOri[1] = new FijaOrientacion1();
 	fijaPosOri[2] = new FijaOrientacion2();
@@ -158,20 +158,20 @@ BuscadorRutas::~BuscadorRutas()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos relacionados con las puertas
+// m√©todos relacionados con las puertas
 /////////////////////////////////////////////////////////////////////////////
 
-// modifica las conexiones entre las habitaciones seg˙n las puertas a las que puede entrar el personaje
+// modifica las conexiones entre las habitaciones seg√∫n las puertas a las que puede entrar el personaje
 void BuscadorRutas::modificaPuertasRuta(int mascara)
 {
-	// combina la m·scara con las puertas que pueden abrirse
+	// combina la m√°scara con las puertas que pueden abrirse
 	mascara = mascara & laLogica->mascaraPuertas;
 
 	// recorre las puertas que comunican las habitaciones
 	for (int i = 0; i < 6; i++){
 
 		for (int j = 0; j < 2; j++){
-			// dependiendo de si podrÌamos entrar por esa puerta o no, modifica las conexiones de la habitaciÛn
+			// dependiendo de si podr√≠amos entrar por esa puerta o no, modifica las conexiones de la habitaci√≥n
 			if (mascara & 0x01){
 				habitaciones[0][habitacionesPuerta[i][2*j]] = (~habitacionesPuerta[i][2*j + 1]) & habitaciones[0][habitacionesPuerta[i][2*j]];
 			} else {
@@ -184,10 +184,10 @@ void BuscadorRutas::modificaPuertasRuta(int mascara)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos de m·s alto nivel relacionados con la b˙squeda y generaciÛn de rutas
+// m√©todos de m√°s alto nivel relacionados con la b√∫squeda y generaci√≥n de rutas
 /////////////////////////////////////////////////////////////////////////////
 
-// genera las acciones de movimiento para ir a una posiciÛn determinada
+// genera las acciones de movimiento para ir a una posici√≥n determinada
 void BuscadorRutas::generaAccionesMovimiento(PersonajeConIA *pers)
 {
 	// si hay que pensar un nuevo movimiento
@@ -228,7 +228,7 @@ void BuscadorRutas::generaAccionesMovimiento(PersonajeConIA *pers)
 				break;
 		}
 
-		// genera las alternativas a la posiciÛn de destino
+		// genera las alternativas a la posici√≥n de destino
 		generaAlternativas(posDestino, oriInicial, oldOri);
 
 		// trata de encontrar un camino para llegar a cualquiera de las alternativas que ha generado
@@ -236,7 +236,7 @@ void BuscadorRutas::generaAccionesMovimiento(PersonajeConIA *pers)
 			procesaAlternativas(pers, &alternativas[0]);
 		}
 	} else {
-		// si ya tenÌa un nuevo movimiento pensado pero no hay movimiento, vuelve a pensarlo
+		// si ya ten√≠a un nuevo movimiento pensado pero no hay movimiento, vuelve a pensarlo
 		if (!laLogica->hayMovimiento){
 			pers->descartarMovimientosPensados();
 		}
@@ -246,21 +246,21 @@ void BuscadorRutas::generaAccionesMovimiento(PersonajeConIA *pers)
 // trata de generar las posiciones alternativas cercanas a la que se le pasa
 void BuscadorRutas::generaAlternativas(PosicionJuego *pos, int oriInicial, int oldOri)
 {
-	// genera una propuesta para llegar a una posiciÛn cercana a la de destino pero por diferentes orientaciones
+	// genera una propuesta para llegar a una posici√≥n cercana a la de destino pero por diferentes orientaciones
 	for (int i = 0; i < 4; i++){
 		generaAlternativa(pos, (oriInicial + i) & 0x03, oldOri);
 	}
 }
 
-// comprueba si la alternativa es viable y si es asÌ la guarda
+// comprueba si la alternativa es viable y si es as√≠ la guarda
 void BuscadorRutas::generaAlternativa(PosicionJuego *pos, int orientacion, int oldOri)
 {
-	// graba la posiciÛn y orientaciÛn de la alternativa
+	// graba la posici√≥n y orientaci√≥n de la alternativa
 	alternativas[numAlternativas].posX = pos->posX + despOrientacion[orientacion][0];
 	alternativas[numAlternativas].posY = pos->posY + despOrientacion[orientacion][1];
 	alternativas[numAlternativas].altura = pos->altura;
 
-	// invierte la orientaciÛn y la combina con la deseada
+	// invierte la orientaci√≥n y la combina con la deseada
 	alternativas[numAlternativas].orientacion = (orientacion ^ 0x02) | oldOri;
 
 	int posXRejilla, posYRejilla;
@@ -281,7 +281,7 @@ void BuscadorRutas::generaAlternativa(PosicionJuego *pos, int orientacion, int o
 // comprueba si se puede obtener un camino para llegar a alguna de las posiciones calculadas
 void BuscadorRutas::procesaAlternativas(PersonajeConIA *pers, PosicionJuego *destino)
 {
-	// comprueba si se ha llegado desde el origen a alguno de los destinos calculados y si no es asÌ, genera
+	// comprueba si se ha llegado desde el origen a alguno de los destinos calculados y si no es as√≠, genera
 	// los comandos necesarios para que el personaje avance a la siguiente pantalla en la ruta buscada
 	int rdo = buscaCamino(pers, destino);
 
@@ -292,27 +292,27 @@ void BuscadorRutas::procesaAlternativas(PersonajeConIA *pers, PosicionJuego *des
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos de b˙squeda y generaciÛn de rutas
+// m√©todos de b√∫squeda y generaci√≥n de rutas
 /////////////////////////////////////////////////////////////////////////////
 
-// comprueba si se ha llegado desde el origen al destino y si no es asÌ, genera los comandos 
+// comprueba si se ha llegado desde el origen al destino y si no es as√≠, genera los comandos 
 // necesarios para que el personaje avance a la siguiente pantalla en la ruta buscada
 int BuscadorRutas::buscaCamino(PersonajeConIA *origen, PosicionJuego *destino)
 {
-	// si est· en medio de una movimiento de guillermo, sale
+	// si est√° en medio de una movimiento de guillermo, sale
 	if ((contadorAnimGuillermo & 0x01) != 0) return -2;
 	
-	// si se ha generado alg˙n camino en esta iteraciÛn del bucle principal, sale
+	// si se ha generado alg√∫n camino en esta iteraci√≥n del bucle principal, sale
 	if (generadoCamino) return -2;
 
-	// obtiene las alturas de las plantas para la posiciÛn de origen y de destino
+	// obtiene las alturas de las plantas para la posici√≥n de origen y de destino
 	int alturaPlantaOri = elMotorGrafico->obtenerAlturaBasePlanta(origen->altura);
 	int numPlanta = elMotorGrafico->obtenerPlanta(alturaPlantaOri);
 	int alturaPlantaDest = elMotorGrafico->obtenerAlturaBasePlanta(destino->altura);
 
-	// si las posiciones no est·n en la misma planta
+	// si las posiciones no est√°n en la misma planta
 	if (alturaPlantaOri != alturaPlantaDest){
-		// obtiene una m·scara para subir o bajar de planta dependiendo de la posiciÛn de destino
+		// obtiene una m√°scara para subir o bajar de planta dependiendo de la posici√≥n de destino
 		int mascara = (alturaPlantaOri < alturaPlantaDest) ? 0x10 : 0x20;
 
 		// obtiene las conexiones de la pantalla de origen
@@ -325,7 +325,7 @@ int BuscadorRutas::buscaCamino(PersonajeConIA *origen, PosicionJuego *destino)
 			posYIni = origen->posY >> 4;
 			bool encontrado = buscaPantalla(numPlanta, mascara);
 
-			// limpia los resultados de la b˙squeda
+			// limpia los resultados de la b√∫squeda
 			limpiaBitsBusquedaPantalla(numPlanta);
 
 			// si no se encontraron las escaleras, sale
@@ -333,20 +333,20 @@ int BuscadorRutas::buscaCamino(PersonajeConIA *origen, PosicionJuego *destino)
 				return 0;
 			}
 
-			// genera los comandos para ir desde la pantalla donde est· el personaje a la siguiente pantalla camino de las escaleras
+			// genera los comandos para ir desde la pantalla donde est√° el personaje a la siguiente pantalla camino de las escaleras
 			posXIni = posXFinal;
 			posYIni = posYFinal;
 			return generaCaminoAPantalla(origen, numPlanta);
 		} else {
 			// si desde la pantalla actual se puede subir o bajar
 
-			// rellena el buffer de alturas de la pantalla en la que est· el personaje
+			// rellena el buffer de alturas de la pantalla en la que est√° el personaje
 			generaAlturasPantalla(origen);
 
 			int valor = (alturaPlantaOri < alturaPlantaDest) ? 0x0d : 0x01;
 
 			// modifica las posiciones del buffer de alturas de la pantalla actual que permiten subir
-			// o bajar de planta, para que sean el destino del algoritmo de b˙squeda de caminos
+			// o bajar de planta, para que sean el destino del algoritmo de b√∫squeda de caminos
 			for (int j = 0; j < 24; j++){
 				for (int i = 0; i < 24; i++){
 					if (rejilla->bufAlturas[j][i] == valor){
@@ -355,61 +355,61 @@ int BuscadorRutas::buscaCamino(PersonajeConIA *origen, PosicionJuego *destino)
 				}
 			}
 
-			// limita las opciones a probar a tan solo la opciÛn actual
+			// limita las opciones a probar a tan solo la opci√≥n actual
 			numAlternativas = alternativaActual + 1;
 
 			return generaCaminoAPosicion(origen, 0, 0);
 		}
 	} else {
-		// si las 2 posiciones est·n en la misma planta
+		// si las 2 posiciones est√°n en la misma planta
 
 		bool mismaPantalla = false;
 
-		// comprueba si las 2 posiciones est·n en la misma pantalla
+		// comprueba si las 2 posiciones est√°n en la misma pantalla
 		if (((destino->posX ^ origen->posX) & 0xf0) == 0){
 			if (((destino->posY ^ origen->posY) & 0xf0) == 0){
 				mismaPantalla = true;
 			}
 		}
 
-		// si las 2 posiciones est·n en la misma pantalla
+		// si las 2 posiciones est√°n en la misma pantalla
 		if (mismaPantalla){
-			// si la posiciÛn de origen y de destino es la misma
+			// si la posici√≥n de origen y de destino es la misma
 			if ((((destino->posX ^ origen->posX) & 0x0f) == 0) && (((destino->posY ^ origen->posY) & 0x0f) == 0)){
-				// si la orientaciÛn del personaje no es la misma que la de destino
+				// si la orientaci√≥n del personaje no es la misma que la de destino
 				if (origen->orientacion != destino->orientacion){
-					// fija la primera posiciÛn del buffer de comandos
+					// fija la primera posici√≥n del buffer de comandos
 					origen->reiniciaPosicionBuffer();
 
-					// escribe unos comandos para cambiar la orientaciÛn del personaje
+					// escribe unos comandos para cambiar la orientaci√≥n del personaje
 					origen->modificaOrientacion(destino->orientacion);
 
-					// escribe unos comandos para que estÈ un pequeÒo instante sin moverse
+					// escribe unos comandos para que est√© un peque√±o instante sin moverse
 					origen->escribeComandos(0x1000, 12);
 
-					// fija la primera posiciÛn del buffer de comandos
+					// fija la primera posici√≥n del buffer de comandos
 					origen->reiniciaPosicionBuffer();
 				}
 
 				return -3;
 			} else {
-				// si la posiciÛn de origen y de destino no es la misma
+				// si la posici√≥n de origen y de destino no es la misma
 
-				// rellena el buffer de alturas de la pantalla en la que est· el personaje
+				// rellena el buffer de alturas de la pantalla en la que est√° el personaje
 				generaAlturasPantalla(origen);
 
 				int posXDest, posYDest;
 
-				// ajusta la posiciÛn de destino a las coordenadas de rejilla
+				// ajusta la posici√≥n de destino a las coordenadas de rejilla
 				bool noHayError = rejilla->ajustaAPosRejilla(destino->posX, destino->posY, posXDest, posYDest);
 				assert(noHayError);
 
 				return generaCaminoAPosicionSiAlcanzable(origen, posXDest, posYDest);
 			}
 		} else {
-			// si las 2 posiciones no est·n en la misma pantalla
+			// si las 2 posiciones no est√°n en la misma pantalla
 
-			// genera los comandos para ir desde la pantalla donde est· el personaje a la siguiente pantalla camino de la pantalla destino
+			// genera los comandos para ir desde la pantalla donde est√° el personaje a la siguiente pantalla camino de la pantalla destino
 			posXIni = destino->posX >> 4;
 			posYIni = destino->posY >> 4;
 			return generaCaminoAPantalla(origen, numPlanta);
@@ -420,24 +420,24 @@ int BuscadorRutas::buscaCamino(PersonajeConIA *origen, PosicionJuego *destino)
 
 int BuscadorRutas::generaCaminoAPantalla(PersonajeConIA *pers, int numPlanta)
 {
-	// busca un camino desde la posiciÛn que se le pasa a donde est· el personaje
+	// busca un camino desde la posici√≥n que se le pasa a donde est√° el personaje
 	bool encontrado = buscaPantalla(pers->posX >> 4, pers->posY >> 4, numPlanta);
 
-	// limpia los resultados de la b˙squeda
+	// limpia los resultados de la b√∫squeda
 	limpiaBitsBusquedaPantalla(numPlanta);
 
-	// si no se encontrÛ el camino, sale
+	// si no se encontr√≥ el camino, sale
 	if (!encontrado){
 		return 0;
 	}
 
-	// rellena el buffer de alturas de la pantalla en la que est· el personaje
+	// rellena el buffer de alturas de la pantalla en la que est√° el personaje
 	generaAlturasPantalla(pers);
 
-	// marca las orientaciÛn que hay que coger como el destino de la b˙squeda
+	// marca las orientaci√≥n que hay que coger como el destino de la b√∫squeda
 	fijaPosOri[oriFinal]->fijaPos(rejilla);
 
-	// limita las opciones a probar a tan solo la opciÛn actual
+	// limita las opciones a probar a tan solo la opci√≥n actual
 	numAlternativas = alternativaActual + 1;
 
 	return generaCaminoAPosicion(pers, posDestinoOrientacion[oriFinal][0], posDestinoOrientacion[oriFinal][1]);
@@ -445,37 +445,37 @@ int BuscadorRutas::generaCaminoAPantalla(PersonajeConIA *pers, int numPlanta)
 
 int BuscadorRutas::generaCaminoAPosicion(PersonajeConIA *pers, int posXDest, int posYDest)
 {
-	// ajusta la posiciÛn del personaje a la rejilla
+	// ajusta la posici√≥n del personaje a la rejilla
 	bool noHayError = rejilla->ajustaAPosRejilla(pers->posX, pers->posY, posXIni, posYIni);
 	assert(noHayError);
 
-	// busca una ruta dentro de una pantalla desde la posiciÛn de origen a la de destino
+	// busca una ruta dentro de una pantalla desde la posici√≥n de origen a la de destino
 	bool encontrado = buscaEnPantalla(posXDest, posYDest);
 	
-	// comprueba si se ha alcanzado la posiciÛn actual. Si es asÌ sale. En otro caso, si se encontrÛ
+	// comprueba si se ha alcanzado la posici√≥n actual. Si es as√≠ sale. En otro caso, si se encontr√≥
 	// un camino para llegar al destino, programa las acciones para seguirlo en esta pantalla
 	return compruebaFinCamino(pers, encontrado);
 }
 
 int BuscadorRutas::generaCaminoAPosicionSiAlcanzable(PersonajeConIA *pers, int posXDest, int posYDest)
 {
-	// ajusta la posiciÛn del personaje a la rejilla
+	// ajusta la posici√≥n del personaje a la rejilla
 	bool noHayError = rejilla->ajustaAPosRejilla(pers->posX, pers->posY, posXIni, posYIni);
 	assert(noHayError);
 
-	// busca una ruta dentro de una pantalla desde la posiciÛn de origen a la de destino
+	// busca una ruta dentro de una pantalla desde la posici√≥n de origen a la de destino
 	bool encontrado = buscaEnPantallaSiAlcanzable(posXDest, posYDest);
 	
-	// comprueba si se ha alcanzado la posiciÛn actual. Si es asÌ sale. En otro caso, si se encontrÛ
+	// comprueba si se ha alcanzado la posici√≥n actual. Si es as√≠ sale. En otro caso, si se encontr√≥
 	// un camino para llegar al destino, programa las acciones para seguirlo en esta pantalla
 	return compruebaFinCamino(pers, encontrado);
 }
 
-// comprueba si se ha alcanzado la posiciÛn actual. Si es asÌ sale. En otro caso, si se encontrÛ
+// comprueba si se ha alcanzado la posici√≥n actual. Si es as√≠ sale. En otro caso, si se encontr√≥
 // un camino para llegar al destino, programa las acciones para seguirlo en esta pantalla
 int BuscadorRutas::compruebaFinCamino(PersonajeConIA *pers, bool encontrado)
 {
-	// limpia los resultados de la b˙squeda en el buffer de alturas
+	// limpia los resultados de la b√∫squeda en el buffer de alturas
 	limpiaBitsBusquedaEnPantalla();
 
 	// si no se ha encontrado un camino
@@ -489,20 +489,20 @@ int BuscadorRutas::compruebaFinCamino(PersonajeConIA *pers, bool encontrado)
 
 		PosicionJuego *destino = &alternativas[alternativaActual];
 
-		// si la posiciÛn de origen y de destino es la misma
+		// si la posici√≥n de origen y de destino es la misma
 		if (((destino->posX ^ pers->posX) == 0) && ((destino->posY ^ pers->posY) == 0)){
-			// si la orientaciÛn del personaje no es la misma que la de destino
+			// si la orientaci√≥n del personaje no es la misma que la de destino
 			if (pers->orientacion != destino->orientacion){
-				// fija la primera posiciÛn del buffer de comandos
+				// fija la primera posici√≥n del buffer de comandos
 				pers->reiniciaPosicionBuffer();
 
-				// escribe unos comandos para cambiar la orientaciÛn del personaje
+				// escribe unos comandos para cambiar la orientaci√≥n del personaje
 				pers->modificaOrientacion(destino->orientacion);
 
-				// escribe unos comandos para que estÈ un pequeÒo instante sin moverse
+				// escribe unos comandos para que est√© un peque√±o instante sin moverse
 				pers->escribeComandos(0x1000, 12);
 
-				// fija la primera posiciÛn del buffer de comandos
+				// fija la primera posici√≥n del buffer de comandos
 				pers->reiniciaPosicionBuffer();
 			}
 
@@ -510,11 +510,11 @@ int BuscadorRutas::compruebaFinCamino(PersonajeConIA *pers, bool encontrado)
 		} else {
 			int posXDest = 0, posYDest = 0;
 
-			// ajusta la posiciÛn de la siguiente alternativa a la rejilla
+			// ajusta la posici√≥n de la siguiente alternativa a la rejilla
 			bool noHayError = rejilla->ajustaAPosRejilla(destino->posX, destino->posY, posXDest, posYDest);
 			assert(noHayError);
 
-			// vuelve a probar a ver si encuentra el camino a esa posiciÛn
+			// vuelve a probar a ver si encuentra el camino a esa posici√≥n
 			return generaCaminoAPosicionSiAlcanzable(pers, posXDest, posYDest);
 		}
 	} else {
@@ -528,7 +528,7 @@ int BuscadorRutas::compruebaFinCamino(PersonajeConIA *pers, bool encontrado)
 	}
 }
 
-// devuelve true si la parte m·s significativa de 2 coordenadas es -1, 0 o 1
+// devuelve true si la parte m√°s significativa de 2 coordenadas es -1, 0 o 1
 bool BuscadorRutas::estaCerca(int coord1, int coord2, int &distancia)
 {
 	distancia = (coord1 >> 4) - (coord2 >> 4);
@@ -536,7 +536,7 @@ bool BuscadorRutas::estaCerca(int coord1, int coord2, int &distancia)
 	return distancia <= 1;
 }
 
-// rellena el buffer de alturas con los datos de la pantalla actual en la que est· el personaje
+// rellena el buffer de alturas con los datos de la pantalla actual en la que est√° el personaje
 // y marca las casillas que ocupan del resto de los personajes y las puertas
 void BuscadorRutas::generaAlturasPantalla(PersonajeConIA *pers)
 {
@@ -547,7 +547,7 @@ void BuscadorRutas::generaAlturasPantalla(PersonajeConIA *pers)
 
 	int distX, distY;
 
-	// comprueba si guillermo est· cerca del personaje
+	// comprueba si guillermo est√° cerca del personaje
 	if (estaCerca(laLogica->guillermo->posX, pers->posX, distX)){
 		if (estaCerca(laLogica->guillermo->posY, pers->posY, distY)){
 			if (elMotorGrafico->obtenerAlturaBasePlanta(laLogica->guillermo->altura) == elMotorGrafico->obtenerAlturaBasePlanta(pers->altura)){
@@ -556,22 +556,22 @@ void BuscadorRutas::generaAlturasPantalla(PersonajeConIA *pers)
 		}
 	}
 
-	// si guillermo no est· cerca, comprueba si el personaje al que sigue la c·mara est· cerca
+	// si guillermo no est√° cerca, comprueba si el personaje al que sigue la c√°mara est√° cerca
 	if (!guillermoCerca){
 		if (!estaCerca(elMotorGrafico->posXPantalla, pers->posX, distX)) return;
 		if (!estaCerca(elMotorGrafico->posYPantalla, pers->posY, distY)) return;
 		if (elMotorGrafico->alturaBasePantalla != elMotorGrafico->obtenerAlturaBasePlanta(pers->altura)) return;
 	}
 
-	// aquÌ llega si guillermo o el personaje al que sigue la c·mara est·n cerca
+	// aqu√≠ llega si guillermo o el personaje al que sigue la c√°mara est√°n cerca
 	int primerPersonaje = 1;
 
-	// si el personaje est· en la misma habitaciÛn que guillermo o del personaje al que sigue la c·mara
+	// si el personaje est√° en la misma habitaci√≥n que guillermo o del personaje al que sigue la c√°mara
 	if ((distX == 0) && (distY ==0)){
 		primerPersonaje = 0;
 	}
 
-	// marca la posiciÛn de los personajes
+	// marca la posici√≥n de los personajes
 	for (int i = primerPersonaje; i < Juego::numPersonajes; i++){
 		Personaje *personaje = elJuego->personajes[i];
 
@@ -580,7 +580,7 @@ void BuscadorRutas::generaAlturasPantalla(PersonajeConIA *pers)
 		}
 	}
 
-	// marca la posiciÛn de las puertas
+	// marca la posici√≥n de las puertas
 	for (int i = 0; i < Juego::numPuertas; i++){
 		Puerta *puerta = elJuego->puertas[i];
 
@@ -593,23 +593,23 @@ void BuscadorRutas::generaAlturasPantalla(PersonajeConIA *pers)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos relacionados con la b˙squeda de caminos en una pantalla
+// m√©todos relacionados con la b√∫squeda de caminos en una pantalla
 /////////////////////////////////////////////////////////////////////////////
 
-// busca una ruta dentro de una pantalla desde la posiciÛn de origen a la que estÈ marcada como objetivo de la b˙squeda
+// busca una ruta dentro de una pantalla desde la posici√≥n de origen a la que est√© marcada como objetivo de la b√∫squeda
 bool BuscadorRutas::buscaEnPantalla()
 {
-	// realiza la b˙squeda
+	// realiza la b√∫squeda
 	return buscaEnPantallaComun();
 }
 
-// busca una ruta dentro de una pantalla desde la posiciÛn de origen a la de destino
+// busca una ruta dentro de una pantalla desde la posici√≥n de origen a la de destino
 bool BuscadorRutas::buscaEnPantalla(int posXDest, int posYDest)
 {
-	// marca la posiciÛn de destino como el objetivo de la b˙squeda
+	// marca la posici√≥n de destino como el objetivo de la b√∫squeda
 	rejilla->bufAlturas[posYDest][posXDest] |= 0x40;
 
-	// realiza la b˙squeda
+	// realiza la b√∫squeda
 	bool encontrado = buscaEnPantallaComun();
 
 	posXFinal = posXDest;
@@ -618,26 +618,26 @@ bool BuscadorRutas::buscaEnPantalla(int posXDest, int posYDest)
 	return encontrado;
 }
 
-// busca una ruta dentro de una pantalla desde la posiciÛn de origen a la de destino si la posiciÛn de destino es alcanzable
+// busca una ruta dentro de una pantalla desde la posici√≥n de origen a la de destino si la posici√≥n de destino es alcanzable
 bool BuscadorRutas::buscaEnPantallaSiAlcanzable(int posXDest, int posYDest)
 {
 	int alturaBase = rejilla->bufAlturas[posYDest][posXDest] & 0x0f;
 
-	// si la posiciÛn es muy alta, indica que no es alcanzable
+	// si la posici√≥n es muy alta, indica que no es alcanzable
 	if (alturaBase >= 0x0e){
 		return false;
 	}
 
-	// si en la posiciÛn de destino no puede situarse un personaje, sale
+	// si en la posici√≥n de destino no puede situarse un personaje, sale
 	if (!esPosicionAlcanzable(posXDest, posYDest, alturaBase)){
 		return false;
 	}
 
-	// si la posiciÛn era alcanzable fija la posiciÛn de destino como el objetivo de la b˙squeda
+	// si la posici√≥n era alcanzable fija la posici√≥n de destino como el objetivo de la b√∫squeda
 	rejilla->bufAlturas[posYDest][posXDest] &= 0x7f;
 	rejilla->bufAlturas[posYDest][posXDest] |= 0x40;
 
-	// realiza la b˙squeda
+	// realiza la b√∫squeda
 	bool encontrado = buscaEnPantallaComun();
 
 	posXFinal = posXDest;
@@ -646,7 +646,7 @@ bool BuscadorRutas::buscaEnPantallaSiAlcanzable(int posXDest, int posYDest)
 	return encontrado;
 }
 
-// mÈtodo com˙n para la b˙squeda de rutas dentro de la pantalla
+// m√©todo com√∫n para la b√∫squeda de rutas dentro de la pantalla
 bool BuscadorRutas::buscaEnPantallaComun()
 {
 	// marca como exploradas todas las posiciones del borde
@@ -660,13 +660,13 @@ bool BuscadorRutas::buscaEnPantallaComun()
 	nivelRecursion = 1;
 	posPila = 0;
 
-	// guarda en la pila la posiciÛn inicial
+	// guarda en la pila la posici√≥n inicial
 	push(posXIni, posYIni);
 
-	// marca la posiciÛn inicial como explorada
+	// marca la posici√≥n inicial como explorada
 	rejilla->bufAlturas[posYIni][posXIni] |= 0x80;
 
-	// guarda el marcador de fÌn de nivel de profundidad
+	// guarda el marcador de f√≠n de nivel de profundidad
 	push(-1, -1);
 
 	posProcesadoPila = 0;
@@ -677,18 +677,18 @@ bool BuscadorRutas::buscaEnPantallaComun()
 		elem(posProcesadoPila, posX, posY);
 		posProcesadoPila++;
 
-		// si ha terminado una iteraciÛn del bucle
+		// si ha terminado una iteraci√≥n del bucle
 		if ((posX == -1) && (posY == -1)){
 			// si se ha terminado de procesar la pila, sale
 			if (posProcesadoPila == posPila){
 				return false;
 			} else {
-				// en otro caso, marca el fÌn del nivel de recursiÛn y contin˙a procesando
+				// en otro caso, marca el f√≠n del nivel de recursi√≥n y contin√∫a procesando
 				push(-1, -1);
 				nivelRecursion++;
 			}
 		} else {
-			// lee la altura de la posiciÛn actual
+			// lee la altura de la posici√≥n actual
 			int altura = rejilla->bufAlturas[posY][posX] & 0x0f;
 
 			if (esPosicionDestino(posX + 1, posY, altura)){
@@ -725,19 +725,19 @@ bool BuscadorRutas::buscaEnPantallaComun()
 	return false;
 }
 
-// comprueba si la posiciÛn que se le pasa es alcanzable
+// comprueba si la posici√≥n que se le pasa es alcanzable
 bool BuscadorRutas::esPosicionAlcanzable(int posX, int posY, int altura)
 {
 	return esPosicionDestino(posX, posY, altura, altura, false);
 }
 
-// comprueba si la posiciÛn que se le pasa es un objetivo de b˙squeda
+// comprueba si la posici√≥n que se le pasa es un objetivo de b√∫squeda
 bool BuscadorRutas::esPosicionDestino(int posX, int posY, int alturaBase)
 {
-	// obtiene la altura de esta posiciÛn
+	// obtiene la altura de esta posici√≥n
 	int altura = rejilla->bufAlturas[posY][posX];
 
-	// si la posiciÛn ya habÌa sido explorada, sale
+	// si la posici√≥n ya hab√≠a sido explorada, sale
 	if ((altura & 0x80) != 0){
 		return false;
 	}
@@ -747,19 +747,19 @@ bool BuscadorRutas::esPosicionDestino(int posX, int posY, int alturaBase)
 }
 
 
-// comprueba si la posiciÛn que se le pasa es un objetivo de b˙squeda
+// comprueba si la posici√≥n que se le pasa es un objetivo de b√∫squeda
 bool BuscadorRutas::esPosicionDestino(int posX, int posY, int altura, int alturaBase, bool buscandoSolucion)
 {
-	// elimina los resultados de la b˙squeda
+	// elimina los resultados de la b√∫squeda
 	altura &= 0x3f;
 
-	// si hay mucha diferencia de altura entre esta posiciÛn y la posiciÛn base, sale
+	// si hay mucha diferencia de altura entre esta posici√≥n y la posici√≥n base, sale
 	int difAltura = alturaBase - altura + 1;
 	if ((difAltura < 0) || (difAltura >= 3)){
 		return false;
 	}
 
-	// si no coincide la altura de la posiciÛn (x, y) con la posiciÛn (x - 1, y)
+	// si no coincide la altura de la posici√≥n (x, y) con la posici√≥n (x - 1, y)
 	if (altura != (rejilla->bufAlturas[posY][posX - 1] & 0x3f)){
 		// si hay mucha diferencia de altura, sale
 		difAltura = (rejilla->bufAlturas[posY][posX - 1] & 0x3f) - altura + 1;
@@ -767,7 +767,7 @@ bool BuscadorRutas::esPosicionDestino(int posX, int posY, int altura, int altura
 			return false;
 		}
 
-		// si no coincide la altura de la posiciÛn (x, y) con la posiciÛn (x, y - 1), sale
+		// si no coincide la altura de la posici√≥n (x, y) con la posici√≥n (x, y - 1), sale
 		if (altura != (rejilla->bufAlturas[posY - 1][posX] & 0x3f)){
 			return false;
 		}
@@ -778,9 +778,9 @@ bool BuscadorRutas::esPosicionDestino(int posX, int posY, int altura, int altura
 			return false;
 		}
 	} else {
-		// aquÌ llega si coincide la altura de la posiciÛn (x, y) con la posiciÛn (x - 1, y)
+		// aqu√≠ llega si coincide la altura de la posici√≥n (x, y) con la posici√≥n (x - 1, y)
 
-		// si hay mucha diferencia de altura entre la posiciÛn (x, y) y la posiciÛn (x, y - 1), sale
+		// si hay mucha diferencia de altura entre la posici√≥n (x, y) y la posici√≥n (x, y - 1), sale
 		difAltura = (rejilla->bufAlturas[posY - 1][posX] & 0x3f) - altura + 1;
 		if ((difAltura < 0) || (difAltura >= 3)){
 			return false;
@@ -795,30 +795,30 @@ bool BuscadorRutas::esPosicionDestino(int posX, int posY, int altura, int altura
 
 	// aqui llega si la diferencia entre las 4 posiciones es considerada salvable
 
-	// marca la posiciÛn como explorada
+	// marca la posici√≥n como explorada
 	rejilla->bufAlturas[posY][posX] |= 0x80;
 
-	// si sÛlo se querÌa comprobar si la posiciÛn era accesible, sale indicando que si lo era
+	// si s√≥lo se quer√≠a comprobar si la posici√≥n era accesible, sale indicando que si lo era
 	if (!buscandoSolucion){
 		return true;
 	}
 
-	// si ha encontrado la soluciÛn
+	// si ha encontrado la soluci√≥n
 	if ((rejilla->bufAlturas[posY][posX] & 0x40) != 0){
-		// quita la marca de posiciÛn explorada
+		// quita la marca de posici√≥n explorada
 		rejilla->bufAlturas[posY][posX] &= 0x7f;
 
-		// indica que ha encontrado la posiciÛn de destino
+		// indica que ha encontrado la posici√≥n de destino
 		return true;
 	}
 
-	// mete en la pila la posiciÛn actual para explorarla proximamente
+	// mete en la pila la posici√≥n actual para explorarla proximamente
 	push(posX, posY);
 
 	return false;
 }
 
-// limpia los bits usados por la rutina de b˙squeda
+// limpia los bits usados por la rutina de b√∫squeda
 void BuscadorRutas::limpiaBitsBusquedaEnPantalla()
 {
 	for (int j = 0; j < 24; j++){
@@ -829,31 +829,31 @@ void BuscadorRutas::limpiaBitsBusquedaEnPantalla()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos relacionados con la b˙squeda de caminos entre pantallas
+// m√©todos relacionados con la b√∫squeda de caminos entre pantallas
 /////////////////////////////////////////////////////////////////////////////
 
 // busca una ruta desde una pantalla de origen a una de destino
 bool BuscadorRutas::buscaPantalla(int posXDest, int posYDest, int numPlanta)
 {
-	// marca la posiciÛn de destino como el objetivo de la b˙squeda
+	// marca la posici√≥n de destino como el objetivo de la b√∫squeda
 	habitaciones[numPlanta][(posYDest << 4) | posXDest] |= 0x40;
 
-	// busca el camino entre la posiciÛn inicial y la final
+	// busca el camino entre la posici√≥n inicial y la final
 	return buscaPantalla(numPlanta, 0x40);
 }
 
-// busca (partiendo de la posiciÛn inicial) una ruta a una pantalla que cumpla la m·scara que se le pasa
+// busca (partiendo de la posici√≥n inicial) una ruta a una pantalla que cumpla la m√°scara que se le pasa
 bool BuscadorRutas::buscaPantalla(int numPlanta, int mascara)
 {
 	posPila = 0;
 
-	// guarda en la pila la posiciÛn inicial
+	// guarda en la pila la posici√≥n inicial
 	push(posXIni, posYIni);
 
-	// marca la posiciÛn inicial como explorada
+	// marca la posici√≥n inicial como explorada
 	habitaciones[numPlanta][(posYIni << 4) | posXIni] |= 0x80;
 
-	// guarda el marcador de fÌn de nivel de profundidad
+	// guarda el marcador de f√≠n de nivel de profundidad
 	push(-1, -1);
 
 	posProcesadoPila = 0;
@@ -864,13 +864,13 @@ bool BuscadorRutas::buscaPantalla(int numPlanta, int mascara)
 		elem(posProcesadoPila, posX, posY);
 		posProcesadoPila++;
 
-		// si ha terminado una iteraciÛn del bucle
+		// si ha terminado una iteraci√≥n del bucle
 		if ((posX == -1) && (posY == -1)){
 			// si se ha terminado de procesar la pila, sale
 			if (posProcesadoPila == posPila){
 				return false;
 			} else {
-				// en otro caso, marca el fÌn del nivel y contin˙a procesando
+				// en otro caso, marca el f√≠n del nivel y contin√∫a procesando
 				push(-1, -1);
 			}
 		} else {
@@ -909,20 +909,20 @@ bool BuscadorRutas::buscaPantalla(int numPlanta, int mascara)
 	return false;
 }
 
-// comprueba si la posiciÛn que se le pasa es un objetivo de b˙squeda
+// comprueba si la posici√≥n que se le pasa es un objetivo de b√∫squeda
 bool BuscadorRutas::esPantallaDestino(int posX, int posY, int numPlanta, int mascara, int mascaraDestino)
 {
-	// si est· fuera de la tabla, sale
+	// si est√° fuera de la tabla, sale
 	if ((posX < 0) || (posX > 0x10) || (posY < 0) || (posY > 0x10)) return false;
 
-	// si se puede entrar a la habitaciÛn de destino por la orientaciÛn
+	// si se puede entrar a la habitaci√≥n de destino por la orientaci√≥n
 	if ((habitaciones[numPlanta][(posY << 4) | posX] & mascaraDestino) == 0){
 		// si se ha encontrado el destino, sale
 		if ((habitaciones[numPlanta][(posY << 4) | posX] & mascara) != 0){
 			return true;
 		}
 
-		// si la habitaciÛn no habÌa sido explorada, guarda la posiciÛn en la pila y la marca como explorada
+		// si la habitaci√≥n no hab√≠a sido explorada, guarda la posici√≥n en la pila y la marca como explorada
 		if (((habitaciones[numPlanta][(posY << 4) | posX]) & 0x80) == 0){
 			push(posX, posY);
 
@@ -933,7 +933,7 @@ bool BuscadorRutas::esPantallaDestino(int posX, int posY, int numPlanta, int mas
 	return false;
 }
 
-// limpia los bits usados por la rutina de b˙squeda
+// limpia los bits usados por la rutina de b√∫squeda
 void BuscadorRutas::limpiaBitsBusquedaPantalla(int numPlanta)
 {
 	for (int i = 0; i < 0x100; i++){
@@ -942,7 +942,7 @@ void BuscadorRutas::limpiaBitsBusquedaPantalla(int numPlanta)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// generaciÛn de comandos a partir de una ruta calculada
+// generaci√≥n de comandos a partir de una ruta calculada
 /////////////////////////////////////////////////////////////////////////////
 
 void BuscadorRutas::grabaComandosCamino(PersonajeConIA *pers)
@@ -973,7 +973,7 @@ void BuscadorRutas::grabaComandosCamino(PersonajeConIA *pers)
 
 void BuscadorRutas::reconstruyeCamino(PersonajeConIA *pers)
 {
-	// coloca el tope de la pila en la posiciÛn desde la que se encontrÛ el camino
+	// coloca el tope de la pila en la posici√≥n desde la que se encontr√≥ el camino
 	posPila = posProcesadoPila;
 
 	int posXDest, posYDest;
@@ -986,18 +986,18 @@ void BuscadorRutas::reconstruyeCamino(PersonajeConIA *pers)
 	// marca el final de los movimientos
 	pushInv(posPila2, -1);
 
-	// guarda la posiciÛn de destino
+	// guarda la posici√≥n de destino
 	pushInv(posPila2, posXFinal);
 	pushInv(posPila2, posYFinal);
 
-	// guarda la orientaciÛn final invertida
+	// guarda la orientaci√≥n final invertida
 	pushInv(posPila2, oriFinal ^ 2);
 
 	if (nivelRecursion != 1){
 		int posX, posY, difAlturaX, difAlturaY, ori;
 
 		while (true){
-			// obtiene elementos de la pila hasta encontrar el marcador de otra iteraciÛn
+			// obtiene elementos de la pila hasta encontrar el marcador de otra iteraci√≥n
 			do {
 				pop(posX, posY);
 			} while (!((posX == -1) && (posY == -1)));
@@ -1045,7 +1045,7 @@ void BuscadorRutas::reconstruyeCamino(PersonajeConIA *pers)
 						continue;
 				}
 
-				// si se llega hasta aquÌ se ha encontrado la posiciÛn anterior
+				// si se llega hasta aqu√≠ se ha encontrado la posici√≥n anterior
 				break;
 			}
 
@@ -1053,27 +1053,27 @@ void BuscadorRutas::reconstruyeCamino(PersonajeConIA *pers)
 			posXDest = posX;
 			posYDest = posY;
 
-			// guarda la orientaciÛn anterior
+			// guarda la orientaci√≥n anterior
 			pushInv(posPila2, ori);
 
-			// si se ha llegado a la posiciÛn inicial, sale
+			// si se ha llegado a la posici√≥n inicial, sale
 			if ((posXIni == posX) && (posYIni == posY)){
 				break;
 			}
 		}
 	}
 
-	// aquÌ llega cuando ya ha encontrado el camino completo del destino al origen
+	// aqu√≠ llega cuando ya ha encontrado el camino completo del destino al origen
 
 	int oriDest, difAltura1, difAltura2, avanceX, avanceY, posXRejilla, posYRejilla;
 	bool llegoADestino = true;
 
 	do {
 		if (llegoADestino){
-			// lee la orientaciÛn que debe tomar el personaje
+			// lee la orientaci√≥n que debe tomar el personaje
 			popInv(posPila2, oriDest);
 
-			// si el personaje est· en un desnivel
+			// si el personaje est√° en un desnivel
 			if (pers->enDesnivel){
 				// si el personaje va a girar noventa grados estando en desnivel, cambia su estado de girado
 				if (((pers->orientacion ^ oriDest) & 0x01) != 0){
@@ -1081,7 +1081,7 @@ void BuscadorRutas::reconstruyeCamino(PersonajeConIA *pers)
 				}
 			}
 
-			// si ha cambiado la orientaciÛn, escribe unos comandos para girar
+			// si ha cambiado la orientaci√≥n, escribe unos comandos para girar
 			if (pers->orientacion != oriDest){
 				pers->modificaOrientacion(oriDest);
 				pers->orientacion = oriDest;
@@ -1101,15 +1101,15 @@ void BuscadorRutas::reconstruyeCamino(PersonajeConIA *pers)
 			return;
 		}
 
-		// saca de la pila la posiciÛn a la que se mueve el personaje
+		// saca de la pila la posici√≥n a la que se mueve el personaje
 		popInv(posPila2, posYDest);
 		popInv(posPila2, posXDest);
 
-		// obtiene la posiciÛn del personaje con respecto a las 20x20 posiciones centrales de la rejilla
+		// obtiene la posici√≥n del personaje con respecto a las 20x20 posiciones centrales de la rejilla
 		bool noHayError = rejilla->ajustaAPosRejilla(pers->posX, pers->posY, posXRejilla, posYRejilla);
 		assert(noHayError);
 
-		// comprueba si ha llegado a la posiciÛn de destino antes de sacar m·s valores de la pila
+		// comprueba si ha llegado a la posici√≥n de destino antes de sacar m√°s valores de la pila
 		llegoADestino = ((posXRejilla == posXDest) && (posYRejilla == posYDest));
 	} while (true);
 }
@@ -1138,7 +1138,7 @@ void BuscadorRutas::pop(INT32 &val1, INT32 &val2)
 	val2 = ((INT16)((rdo >> 16) & 0xffff));
 }
 
-// obtiene el elemento de la posiciÛn seleccionada
+// obtiene el elemento de la posici√≥n seleccionada
 void BuscadorRutas::elem(int posicion, INT32 &val1, INT32 &val2)
 {
 	assert(posicion >= 0);
@@ -1149,7 +1149,7 @@ void BuscadorRutas::elem(int posicion, INT32 &val1, INT32 &val2)
 	val2 = ((INT16)((rdo >> 16) & 0xffff));
 }
 
-// mete un dato en la pila, en la posiciÛn especificada y en sentido inverso
+// mete un dato en la pila, en la posici√≥n especificada y en sentido inverso
 void BuscadorRutas::pushInv(int &posicion, INT32 val1, INT32 val2)
 {
 	assert((posicion >= 0) && (posicion < lgtudBuffer));
@@ -1158,7 +1158,7 @@ void BuscadorRutas::pushInv(int &posicion, INT32 val1, INT32 val2)
 	posicion--;
 }
 
-// mete un dato en la pila, en la posiciÛn especificada y en sentido inverso
+// mete un dato en la pila, en la posici√≥n especificada y en sentido inverso
 void BuscadorRutas::pushInv(int &posicion, INT32 val1)
 {
 	assert((posicion >= 0) && (posicion < lgtudBuffer));
@@ -1167,7 +1167,7 @@ void BuscadorRutas::pushInv(int &posicion, INT32 val1)
 	posicion--;
 }
 
-// saca un dato en la posiciÛn especificada de la pila en sentido inverso
+// saca un dato en la posici√≥n especificada de la pila en sentido inverso
 void BuscadorRutas::popInv(int &posicion, INT32 &val1)
 {
 	assert(posicion < lgtudBuffer);
@@ -1177,7 +1177,7 @@ void BuscadorRutas::popInv(int &posicion, INT32 &val1)
 	val1 = ((INT16)(rdo & 0xffff));
 }
 
-// saca un dato en la posiciÛn especificada de la pila en sentido inverso
+// saca un dato en la posici√≥n especificada de la pila en sentido inverso
 void BuscadorRutas::popInv(int &posicion, INT32 &val1, INT32 &val2)
 {
 	assert(posicion < lgtudBuffer);

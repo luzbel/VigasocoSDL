@@ -3,13 +3,13 @@ VIGASOCO (VIdeo GAmes SOurce COde) SDL port (v0.071)
 Acerca de:
 ==========
 
-VIGASOCOSDL es la versi髇 para SDL del proyecto VIGASOCO.
+VIGASOCOSDL es la versi贸n para SDL del proyecto VIGASOCO.
 Se ha probado en i386 GNU-Linux, PS3-PPC GNU-Linux , PlayStation2 en modo nativo(con restricciones), 
 Mac OSX y Sega Dreamcast, 
 aunque no debe ser dificil adaptarlo a cualquier otra plataforma con SDL y un compilador moderno de C++.
 
 
-Licencia y distribuci髇:
+Licencia y distribuci贸n:
 ========================
 
 La misma que el proyecto VIGASOCO (consultar leeme.txt para los detalles)
@@ -17,13 +17,13 @@ La misma que el proyecto VIGASOCO (consultar leeme.txt para los detalles)
 Aunque la licencia original de Vigasoco no permite su distribucion con las ROMS
 de los juegos originales, tras pedir permiso al autor de Vigasoco, y comprobar
 que la imagen del disco CPC de "La abadia del crimen" se lleva distribuyendo
-en varias webs durantes a駉s sin problema alguno, VigasosoSDL se distribuye con 
+en varias webs durantes a帽os sin problema alguno, VigasosoSDL se distribuye con 
 los archivos necesarios para jugar a "La abadia del crimen".
 
 Uso:
 ===
 
-Similar a la versi髇 Windows ( ver window_es.txt).
+Similar a la versi贸n Windows ( ver window_es.txt).
 Las principales diferencias son:
 	- No existe soporte para el pacman.
 	- No hay loader para zip, la ROM tiene que estar descomprimida.
@@ -52,7 +52,7 @@ En la version PS2 las partidas se graban en mc0:/ABADIA/abadia.save
 
 El mapeo del teclado en la version PS2 es:
 
-Cursores: cruzeta del pad o seta anal骻ica izquierda
+Cursores: cruzeta del pad o seta anal贸gica izquierda
     Start: PAUSA
        L1: Cargar partida
        R1: Grabar partida

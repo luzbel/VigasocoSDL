@@ -1,6 +1,6 @@
-Conversión rápida a PNACL. Funciona en Google Chrome 31
-Monta un filesystem por http apuntando a una dirección fija de google drive
-Usa un filesystem html5, para así poder guardar y cargar las partidas
+ConversiÃ³n rÃ¡pida a PNACL. Funciona en Google Chrome 31
+Monta un filesystem por http apuntando a una direcciÃ³n fija de google drive
+Usa un filesystem html5, para asÃ­ poder guardar y cargar las partidas
 
 TODO
 - Cambiar los makefiles que llevan fijada la ruta del SDK 

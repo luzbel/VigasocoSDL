@@ -13,7 +13,7 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// tabla de la animación del personaje
+// tabla de la animaciÃ³n del personaje
 /////////////////////////////////////////////////////////////////////////////
 /* CPC
 Personaje::DatosFotograma Guillermo::tablaAnimacion[8] = {
@@ -40,12 +40,12 @@ Personaje::DatosFotograma Guillermo::tablaAnimacion[8] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// inicialización y limpieza
+// inicializaciÃ³n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Guillermo::Guillermo(Sprite *spr) : Personaje(spr)
 {
-	// asigna la tabla de animación del personaje
+	// asigna la tabla de animaciÃ³n del personaje
 	animacion = tablaAnimacion;
 	numFotogramas = 8;
 
@@ -60,21 +60,21 @@ Guillermo::~Guillermo()
 // movimiento
 /////////////////////////////////////////////////////////////////////////////
 
-// método llamado desde el bucle principal para que el personaje interactue con el mundo virtual
+// mÃ©todo llamado desde el bucle principal para que el personaje interactue con el mundo virtual
 void Guillermo::run()
 {
 	mueve();
 }
 
-// mueve el personaje según el estado en el que se encuentra
+// mueve el personaje segÃºn el estado en el que se encuentra
 void Guillermo::ejecutaMovimiento()
 {
-	// si está vivo, responde a la pulsación de los cursores
+	// si estÃ¡ vivo, responde a la pulsaciÃ³n de los cursores
 	if (estado == 0){
-		// si la cámara no sigue a guillermo, sale
+		// si la cÃ¡mara no sigue a guillermo, sale
 		if (laLogica->numPersonajeCamara != 0) return;
 
-		// dependiendo de la tecla que se pulse, actúa en consecuencia
+		// dependiendo de la tecla que se pulse, actÃºa en consecuencia
 		if (losControles->estaSiendoPulsado(P1_LEFT)){
 			gira(1);
 		} else if (losControles->estaSiendoPulsado(P1_RIGHT)){
@@ -87,7 +87,7 @@ void Guillermo::ejecutaMovimiento()
 			trataDeAvanzar(difAltura1, difAltura2, avanceX, avanceY);
 		}
 	} else {
-		// si ha llegado al último estado cuando está muerto, sale
+		// si ha llegado al Ãºltimo estado cuando estÃ¡ muerto, sale
 		if (estado == 1) return;
 
 		estado = estado - 1;
@@ -102,7 +102,7 @@ void Guillermo::ejecutaMovimiento()
 		}
 
         if (estado != 1){
-			// modifica la posición y del sprite en pantalla
+			// modifica la posiciÃ³n y del sprite en pantalla
 			sprite->posYPant += incrPosY;
 			sprite->haCambiado = true;
 

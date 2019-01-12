@@ -76,7 +76,7 @@ SDL_Delay(milliseconds);
 INT64 SDLTimer::calcTicksPerSecond()
 {
 	// raise the priority for accurate timing
-	// TODO: ¡¡¡ FALTA POR IMPLEMENTAR !!!
+	// TODO: Â¡Â¡Â¡ FALTA POR IMPLEMENTAR !!!
 
 	// wait for 0.25 seconds
 	INT64 begin = SDLTimer::getTime();
@@ -86,7 +86,7 @@ INT64 SDLTimer::calcTicksPerSecond()
 	INT64 end = SDLTimer::getTime();
 
 	// restore the previous priority
-	// TODO: ¡¡¡ FALTA POR IMPLEMENTAR !!!
+	// TODO: Â¡Â¡Â¡ FALTA POR IMPLEMENTAR !!!
 
 	return (end - begin)*4;
 }

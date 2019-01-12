@@ -211,7 +211,11 @@ void VigasocoSDL::createAsyncThread()
 
 void VigasocoSDL::initCompleted()
 {
+<<<<<<< HEAD
 	std::string titulo_ventana = "abadIA 0.1 VigasocoSDL v0.094: " + _driver->getFullName();
+=======
+	std::string titulo_ventana = "VigasocoSDL v0.094-abadIA: " + _driver->getFullName();
+>>>>>>> luzbel/abadIA-timing-by-webserver
 	SDL_WM_SetCaption(titulo_ventana.c_str(),titulo_ventana.c_str());
 	SDL_ShowCursor(SDL_DISABLE);
 }
@@ -296,7 +300,7 @@ bool VigasocoSDL::processEvents()
 		if (event.type==SDL_QUIT) return false;
 #ifndef __native_client__
 // en el navegador no salimos al pulsar ESC, porque se queda la pantalla sin limpiar y parece que se ha colgado
-// habría que buscar una manera de finalizar de una manera elegante
+// habrÃ­a que buscar una manera de finalizar de una manera elegante
 		if (event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_ESCAPE) return false;
 #endif
 	}

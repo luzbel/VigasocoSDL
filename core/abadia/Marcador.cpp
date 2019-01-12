@@ -14,10 +14,14 @@
 //para printf trazas
 #include <stdio.h>
 
+// para manejar UTF8
+#include <codecvt>
+#include <locale>
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// duraciÛn de las etapas del dÌa
+// duraci√≥n de las etapas del d√≠a
 /////////////////////////////////////////////////////////////////////////////
 
 int Marcador::duracionEtapasDia[7][7] = {
@@ -31,7 +35,7 @@ int Marcador::duracionEtapasDia[7][7] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Marcador::Marcador()
@@ -45,13 +49,13 @@ Marcador::~Marcador()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos relacionados con los dÌas y los momentos del dÌa
+// m√©todos relacionados con los d√≠as y los momentos del d√≠a
 /////////////////////////////////////////////////////////////////////////////
 
-// avanza el momento del dÌa del marcador
+// avanza el momento del d√≠a del marcador
 void Marcador::muestraDiaYMomentoDia()
 {
-	// coloca una paleta seg˙n el momento del dÌa
+	// coloca una paleta seg√∫n el momento del d√≠a
 	/* 
 	if (laLogica->momentoDia < VISPERAS){
 		elJuego->paleta->setGamePalette(2);
@@ -67,76 +71,76 @@ void Marcador::muestraDiaYMomentoDia()
 	}
 
 
-	// dibuja el n˙mero de dÌa en el marcador
+	// dibuja el n√∫mero de d√≠a en el marcador
 	dibujaDia(laLogica->dia);
 
-	// hace que avance el momento del dÌa, para mostrar el efecto de scroll en las letras del dÌa
+	// hace que avance el momento del d√≠a, para mostrar el efecto de scroll en las letras del d√≠a
 	laLogica->momentoDia = laLogica->momentoDia - 1;
 	avanzaMomentoDia();
 }
 
-// avanza el momento del dÌa
+// avanza el momento del d√≠a
 void Marcador::avanzaMomentoDia()
 {
 	laLogica->momentoDia = laLogica->momentoDia + 1;
 
-	// si se han terminado los momentos del dÌa, avanza al siguiente dÌa
+	// si se han terminado los momentos del d√≠a, avanza al siguiente d√≠a
 	if (laLogica->momentoDia > COMPLETAS){
 		laLogica->momentoDia = 0;
 		laLogica->dia = laLogica->dia + 1;
 
-		// si se ha terminado el sÈptimo dÌa, vuelve al primer dÌa
+		// si se ha terminado el s√©ptimo d√≠a, vuelve al primer d√≠a
 		if (laLogica->dia > 7){
 			laLogica->dia = 1;
 		}
 
-		// dibuja el nuevo dÌa en el marcador
+		// dibuja el nuevo d√≠a en el marcador
 		dibujaDia(laLogica->dia);
 	}
 
-	// obtiene un puntero a los caracteres que forman el momento del dÌa
+	// obtiene un puntero a los caracteres que forman el momento del d√≠a
 	nombreMomentoDia = &roms[0x4fbc + 7*laLogica->momentoDia];
 
-	// quedan 9 caracteres para completar el scroll del nombre del dÌa
+	// quedan 9 caracteres para completar el scroll del nombre del d√≠a
 	numPosScrollDia = 9;
 
-	// obtiene la duraciÛn de esta etapa del dÌa
+	// obtiene la duraci√≥n de esta etapa del d√≠a
 	laLogica->duracionMomentoDia = duracionEtapasDia[laLogica->dia - 1][laLogica->momentoDia]*0x100;
 }
 
-// dibuja el dÌa en el marcador
+// dibuja el d√≠a en el marcador
 void Marcador::dibujaDia(int numDia)
 {
-	// indexa en la tabla de los dÌas
+	// indexa en la tabla de los d√≠as
 	UINT8 *data = &roms[0x4fa7 + (numDia - 1)*3];
 
-	// dibuja los 3 n˙meros romanos que forman el dÌa en el que se est·
+	// dibuja los 3 n√∫meros romanos que forman el d√≠a en el que se est√°
 	dibujaDigitoDia(data[0], 68, 165);
 	dibujaDigitoDia(data[1], 68 + 8, 165);
 	dibujaDigitoDia(data[2], 68 + 16, 165);
 }
 
-// dibuja un n˙mero romano que forma el dÌa en la posiciÛn que se le pasa
+// dibuja un n√∫mero romano que forma el d√≠a en la posici√≥n que se le pasa
 void Marcador::dibujaDigitoDia(int digito, int x, int y)
 {
 	/* CPC
 	// apunta a 8 pixels negros
 	int despDigito = 0x5581;
 
-	// si se le pasÛ una 'I'
+	// si se le pas√≥ una 'I'
 	if (digito == 2){
 		despDigito = 0xab49;
 	} else if (digito == 1){
-		// si se le pasÛ una 'V'
+		// si se le pas√≥ una 'V'
 		despDigito = 0xab39;
 	}
 
-	// obtiene un puntero a los gr·ficos del dÌgito
+	// obtiene un puntero a los gr√°ficos del d√≠gito
 	UINT8 *data = &roms[despDigito];
 
-	// rellena las 8 lÌneas que ocupa la letra
+	// rellena las 8 l√≠neas que ocupa la letra
 	for (int j = 0; j < 8; j++){
-		// cada dÌgito tiene 8 pixels de ancho
+		// cada d√≠gito tiene 8 pixels de ancho
 		for (int i = 0; i < 2; i++){
 			for (int k = 0; k < 4; k++){
 				cpc6128->setMode1Pixel(x + 4*i + k, y + j, cpc6128->unpackPixelMode1(*data, k));
@@ -144,7 +148,7 @@ void Marcador::dibujaDigitoDia(int digito, int x, int y)
 			data++;
 		}
 
-		// si no habÌa que mostrar ning˙n dÌgito, mantiene el puntero en los pixels negros
+		// si no hab√≠a que mostrar ning√∫n d√≠gito, mantiene el puntero en los pixels negros
 		if (digito == 0){
 			data = data - 2;
 		}
@@ -154,25 +158,25 @@ void Marcador::dibujaDigitoDia(int digito, int x, int y)
 	// apunta a 8 pixels negros
 	int despDigito = 72108+(8*8*2);
 
-	// si se le pasÛ una 'I'
+	// si se le pas√≥ una 'I'
 	if (digito == 2){
 		despDigito = 72108+(8*8*1);
 	} else if (digito == 1){
-		// si se le pasÛ una 'V'
+		// si se le pas√≥ una 'V'
 		despDigito = 72108;
 	}
 
-	// obtiene un puntero a los gr·ficos del dÌgito
+	// obtiene un puntero a los gr√°ficos del d√≠gito
 	UINT8 *data = &roms[despDigito+0x24000-1-0x4000]; // pasar a la zona VGA y dentro buscar el digito
 
-	// rellena las 8 lÌneas que ocupa la letra
+	// rellena las 8 l√≠neas que ocupa la letra
 	for (int j = 0; j < 8; j++){
-		// cada dÌgito tiene 8 pixels de ancho
+		// cada d√≠gito tiene 8 pixels de ancho
 		for (int i = 0; i < 8; i++){
 			cpc6128->setVGAPixel(x + i, y + j,*data++);
 		}
 /* ?? no hace falta, en los graficos VGA estan los 8x8 pixeles negros ???
-		// si no habÌa que mostrar ning˙n dÌgito, mantiene el puntero en los pixels negros
+		// si no hab√≠a que mostrar ning√∫n d√≠gito, mantiene el puntero en los pixels negros
 		if (digito == 0){
 			data = data - 2;
 		}
@@ -180,10 +184,10 @@ void Marcador::dibujaDigitoDia(int digito, int x, int y)
 	}
 }
 
-// realiza el efecto de scroll en la parte del marcador que muestra el momento del dÌa
+// realiza el efecto de scroll en la parte del marcador que muestra el momento del d√≠a
 void Marcador::realizaScrollMomentoDia()
 {
-	// si todavÌa quedan posiciones para desplazar
+	// si todav√≠a quedan posiciones para desplazar
 	if (numPosScrollDia != 0){
 		numPosScrollDia--;
 
@@ -195,7 +199,7 @@ void Marcador::realizaScrollMomentoDia()
 			nombreMomentoDia++;
 		}
 
-		// 8 lÌneas de alto
+		// 8 l√≠neas de alto
 		for (int j = 0; j < 8; j++){
 			// desplaza 48/8 = 6 caracteres a la izquierda 1 caracter (cada caracter es de 8x8)
 			for (int i = 0; i < 48; i++){
@@ -204,14 +208,14 @@ void Marcador::realizaScrollMomentoDia()
 				cpc6128->setVGAPixel(44 + i - 8, 180 + j, cpc6128->getMode1Pixel(44 + i, 180 + j));
 			}
 		}
-		
+fprintf(stderr,"Marcador::realizaScrollMomentoDia %c [%d] y el rarito es - [%d]\n",caracter,(int)caracter,(int)'-');		
 		// imprime el caracter que toca
 		// CPC imprimirCaracter(caracter, 84, 180, 3, 2);
 		imprimirCaracter(caracter, 84, 180, 0, 4); // VGA
 	}
 }
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos relacionados con el obsequium
+// m√©todos relacionados con el obsequium
 /////////////////////////////////////////////////////////////////////////////
 
 // decrementa la barra de obsequium
@@ -221,7 +225,7 @@ void Marcador::decrementaObsequium(int unidades)
 
 	// si se ha terminado el obsequium
 	if (laLogica->obsequium < 0){
-		// si guillermo no ha muerto, cambia el estado del abad para que le eche de la abadÌa
+		// si guillermo no ha muerto, cambia el estado del abad para que le eche de la abad√≠a
 		if (!laLogica->haFracasado){
 			laLogica->abad->estado = 0x0b;
 		}
@@ -250,7 +254,7 @@ void Marcador::dibujaBarra(int lgtud, int color, int x, int y)
 // dibujo del marcador
 /////////////////////////////////////////////////////////////////////////////
 
-// limpia el ·rea que ocupa el marcador
+// limpia el √°rea que ocupa el marcador
 void Marcador::limpiaAreaMarcador()
 {
 //TODO revisar si al poner las traducciones con caracteres de 8x10
@@ -262,14 +266,14 @@ void Marcador::limpiaAreaMarcador()
 // dibuja el marcador
 void Marcador::dibujaMarcador()
 {
-//TODO igual hay que coger el marcardor del GraficosVGA de la nueva versiÛn del remake
+//TODO igual hay que coger el marcardor del GraficosVGA de la nueva versi√≥n del remake
 // Ver si tiene 32 pixeles o 34 o 35, para dejar hueco para los 2 pixeles de mas de los
 // acentos
 	/* CPC
-	// apunta a los datos gr·ficos del marcador
+	// apunta a los datos gr√°ficos del marcador
 	UINT8 *data = &roms[0x1e328];
 
-	// dibuja las 32 lÌneas que forman el marcador en la parte inferior de la pantalla
+	// dibuja las 32 l√≠neas que forman el marcador en la parte inferior de la pantalla
 	for (int j = 0; j < 32; j++){
 		for (int i = 0; i < 256/4; i++){
 			for (int k = 0; k < 4; k++){
@@ -280,10 +284,10 @@ void Marcador::dibujaMarcador()
 	}
 	*/
 	// VGA
-	// apunta a los datos gr·ficos del marcador
+	// apunta a los datos gr√°ficos del marcador
 	UINT8 *data = &roms[0x24000 -1 - 0x4000 + 0xB200];
 
-	// dibuja las 32 lÌneas que forman el marcador en la parte inferior de la pantalla
+	// dibuja las 32 l√≠neas que forman el marcador en la parte inferior de la pantalla
 	for (int j = 0; j < 32; j++){
 		for (int i = 0; i < 256; i++){
 			cpc6128->setVGAPixel(32 + i , 160 + j, *data++);
@@ -309,7 +313,7 @@ void Marcador::dibujaObjetos(int objetos, int mascara)
 
 	// recorre los 6 huecos posibles
 	for (int numHuecos = 0; numHuecos < 6; numHuecos++){
-		// si se han procesado todos los objetos que habÌa que actualizar, sale
+		// si se han procesado todos los objetos que hab√≠a que actualizar, sale
 		if (mascara == 0){
 			return;
 		}
@@ -320,7 +324,7 @@ void Marcador::dibujaObjetos(int objetos, int mascara)
 			if ((objetos & (1 << (Juego::numObjetos - 1))) != 0){
 				Sprite *spr = sprites[Juego::primerSpriteObjetos + numHuecos];
 
-				// obtiene un puntero a los gr·ficos del objeto
+				// obtiene un puntero a los gr√°ficos del objeto
 				// CPC UINT8 *data = &roms[spr->despGfx];
 				// VGA
 				UINT8 *data = &roms[spr->despGfx + 0x24000 - 1 - 0x4000];
@@ -354,7 +358,7 @@ void Marcador::dibujaObjetos(int objetos, int mascara)
 		mascara = mascara << 1;
 		objetos = objetos << 1;
 
-		// avanza la posiciÛn al siguiente hueco
+		// avanza la posici√≥n al siguiente hueco
 		posX += 20;
 
 		// al pasar del tercer al cuarto hueco, hay 4 pixels extra
@@ -377,46 +381,70 @@ void Marcador::limpiaAreaFrases()
 	cpc6128->fillMode1Rect(96, 164, 128, 8, 0); // VGA 
 }
 
-// recorre los caracteres de la frase, mostr·ndolos por pantalla
+// recorre los caracteres de la frase, mostr√°ndolos por pantalla
 void Marcador::imprimeFrase(std::string frase, int x, int y, int colorTexto, int colorFondo)
 {
-	for (unsigned int i = 0; i < frase.length(); i++){
-		imprimirCaracter(frase[i], x + 8*i, y, colorTexto, colorFondo);
-	}
+//	for (unsigned int i = 0; i < frase.length(); i++){
+//		imprimirCaracter(frase[i], x + 8*i, y, colorTexto, colorFondo);
+//	}
+
+	// Los ficheros fuente est√°n ahora guardados en UTF8 y no en ASCII
+	// aqu√≠ convertimos a utf32 para poder iterar facilmente
+	// En gestofrases he optado por recorrer el char* sacando cada 
+	// caracter ya sea de 1-4 bytes y metiendolo todo en un int
+	// porque no hago todo en el mismo bucle y tengo que ir iterando por
+	// la frase
+	// Aqu√≠ convierto a utf32 y ya puedo sacar cada int con el valor de cada
+	// caracter en cada paso del for
+        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
+        std::u32string utf32str = conv.from_bytes(frase);
+        int i=0;
+        for (auto &letter : utf32str) {
+                imprimirCaracter(letter, x + 8*i, y, colorTexto, colorFondo);
+                i++;
+        }
 }
 
 void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int colorFondo)
 {
 	switch(caracter) {
-		case ',': caracter=0x3c; break;
-		case '.': caracter=0x3d; break;
-		case 'ø': caracter=0x40; break;
-		case '—': caracter=0x57; break;
-		case 'W': caracter=0xd1; break;
+		case L',': caracter=0x3c; break;
+		case L'.': caracter=0x3d; break;
+		case L'¬ø': caracter=0x40; break;
+		case L'√ë': caracter=0x57; break;
+		case L'W': caracter=0xd1; break;
+		// En la ROM original el caracter . se usa para representar
+		// una combinaci√≥n de m√°s de una letra
+		// Pero el . tambi√©n se usa ahora para algunas frases multiidiona
+		// en AbadiaDriver::filesLoaded se parchea la ROM para usar
+		// el caracter ~ en vez del .
+		// Aqu√≠ deshacemos el cambio para que se imprima el gr√°fico asociado
+		// a . en el original
+		case L'~': caracter='.' ; break;
 	}
 
 
 	int largo=10; // algunos caracteres son de 8x8 y otros de 8x10
-	// TODO queda muy feo declarar esto en la funcion. Llevar a objetos est·ticos de la clase
-	static const UINT8 c0[10] = { 0x18,0x0c,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // ¿
-	static const UINT8 c1[10] = { 0x18,0x30,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // ¡ 
-	static const UINT8 c2[10] = { 0x38,0x6c,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // ¬
-	static const UINT8 c3[10] = { 0x36,0x6c,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // √
-	static const UINT8 c4[10] = { 0x00,0x6c,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // ƒ
-	static const UINT8 c7[10] = { 0x00,0x00,0x00,0x78,0xc6,0xc0,0xe6,0x7c,0x18,0x30 }; //  «
-	static const UINT8 c8[10] = { 0x30,0x18,0x00,0xdc,0xe6,0x60,0x7c,0x60,0xe6,0xdc }; // »
-	static const UINT8 c9[10] = { 0x18,0x30,0x00,0xdc,0xe6,0x60,0x7c,0x60,0xe6,0xdc }; // …
-	static const UINT8 ca[10] = { 0x38,0x6c,0x00,0xdc,0xe6,0x60,0x7c,0x60,0xe6,0xdc }; //   
-	static const UINT8 cd[10] = { 0x0c,0x18,0x00,0x7e,0x98,0x30,0x30,0x30,0x1a,0xfc }; // Õ 
-	static const UINT8 cf[10] = { 0x00,0x6c,0x00,0x7e,0x98,0x30,0x30,0x30,0x1a,0xfc }; // œ
-	// la d1 es la enye — , que est· en las fuentes normales en el lugar de la W, 
-	// que no se usaba en espaÒol 
-	static const UINT8 d2[10] = { 0x30,0x18,0x00,0x38,0x6c,0xc6,0xc6,0xc6,0xee,0x7c }; // “
-	static const UINT8 d3[10] = { 0x18,0x30,0x00,0x38,0x6c,0xc6,0xc6,0xc6,0xee,0x7c }; // ” 
-	static const UINT8 d5[10] = { 0x36,0x6c,0x00,0x38,0x6c,0xc6,0xc6,0xc6,0xee,0x7c }; // ÷ 
-	static const UINT8 d6[10] = { 0x00,0x6c,0x00,0x38,0x6c,0xc6,0xc6,0xc6,0xee,0x7c }; // ’ 
-	static const UINT8 d9[10] = { 0x18,0x0c,0x00,0xe6,0x66,0xc6,0xc6,0xc6,0xc6,0x7c }; // Ÿ 
-	static const UINT8 da[10] = { 0x18,0x30,0x00,0xe6,0x66,0xc6,0xc6,0xc6,0xc6,0x7c }; // ⁄ 
+	// TODO queda muy feo declarar esto en la funcion. Llevar a objetos est√°ticos de la clase
+	static const UINT8 c0[10] = { 0x18,0x0c,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // √Ä
+	static const UINT8 c1[10] = { 0x18,0x30,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // √Å 
+	static const UINT8 c2[10] = { 0x38,0x6c,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // √Ç
+	static const UINT8 c3[10] = { 0x36,0x6c,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // √É
+	static const UINT8 c4[10] = { 0x00,0x6c,0x00,0x3c,0x66,0xc6,0xfe,0xc6,0xe6,0x66 }; // √Ñ
+	static const UINT8 c7[10] = { 0x00,0x00,0x00,0x78,0xc6,0xc0,0xe6,0x7c,0x18,0x30 }; //  √á
+	static const UINT8 c8[10] = { 0x30,0x18,0x00,0xdc,0xe6,0x60,0x7c,0x60,0xe6,0xdc }; // √à
+	static const UINT8 c9[10] = { 0x18,0x30,0x00,0xdc,0xe6,0x60,0x7c,0x60,0xe6,0xdc }; // √â
+	static const UINT8 ca[10] = { 0x38,0x6c,0x00,0xdc,0xe6,0x60,0x7c,0x60,0xe6,0xdc }; // √ä 
+	static const UINT8 cd[10] = { 0x0c,0x18,0x00,0x7e,0x98,0x30,0x30,0x30,0x1a,0xfc }; // √ç 
+	static const UINT8 cf[10] = { 0x00,0x6c,0x00,0x7e,0x98,0x30,0x30,0x30,0x1a,0xfc }; // √è
+	// la d1 es la enye √ë , que est√° en las fuentes normales en el lugar de la W, 
+	// que no se usaba en espa√±ol 
+	static const UINT8 d2[10] = { 0x30,0x18,0x00,0x38,0x6c,0xc6,0xc6,0xc6,0xee,0x7c }; // √í
+	static const UINT8 d3[10] = { 0x18,0x30,0x00,0x38,0x6c,0xc6,0xc6,0xc6,0xee,0x7c }; // √ì 
+	static const UINT8 d5[10] = { 0x36,0x6c,0x00,0x38,0x6c,0xc6,0xc6,0xc6,0xee,0x7c }; // √ñ 
+	static const UINT8 d6[10] = { 0x00,0x6c,0x00,0x38,0x6c,0xc6,0xc6,0xc6,0xee,0x7c }; // √ï 
+	static const UINT8 d9[10] = { 0x18,0x0c,0x00,0xe6,0x66,0xc6,0xc6,0xc6,0xc6,0x7c }; // √ô 
+	static const UINT8 da[10] = { 0x18,0x30,0x00,0xe6,0x66,0xc6,0xc6,0xc6,0xc6,0x7c }; // √ö 
 
 	static const UINT8 d1[10] = { 0x00,0x00,0x00,0x66,0xe6,0xc6,0xd6,0xd6,0xfe,0x66 }; // w
 
@@ -434,34 +462,46 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 
 	switch(caracter)
 	{
-		case '¿': data=c0; break;
-		case '¡': data=c1; break;
-		case '¬': data=c2; break;
-		case '√': data=c3; break;
-		case 'ƒ': data=c4; break;
-		case '«': data=c7; break;
-		case '»': data=c8; break;
-		case '…': data=c9; break;
-		case ' ': data=ca; break;
-		case 'Õ': data=cd; break;
-		case 'œ': data=cf; break;
-		// case '—': data=; break; // intercambiado con la W 0x57
-		case '“': data=d2; break;
-		case '”': data=d3; break;
-		case '’': data=d6; break;
-		case '÷': data=d5; break;
-		case 'Ÿ': data=d9; break;
-		case '⁄': data=da; break;
-		case 0xd1: data=d1; break; // la Ò se cambia por la w y la w por esta
-		case '-': data=ui; break;
-		case '\'': data=uj; break;
-		default: {
+		case L'√Ä': data=c0; break;
+		case L'√Å': data=c1; break;
+		case L'√Ç': data=c2; break;
+		case L'√É': data=c3; break;
+		case L'√Ñ': data=c4; break;
+		case L'√á': data=c7; break;
+		case L'√à': data=c8; break;
+		case L'√â': data=c9; break;
+		case L'√ä': data=ca; break;
+		case L'√ç': data=cd; break;
+		case L'√è': data=cf; break;
+		// case '√ë': data=; break; // intercambiado con la W 0x57
+		case L'√í': data=d2; break;
+		case L'√ì': data=d3; break;
+//		case '√ï': data=d6; break;
+//		case '√ñ': data=d5; break;
+		// Estos dos estaban bailados o ha saltado el error 
+		// al probar UTF8
+		case L'√ï': data=d5; break;
+		case L'√ñ': data=d6; break;
 
+		case L'√ô': data=d9; break;
+		case L'√ö': data=da; break;
+		case 0xd1: data=d1; break; // la √± se cambia por la w y la w por esta
+		case L'-': data=ui; break;
+		case L'\'': data=uj; break; 
+		// En la ROM original el caracter - se usa para representar
+		// una combinaci√≥n de m√°s de una letra
+		// Pero el - tambi√©n se usa ahora para algunas frases multiidiona
+		// en AbadiaDriver::filesLoaded se parchea la ROM para usar
+		// el caracter # en vez del -
+		// Aqu√≠ deshacemos el cambio para que se imprima el gr√°fico asociado
+		// a - en el original
+		case L'#': caracter='-'; // no hacer break, queremos que busque el grafico original asociado a -
+		default: {
 				 if ((unsigned int)caracter>127) 
 					printf("ERROR, no existe grafico para el caracter "
 						"%c %u \n", caracter, (unsigned char)caracter);
 
-				 // se asegura de que el caracter estÈ entre 0 y 127
+				 // se asegura de que el caracter est√© entre 0 y 127
 				 caracter &= 0x7f;
 
 				 // si es un caracter no imprimible, sale
@@ -488,9 +528,8 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 			 }
 
 	}
-
 	// los caracteres normales son de 8x8 pixels
-	// los aÒadidos para las traducciones son de 8x10
+	// los a√±adidos para las traducciones son de 8x10
 	for (int j = 0; j < largo; j++){
 		int bit = 0x80;
 		int valor = *data;

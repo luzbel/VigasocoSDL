@@ -16,6 +16,10 @@
 #include <stack>
 #endif
 
+#ifdef __abadIA__
+#include <stack>
+#endif
+
 class CPC6128;					// definido en CPC6128.h
 class IAudioPlugin;				// definido en IAudioPlugin.h
 class TimingHandler;			// definido en TimingHandler.h
@@ -67,7 +71,7 @@ public:
 	bool GraficosCPC; // Indica si se usan los datos del archivo GraficosCPC
 			  // o del GraficosVGA
 			  // En ambos casos, son de 8 bits
-	CPC6128 *cpc6128;						// objeto de ayuda para realizar operaciones gr·ficas del cpc6128
+	CPC6128 *cpc6128;						// objeto de ayuda para realizar operaciones gr√°ficas del cpc6128
 	IAudioPlugin *audio_plugin;	// puntero al plugin de audio
 	Controles *controles;					// acceso a los controles del juego
 	Paleta *paleta;							// paleta del juego
@@ -75,27 +79,33 @@ public:
 	UINT8 buffer[8192];						// buffer para mezclar los sprites y para buscar las rutas
 	UINT8 *roms;							// puntero a las roms originales
 
-	Logica *logica;							// objeto que se encarga de gestionar la lÛgica del juego
-	Pergamino *pergamino;					// pergamino para la presentaciÛn y el final
+	Logica *logica;							// objeto que se encarga de gestionar la l√≥gica del juego
+	Pergamino *pergamino;					// pergamino para la presentaci√≥n y el final
 	Marcador *marcador;						// marcador del juego
-	MotorGrafico *motor;					// motor gr·fico
+	MotorGrafico *motor;					// motor gr√°fico
 
 	Sprite *sprites[numSprites];			// sprites del juego
 	Puerta *puertas[numPuertas];			// puertas del juego
 	Objeto *objetos[numObjetos];			// objetos del juego
 	Personaje *personajes[numPersonajes];	// personajes del juego
 
-	volatile int contadorInterrupcion;		// contador incrementado en la interrupciÛn para sincronizar el juego
+	volatile int contadorInterrupcion;		// contador incrementado en la interrupci√≥n para sincronizar el juego
 
-	bool pausa;								// indica si el juego est· pausado
-	bool modoInformacion;					// modo de informaciÛn del juego
+	bool pausa;								// indica si el juego est√° pausado
+	bool modoInformacion;					// modo de informaci√≥n del juego
 	bool cambioModoInformacion; // se ha cambiado el estado
+<<<<<<< HEAD
 	InfoJuego *infoJuego;					// objeto para mostrar informaciÛn interna del juego
 #ifdef __abadIA__
 	std::stack<int> frases; // una pila con todas las frases dichas desde el ultimo dump
+=======
+	InfoJuego *infoJuego;					// objeto para mostrar informaci√≥n interna del juego
+#ifdef __abadIA__
+	std::stack<int> frases; // una pila con todas las frases dichas desde el √Éltimo dump
+>>>>>>> luzbel/abadIA-timing-by-webserver
 #endif
 
-// mÈtodos
+// m√©todos
 private:
 	void reinicio();
 	bool cargar(int slot);
@@ -126,6 +136,9 @@ private:
 	void compruebaCambioCPC_VGA(void);
 	bool compruebaMenu(void);
 	void ReiniciaPantalla(void);
+#ifdef __abadIA__
+	void compruebaEscenarioPrueba(void);
+#endif
 public:
 	void muestraFinal();
 	void limpiaAreaJuego(int color);
@@ -133,7 +146,7 @@ public:
 	// bucle principal del juego
 	void run();
 
-	// inicializaciÛn y limpieza
+	// inicializaci√≥n y limpieza
 	Juego(UINT8 *romData, CPC6128 *cpc);
 	~Juego();
 

@@ -18,7 +18,11 @@ class NULLAudioPlugin: public IAudioPlugin
 		bool mute;
 		bool _isInitialized;
 #ifdef __abadIA__
+<<<<<<< HEAD
 		bool sonidos[12]; //TODO: eliminar constante
+=======
+                bool sonidos[12]; //TODO: eliminar constante
+>>>>>>> luzbel/abadIA-timing-by-webserver
 #endif
 
 protected:

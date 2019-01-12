@@ -18,19 +18,19 @@ class Berengario : public Monje
 {
 // campos
 public:
-	bool estaVivo;								// indica si el personaje está vivo
-	int estado2;								// guarda información extra sobre el estado del personaje
+	bool estaVivo;								// indica si el personaje estÃ¡ vivo
+	int estado2;								// guarda informaciÃ³n extra sobre el estado del personaje
 	int contadorPergamino;						// contador usado para informar al abad si guillermo no suelta el pergamino
 
 protected:
-	static PosicionJuego posicionesPredef[6];	// posiciones a las que puede ir el personaje según el estado
+	static PosicionJuego posicionesPredef[6];	// posiciones a las que puede ir el personaje segÃºn el estado
 
-// métodos
+// mÃ©todos
 public:
 	virtual void piensa();
 	void fijaCapucha(bool puesta);
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Berengario(SpriteMonje *spr);
 	virtual ~Berengario();
 

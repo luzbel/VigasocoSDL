@@ -114,7 +114,11 @@ bool TimingHandler::processLogicThisInterrupt()
 
 bool TimingHandler::processVideoThisInterrupt()
 {
+#ifdef __abadIA_FAST__
+return true;
+#else
 	return _numIntsModVideoInts == 0;
+#endif
 }
 
 bool TimingHandler::skipVideoThisInterrupt()
@@ -129,6 +133,9 @@ bool TimingHandler::skipVideoThisInterrupt()
 
 void TimingHandler::waitThisInterrupt()
 {
+#ifdef __abadIA_FAST__
+_throttle=false;
+#endif
 	_numIntsModLogicInts = _interruptNum % _numInterruptsPerLogicUpdate;
 	_numIntsModVideoInts = _interruptNum % _numInterruptsPerVideoUpdate;
 

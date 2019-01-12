@@ -31,7 +31,11 @@ protected:
 	std::fstream replayFile;
 #endif
 
+<<<<<<< HEAD
 // mÃtodos
+=======
+// mÃ©todos
+>>>>>>> luzbel/abadIA-timing-by-webserver
 public:
 	void init(InputHandler *input);
 	void actualizaEstado();
@@ -43,7 +47,7 @@ public:
 	bool loadReplay(void);
 #endif
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Controles();
 	~Controles();
 };

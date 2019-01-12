@@ -5,49 +5,49 @@ Copyright (c) 2003-2005 "VIGASOCO Project Team"
 Acerca de:
 ==========
 
-VIGASOCO es un framework diseÒado para entender como funcionaban algunos juegos cl·sicos.
-Su propÛsito principal es ser un instrumento de aprendizaje para comprender el funcionamiento
+VIGASOCO es un framework dise√±ado para entender como funcionaban algunos juegos cl√°sicos.
+Su prop√≥sito principal es ser un instrumento de aprendizaje para comprender el funcionamiento
 interno de los juegos. Los juegos soportados por VIGASOCO son conversiones "funcionalmente
-equivalentes" de los juegos, escritas en C/C++ y obtenidas mediante reingenierÌa inversa del 
-cÛdigo original del juego.
+equivalentes" de los juegos, escritas en C/C++ y obtenidas mediante reingenier√≠a inversa del 
+c√≥digo original del juego.
 
-Como efecto secundario, el cÛdigo fuente de VIGASOCO puede usarse de punto de partida para
-realizar remakes de juegos cl·sicos, como un framework para crear tus propios juegos 2D, para
+Como efecto secundario, el c√≥digo fuente de VIGASOCO puede usarse de punto de partida para
+realizar remakes de juegos cl√°sicos, como un framework para crear tus propios juegos 2D, para
 encontrar trucos en los juegos soportados, para poder jugar a los juegos convertidos, etc.
 
 
-Licencia y distribuciÛn:
+Licencia y distribuci√≥n:
 ========================
 
-El propÛsito de VIGASOCO no es infringir ning˙n copyright de los juegos originales. Por lo 
+El prop√≥sito de VIGASOCO no es infringir ning√∫n copyright de los juegos originales. Por lo 
 tanto, no se incluye ninguna parte de las ROMs originales del juego. La logica del juego
-ha sido obtenida desde cero mediante reingenierÌa inversa para poder crear una conversiÛn
+ha sido obtenida desde cero mediante reingenier√≠a inversa para poder crear una conversi√≥n
 funcionalmente equivalente en un lenguaje de alto nivel.
 
-VIGASOCO es un proyecto gratuito. El cÛdigo fuente es p˙blico. No est· permitida la venta de 
-VIGASOCO ni su distribuciÛn con ROMS. El cÛdigo fuente y la versiÛn compilada de VIGASOCO deben 
-distribuirse sin alterar los archivos originales (no est· permitido aÒadir o eliminar archivos).
+VIGASOCO es un proyecto gratuito. El c√≥digo fuente es p√∫blico. No est√° permitida la venta de 
+VIGASOCO ni su distribuci√≥n con ROMS. El c√≥digo fuente y la versi√≥n compilada de VIGASOCO deben 
+distribuirse sin alterar los archivos originales (no est√° permitido a√±adir o eliminar archivos).
 
-El n˙cleo VIGASOCO est· escrito en C++ y es totalmente independiente de la plataforma en la que
-se vaya a implementar. Ninguna porciÛn del cÛdigo fuente puede usarse en un producto comercial
-sin autorizaciÛn escrita del autor.
+El n√∫cleo VIGASOCO est√° escrito en C++ y es totalmente independiente de la plataforma en la que
+se vaya a implementar. Ninguna porci√≥n del c√≥digo fuente puede usarse en un producto comercial
+sin autorizaci√≥n escrita del autor.
 
-El uso de cualquier porciÛn del cÛdigo fuente para productos no comerciales est· permitido, 
-siempre y cuando se indique en alguna parte que se ha usado parte del cÛdigo fuente de VIGASOCO.
-Si se realiza alg˙n proyecto usando como punto de partida el cÛdigo fuente de alg˙n juego de los
-incluidos en VIGASOCO, deber· indicarse el nombre del autor del driver y tambiÈn que el driver
+El uso de cualquier porci√≥n del c√≥digo fuente para productos no comerciales est√° permitido, 
+siempre y cuando se indique en alguna parte que se ha usado parte del c√≥digo fuente de VIGASOCO.
+Si se realiza alg√∫n proyecto usando como punto de partida el c√≥digo fuente de alg√∫n juego de los
+incluidos en VIGASOCO, deber√° indicarse el nombre del autor del driver y tambi√©n que el driver
 forma parte del proyecto VIGASOCO.
 
 Uso:
 ====
-Consultar la informaciÛn de la versiÛn correspondiente:
-VersiÛn de windows: windows_es.txt
-VersiÛn SDL: SDL_es.txt
+Consultar la informaci√≥n de la versi√≥n correspondiente:
+Versi√≥n de windows: windows_es.txt
+Versi√≥n SDL: SDL_es.txt
 
 
 Contacto:
 ========
-En el cÛdigo fuente se incluye informaciÛn de contacto.
+En el c√≥digo fuente se incluye informaci√≥n de contacto.
 
 
 Agradecimientos:
