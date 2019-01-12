@@ -1,0 +1,22 @@
+La rom de la abadia es un volcado del disquete original para CPC, por lo que el volcado no es lineal y sigue la estructura de los discos de CPC
+
+volcadorom es un volcado en formato lineal, útil para abrir con GIMP en modo RAW y buscar gráficos, o para buscar otras estructuras de datos, por ejemplo al comparar con los gráficos del remake en PC.
+
+El volcado se realiza así, tras rellenarse la variable ROM al reordenar los bytes de la lectura de la rom original
+
+Juego::Juego(UINT8 *romData, CPC6128 *cpc)
+{
+        idioma=0; // 0 español
+        GraficosCPC=false;
+        // apunta a los datos del juego, pero saltándose la de la presentación
+        roms = romData + 0x4000;
+//666
+//TODO prueba volcar para comparar datos
+std::ofstream kk("volcadorom",std::ofstream::binary);
+for (int i=0;i<0x20000;i++)
+ kk << roms[i];
+
+...
+
+
+

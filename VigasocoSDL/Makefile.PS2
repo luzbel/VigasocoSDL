@@ -1,0 +1,32 @@
+EE_PREFIX = ee-
+CC = $(EE_PREFIX)gcc
+CXX= $(EE_PREFIX)g++
+AS = $(EE_PREFIX)as
+LD = $(EE_PREFIX)ld
+AR = $(EE_PREFIX)ar
+OBJCOPY = $(EE_PREFIX)objcopy
+STRIP = $(EE_PREFIX)strip
+
+PS2SDK=/mnt/hda1/ps2sdk
+
+CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -mhard-float -msingle-float -G 0 -I../core -I$(PS2SDK)/ports/include/SDL -D_EE -O2 -c -fno-rtti -fno-builtin -ffreestanding -fno-exceptions -fsingle-precision-constant -ansi -Wno-long-long -I$(PS2SDK)/ee/include -I$(PS2SDK)/common/include -I$(PS2SDK)/ports/include -I.  
+
+
+
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
+
+# en OBJECTS_CORE falta Operations.o ??
+OBJECTS_CORE = AbadiaDriver.o FontManager.o GameDriver.o ICriticalSection.o InputPort.o IThread.o TimingHandler.o Vigasoco.o FileLoader.o GameDataEntity.o GfxData.o InputHandler.o IPalette.o NormalLoadHandler.o UncompressedLoader.o cpc6128.o DskReader.o
+
+OBJECTS_ABADIA = Abad.o AccionesDia.o Adso.o Berengario.o Bernardo.o BuscadorRutas.o Comandos.o Controles.o EntidadJuego.o FijarOrientacion.o GeneradorPantallas.o GestorFrases.o Guillermo.o InfoJuego.o Jorge.o Juego.o Logica.o Malaquias.o Marcador.o MezcladorSprites.o Monje.o MotorGrafico.o Objeto.o Paleta.o Pergamino.o PergaminoTextos.o PersonajeConIA.o Personaje.o Puerta.o RejillaPantalla.o Severino.o Sprite.o SpriteLuz.o SpriteMonje.o TransformacionesCamara.o Serializar.o
+
+OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLThread.PS2.o VigasocoSDL.o SDLMain.o PS2.o
+
+OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
+
+ABADIA.ELF: $(OBJECTS) video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a
+	$(CC) -G 0 -mno-crt0 -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/ee/lib -L$(PS2SDK)/ports/lib -o ABADIA.ELF  $(PS2SDK)/ee/startup/crt0.o $(OBJECTS) video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a -lmc -lsdl -lstdc++ -lm -lc -lkernel -lg
+	$(STRIP) ABADIA.ELF
+
+clean:
+	rm -f $(OBJECTS) ABADIA.ELF

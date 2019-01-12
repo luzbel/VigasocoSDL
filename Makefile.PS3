@@ -1,0 +1,14 @@
+all:
+	cd SDLInputKeyboardPlugin && make -f Makefile.PS3
+	cd SDLVideoPlugins && make -f Makefile.PS3
+	cd SDLAudioPlugin && make -f Makefile.PS3
+	cd NULLAudioPlugin && make -f Makefile.PS3
+	cd VigasocoSDL && make -f Makefile.PS3
+
+clean:
+	cd SDLInputKeyboardPlugin && make -f Makefile.PS3 clean
+	cd SDLVideoPlugins && make -f Makefile.PS3 clean
+	cd SDLAudioPlugin && make -f Makefile.PS3 clean
+	cd NULLAudioPlugin && make -f Makefile.PS3 clean
+	cd VigasocoSDL && make -f Makefile.PS3 clean
+	

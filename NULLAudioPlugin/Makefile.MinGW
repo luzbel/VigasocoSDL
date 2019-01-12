@@ -1,0 +1,15 @@
+CXXFLAGS=-O3 -I../core -I../VigasocoSDL/ -IC:\MinGW\SDL-1.2.14\include\SDL
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
+
+OBJECTS = NULLAudioPlugin.o PluginMain.o
+
+../VigasocoSDL/audio/libVigasocoNULLAudioPlugin.so: $(OBJECTS) 
+	$(CXX) -shared $(OBJECTS) -o $@
+
+# para comprobar que no le faltan dependencias por resolver a la libreria
+test: test.o
+	$(CXX) test.o -o test -L ../VigasocoSDL/audio/ -l VigasocoNULLAudioPlugin -lmingw32 
+#	$(CXX) -g test.o -o test -L ../VigasocoSDL/audio/ -l VigasocoSDLAudioPlugin -LC:\MinGW\SDL-1.2.14\lib -lmingw32 -lsdlmain -lSDL
+
+clean:
+	rm -f $(OBJECTS) ../VigasocoSDL/audio/libVigasocoNULLDrawPlugin.so test test.o

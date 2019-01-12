@@ -1,0 +1,17 @@
+#CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -D_PS3 -O3 -I../core -I../VigasocoSDL/ `sdl-config --cflags`
+CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -D_PS3 -O3 -I../core -I../VigasocoSDL/ -I/home/cell/SDL-1.2.13/include/
+#CXXFLAGS=-g -D__VIGASOCO_SDL_STATIC__ -D_PS3 -O3 -I../core -I../VigasocoSDL/ -I/home/cell/SDL-1.2.13/include/
+#CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -Os -I../core -I../VigasocoSDL/ -I/home/cell/SDL-1.2.13/include/
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
+
+OBJECTS = SDLDrawPlugin.o SDLVideoPlugins.o SDLDrawPlugin8bpp.o SDLDrawPlugin24bpp.o SDLDrawPluginPaletaGrises8bpp.o PluginMain.o
+
+../VigasocoSDL/video/libVigasocoSDLDrawPlugin.a: $(OBJECTS)
+	$(AR) cru $@ $(OBJECTS)
+
+# para comprobar que no le faltan dependencias por resolver a la libreria
+test: test.o
+	$(CXX) -g test.o -o test -l../VigasocoSDL/video/libVigasocoSDLDrawPlugin.a `sdl-config --libs`
+
+clean:
+	rm -f $(OBJECTS) ../VigasocoSDL/video/libVigasocoSDLDrawPlugin.a test test.o

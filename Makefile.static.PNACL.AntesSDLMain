@@ -1,0 +1,25 @@
+all:
+#	export NACL_ARCH=pnacl
+#	export NACL_CFLAGS='-I /home/vigasocosdl/nacl_sdk/pepper_canary/toolchain/linux_pnacl/usr/include/SDL'
+#	export NACL_LDFLAGS='-lSDL -lSDLmain -lppapi -lnosys -L /home/vigasocosdl/nacl_sdk/pepper_canary/lib/pnacl/Release -lppapi_cpp'
+#	export NACL_SDK_ROOT=/home/vigasocosdl/nacl_sdk/pepper_canary
+#	export PNACL_LDFLAGS='-lSDL -lSDLmain -lppapi -lnosys -L /home/vigasocosdl/nacl_sdk/pepper_canary/lib/pnacl/Release -lppapi_cpp'
+#	export CXX=$(NACL_SDK_ROOT)/toolchain/linux_pnacl/bin/pnacl-clang++
+##	export CXX=/home/vigasocosdl/nacl_sdk/pepper_canary/toolchain/linux_pnacl/bin/pnacl-clang++
+#	echo $(CXX)
+#	echo
+#	echo
+#	exit
+	cd SDLInputKeyboardPlugin && make -f Makefile.static.PNACL
+	cd SDLVideoPlugins && make -f Makefile.static.PNACL
+	cd SDLAudioPlugin && make -f Makefile.static.PNACL
+	cd NULLAudioPlugin && make -f Makefile.static.PNACL
+	cd VigasocoSDL && make -f Makefile.static.PNACL
+
+clean:
+	cd SDLInputKeyboardPlugin && make -f Makefile.static.PNACL clean
+	cd SDLVideoPlugins && make -f Makefile.static.PNACL clean
+	cd SDLAudioPlugin && make -f Makefile.static.PNACL clean
+	cd NULLAudioPlugin && make -f Makefile.static.PNACL clean
+	cd VigasocoSDL && make -f Makefile.static.PNACL clean
+	

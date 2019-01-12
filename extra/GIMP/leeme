@@ -1,0 +1,19 @@
+Segunda paleta del juego (la usada para el dÃ­a) volcada en formato RGBA con el siguiente cÃ³digo
+
+--------------
+std::ofstream kk("paletadia",std::ofstream::binary);
+                UINT8 *p=PaletasVGA;
+                p+=despPaletasVGA[pal];
+                for (int i = 0; i < 256; i++)
+                {
+                        UINT8 r=*p++;
+                        UINT8 g=*p++;
+                        UINT8 b=*p++;
+                        UINT8 a=*p++;
+                        paleta->setColor(i,r,g,b);
+kk<<r<<g<<b;
+                }
+--------------
+
+puede usarse para cuando se abre algÃºn fichero de grÃ¡ficos en formato RAW
+

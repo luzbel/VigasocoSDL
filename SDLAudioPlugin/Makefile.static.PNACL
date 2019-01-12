@@ -1,0 +1,17 @@
+CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -O3 -I../core -I../VigasocoSDL/ -I /home/vigasocosdl/nacl_sdk/pepper_canary/toolchain/linux_pnacl/usr/local/include/SDL
+#CXXFLAGS=-g -D__VIGASOCO_SDL_STATIC__ -O3 -I../core -I../VigasocoSDL/ `sdl-config --cflags`
+#CXXFLAGS=-Os -D__VIGASOCO_SDL_STATIC__ -I../core -I../VigasocoSDL/ `sdl-config --cflags`
+VPATH=.:../core:../core/abadia:../core/util:../core/systems
+
+OBJECTS = SDLAudioPlugin.o NULLAudioPlugin.o PluginMain.o
+
+../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a: $(OBJECTS)
+	echo $(CXX)
+	$(AR) cru $@ $(OBJECTS)
+
+# para comprobar que no le faltan dependencias por resolver a la libreria
+test: test.o
+	$(CXX) -g test.o -o test -l../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a `sdl-config --libs`
+
+clean:
+	rm -f $(OBJECTS) ../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a test test.o
