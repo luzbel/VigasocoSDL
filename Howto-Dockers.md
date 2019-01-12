@@ -1,8 +1,12 @@
 # Instrucciones para desarrollar con Dockers (Verano del 2018)
 
-*Este texto proviene de un hilo de Slack y deberíamos actualizarlo
+**Este texto proviene de un hilo de Slack y deberíamos actualizarlo**
 
-el dockerfile antiguo está en https://github.com/luzbel/VigasocoSDL/blob/pruebasAbadIA/extra/Docker/dev/Dockerfile  . Abro hilo para contarte como genero el docker ahora , si puedes crear el extra/Docker/dev/Dockerfile  para la nueva rama genial
+El dockerfile antiguo está en:
+
+https://github.com/luzbel/VigasocoSDL/blob/pruebasAbadIA/extra/Docker/dev/Dockerfile 
+
+Abro hilo para contarte como genero el docker ahora , si puedes crear el extra/Docker/dev/Dockerfile  para la nueva rama genial
 GitHub
 luzbel/VigasocoSDL
 Temporal workspace for newest version of VigasocoSDL while the full history is recovered - luzbel/VigasocoSDL
