@@ -33,11 +33,8 @@ std::string g_drawPlugin("win8");
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,wingris8 -audio:libVigasocoSDLAudioPlugin.so,SDLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoNULLAudioPlugin.so,NULLAudioPlugin
-<<<<<<< HEAD
-=======
 
 // abadIA se suele ejecutar en entornes headless sin tarjeta de sonido
->>>>>>> luzbel/abadIA-timing-by-webserver
 #ifdef __abadIA__
 std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
 std::string g_audioPlugin("NULLAudioPlugin");
@@ -345,13 +342,6 @@ bool parseCommandLine(std::string cmdLine)
 		g_inputPlugins.push_back("crowV3");
 #else
 		g_inputPluginsDLLs.push_back("libVigasocoSDLInputPlugin.so");
-#ifdef __abadIA__
-		g_inputPlugins.push_back("PollEvent");
-		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
-		g_inputPlugins.push_back("crowV1");
-		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
-		g_inputPlugins.push_back("crowV2");
-#else
 		g_inputPlugins.push_back("SDLInputPlugin");
 #endif
 	}

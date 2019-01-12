@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-CXXFLAGS=-O3 -D__abadIA__  -fPIC -I../core -I../VigasocoSDL/ 
-#CXXFLAGS=-g -D__abadIA__ -fPIC -I../core -I../VigasocoSDL/ 
-=======
 CXXFLAGS=-O3 -fPIC -I../core -I../VigasocoSDL/ -D__abadIA__
 #CXXFLAGS=-g -fPIC -I../core -I../VigasocoSDL/ 
->>>>>>> luzbel/abadIA-timing-by-webserver
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 OBJECTS = NULLAudioPlugin.o PluginMain.o

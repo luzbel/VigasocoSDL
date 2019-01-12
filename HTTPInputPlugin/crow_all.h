@@ -6997,16 +6997,12 @@ namespace crow
                 std::vector<std::string> sending_buffers_;
                 std::vector<std::string> write_buffers_;
 
-<<<<<<< HEAD
-                boost::array<char, 4096> buffer_;
-=======
 // Las pruebas en behave de abadIA envían todo el payload en un único frame
 // crow tiene un límite de 4K por frame
 // subimos este tamaño para poder mandar todo un comando LOAD en un único frame
 // por websocket
 //              boost::array<char, 4096> buffer_;
                 boost::array<char, 16384> buffer_;
->>>>>>> luzbel/abadIA-timing-by-webserver
                 bool is_binary_;
                 std::string message_;
                 std::string fragment_;
@@ -9209,15 +9205,11 @@ namespace crow
         Adaptor adaptor_;
         Handler* handler_;
 
-<<<<<<< HEAD
-        boost::array<char, 4096> buffer_;
-=======
 // Las pruebas en behave de abadIA envían todo el payload en un único frame
 // crow tiene un límite de 4K por frame
 // subimos este tamaño para poder mandar todo un comando LOAD en un único frame
 // por websocket
         boost::array<char, 16384> buffer_;
->>>>>>> luzbel/abadIA-timing-by-webserver
 
         HTTPParser<Connection> parser_;
         request req_;

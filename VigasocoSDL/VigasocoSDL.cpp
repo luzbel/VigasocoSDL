@@ -178,10 +178,7 @@ void VigasocoSDL::addCustomInputPlugins()
 		if (_pluginHandler->loadPlugin(g_inputPluginPath + _sInputPluginsDLLs[i], 
 			_sInputPlugins[i], INPUT_PLUGIN, g_currentInputPluginVersion, &entry)){
 			ip = (IInputPlugin *)entry.plugin;
-fprintf(stderr,"loadPlugin %p\n",ip);
-fprintf(stderr,"_pluginHandler->loadPlugin %s %s\n",_sInputPluginsDLLs[i].c_str(),_sInputPlugins[i].c_str());
 		}
-else fprintf(stderr,"err _pluginHandler->loadPlugin %s %s\n",_sInputPluginsDLLs[i].c_str(),_sInputPlugins[i].c_str());
 
 		if (ip != 0){
 			// TODO: set plugin properties
@@ -191,7 +188,6 @@ else fprintf(stderr,"err _pluginHandler->loadPlugin %s %s\n",_sInputPluginsDLLs[
 
 			_inputHandler->addInputPlugin(ip);
 		}
-else fprintf(stderr,"ip NULL\n");
 	}
 }
 
@@ -211,11 +207,7 @@ void VigasocoSDL::createAsyncThread()
 
 void VigasocoSDL::initCompleted()
 {
-<<<<<<< HEAD
-	std::string titulo_ventana = "abadIA 0.1 VigasocoSDL v0.094: " + _driver->getFullName();
-=======
 	std::string titulo_ventana = "VigasocoSDL v0.094-abadIA: " + _driver->getFullName();
->>>>>>> luzbel/abadIA-timing-by-webserver
 	SDL_WM_SetCaption(titulo_ventana.c_str(),titulo_ventana.c_str());
 	SDL_ShowCursor(SDL_DISABLE);
 }
@@ -289,11 +281,6 @@ void VigasocoSDL::platformSpecificEnd()
 
 bool VigasocoSDL::processEvents()
 {
-#ifdef __abadIA__
-	// en abadIA los eventos se controlan desde un nuevo plugin de entrada
-	// el plugin de entrada propaga el evento SDL_QUIT devolviendo false
-	// en el m√todo process
-#else
 	SDL_Event event;
 	if ( SDL_PollEvent(&event) )
 	{
@@ -304,7 +291,7 @@ bool VigasocoSDL::processEvents()
 		if (event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_ESCAPE) return false;
 #endif
 	}
-#endif
+
 	return true;
 }
 

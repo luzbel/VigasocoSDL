@@ -12,7 +12,7 @@
 #include "GeneradorPantallas.h"
 
 // para printf
-#include <stdio.h>
+//#include <stdio.h>
 
 using namespace Abadia;
 
@@ -824,12 +824,7 @@ int GeneradorPantallas::evaluaExpresion(int rdo)
 // dibuja en pantalla el contenido del buffer de tiles desde el centro hacia fuera
 void GeneradorPantallas::dibujaBufferTiles()
 {
-<<<<<<< HEAD
-
-	// posición inicial en el buffer de tiles
-=======
 	// posiciÃ³n inicial en el buffer de tiles
->>>>>>> luzbel/abadIA-timing-by-webserver
 	int x = 7;
 	int y = 8;
 
@@ -861,14 +856,9 @@ void GeneradorPantallas::dibujaBufferTiles()
 		derecha += 2;
 		arriba += 2;
 		izquierda += 2;
-#ifdef __abadIA__
-		// en abadIA no queremos retardos ni efectos
-		// queremos que la pantalla este lista lo antes posible
-		// para que la IA juegue el maximo de partidas posibles
-#else
+
 		// espera un poco para que se vea el resultado
 		timer->sleep(retardo);
-#endif
 	}
 }
 

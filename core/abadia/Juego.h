@@ -10,11 +10,6 @@
 
 #include "../util/Singleton.h"
 #include "../Types.h"
-#include "util/NotificationProvider.h"
-
-#ifdef __abadIA__
-#include <stack>
-#endif
 
 #ifdef __abadIA__
 #include <stack>
@@ -40,7 +35,7 @@ class Sprite;					// definido en Sprite.h
 
 #define elJuego Juego::getSingletonPtr()
 
-class Juego : public Singleton<Juego>, public NotificationProvider<Juego>
+class Juego : public Singleton<Juego>
 {
 // constantes
 public:
@@ -94,22 +89,16 @@ public:
 	bool pausa;								// indica si el juego está pausado
 	bool modoInformacion;					// modo de información del juego
 	bool cambioModoInformacion; // se ha cambiado el estado
-<<<<<<< HEAD
-	InfoJuego *infoJuego;					// objeto para mostrar informaci�n interna del juego
-#ifdef __abadIA__
-	std::stack<int> frases; // una pila con todas las frases dichas desde el ultimo dump
-=======
 	InfoJuego *infoJuego;					// objeto para mostrar información interna del juego
 #ifdef __abadIA__
 	std::stack<int> frases; // una pila con todas las frases dichas desde el Ãltimo dump
->>>>>>> luzbel/abadIA-timing-by-webserver
 #endif
 
 // métodos
 private:
 	void reinicio();
 	bool cargar(int slot);
-	bool save(int slot);
+	void save(int slot);
 	// TODO sacar todo lo relativo a menus
 	// a una clase para menu y no ensuciar la clase Juego
 	void pintaMenuCargar(int seleccionado,bool efecto=false);
@@ -166,7 +155,7 @@ protected:
 	bool compruebaReinicio();
 	void compruebaPausa();
 	bool compruebaLoad();
-	bool compruebaSave();
+	void compruebaSave();
 };
 
 

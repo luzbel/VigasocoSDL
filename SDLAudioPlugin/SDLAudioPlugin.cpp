@@ -78,10 +78,6 @@ void SDLAudioPlugin::Pause(int sample)
 	if (sample>=sounds.size() ) return;
 
 	sounds[sample].active=false;
-#ifdef __abadIA__
-	// TODO: falta assert para comprobar rango
-        sonidos[sample]=false;
-#endif
 }
 
 void SDLAudioPlugin::Stop(int sample)
@@ -90,10 +86,6 @@ void SDLAudioPlugin::Stop(int sample)
 
 	sounds[sample].active=false;
 	sounds[sample].dpos=0;
-#ifdef __abadIA__
-	// TODO: falta assert para comprobar rango
-        sonidos[sample]=false;
-#endif
 }
 
 void SDLAudioPlugin::Play(int sample,bool loop)
@@ -105,13 +97,8 @@ void SDLAudioPlugin::Play(int sample,bool loop)
 		// sounds.at(sample).dpos=0;
 		sounds.at(sample).loop=loop;
 #ifdef __abadIA__
-<<<<<<< HEAD
-		// TODO: falta assert para comprobar rango
-	        sonidos[sample]=true;
-=======
 	// TODO: falta assert para comprobar rango
 	sonidos[sample]=true;
->>>>>>> luzbel/abadIA-timing-by-webserver
 #endif
 	}
 	catch (std::out_of_range o)
@@ -246,12 +233,7 @@ void SDLAudioPlugin::mix(UINT8 *stream,int len)
 			it->dpos+=amount;
 			if (it->dpos==it->dlen)
 			{
-				if (!it->loop) {
-					it->active=false;
-#ifdef __abadIA__
-					sonidos[it - sounds.begin()]=false;
-#endif
-				}
+				if (!it->loop) it->active=false;
 				it->dpos=0;
 			}
 		}

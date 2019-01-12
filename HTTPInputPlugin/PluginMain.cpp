@@ -5,22 +5,12 @@
 // Para DECLSPEC en SDL_loadso.h
 #include "SDL.h"
 
-<<<<<<< HEAD
-#include "HTTPInputPluginV1.h"
-#include "HTTPInputPluginV2.h"
-
-static const char * const description = "VIGASOCO HTTP Plugin v1.1";
-
-static const char *plugins[] = {
-	"crowV1" , "crowV2"
-=======
 #include "HTTPInputPlugin.h"
 
 static const char * const description = "VIGASOCO HTTP Plugin v3.0";
 
 static const char *plugins[] = {
 	"crowV3" 
->>>>>>> luzbel/abadIA-timing-by-webserver
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -34,19 +24,10 @@ void create_INPUT_Plugin(const char *name,void**plugin)
 void createPlugin(const char *name,void**plugin)
 #endif
 {
-<<<<<<< HEAD
-	if (strcmp(name, plugins[0]) == 0){
-		*plugin = new HTTPInputPluginV1();
-	} else if (strcmp(name, plugins[1]) == 0) {
-		*plugin = new HTTPInputPluginV2();
-        }
-	 else {
-=======
 fprintf(stderr,"createPlugin %s\n",name);
 	if (strcmp(name, plugins[0]) == 0){
 		*plugin = new HTTPInputPlugin();
 	} else {
->>>>>>> luzbel/abadIA-timing-by-webserver
 		*plugin = NULL;
 	}
 }
