@@ -2,15 +2,11 @@
 
 **Este texto proviene de un hilo de Slack y deberíamos actualizarlo**
 
-El dockerfile antiguo está en:
+El dockerfile antiguo estaba en:
 
 https://github.com/luzbel/VigasocoSDL/blob/pruebasAbadIA/extra/Docker/dev/Dockerfile 
 
-Abro hilo para contarte como genero el docker ahora , si puedes crear el extra/Docker/dev/Dockerfile  para la nueva rama genial
-GitHub
-luzbel/VigasocoSDL
-Temporal workspace for newest version of VigasocoSDL while the full history is recovered - luzbel/VigasocoSDL
- 
+Ahora está en la rama oficial VigasocoSDL-ng
 
 
 34 respuestas
