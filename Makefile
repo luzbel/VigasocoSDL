@@ -4,6 +4,7 @@ video-plugins-dir := VigasocoSDL/video
 
 all: | $(input-plugins-dir) $(audio-plugins-dir) $(video-plugins-dir)
 	cd SDLInputKeyboardPlugin && make
+	cd HTTPInputPlugin && make
 	cd SDLVideoPlugins && make
 	cd SDLAudioPlugin && make
 	cd NULLAudioPlugin && make
@@ -20,6 +21,7 @@ $(video-plugins-dir):
 
 clean:
 	cd SDLInputKeyboardPlugin && make clean
+	cd HTTPInputPlugin && make clean
 	cd SDLVideoPlugins && make clean
 	cd SDLAudioPlugin && make clean
 	cd NULLAudioPlugin && make clean
