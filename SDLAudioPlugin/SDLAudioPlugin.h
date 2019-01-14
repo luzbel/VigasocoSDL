@@ -37,7 +37,7 @@ class SDLAudioPlugin: public IAudioPlugin
 
 protected:
 	static const std::string g_properties[];
-	static const int g_paramTypes[];
+	static const unsigned int g_paramTypes[];
 
 	std::string _errorMsg;				// error message
 
@@ -65,7 +65,7 @@ public:
 
 	// custom properties
 	virtual const std::string *getProperties(int *num) const;
-	virtual const int *getPropertiesType() const;
+	virtual const unsigned int *getPropertiesType() const;
 	virtual void setProperty(std::string prop, int data);
 	virtual void setProperty(std::string prop, int index, int data);
 	virtual int getProperty(std::string prop) const;
