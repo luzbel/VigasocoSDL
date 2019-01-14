@@ -1,6 +1,30 @@
 # REST verbs for the new engine
 
-##
+
+
+## Dump a game (AbadIA format)
+
+```
+curl -X GET   http://localhost:4477/abadIA/game/current \
+-H 'accept: text/x.abadIA+plain'
+```
+
+
+## Dump a game (json format)
+
+```
+curl -X GET   http://localhost:4477/abadIA/game/current \
+ -H 'accept: application/json'
+```
+
+
+## Dump a game (AbadIA format enclosed into a json wrapper) 
+
+```
+curl -X GET http://localhost:4477/abadIA/game/current \
+ -H 'accept: text/x.abadIA+json
+```
+
 
 ## Load a saved game
 
