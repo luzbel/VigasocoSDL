@@ -1140,6 +1140,7 @@ Feature: Resolver abadIA
          | altura | id | nombre    | objetos          | orientacion | posX | posY |
          |    2   |  0 | Guillermo |    32            |      1      |  169 |   27 |
          |    2   |  1 |  Adso     |     0            |      3      |  169 |   25 |
+	And no hago nada
 # Adso nos pregunta si dormimos
 	And digo que NO 
 # esperamos muchos para comprobar que Adso se espera
@@ -1151,7 +1152,7 @@ Feature: Resolver abadIA
 	And giro a la izquierda
 	And giro a la izquierda
 	And avanzo "9" pasos
-	And espero "33" iteraciones
+	And espero "34" iteraciones
 # Adso nos pregunta si dormimos
 	And digo que SI
 	And grabo la partida
@@ -3148,6 +3149,7 @@ Scenario: Ir a comer DIA II
 
 # despues de robar la llave usamos el pasadizo de la cocina
 # TODO: ESTO AHORA FALLA ????
+# parece que era una espera de 1810 iteraciones puestas para alguna prueba
   Scenario: DIA II NONA Usar pasadizo
 	Given una conexion a la interfaz
 	When cargo una partida:
@@ -3624,7 +3626,8 @@ Scenario: Ir a comer DIA II
 	And avanzo "25" pasos
 	And giro a la derecha
 ###
-	And espero "1810" iteraciones
+# esto se ha debido quedar de alguna prueba
+###	And espero "1810" iteraciones
 ###
 	And avanzo "3" pasos
 	And giro a la izquierda
@@ -3645,7 +3648,8 @@ Scenario: Ir a comer DIA II
 	And avanzo "2" pasos
 	And giro a la derecha
 	# aquí va a la escalera con recoveco
-	And avanzo "16" pasos
+#	And avanzo "16" pasos ?por que esto antes era 20 y se puso 16?
+	And avanzo "20" pasos
 	And giro a la derecha
 	And avanzo "13" pasos
 	And giro a la izquierda
