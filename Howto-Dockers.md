@@ -15,7 +15,7 @@ Ahora está en la rama oficial VigasocoSDL-ng
 Parto de lanzar un contenedor basado en ubuntu:xenial
 
 ```
-docker run -ti -p 5900:5900 -p 4477:4477 -p 8182:8182 ubuntu bash
+docker run -ti -p 5900:5900 -p 4477:4477 -p 8182:8182 ubuntu:xenial bash
 ```
 
 
