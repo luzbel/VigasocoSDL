@@ -464,11 +464,11 @@ const std::string HTTPInputPlugin::g_properties[] = {
 	"keyConfig"
 };
 
-const int HTTPInputPlugin::g_paramTypes[] = {
-	(int)(PARAM_ARRAY | PARAM_INPUT)
+const unsigned int HTTPInputPlugin::g_paramTypes[] = {
+	(PARAM_ARRAY | PARAM_INPUT)
 };
 
-const int * HTTPInputPlugin::getPropertiesType() const
+const unsigned int * HTTPInputPlugin::getPropertiesType() const
 {
 	return HTTPInputPlugin::g_paramTypes;
 }
