@@ -1,6 +1,11 @@
-# REST verbs for the new engine
+# REST verbs for the new abadia-gym (v2)
 
+## Create/Reset a game
 
+```
+curl -X POST localhost:4477/abadIA/game
+
+```
 
 ## Dump a game (AbadIA format)
 
@@ -49,22 +54,22 @@ curl -X DELETE  http://localhost:4477/abadIA/game/current
 curl -X POST http://localhost:4477/abadIA/game/current/actions/NOP
 ```
 
-									NOP
-                                QR
-                                RIGHT
-                                LEFT
-                                UP
-                                DOWN
-                                SPACE
-                                DUMP
-                                RESET
-                                SAVEJSON
-                                SAVE
-                                LOADJSON
-                                LOAD
-                                FIN
-                                END
-                                GAME OVER
-                                GAMEOVER
-                                SI
-                                NO
+NOP
+QR
+RIGHT
+LEFT
+UP
+DOWN
+SPACE
+DUMP
+RESET
+SAVEJSON
+SAVE
+LOADJSON
+LOAD
+FIN
+END
+GAME OVER
+GAMEOVER
+SI
+NO
