@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "crow_all.h"
+#include "../core/util/json.hpp"
 
 SDLKey HTTPInputPlugin::g_keyMapping[END_OF_INPUTS];
 
@@ -158,7 +159,8 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 		CROW_LOG_DEBUG << "fin dejo seguir al juego: " << comando << " estado " << estado;
 	} else {
 		estado=ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
-		res="COMANDO DESCONOCIDO"; // TODO: no hay que devolver 200 en la interfaz http
+		//res="COMANDO DESCONOCIDO"; // TODO: no hay que devolver 200 en la interfaz http
+		res="{ \"resultado\": \"COMANDO DESCONOCIDO\" }";// TODO: no hay que devolver 200 en la interfaz http
 	}
 
 	return res;
@@ -238,7 +240,21 @@ bool HTTPInputPlugin::init()
 				command=="GAMEOVER" ||
 				command=="SI" ||
 				command=="NO"
-			) return crow::response(200,this->atenderComando(command,req.body));
+			) {
+				nlohmann::json resultados = nlohmann::json::array();
+				signed int repeat=1;
+				if ( req.url_params.get("repeat") != nullptr ) {
+					repeat=boost::lexical_cast<int>(req.url_params.get("repeat"));
+				}
+
+				while (repeat--) {
+					//nlohmann::json resultado(this->atenderComando(command,req.body));
+					//resultados.push_back(resultado);
+					resultados.push_back(
+						nlohmann::json::parse(this->atenderComando(command,req.body)));
+				}
+				return crow::response(200,resultados.dump());
+			}
 			else return crow::response(400,"{ \"resultado\": \"KO\" , \"descripcion\": \"Comando desconocido\" }");
 //			return crow::response(200,this->atenderComando("LOAD",req.body));
 //			return crow::response(200,command);
