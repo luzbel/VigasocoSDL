@@ -248,11 +248,9 @@ bool HTTPInputPlugin::init()
 				}
 
 				while (repeat--) {
-					//nlohmann::json resultado(this->atenderComando(command,req.body));
-					//resultados.push_back(resultado);
 					resultados.push_back(
 						nlohmann::json::parse(this->atenderComando(command,req.body)));
-				}
+				} 
 				return crow::response(200,resultados.dump());
 			}
 			else return crow::response(400,"{ \"resultado\": \"KO\" , \"descripcion\": \"Comando desconocido\" }");

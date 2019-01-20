@@ -97,33 +97,39 @@ def step_impl(context):
 
 @when('avanzo "{numeroPasos}" pasos')
 def step_impl(context,numeroPasos):
-    i=0;
-    while i < int(numeroPasos):
-     r=requests.post(context.url+'/current/actions/UP',timeout=context.timeout)
-     assert r.status_code==200
+#    i=0;
+#    while i < int(numeroPasos):
+#     r=requests.post(context.url+'/current/actions/UP',timeout=context.timeout)
+#     assert r.status_code==200
 # El segundo UP es porque el movimiento de avanzar necesita de 2 ciclos para completar la animacion de dar pasos
 # Tambien vale con enviar un NOP
 # Pero es mas realista enviar 2 UP, que es lo que haria un jugador humano, dejar pulsado UP hasta que ve ha terminado de avanzar
-     r=requests.post(context.url+'/current/actions/UP',timeout=context.timeout)
+#     r=requests.post(context.url+'/current/actions/UP',timeout=context.timeout)
+#     assert r.status_code==200
+#     i+=1;
+     r=requests.post(context.url+'/current/actions/UP?repeat='+str(int(numeroPasos)*2),timeout=context.timeout)
      assert r.status_code==200
-     i+=1;
 
 @when('Adso avanza "{numeroPasos}" pasos')
 def step_impl(context,numeroPasos):
-    i=0;
-    while i < int(numeroPasos):
-     r=requests.post(context.url+'/current/actions/DOWN',timeout=context.timeout)
+#    i=0;
+#    while i < int(numeroPasos):
+#     r=requests.post(context.url+'/current/actions/DOWN',timeout=context.timeout)
+#     assert r.status_code==200
+#     i+=1;
+     r=requests.post(context.url+'/current/actions/DOWN?repeat='+numeroPasos,timeout=context.timeout)
      assert r.status_code==200
-     i+=1;
 
 
 @when('espero "{numeroIteraciones}" iteraciones')
 def step_impl(context,numeroIteraciones):
-    i=0;
-    while i < int(numeroIteraciones):
-     r=requests.post(context.url+'/current/actions/NOP',timeout=context.timeout)
+#    i=0;
+#    while i < int(numeroIteraciones):
+#     r=requests.post(context.url+'/current/actions/NOP',timeout=context.timeout)
+#     assert r.status_code==200
+#     i+=1;
+     r=requests.post(context.url+'/current/actions/NOP?repeat='+numeroIteraciones,timeout=context.timeout)
      assert r.status_code==200
-     i+=1;
 
 @when('pulso espacio')
 def step_impl(context):
