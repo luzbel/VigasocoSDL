@@ -136,6 +136,14 @@ def step_impl(context):
     r=requests.post(context.url+'/current/actions/SPACE',timeout=context.timeout)
     assert r.status_code==200
 
+#falta no tener que pasar el json
+#y que behave lo construya en base a los comandos listados
+#falta verificar que el resultado de cada comando individual es OK
+@when('mando los comandos')
+def step_impl(context):
+  r=requests.post(context.url+'/current/actions',context.text,timeout=context.timeout);
+  assert r.status_code==200
+
 @when('cargo una partida')
 def step_impl(context):
     r=requests.put(context.url+'/current',context.text,timeout=context.timeout)

@@ -31,7 +31,7 @@ HTTPInputPlugin::~HTTPInputPlugin()
 std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std::string& data)
 {
 	//TODO cambiar res a un JSON indicando resultado, número de partida y número de paso
-	std::string res="{ \"resultado\": \"OK\" }";
+	std::string res="{ \"resultado\": \"OK\" }"; // TODO: usar raw string de C++ para quitar las secuencias de escape y usar _json de nlohmann en vez de llamar luego explicitamente a ::parse
 	bool peticionValida=true;
 	CROW_LOG_DEBUG << "atenderComando(" << comando << "," << data <<")";
 	CROW_LOG_DEBUG << "Estado antes de lock atenderMensaje: " << estado;
@@ -178,6 +178,7 @@ bool HTTPInputPlugin::init()
 //		});
 
 		CROW_ROUTE(app,"/abadIA/game").methods("POST"_method)([this](const crow::request& req) {
+			
 			return crow::response(200, this->atenderComando("RESET",req.body));
 		});
 
@@ -217,6 +218,84 @@ bool HTTPInputPlugin::init()
 //		CROW_ROUTE(app,"/abadIA/game/current").methods("PUT"_method)([this](const crow::request& req) {
 //			return crow::response(200,this->atenderComando("LOAD",req.body));
 //		});
+
+
+//TODO ,cargar el body en nlohmann::json
+// usar is_array para comprobar que llega un array
+// usar un iterador o for  auto ( ver https://github.com/nlohmann/json#examples ) para recorrerlo
+// ver si merece la pena aplicar https://github.com/pboettch/json-schema-validator
+// ver si es un objeto con 2 objetos dentro , el comando y el número de repeticiones
+//  en plan if (o.count("comando")) ...
+// ?y si queremos pulsar varias teclas y que sea genérico y no la ñapa del comando QR actual?
+// habría que cambiar el atenderComando o crear un comando generico que acepte lista de pulsaciones
+// ?que pasa si le das a girar y avanzar a la vez?
+// bucle repetir para ese comadndo
+//	lanzar comando
+//						nlohmann::json::parse(this->atenderComando(command,req.body))); // TODO, quitar el parse haciendo que la función devuelva directamente un json en plan 
+/*
+auto j2 = R"(
+  {
+    "resultado": "OK",
+    "descripcion": "Todo ok",
+    "id": 3
+  }
+)"_json;
+*/
+//			else return crow::response(400,"{ \"resultado\": \"KO\" , \"descripcion\": \"Comando desconocido\" }"); // TODO, usar raw string 
+
+		CROW_ROUTE(app,"/abadIA/game/current/actions").methods("POST"_method)([this](const crow::request& req) {
+			if ( nlohmann::json::accept(req.body) ) { // TODO, ver si es mejor hacer el parse directamente y hacer un catch de las excepciones
+				auto peticionJSON = nlohmann::json::parse(req.body);
+
+				if (peticionJSON.is_array()) { 
+					nlohmann::json resultados = nlohmann::json::array();
+					for (auto& element : peticionJSON) {
+						if (element.is_object()) {
+							std::cout << element << std::endl;
+							if (element.count("command")!=1) 
+								return crow::response(500,
+									R"({ "resultado": "KO" , "descripcion": "Falta el comando en un action recibida" })");
+
+							std::string command=element["command"];
+							std::cout << "comando " << command << std::endl;
+							if (	command=="NOP" ||
+								command=="QR" || // TODO: mucha ayuda para la IA. Ver alternativas para esto
+								command=="RIGHT" ||
+								command=="LEFT" ||
+								command=="UP" ||
+								command=="DOWN" ||
+								command=="SPACE" ||
+								command=="DUMP" ||
+								command=="RESET" ||
+								command=="SAVEJSON" ||
+								command=="SAVE" ||
+								command=="LOADJSON" ||
+								command=="LOAD" ||
+								command=="FIN" ||
+								command=="END" ||
+								command=="GAME OVER" ||
+								command=="GAMEOVER" ||
+								command=="SI" ||
+								command=="NO"
+							   ) {
+								signed int repeat=1;
+								if (element.count("repeat")==1) repeat=element["repeat"];
+								std::cout << "repeat "  << repeat << std::endl;
+								while (repeat--) {
+									resultados.push_back(
+										nlohmann::json::parse(
+ 									this->atenderComando(command,req.body)));
+								} 
+							}
+						} else break;
+					}		
+					return crow::response(200,resultados.dump());
+//					return crow::response(500,
+//						  R"({ "resultado": "KO" , "descripcion": "No implementado" })");
+				}
+			}
+			return crow::response(500,R"({ "resultado": "KO" , "descripcion": "No me gusta el JSON recibido" })");
+		});
 
 		CROW_ROUTE(app,"/abadIA/game/current/actions/<string>").methods("POST"_method)([this](const crow::request& req, std::string command) {
 			CROW_LOG_INFO << "action " << command;
