@@ -27,6 +27,7 @@ private:
 	std::mutex mtx;
 	std::condition_variable condVar;
 	int estado=ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
+	std::string dump;
 // fields
 protected:
 	static const std::string g_properties[];
@@ -54,8 +55,10 @@ public:
 	// custom properties
 	virtual const std::string *getProperties(int *num) const;
 	virtual const unsigned int *getPropertiesType() const;
+	virtual void setStringProperty(std::string prop, std::string data);
 	virtual void setProperty(std::string prop, int data);
 	virtual void setProperty(std::string prop, int index, int data);
+	virtual std::string getStringProperty(std::string prop) const;
 	virtual int getProperty(std::string prop) const;
 	virtual int getProperty(std::string prop, int index) const;
 

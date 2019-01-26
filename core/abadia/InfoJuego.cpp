@@ -130,8 +130,8 @@ void InfoJuego::inicia()
 void InfoJuego::muestraInfo()
 {
 #ifdef __abadIA__
-                std::ofstream out("abadIA.dump",
-                                std::ofstream::out|std::ofstream::trunc);
+//                std::ofstream out("abadIA.dump",
+//                                std::ofstream::out|std::ofstream::trunc);
 //              out << "test\n";
                 nlohmann::json dump;
                 dump["dia"]=laLogica->dia;
@@ -255,7 +255,8 @@ void InfoJuego::muestraInfo()
                 // :1,$ s/\[\([0-9]\)\,/\[0\1\,/g
 
                 // Volcado completo
-		out << dump;
+//		out << dump;
+		VigasocoMain->getInputHandler()->setStringProperty("DUMP",dump.dump());
 
 /*
 std::string a("numPantalla");

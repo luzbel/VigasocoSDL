@@ -73,6 +73,9 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 		HTTPInputPlugin::keystate[SDLK_SPACE]=true;
 	} else
 	if (comando=="DUMP") {
+		res=getStringProperty("DUMP");
+	} else  /*
+	if (comando=="DUMP") {
 		HTTPInputPlugin::keystate[SDLK_d]=true;
 		std::ifstream dumpfile("abadIA.dump");
 		CROW_LOG_INFO << "vuelco dump: " << data;
@@ -81,7 +84,7 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 		dumpfile.read(dump,sizeof(dump));
 		res=dump;
 		CROW_LOG_INFO << "fin vuelco dump: " << data;
-	} else
+	} else */
 	if (comando=="RESET"||comando=="REINICIO") {
 		HTTPInputPlugin::keystate[SDLK_e]=true; // E de rEset
 	} else
@@ -572,6 +575,12 @@ const std::string * HTTPInputPlugin::getProperties(int *num) const
 	return HTTPInputPlugin::g_properties;
 }
 
+void HTTPInputPlugin::setStringProperty(std::string prop, std::string data)
+{
+	if (prop=="DUMP") dump=data;
+}
+
+
 void HTTPInputPlugin::setProperty(std::string prop, int data)
 {
 }
@@ -584,6 +593,15 @@ void HTTPInputPlugin::setProperty(std::string prop, int index, int data)
 		}
 	}
 }
+
+std::string HTTPInputPlugin::getStringProperty(std::string prop) const
+{
+	if (prop=="DUMP") {
+		return dump;
+	} else
+	return "ERR: unknown property";
+};
+
 
 int HTTPInputPlugin::getProperty(std::string prop) const
 {

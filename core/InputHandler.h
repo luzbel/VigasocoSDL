@@ -74,6 +74,8 @@ public:
 	void unAcquire();
 	void process();
 
+	void setStringProperty(std::string property, std::string data);
+
 // helper methods
 protected:
 	void enableFullKeyboard();

@@ -398,3 +398,10 @@ int SDLInputKeyboardPlugin::getProperty(std::string prop, int index) const
 	} 
 	return -1; 
 };
+
+void SDLInputKeyboardPlugin::setStringProperty(std::string prop, std::string data) {
+}
+
+std::string SDLInputKeyboardPlugin::getStringProperty(std::string prop) const {
+	return "SDLInputKeyboardPlugin::getStringPropert unimplemented";
+}

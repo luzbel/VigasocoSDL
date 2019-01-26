@@ -45,7 +45,8 @@ public:
 	virtual void setProperty(std::string prop, int index, int data);
 	virtual int getProperty(std::string prop) const;
 	virtual int getProperty(std::string prop, int index) const;
-
+	virtual void setStringProperty(std::string prop, std::string data);
+	virtual std::string getStringProperty(std::string prop) const;
 protected:
 	void initRemapTable();
 };
