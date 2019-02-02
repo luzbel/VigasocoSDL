@@ -37,7 +37,10 @@ git clone https://github.com/LaAbadIAdelCrimen/VigasocoSDL-AI.git
 cd VigasocoSDL-AI/
 
 git checkout AbadIA-ng
+make all 
+
 export DISPLAY=:0
+
 Xvfb -screen 0 800x600x16 &
 x11vnc &
 cat > ~/.vimrc
@@ -45,6 +48,12 @@ set fileencodings=utf-8
 set encoding=utf-8
 [CTRL-D]
 ```
+
+Para ejecutar VigasocoSDL: 
+
+```
+cd VigasocoSDL 
+./VigasocoSDL & 
 
 /* revisar a que se refiere */ 
 
