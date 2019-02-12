@@ -576,8 +576,9 @@ Feature: Resolver abadIA
          | id |
          | 11 |
 
-
-	And no hago nada
+	# no entiendo este NOP, en ResolverAbadIA son 48 NOPs
+	#And no hago nada # 
+	And espero "48" iteraciones
        	And los valores iniciales son correctos:
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
            |   0   |  1  |   False     |         False         |      5     |     34      |        0     |     31    |    0   |      5     |
@@ -1698,6 +1699,443 @@ Feature: Resolver abadIA
 """
 	And grabo la partida
 
+Scenario: XXX
+	Given una conexion a la interfaz
+	When cargo una partida:
+"""
+2// dia
+2// momentoDia
+94// duracionMomentoDia
+2// oldMomentoDia
+0// avanzarMomentoDia
+31// obsequium
+0// haFracasado
+0// investigacionCompleta
+0// bonus
+239// mascaraPuertas
+1// espejoCerrado
+0// numeroRomano
+103444// despDatosAlturaEspejo
+123468// despBloqueEspejo
+0// seAcabaLaNoche
+0// haAmanecido
+0// usandoLampara
+1// lamparaDesaparecida
+0// tiempoUsoLampara
+0// cambioEstadoLampara
+0// cntTiempoAOscuras
+0// cntLeeLibroSinGuantes
+0// pergaminoGuardado
+136// numeroAleatorio
+1// hayMovimiento
+65// cntMovimiento
+0// numPersonajeCamara
+0// opcionPersonajeCamara
+// SPRITE 0
+1// esVisible
+// SPRITE 1
+1// esVisible
+// SPRITE 2
+0// esVisible
+// SPRITE 3
+0// esVisible
+// SPRITE 4
+1// esVisible
+// SPRITE 5
+0// esVisible
+// SPRITE 6
+0// esVisible
+// SPRITE 7
+0// esVisible
+// SPRITE 8
+0// esVisible
+// SPRITE 9
+0// esVisible
+// SPRITE 10
+0// esVisible
+// SPRITE 11
+0// esVisible
+// SPRITE 12
+0// esVisible
+// SPRITE 13
+0// esVisible
+// SPRITE 14
+0// esVisible
+// SPRITE 15
+1// esVisible
+// SPRITE 16
+0// esVisible
+// SPRITE 17
+0// esVisible
+// SPRITE 18
+1// esVisible
+// SPRITE 19
+0// esVisible
+// SPRITE 20
+0// esVisible
+// SPRITE 21
+0// esVisible
+// SPRITE 22
+0// esVisible
+// SPRITE 23
+0// esVisible
+// SPRITE 24
+0// esVisible
+// SPRITE 25
+0// esVisible
+// GUILLERMO
+0// orientacion
+52// posX
+90// posY
+15// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+1// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+252// mascaraObjetos
+0// contadorObjetos
+8// permisosPuertas
+8// numFotogramas
+2// incrPosY
+// ADSO
+0// orientacion
+50// posX
+89// posY
+15// altura
+1// estado
+2// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+1// flipX
+49152// despFlipX
+-2// despX
+-32// despY
+32// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+3// mascaraObjetos
+0// contadorObjetos
+8// permisosPuertas
+8// numFotogramas
+60// mascarasPuertasBusqueda
+-1// aDondeVa
+0// aDondeHaLlegado
+1// oldEstado
+0// movimientosFrustados
+3// cntParaDormir
+// MALAQUIAS
+1// orientacion
+55// posX
+56// posY
+15// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+1// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+0// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+2// aDondeVa
+2// aDondeHaLlegado
+0// estaMuerto
+192// estado2
+0// contadorEnScriptorium
+// ABAD
+0// orientacion
+176// posX
+55// posY
+2// altura
+16// estado
+3// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+1// puedeQuitarObjetos
+0// objetos
+16// mascaraObjetos
+0// contadorObjetos
+25// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+4// aDondeVa
+2// aDondeHaLlegado
+0// contador
+22// numFrase
+1// guillermoBienColocado
+0// lleganLosMonjes
+0// guillermoHaCogidoElPergamino
+// BERENGARIO
+2// orientacion
+61// posX
+92// posY
+15// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+2// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+0// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+2// aDondeVa
+2// aDondeHaLlegado
+0// encapuchado
+24// estado2
+1// estaVivo
+0// contadorPergamino
+// SEVERINO
+1// orientacion
+132// posX
+77// posY
+2// altura
+6// estado
+0// contadorAnimacion
+0// bajando
+1// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+0// mascaraObjetos
+0// contadorObjetos
+12// permisosPuertas
+8// numFotogramas
+47// mascarasPuertasBusqueda
+3// aDondeVa
+2// aDondeHaLlegado
+1// estaVivo
+// JORGE
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+0// puedeQuitarObjetos
+0// objetos
+0// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+0// aDondeVa
+-6// aDondeHaLlegado
+0// estaActivo
+0// contadorHuida
+// BERNARDO
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// estado
+0// contadorAnimacion
+0// bajando
+0// orientacion
+0// enDesnivel
+0// giradoEnDesnivel
+0// flipX
+49152// despFlipX
+-2// despX
+-34// despY
+16// valorPosicion
+1// puedeQuitarObjetos
+0// objetos
+0// mascaraObjetos
+0// contadorObjetos
+31// permisosPuertas
+8// numFotogramas
+63// mascarasPuertasBusqueda
+0// aDondeVa
+-6// aDondeHaLlegado
+0// estaEnLaAbadia
+// PUERTA 0
+1// orientacion
+97// posX
+55// posY
+2// altura
+1// identificador
+0// estaAbierta
+1// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 1
+2// orientacion
+183// posX
+30// posY
+2// altura
+2// identificador
+0// estaAbierta
+1// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 2
+0// orientacion
+102// posX
+95// posY
+2// altura
+4// identificador
+0// estaAbierta
+0// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 3
+3// orientacion
+158// posX
+40// posY
+2// altura
+8// identificador
+0// estaAbierta
+1// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 4
+3// orientacion
+126// posX
+38// posY
+2// altura
+16// identificador
+0// estaAbierta
+0// haciaDentro
+0// estaFija
+0// hayQueRedibujar
+// PUERTA 5
+2// orientacion
+96// posX
+118// posY
+0// altura
+0// identificador
+1// estaAbierta
+1// haciaDentro
+1// estaFija
+0// hayQueRedibujar
+// PUERTA 6
+2// orientacion
+96// posX
+123// posY
+0// altura
+0// identificador
+1// estaAbierta
+0// haciaDentro
+1// estaFija
+0// hayQueRedibujar
+// OBJETO 0
+1// orientacion
+52// posX
+94// posY
+19// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 1
+0// orientacion
+107// posX
+85// posY
+6// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 2
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 3
+1// orientacion
+54// posX
+94// posY
+19// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 4
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 5
+0// orientacion
+0// posX
+0// posY
+0// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 6
+0// orientacion
+53// posX
+53// posY
+19// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+// OBJETO 7
+0// orientacion
+8// posX
+8// posY
+2// altura
+0// seEstaCogiendo
+0// seHaCogido
+-1// numPersonaje
+"""
+
 Scenario: Morir al coger el libro sin guantes en el scriptorium
 	Given una conexion a la interfaz
 	When cargo una partida:
@@ -2134,11 +2572,12 @@ Scenario: Morir al coger el libro sin guantes en el scriptorium
 0// seHaCogido
 -1// numPersonaje
 """
+	# fix: ponía repeat 2, pero es 4 ya que son 2 pasos en ResolverAbadia
 	And mando los comandos:
 """
 [
 { "command":"RIGHT" },
-{ "command":"UP" , "repeat":2}
+{ "command":"UP" , "repeat":4}
 ]
 """
 	And los valores iniciales son correctos:
@@ -2154,7 +2593,10 @@ Scenario: Morir al coger el libro sin guantes en el scriptorium
 
 
 
-        And la lista de "Objetos" tiene "2" elementos
+#        And la lista de "Objetos" tiene "2" elementos	
+#	En la nueva versión la lista de objetos en pantalla se actualiza antes
+#	y ya hay solo uno porque lo ha cogido Guillermo
+        And la lista de "Objetos" tiene "1" elementos
 	And no hago nada
 
 	And los valores iniciales son correctos:
@@ -3171,7 +3613,9 @@ Scenario: Ir a comer DIA II
          |   15   |  1 |  Adso     |     2            |      1      |   53 |   55 |
 	 |   15   |  2 | Malaquias | __DO_NOT_CHECK__ |      3      |   55 |   55 |  
 
-        And la lista de "Objetos" tiene "1" elementos
+	# En esta versión la llave ya no aparece en pantalla al recogerla Adso
+        #And la lista de "Objetos" tiene "1" elementos
+        And la lista de "Objetos" tiene "0" elementos
 	And grabo la partida 
 
 
@@ -3613,6 +4057,7 @@ Scenario: Ir a comer DIA II
 0// seHaCogido
 -1// numPersonaje
 """
+#fix: elimino la pausa de 1810 iteraciones que se había quedado de alguna prueba
 	And mando los comandos:
 """
 [
@@ -3655,10 +4100,6 @@ Scenario: Ir a comer DIA II
 { "command":"RIGHT" },
 { "command":"UP" , "repeat":50},
 { "command":"RIGHT" },
-
-
-{ "command":"NOP" , "repeat":1810},
-
 { "command":"UP" , "repeat":6},
 { "command":"LEFT" },
 { "command":"UP" , "repeat":2},
@@ -3678,7 +4119,6 @@ Scenario: Ir a comer DIA II
 { "command":"UP" , "repeat":4},
 { "command":"RIGHT" },
 
-{ "command":"UP" , "repeat":32},
 { "command":"UP" , "repeat":40},
 { "command":"RIGHT" },
 { "command":"UP" , "repeat":26},
@@ -4172,11 +4612,12 @@ Scenario: Ir a comer DIA II
 -1// numPersonaje
 """
 	And mando los comandos:
+#fix 9 pasos son 18 UP
 """
 [
 { "command":"UP" , "repeat":12},
 { "command":"LEFT" },
-{ "command":"UP" , "repeat":9}
+{ "command":"UP" , "repeat":18}
 ]
 """
 
@@ -4197,6 +4638,7 @@ Scenario: Ir a comer DIA II
 	 |    2   |  2 |  Malaquias  | __DO_NOT_CHECK__ |      0      |  188 |   24 |  
 	 |    0   |  4 | Encapuchado | __DO_NOT_CHECK__ |      0      |  189 |   37 |  
 	And mando los comandos:
+#fix: 24 pasos son 48 UP
 """
 [
 { "command":"UP" , "repeat":14},
@@ -4278,7 +4720,7 @@ Scenario: Ir a comer DIA II
 { "command":"NOP" , "repeat":2},
 { "command":"UP" , "repeat":28},
 { "command":"LEFT" },
-{ "command":"UP" , "repeat":24}
+{ "command":"UP" , "repeat":48}
 ]
 """
 
