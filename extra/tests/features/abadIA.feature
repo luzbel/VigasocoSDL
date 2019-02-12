@@ -19,18 +19,55 @@ Feature: Interfaz abadIA
   Scenario: Inicializacion del juego
      Given una conexion a la interfaz
       When reinicio el juego
-      And no hago nada
-##      And no hago nada
      Then los valores iniciales son correctos:
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
       And la lista de "Personajes" tiene "2" elementos
       And los valores de los "Personajes" son correctos:
-       | altura | id | nombre    | orientacion | posX | posY |
-       |    0   |  0 | Guillermo |       0     |  136 |  168 |
-       |    0   |  1 |  Adso     |       1     |  134 |  170 |
+       | altura | id | nombre    | objetos | orientacion | posX | posY |
+       |    0   |  0 | Guillermo |   32    |      0      |  136 |  168 |
+       |    0   |  1 |  Adso     |    0    |      0      |  134 |  170 |
+      And la lista de "Objetos" tiene "0" elementos
+      And los elementos de la lista de "sonidos" son:
+	| sonando |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+     And no hago nada
+     And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
+      And la lista de "Personajes" tiene "2" elementos
+      And los valores de los "Personajes" son correctos:
+       | altura | id | nombre    | objetos | orientacion | posX | posY |
+       |    0   |  0 | Guillermo |   32    |      0      |  136 |  168 |
+       |    0   |  1 |  Adso     |    0    |      1      |  134 |  170 |
       And la lista de "frases" tiene "0" elementos
       And la lista de "Objetos" tiene "0" elementos
+# suena el tintineo de inicio del juego
+      And los elementos de la lista de "sonidos" son:
+	| sonando |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     1   |
 
   Scenario: Movimientos basicos con NOP tras avanzar
 	Given una partida recien iniciada
@@ -185,6 +222,67 @@ Feature: Interfaz abadIA
          |    0   |  0 | Guillermo |       2     |  137 |  170 |
         And la lista de "Objetos" tiene "0" elementos
 
+  Scenario: TESTTESTTEST
+	Given una partida recien iniciada
+	When giro a la izquierda
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
+        And la lista de "Personajes" tiene "2" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |       1     |  136 |  168 |
+         |    0   |  1 |  Adso     |       1     |  134 |  169 |
+	And avanzo "9" pasos
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "2" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |    32   |      1      |  136 |  159 |
+         |    0   |  1 |  Adso     |     0   |      1      |  134 |  160 |
+	And giro a la derecha
+	And pulso espacio
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "2" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |     0   |      0      |  136 |  159 |
+         |    0   |  1 |  Adso     |     0   |      1      |  134 |  160 |
+        And la lista de "Objetos" tiene "1" elementos
+	And los valores de los "Objetos" son correctos:
+	 | altura | id | orientacion | posX | posY |
+	 |   0    |  2 |      2      |  138 |  138 |
+	And giro a la derecha
+	And espero "40" iteraciones 
+       	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Objetos" tiene "1" elementos
+	And los valores de los "Objetos" son correctos:
+	 | altura | id | orientacion | posX | posY |
+	 |   0    |  2 |      2      |  138 |  138 |
+	And giro a la izquierda
+       	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Objetos" tiene "1" elementos
+# TODO: Revisar, antes en el primer  NOP el objeto seguía en pantalla
+#	And no hago nada
+#       	And los valores iniciales son correctos:
+#           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+#           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+#        And la lista de "Objetos" tiene "1" elementos
+	And no hago nada
+       	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Objetos" tiene "0" elementos
+	And espero "14" iteraciones 
+
   Scenario: Pasar primera pantalla
 	Given una partida recien iniciada
 	When giro a la izquierda
@@ -233,11 +331,12 @@ Feature: Interfaz abadIA
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
         And la lista de "Objetos" tiene "1" elementos
-	And no hago nada
-       	And los valores iniciales son correctos:
-           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
-           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
-        And la lista de "Objetos" tiene "1" elementos
+# TODO: Revisar, antes en el primer  NOP el objeto seguía en pantalla
+#	And no hago nada
+#       	And los valores iniciales son correctos:
+#           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+#           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+#        And la lista de "Objetos" tiene "1" elementos
 	And no hago nada
        	And los valores iniciales son correctos:
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
@@ -245,11 +344,40 @@ Feature: Interfaz abadIA
         And la lista de "Objetos" tiene "0" elementos
 	And espero "14" iteraciones 
 	And pulso espacio
+	# en esta iteración Guillermo aún tiene el objeto y no está en pantalla
        	And los valores iniciales son correctos:
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "2" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |    32   |      0      |  136 |  159 |
+         |    0   |  1 |  Adso     |     0   |      1      |  134 |  160 |
+        And la lista de "Objetos" tiene "0" elementos
+	# despues de una iteración más, el objeto ya está en la lista de objetos
+	# pero Guillermo sigue teniendolo
+	And no hago nada
+       	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "2" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |    32   |      0      |  136 |  159 |
+         |    0   |  1 |  Adso     |     0   |      1      |  134 |  160 |
         And la lista de "Objetos" tiene "1" elementos
-
+	# despues de una iteración más, el objeto ya está en la lista de objetos
+	# pero Guillermo sigue teniendolo
+	And no hago nada
+       	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     22      |        0     |     31    |    0   |      0     |
+        And la lista de "Personajes" tiene "2" elementos
+        And los valores de los "Personajes" son correctos:
+         | altura | id | nombre    | objetos | orientacion | posX | posY |
+         |    0   |  0 | Guillermo |     0   |      0      |  136 |  159 |
+         |    0   |  1 |  Adso     |     0   |      1      |  134 |  160 |
+        And la lista de "Objetos" tiene "1" elementos
 
   Scenario: Llegar al abad
 	Given una partida recien iniciada

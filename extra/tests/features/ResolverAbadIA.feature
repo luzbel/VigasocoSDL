@@ -510,6 +510,25 @@ Feature: Resolver abadIA
 0// seHaCogido
 -1// numPersonaje
 """
+	And los valores iniciales son correctos:
+           | bonus | 
+           |   0   |
+	And la lista de "sonidos" tiene "12" elementos
+# acabo de cargar, debe estar todo a false
+        And los elementos de la lista de "sonidos" son:
+	| sonando |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
 	And espero "3" iteraciones
 	And avanzo "6" pasos
 	And giro a la izquierda
@@ -2125,9 +2144,9 @@ Scenario: Morir al coger el libro sin guantes en el scriptorium
          |   15   |  1 |  Adso      |        0         |      0      |   52 |   89 |
 	 |   15   |  4 | Berengario | __DO_NOT_CHECK__ |      2      |   61 |   92 |  
 # el pergamino
-# aunque Guillermo tiene ya el libro, en el dump sigue??
+# aunque Guillermo tiene ya el libro, en el dump sigue?? <- en esta version ya no
 # TODO: verificar posicion
-        And la lista de "Objetos" tiene "2" elementos
+        And la lista de "Objetos" tiene "1" elementos
 	And no hago nada
 # despues de esperar un ciclo el libro ya no aparece en Objetos
 	And los valores iniciales son correctos:
@@ -3143,8 +3162,9 @@ Scenario: Ir a comer DIA II
          |   13   |  0 | Guillermo |     0            |      1      |   51 |   61 |
          |   15   |  1 |  Adso     |     2            |      1      |   53 |   55 |
 	 |   15   |  2 | Malaquias | __DO_NOT_CHECK__ |      3      |   55 |   55 |  
-# aun sigue apareciendo la llave en pantalla
-        And la lista de "Objetos" tiene "1" elementos
+# aun sigue apareciendo la llave en pantalla <- en esta version ya no
+# TODO: poner una verificación antes de acercarse para ver que esta la llave y en su posicion
+        And la lista de "Objetos" tiene "0" elementos
 	And grabo la partida 
 
 # despues de robar la llave usamos el pasadizo de la cocina
@@ -6277,8 +6297,9 @@ Scenario: DIA III NONA COGER LAMPARA COCINA
          | altura | id | nombre    | objetos          | orientacion | posX | posY |
          |    0   |  0 | Guillermo |       0          |      0      |   89 |   36 |
          |    0   |  1 |  Adso     |       3          |      0      |   88 |   42 |
-	# la lampara aún no se ha eliminado de la lista de objetos en pantalla
-        And la lista de "Objetos" tiene "1" elementos
+	# la lampara aún no se ha eliminado de la lista de objetos en pantalla <- en esta version si
+	# TODO: verificar antes de acercarse que está la lampara y en su posición
+        And la lista de "Objetos" tiene "0" elementos
 	And no hago nada
 	And grabo la partida 
 
@@ -18133,11 +18154,13 @@ Scenario: PUERTA DERECHA
          | altura | id | nombre    | objetos          | orientacion | posX | posY |
          |   24   |  1 |  Adso     |     3            |      1      |   39 |  103 |
         And la lista de "Objetos" tiene "0" elementos
-        And la lista de "frases" tiene "2" elementos
+#        And la lista de "frases" tiene "2" elementos
+#        la frase vacia para limpiar al cargar, se limpia junto a la de las partidas anteriores y ya no se ve
+        And la lista de "frases" tiene "1" elementos
         And los elementos de la lista de "frases" son:
          | id |
          | 34 |
-         | 56 |
+#         | 56 |  # la frase vacia para limpiar al cargar, se limpia junto a la de las partidas anteriores y ya no se ve
 	# Para salir y empezar a jugar de nuevo haría falta
 	# And no hago anda
 	# And pulso espacio
@@ -18672,7 +18695,11 @@ Scenario: PUERTA CENTRAL
 	And no hago nada
 	# un nop más y aparece la pantalla de has resuelto el 100% de la investigación
 	# y hay que pulsar espacio para salir
-
+	# pulso espacio para que el siguiente escenario pueda resetear
+	# y no quedarse enbuclado esperando espacio
+	# TODO: solucionar esto con hypermedia indicando las acciones disponibles
+	# o sacando el reset al bucle de Vigasoco y no al de abadia
+	And pulso espacio
 
 
 # Logica::pulsadoQR
@@ -19129,11 +19156,10 @@ Scenario: PUERTA IZQUIERDA
          | altura | id | nombre    | objetos          | orientacion | posX | posY |
          |   24   |  1 |  Adso     |     3            |      1      |   39 |  110 |
         And la lista de "Objetos" tiene "0" elementos
-        And la lista de "frases" tiene "2" elementos
+        And la lista de "frases" tiene "1" elementos
         And los elementos de la lista de "frases" son:
          | id |
          | 34 |
-         | 56 |
 	# Para salir y empezar a jugar de nuevo haría falta
 	# And no hago anda
 	# And no hago anda

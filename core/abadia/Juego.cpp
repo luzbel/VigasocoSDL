@@ -198,6 +198,9 @@ void Juego::ReiniciaPantalla(void)
 	marcador->muestraDiaYMomentoDia();
 	marcador->decrementaObsequium(0);
 	marcador->limpiaAreaFrases();
+#ifdef __abadIA__
+			motor->compruebaCambioPantalla();
+#endif
 }
 
 void Juego::pintaMenuCargar(int seleccionado,bool efecto)
@@ -1797,6 +1800,7 @@ bool reiniciando=false;
 
 		// inicia la lógica del juego
 		logica->inicia();
+		//creaEntidadesJuego();
 
 
 despues_de_cargar_o_iniciar:
@@ -1815,6 +1819,7 @@ despues_de_cargar_o_iniciar:
 
 #ifdef __abadIA__
         if (controles->seHaPulsado(KEYBOARD_D)){  // D de DUMP
+				infoJuego->muestraInfo();
 		// si ha pedido volcado el agente, borramos la lista de frases
 		// para que la siguiente vez tenga solo las frases desde la ultima
 		// vez que nos pidio un dump
@@ -1827,8 +1832,17 @@ despues_de_cargar_o_iniciar:
                 // reiniciamos para volver a guardar solo los sonidos entre dump y dump
                 for (int index=0;index<12;index++)
                         VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
-		
+	
+		// Devolvemos el control al HTTPPlugin para que pueda leer el DUMP	
 		VigasocoMain->getInputHandler()->unAcquire();
+		// Esperamos a que el HTTPInputPlugin haya leido el DUMP
+		VigasocoMain->getInputHandler()->acquire();
+		// Devolvemos el control al HTTPPlugin para que finalice el comando
+		VigasocoMain->getInputHandler()->unAcquire();
+		// Saltamos esta iteración del bucle principal de juego, ya que no queremos
+		// que al hacer un DUMP y no movernos
+		// TODO: ¿y si en modo multicomando me llega el DUMP junto con alguna otra pulsación?
+		// ¿tiene sentido? En teoría el agente no actuará hasta examinar con el DUMP la situación
 		continue;
 	}
 			if (compruebaReinicio()) {
@@ -1856,6 +1870,14 @@ despues_de_cargar_o_iniciar:
 
 			if ( compruebaLoad() ) {
 #ifdef __abadIA__
+				// borramos las frases que pudieran quedar de la partida anterior
+				while (!elJuego->frases.empty()) {
+					elJuego->frases.pop();
+				}
+				// borramos los sonidos que pudieran quedar de la partida anterior
+				for (int index=0;index<12;index++)
+					VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
+
 				VigasocoMain->getInputHandler()->unAcquire();
 #endif
 				goto despues_de_cargar_o_iniciar;
@@ -1962,7 +1984,7 @@ if (!logica->haFracasado) {
 			}
 
 #ifdef __abadIA__
-				infoJuego->muestraInfo();
+//				infoJuego->muestraInfo();
 #else
 			if (modoInformacion){
 				infoJuego->muestraInfo();
@@ -2197,8 +2219,13 @@ void Juego::reinicio()
 	while (!elJuego->frases.empty()) {
 		elJuego->frases.pop();
 	}
+	// borramos los sonidos que pudieran quedar de la partida anterior
+	for (int index=0;index<12;index++)
+		VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
 #endif
-	logica->inicia();
+//	logica->inicia();
+	// no es suficiente con reiniciar la lógica
+	creaEntidadesJuego();
 }
 
 // comprueba si se solicita reiniciar la partida
@@ -2649,18 +2676,22 @@ void Juego::creaEntidadesJuego()
 	// sprites de los personajes
 
 	// sprite de guillermo
+	if (sprites[0]) delete sprites[0];
 	sprites[0] = new Sprite();
 
 	// sprite de adso
+	if (sprites[1]) delete sprites[1];
 	sprites[1] = new Sprite();
 
 	// sprite de los monjes
 	for (int i = 2; i < 8; i++){
+		if (sprites[i]) delete sprites[i];
 		sprites[i] = new SpriteMonje();
 	}
 
 	// sprite de las puertas
 	for (int i = primerSpritePuertas; i < primerSpritePuertas + numPuertas; i++){
+		if (sprites[i]) delete sprites[i];
 		sprites[i] = new Sprite();
 		sprites[i]->ancho = sprites[i]->oldAncho = 0x06;
 		sprites[i]->alto = sprites[i]->oldAlto = 0x28;
@@ -2696,6 +2727,7 @@ void Juego::creaEntidadesJuego()
 
 	// sprite de los objetos
 	for (int i = primerSpriteObjetos; i < primerSpriteObjetos + numObjetos; i++){
+		if (sprites[i]) delete sprites[i];
 		sprites[i] = new Sprite();
 		sprites[i]->ancho = sprites[i]->oldAncho = 0x04;
 		sprites[i]->alto = sprites[i]->oldAlto = 0x0c;
@@ -2716,13 +2748,19 @@ void Juego::creaEntidadesJuego()
 	}
 
 	// sprite de los reflejos en el espejo
+	if (sprites[spritesReflejos]) delete sprites[spritesReflejos];
 	sprites[spritesReflejos] = new Sprite();
+	if (sprites[spritesReflejos+1]) delete sprites[spritesReflejos+1];
 	sprites[spritesReflejos + 1] = new Sprite();
 
 	// sprite de la luz
+	if (sprites[spriteLuz]) delete sprites[spriteLuz];
 	sprites[spriteLuz] = new SpriteLuz();
 
 	// crea los personajes del juego
+	for (int i = 0; i < 8; i++){
+		if (personajes[i]) delete personajes[i];
+	}
 	personajes[0] = new Guillermo(sprites[0]);
 	personajes[1] = new Adso(sprites[1]);
 	personajes[2] = new Malaquias((SpriteMonje *)sprites[2]);
@@ -2741,11 +2779,15 @@ void Juego::creaEntidadesJuego()
 	
 	// crea las puertas del juego
 	for (int i = 0; i < numPuertas; i++){
+		if(puertas[i]) delete puertas[i];
 		puertas[i] = new Puerta(sprites[primerSpritePuertas + i]);
 	}
 
 	// crea los objetos del juego
 	for (int i = 0; i < numObjetos; i++){
+		if(objetos[i]) delete objetos[i];
 		objetos[i] = new Objeto(sprites[primerSpriteObjetos + i]);
 	}
+
+	logica->inicia();
 }

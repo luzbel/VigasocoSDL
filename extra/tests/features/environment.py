@@ -15,12 +15,14 @@ def before_all(context):
 	if ("host" not in context.config.userdata):
 		#por defecto, localhost
 		context.host="localhost"
+		#context.host="host.docker.internal"
 	else:
 		context.host=context.config.userdata["host"]
 
 	if ("port" not in context.config.userdata):
 		#por defecto, localhost
 		context.port="4477"
+		#context.port="4478"
 	else:
 		context.port=context.config.userdata["port"]
 

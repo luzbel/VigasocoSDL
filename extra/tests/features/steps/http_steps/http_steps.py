@@ -58,7 +58,8 @@ def step_impl(context,comando):
     r=requests.post(context.url+'/current/actions/'+comando,timeout=context.timeout)
     assert r.status_code==200
 
-@when('no hago nada')
+#@when('no hago nada')
+@step('no hago nada')
 def step_impl(context):
     r=requests.post(context.url+'/current/actions/NOP',timeout=context.timeout)
     assert r.status_code==200
@@ -188,9 +189,21 @@ def step_impl(context,resultado):
 def step_impl(context):
     r=requests.get(context.url+'/current', headers={"accept":"application/json"},timeout=context.timeout)
     assert r.status_code==200
-    print("resultDUMP**"+str(r.json()));
     print("resultDUMPtext**"+r.text);
-    dump = r.json() 
+    valid_json=False;
+    try:
+      json_object = json.loads(r.text)
+    except ValueError:
+      print("El dump no devuelve un  JSON\n");
+      valid_json = False;
+#      assert False 
+    else:
+      valid_json = True;
+      dump = r.json() 
+      print("resultDUMP**"+str(dump));
+
+    assert valid_json;
+
     context.dump=dump;
     for head in context.table[0].headings:
       print("***"+head+"***"+type(dump[head]).__name__+"***valor recibido***"+str(dump[head])+"***valor esperado***"+str(context.table[0][head])+"***"); 
