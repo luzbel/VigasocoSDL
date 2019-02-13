@@ -27,7 +27,7 @@
 
 #ifdef __abadIA__
 #include <fstream>
-#include "json.hpp"
+#include "../util/json.hpp"
 #include "Berengario.h"
 #include "sonidos.h"
 
@@ -130,8 +130,8 @@ void InfoJuego::inicia()
 void InfoJuego::muestraInfo()
 {
 #ifdef __abadIA__
-                std::ofstream out("abadIA.dump",
-                                std::ofstream::out|std::ofstream::trunc);
+//                std::ofstream out("abadIA.dump",
+//                                std::ofstream::out|std::ofstream::trunc);
 //              out << "test\n";
                 nlohmann::json dump;
                 dump["dia"]=laLogica->dia;
@@ -155,7 +155,7 @@ void InfoJuego::muestraInfo()
                 // Sonidos
                 nlohmann::json Sonidos = nlohmann::json::array();
                 for (int index=0;index<12;index++) { // TODO quitar el 12 a fuego
-                        nlohmann::json sonido =
+                        nlohmann::json sonido = // (bool)
                                 VigasocoMain->getAudioPlugin()->getProperty("sonidos",index);
                         Sonidos.push_back(sonido);
                 }
@@ -178,7 +178,7 @@ void InfoJuego::muestraInfo()
                         elJuego->frases.pop();
                 }
 */
-//TODO: optimizar , esto de copar la lista entera para recorrerla no mola
+//TODO: optimizar , esto de copiar la lista entera para recorrerla no mola
 		std::stack <int> duplicadoFrases = elJuego->frases;
                 while (!duplicadoFrases.empty()) {
                         nlohmann::json frase = duplicadoFrases.top();
@@ -255,7 +255,8 @@ void InfoJuego::muestraInfo()
                 // :1,$ s/\[\([0-9]\)\,/\[0\1\,/g
 
                 // Volcado completo
-		out << dump;
+//		out << dump;
+		VigasocoMain->getInputHandler()->setStringProperty("DUMP",dump.dump());
 
 /*
 std::string a("numPantalla");

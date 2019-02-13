@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "crow_all.h"
+#include "../core/util/json.hpp"
 
 SDLKey HTTPInputPlugin::g_keyMapping[END_OF_INPUTS];
 
@@ -30,7 +31,7 @@ HTTPInputPlugin::~HTTPInputPlugin()
 std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std::string& data)
 {
 	//TODO cambiar res a un JSON indicando resultado, número de partida y número de paso
-	std::string res="{ \"resultado\": \"OK\" }";
+	std::string res="{ \"resultado\": \"OK\" }"; // TODO: usar raw string de C++ para quitar las secuencias de escape y usar _json de nlohmann en vez de llamar luego explicitamente a ::parse
 	bool peticionValida=true;
 	CROW_LOG_DEBUG << "atenderComando(" << comando << "," << data <<")";
 	CROW_LOG_DEBUG << "Estado antes de lock atenderMensaje: " << estado;
@@ -72,6 +73,9 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 		HTTPInputPlugin::keystate[SDLK_SPACE]=true;
 	} else
 	if (comando=="DUMP") {
+		res=getStringProperty("DUMP");
+	} else  /*
+	if (comando=="DUMP") {
 		HTTPInputPlugin::keystate[SDLK_d]=true;
 		std::ifstream dumpfile("abadIA.dump");
 		CROW_LOG_INFO << "vuelco dump: " << data;
@@ -80,7 +84,7 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 		dumpfile.read(dump,sizeof(dump));
 		res=dump;
 		CROW_LOG_INFO << "fin vuelco dump: " << data;
-	} else
+	} else */
 	if (comando=="RESET"||comando=="REINICIO") {
 		HTTPInputPlugin::keystate[SDLK_e]=true; // E de rEset
 	} else
@@ -158,7 +162,8 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 		CROW_LOG_DEBUG << "fin dejo seguir al juego: " << comando << " estado " << estado;
 	} else {
 		estado=ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
-		res="COMANDO DESCONOCIDO"; // TODO: no hay que devolver 200 en la interfaz http
+		//res="COMANDO DESCONOCIDO"; // TODO: no hay que devolver 200 en la interfaz http
+		res="{ \"resultado\": \"COMANDO DESCONOCIDO\" }";// TODO: no hay que devolver 200 en la interfaz http
 	}
 
 	return res;
@@ -176,6 +181,7 @@ bool HTTPInputPlugin::init()
 //		});
 
 		CROW_ROUTE(app,"/abadIA/game").methods("POST"_method)([this](const crow::request& req) {
+			
 			return crow::response(200, this->atenderComando("RESET",req.body));
 		});
 
@@ -216,6 +222,84 @@ bool HTTPInputPlugin::init()
 //			return crow::response(200,this->atenderComando("LOAD",req.body));
 //		});
 
+
+//TODO ,cargar el body en nlohmann::json
+// usar is_array para comprobar que llega un array
+// usar un iterador o for  auto ( ver https://github.com/nlohmann/json#examples ) para recorrerlo
+// ver si merece la pena aplicar https://github.com/pboettch/json-schema-validator
+// ver si es un objeto con 2 objetos dentro , el comando y el número de repeticiones
+//  en plan if (o.count("comando")) ...
+// ?y si queremos pulsar varias teclas y que sea genérico y no la ñapa del comando QR actual?
+// habría que cambiar el atenderComando o crear un comando generico que acepte lista de pulsaciones
+// ?que pasa si le das a girar y avanzar a la vez?
+// bucle repetir para ese comadndo
+//	lanzar comando
+//						nlohmann::json::parse(this->atenderComando(command,req.body))); // TODO, quitar el parse haciendo que la función devuelva directamente un json en plan 
+/*
+auto j2 = R"(
+  {
+    "resultado": "OK",
+    "descripcion": "Todo ok",
+    "id": 3
+  }
+)"_json;
+*/
+//			else return crow::response(400,"{ \"resultado\": \"KO\" , \"descripcion\": \"Comando desconocido\" }"); // TODO, usar raw string 
+
+		CROW_ROUTE(app,"/abadIA/game/current/actions").methods("POST"_method)([this](const crow::request& req) {
+			if ( nlohmann::json::accept(req.body) ) { // TODO, ver si es mejor hacer el parse directamente y hacer un catch de las excepciones
+				auto peticionJSON = nlohmann::json::parse(req.body);
+
+				if (peticionJSON.is_array()) { 
+					nlohmann::json resultados = nlohmann::json::array();
+					for (auto& element : peticionJSON) {
+						if (element.is_object()) {
+							std::cout << element << std::endl;
+							if (element.count("command")!=1) 
+								return crow::response(500,
+									R"({ "resultado": "KO" , "descripcion": "Falta el comando en un action recibida" })");
+
+							std::string command=element["command"];
+							std::cout << "comando " << command << std::endl;
+							if (	command=="NOP" ||
+								command=="QR" || // TODO: mucha ayuda para la IA. Ver alternativas para esto
+								command=="RIGHT" ||
+								command=="LEFT" ||
+								command=="UP" ||
+								command=="DOWN" ||
+								command=="SPACE" ||
+								command=="DUMP" ||
+								command=="RESET" ||
+								command=="SAVEJSON" ||
+								command=="SAVE" ||
+								command=="LOADJSON" ||
+								command=="LOAD" ||
+								command=="FIN" ||
+								command=="END" ||
+								command=="GAME OVER" ||
+								command=="GAMEOVER" ||
+								command=="SI" ||
+								command=="NO"
+							   ) {
+								signed int repeat=1;
+								if (element.count("repeat")==1) repeat=element["repeat"];
+								std::cout << "repeat "  << repeat << std::endl;
+								while (repeat--) {
+									resultados.push_back(
+										nlohmann::json::parse(
+ 									this->atenderComando(command,req.body)));
+								} 
+							}
+						} else break;
+					}		
+					return crow::response(200,resultados.dump());
+//					return crow::response(500,
+//						  R"({ "resultado": "KO" , "descripcion": "No implementado" })");
+				}
+			}
+			return crow::response(500,R"({ "resultado": "KO" , "descripcion": "No me gusta el JSON recibido" })");
+		});
+
 		CROW_ROUTE(app,"/abadIA/game/current/actions/<string>").methods("POST"_method)([this](const crow::request& req, std::string command) {
 			CROW_LOG_INFO << "action " << command;
 			// TODO: comprobar que el comando es valido antes 
@@ -238,7 +322,19 @@ bool HTTPInputPlugin::init()
 				command=="GAMEOVER" ||
 				command=="SI" ||
 				command=="NO"
-			) return crow::response(200,this->atenderComando(command,req.body));
+			) {
+				nlohmann::json resultados = nlohmann::json::array();
+				signed int repeat=1;
+				if ( req.url_params.get("repeat") != nullptr ) {
+					repeat=boost::lexical_cast<int>(req.url_params.get("repeat"));
+				}
+
+				while (repeat--) {
+					resultados.push_back(
+						nlohmann::json::parse(this->atenderComando(command,req.body)));
+				} 
+				return crow::response(200,resultados.dump());
+			}
 			else return crow::response(400,"{ \"resultado\": \"KO\" , \"descripcion\": \"Comando desconocido\" }");
 //			return crow::response(200,this->atenderComando("LOAD",req.body));
 //			return crow::response(200,command);
@@ -464,11 +560,11 @@ const std::string HTTPInputPlugin::g_properties[] = {
 	"keyConfig"
 };
 
-const int HTTPInputPlugin::g_paramTypes[] = {
-	(int)(PARAM_ARRAY | PARAM_INPUT)
+const unsigned int HTTPInputPlugin::g_paramTypes[] = {
+	(PARAM_ARRAY | PARAM_INPUT)
 };
 
-const int * HTTPInputPlugin::getPropertiesType() const
+const unsigned int * HTTPInputPlugin::getPropertiesType() const
 {
 	return HTTPInputPlugin::g_paramTypes;
 }
@@ -478,6 +574,12 @@ const std::string * HTTPInputPlugin::getProperties(int *num) const
 	*num = sizeof(g_paramTypes)/sizeof(g_paramTypes[0]);
 	return HTTPInputPlugin::g_properties;
 }
+
+void HTTPInputPlugin::setStringProperty(std::string prop, std::string data)
+{
+	if (prop=="DUMP") dump=data;
+}
+
 
 void HTTPInputPlugin::setProperty(std::string prop, int data)
 {
@@ -491,6 +593,15 @@ void HTTPInputPlugin::setProperty(std::string prop, int index, int data)
 		}
 	}
 }
+
+std::string HTTPInputPlugin::getStringProperty(std::string prop) const
+{
+	if (prop=="DUMP") {
+		return dump;
+	} else
+	return "ERR: unknown property";
+};
+
 
 int HTTPInputPlugin::getProperty(std::string prop) const
 {
