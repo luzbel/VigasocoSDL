@@ -97,11 +97,11 @@ const std::string NULLAudioPlugin::g_properties[] = {
 		// y la frecuencia de muestreo en alguna propiedad ...
 };
 
-const int NULLAudioPlugin::g_paramTypes[] = {
+const unsigned int NULLAudioPlugin::g_paramTypes[] = {
 	PARAM_ARRAY | PARAM_INPUT
 };
 
-const int * NULLAudioPlugin::getPropertiesType() const
+const unsigned int * NULLAudioPlugin::getPropertiesType() const
 {
 	return NULLAudioPlugin::g_paramTypes;
 }

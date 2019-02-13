@@ -20,16 +20,55 @@ def step_impl(context):
     context.execute_steps('''
 	Given una conexion a la interfaz
 	When reinicio el juego
-        And no hago nada
+        Then los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
+           |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
+	And la lista de "Personajes" tiene "2" elementos
+        And los valores de los "Personajes" son correctos:
+           | altura | id | nombre    | objetos | orientacion | posX | posY |
+           |    0   |  0 | Guillermo |   32    |      0      |  136 |  168 |
+           |    0   |  1 |  Adso     |    0    |      0      |  134 |  170 |
+       And la lista de "Objetos" tiene "0" elementos
+      And los elementos de la lista de "sonidos" son:
+	| sonando |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	And no hago nada
         Then los valores iniciales son correctos:
            | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | porcentaje |
            |   0   |  1  |   False     |         False         |      4     |     23      |        0     |     31    |      0     |
         And la lista de "Personajes" tiene "2" elementos
         And los valores de los "Personajes" son correctos:
-           | altura | id | nombre    | orientacion | posX | posY |
-           |    0   |  0 | Guillermo |       0     |  136 |  168 |
-           |    0   |  1 |  Adso     |       1     |  134 |  170 |
+           | altura | id | nombre    | objetos | orientacion | posX | posY |
+           |    0   |  0 | Guillermo |   32    |      0      |  136 |  168 |
+           |    0   |  1 |  Adso     |    0    |      1      |  134 |  170 |
         And la lista de "frases" tiene "0" elementos
+      And la lista de "Objetos" tiene "0" elementos
+# suena el tintineo de inicio del juego
+      And los elementos de la lista de "sonidos" son:
+	| sonando |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     0   |
+	|     1   |
     ''');
 
 # TODO: revisar porque se necesitan 2 "no hago nada"

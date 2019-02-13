@@ -266,11 +266,11 @@ const std::string SDLAudioPlugin::g_properties[] = {
 		// y la frecuencia de muestreo en alguna propiedad ...
 };
 
-const int SDLAudioPlugin::g_paramTypes[] = {
+const unsigned int SDLAudioPlugin::g_paramTypes[] = {
 	PARAM_ARRAY | PARAM_INPUT
 };
 
-const int * SDLAudioPlugin::getPropertiesType() const
+const unsigned int * SDLAudioPlugin::getPropertiesType() const
 {
 	return SDLAudioPlugin::g_paramTypes;
 }
