@@ -27,7 +27,7 @@ SDLInputKeyboardPlugin::~SDLInputKeyboardPlugin()
 {
 }
 
-bool SDLInputKeyboardPlugin::init(Abadia::Juego *juego)
+bool SDLInputKeyboardPlugin::init()
 {
 #if defined _EE || defined _PS3
 	if ( SDL_InitSubSystem(SDL_INIT_JOYSTICK) != -1 )
@@ -157,13 +157,10 @@ enum ps3_sixaxis_sdl_axis
 
 #endif // _PS3
 
-bool SDLInputKeyboardPlugin::process(int *inputs)
+void SDLInputKeyboardPlugin::process(int *inputs)
 {
 	//Uint8 *keystate = SDL_GetKeyState(NULL);
 	int size;
-
-//SDL_PumpEvents(); //no llega lo que paso con SDL_PushEvents :-(
-// TODO: esto parece que se puede hacer una sola vez al principio
 	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
 	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
 
@@ -250,14 +247,11 @@ bool SDLInputKeyboardPlugin::process(int *inputs)
 			// update inputs
 			if (g_keyMapping[i] != 0){
 				if (keystate[g_keyMapping[i]] ){
-//fprintf(stderr,"keystate %d keymap %d\n",i,g_keyMapping[i]);
 					inputs[i]++;
 				}
 			}
 		}
 	}
-
-	return true; // este plugin no tiene nada para provocar la salida del juego
 }
 
 /////////////////////////////////////////////////////////////////////////////

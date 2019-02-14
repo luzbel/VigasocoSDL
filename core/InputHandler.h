@@ -72,7 +72,7 @@ public:
 
 	void acquire();
 	void unAcquire();
-	bool process();
+	void process();
 
 	void setStringProperty(std::string property, std::string data);
 

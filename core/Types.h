@@ -146,22 +146,4 @@ enum PluginType {
 	LOADER_PLUGIN = 0x4000
 };
 
-#ifdef __abadIA__
-enum EventType {
-	evRESET, 	// 0
-	evLOAD,		// 1
-	evSAVE,		// 2
-	evDUMP,		// 3
-	evLEFT,		// 4
-	evRIGHT,	// 5
-	evUP,		// 6
-	evDOWN,		// 7
-	evSPACE,	// 8
-	evGAMEOVER,	// 9
-	evSTART,	// 10
-	evRUNNING,	// 11
-	evEVENT_LAST	// 12
-};
-#endif
-
 #endif	// _VIGASOCO_TYPES_H_

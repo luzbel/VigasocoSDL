@@ -56,8 +56,7 @@ protected:
 // métodos
 public:
 	void inicia();
-	bool dumpInfo(bool forceDump=true); // TODO: esto de forceDump es temporal, ELIMINAR al limpiar c�digo
-	bool muestraInfo();
+	void muestraInfo();
 
 	// inicialización y limpieza
 	InfoJuego();

@@ -21,7 +21,7 @@ bool SDLTimer::init()
 {
 	if ( SDL_InitSubSystem(SDL_INIT_TIMER) == -1 ) return false;
 
-	_ticksPerSecond = calcTicksPerSecond()/5;
+	_ticksPerSecond = calcTicksPerSecond();
 	_ticksPerMilliSecond = _ticksPerSecond/1000;
 
 	return true;
@@ -49,12 +49,12 @@ INT64 SDLTimer::getTicksPerSecond()
 void SDLTimer::sleep(UINT32 milliseconds)
 {
 #ifdef _EE
-/* Esto falla en fedora 7, gcc 4.1.2 , SDL 1.2.11 y libstdc++6.0.8 ...
-	INT64 time1, time2;
+/* Esto falla en fedora 7, gcc 4.1.2 , SDL 1.2.11 y libstdc++6.0.8 ... 
+	INT64 time1, time2; 
 	bool finished = false;
 
 	time1 = getTime();
-
+	
 	while (!finished){
 		time2 = getTime();
 
@@ -62,7 +62,7 @@ void SDLTimer::sleep(UINT32 milliseconds)
 		if (!finished){
 			SDL_Delay(0);
 		}
-	}
+	} 
 */
 #else
 SDL_Delay(milliseconds);

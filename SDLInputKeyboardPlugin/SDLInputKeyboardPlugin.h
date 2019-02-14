@@ -10,8 +10,6 @@
 #include "IInputPlugin.h"
 #include "SDL.h"
 
-#include "Juego.h"
-
 class SDLInputKeyboardPlugin: public IInputPlugin
 {
 // fields
@@ -32,13 +30,13 @@ public:
 	// initialization and cleanup
 	SDLInputKeyboardPlugin();
 	virtual ~SDLInputKeyboardPlugin();
-	virtual bool init(Abadia::Juego *juego);
+	virtual bool init();
 	virtual void end();
 
 	virtual void acquire();
 	virtual void unAcquire();
 
-	virtual bool process(int *inputs);
+	virtual void process(int *inputs);
 
 	// custom properties
 	virtual const std::string *getProperties(int *num) const;

@@ -1,9 +1,1 @@
 *.o
-*.save
-VigasocoSDL/VigasocoSDL
-VigasocoSDL/audio/
-VigasocoSDL/input/
-VigasocoSDL/video/
-.idea
-../VigasocoSDL/abadia0.save
-../VigasocoSDL/*.save

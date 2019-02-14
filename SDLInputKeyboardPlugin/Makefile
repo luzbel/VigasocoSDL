@@ -1,9 +1,9 @@
-CXXFLAGS=-O3 -fPIC -I../core -I../core/abadia -I../VigasocoSDL/ `sdl-config --cflags`
+CXXFLAGS=-O3 -fPIC -I../core -I../VigasocoSDL/ `sdl-config --cflags`
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 all: ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so 
 
-OBJECTS = SDLInputKeyboardPlugin.o SDLInputKeyboardPluginsPollEvent.o PluginMain.o
+OBJECTS = SDLInputKeyboardPlugin.o PluginMain.o
 
 ../VigasocoSDL/input/libVigasocoSDLInputPlugin.so: $(OBJECTS)
 	$(CXX) -fPIC -shared $(OBJECTS) -o $@

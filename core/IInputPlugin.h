@@ -15,8 +15,6 @@
 #include <string>
 #include "Types.h"
 
-#include "abadia/Juego.h"
-
 class IInputPlugin
 {
 // methods
@@ -24,13 +22,13 @@ public:
 	// initialization and cleanup
 	IInputPlugin(){}
 	virtual ~IInputPlugin(){}
-	virtual bool init(Abadia::Juego *juego) = 0;
+	virtual bool init() = 0;
 	virtual void end() = 0;
 
 	virtual void acquire() = 0;
 	virtual void unAcquire() = 0;
 
-	virtual bool process(int *inputs) = 0;
+	virtual void process(int *inputs) = 0;
 
 	// access to custom plugin properties
 	virtual const std::string *getProperties(int *num) const = 0;

@@ -353,7 +353,6 @@ void AbadiaDriver::runAsync()
 
 void AbadiaDriver::render(IDrawPlugin *dp)
 {
-#ifndef __abadIA_HEADLESS__
 	//TODO: VGA
 	//El codigo si usasemos los graficos originales 
 	//de abadia.dsk seria diferente
@@ -380,7 +379,6 @@ void AbadiaDriver::render(IDrawPlugin *dp)
 		}
 	}
 	cs->leave();
-#endif // __abadIA_HEADLESS__
 }
 
 /////////////////////////////////////////////////////////////////////////////

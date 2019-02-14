@@ -9,10 +9,6 @@
 //para memset
 #include <string.h>
 
-#ifdef __abadIA__
-#include "abadia/Juego.h"
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
@@ -75,7 +71,7 @@ bool InputHandler::init(GameDriver *gd)
 
 	// init the plugins
 	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
-		if (!(*i)->init(Abadia::elJuego)){
+		if (!(*i)->init()){
 			return false;
 		}
 	}
@@ -126,7 +122,7 @@ void InputHandler::unAcquire()
 	}
 }
 
-bool InputHandler::process()
+void InputHandler::process()
 {
 	GameDriver::InputPorts &inputPorts = *_inputPorts;
 
@@ -141,9 +137,7 @@ bool InputHandler::process()
 
 	// for each plugin, modify _inputs array if the user has pressed an input
 	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
-		// Si alguno de los plugins recibe una seÃal para salir,
-		// desencadenamos salir del bucle principal
-		if (!(*i)->process(_inputs)) return false;
+		(*i)->process(_inputs);
 	}
 
 	// process the _inputs array modifying the input ports' values
@@ -175,8 +169,6 @@ bool InputHandler::process()
 		// update input port value
 		ip.setValue(value);
 	}
-
-	return true; // continuar sin salir del juego
 }
 
 void InputHandler::copyInputsState(int *dest)
