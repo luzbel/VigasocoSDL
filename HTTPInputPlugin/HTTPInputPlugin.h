@@ -14,6 +14,9 @@
 #include <condition_variable>
 #include <mutex>
 
+#include <fstream>
+#include "json.hpp"
+
 enum ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN {
 	ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN=0,
 	ATENDIENDO_MENSAJE_EN_EL_HTTPINPUTPLUGIN=1,
@@ -28,6 +31,9 @@ private:
 	std::condition_variable condVar;
 	int estado=ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
 	std::string dump;
+  std::fstream replayFile;
+	nlohmann::json replayJSON;
+	nlohmann::json acciones = nlohmann::json::array();
 // fields
 protected:
 	static const std::string g_properties[];
