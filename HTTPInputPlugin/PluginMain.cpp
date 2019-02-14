@@ -10,7 +10,11 @@
 static const char * const description = "VIGASOCO HTTP Plugin v3.0";
 
 static const char *plugins[] = {
+#ifdef __abadIA_REPLAY__
+	"fileReplay" 
+#else
 	"crowV3" 
+#endif
 };
 
 /////////////////////////////////////////////////////////////////////////////

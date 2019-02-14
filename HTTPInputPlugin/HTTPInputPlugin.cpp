@@ -21,6 +21,18 @@ HTTPInputPlugin::HTTPInputPlugin()
 	_errorMsg = "";
 
 	initRemapTable();
+// TODO: en vez de compilando cada versión
+// usando setProperty se puede poner modo 
+// grabar o en modo reproducir
+// aunque siendo un plugin
+// pues es cuestión de cargar un plugin  u otro
+// pueden ser la misma lib, aunque con distinto
+// nombre de plugin a seleccionar en PluginMain
+#ifdef __abadIA_REPLAY__
+        replayFile.open("abadIA.rec",std::ifstream::in);
+#else
+        replayFile.open("abadIA.rec",std::ofstream::out|std::ofstream::trunc); //|std::ofstream::app);
+#endif
 }
 
 HTTPInputPlugin::~HTTPInputPlugin()
@@ -30,6 +42,7 @@ HTTPInputPlugin::~HTTPInputPlugin()
 
 std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std::string& data)
 {
+
 	//TODO cambiar res a un JSON indicando resultado, número de partida y número de paso
 	std::string res="{ \"resultado\": \"OK\" }"; // TODO: usar raw string de C++ para quitar las secuencias de escape y usar _json de nlohmann en vez de llamar luego explicitamente a ::parse
 	bool peticionValida=true;
@@ -155,6 +168,12 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 
 
 	if (peticionValida) {
+#ifndef __abadIA_REPLAY__
+	nlohmann::json accion;
+	accion["comando"] = comando;
+	accion["data"] = data;
+	acciones.push_back(accion);
+#endif
 		CROW_LOG_DEBUG << "dejo seguir al juego: " << comando << " estado " << estado;
 		estado=AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;
 		CROW_LOG_DEBUG << "dejo seguir al juego antes de notify_one: " << comando << " estado " << estado << "literal " << AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;
@@ -172,6 +191,7 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 
 bool HTTPInputPlugin::init()
 {
+#ifndef __abadIA_REPLAY__
 	std::thread webThread([this]() {
 		crow::SimpleApp app;
 
@@ -410,10 +430,52 @@ auto j2 = R"(
         });
         webThread.detach(); 
         return true;
+#else
+	std::thread replayThread([this]() {
+
+	std::string res="OK";
+	replayJSON = nlohmann::json::parse(replayFile); // TODO: controlar excepciones
+	nlohmann::json accionesJSON = replayJSON["acciones"]; // ?usar variable acciones declarado en .h
+	for (nlohmann::json::iterator it = accionesJSON.begin(); it != accionesJSON.end(); ++it) {
+		// std::cout << (*it)["comando"] << " : " << (*it)["data"] << "\n*****\n";
+		// TODO: comprobar los resultados de atenderComando 
+		res = this->atenderComando((*it)["comando"],(*it)["data"]); 
+	}
+
+		
+/*
+	std::string line;
+	std::string res="OK";
+	// TODO: falta control errores al leer
+	// ver https://gehrcke.de/2011/06/reading-files-in-c-using-ifstream-dealing-correctly-with-badbit-failbit-eofbit-and-perror/
+	// TODO: comprobar los resultados de atenderComando 
+	// TODO: este bucle en vez de en ::init en un hilo desacoplado
+	// debería ir en ::process
+	// que se llama desde fuera del bucle principal de juego
+	// TODO: esto no funciona en comandos multilínea como LOAD
+	while(getline(replayFile, line)) {
+		std::string::size_type pos=line.find(" ");
+		if (pos==std::string::npos) {
+			res=this->atenderComando(line,"");
+		} else {
+			res=this->atenderComando(
+					line.substr(0,pos),
+					line.substr(pos+1,std::string::npos)
+					);
+		}
+	} */
+        });
+        replayThread.detach(); 
+        return true;
+#endif
 }
 
 void HTTPInputPlugin::end()
 {
+#ifndef __abadIA_REPLAY__
+	replayJSON["acciones"] = acciones;
+	replayFile << replayJSON;
+#endif
 }
 
 void HTTPInputPlugin::acquire()
