@@ -158,6 +158,9 @@ def step_impl(context):
     assert r.status_code==200
 # TODO: no se por que en el body hay una línea en blanco al final
     assert r.text.count('\n')==431
+# TODO: si está en la pantalla que indica el porcentaje completado
+# y se de a grabar, se devuelven sólo 430 líneas ¿por qué?
+
 
 @step('grabo la partida y comparo el volcado')
 def step_impl(context):

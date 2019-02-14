@@ -73,6 +73,16 @@ std::string HTTPInputPlugin::atenderComando(const std::string&comando, const std
 		HTTPInputPlugin::keystate[SDLK_SPACE]=true;
 	} else
 	if (comando=="DUMP") {
+		HTTPInputPlugin::keystate[SDLK_d]=true;
+		CROW_LOG_DEBUG << "dejo seguir al juego para que VUELQUE: " << comando << " estado " << estado;
+		estado=AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;
+		condVar.notify_one();
+		CROW_LOG_DEBUG << "fin dejo seguir al juego para que VUELQUE: " << comando << " estado " << estado;
+		// Espero otra vez a que el juego me de paso 
+		condVar.wait(lcx,[this]{return estado==ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;});
+		estado=ATENDIENDO_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
+
+
 		res=getStringProperty("DUMP");
 	} else  /*
 	if (comando=="DUMP") {
