@@ -21,18 +21,8 @@ HTTPInputPlugin::HTTPInputPlugin()
 	_errorMsg = "";
 
 	initRemapTable();
-// TODO: en vez de compilando cada versión
-// usando setProperty se puede poner modo 
-// grabar o en modo reproducir
-// aunque siendo un plugin
-// pues es cuestión de cargar un plugin  u otro
-// pueden ser la misma lib, aunque con distinto
-// nombre de plugin a seleccionar en PluginMain
-#ifdef __abadIA_REPLAY__
-        replayFile.open("abadIA.rec",std::ifstream::in);
-#else
-        replayFile.open("abadIA.rec",std::ofstream::out|std::ofstream::trunc); //|std::ofstream::app);
-#endif
+
+	estadoReproductor=JUGANDO;
 }
 
 HTTPInputPlugin::~HTTPInputPlugin()
@@ -178,12 +168,12 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 
 
 	if (peticionValida) {
-#ifndef __abadIA_REPLAY__
-	nlohmann::json accion;
-	accion["comando"] = comando;
-	accion["data"] = data;
-	acciones.push_back(accion);
-#endif
+		if (estadoReproductor==GRABANDO) {
+			nlohmann::json accion;
+			accion["comando"] = comando;
+			accion["data"] = data;
+			acciones.push_back(accion);
+		}
 		CROW_LOG_DEBUG << "dejo seguir al juego: " << comando << " estado " << estado;
 		estado=AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;
 		CROW_LOG_DEBUG << "dejo seguir al juego antes de notify_one: " << comando << " estado " << estado << "literal " << AVANZAR_UNA_INTERRUPCION_EN_EL_JUEGO;
@@ -211,8 +201,89 @@ bool HTTPInputPlugin::init()
 //		});
 
 		CROW_ROUTE(app,"/abadIA/game").methods("POST"_method)([this](const crow::request& req) {
-			
-			return crow::response(200, this->atenderComando("RESET",req.body));
+			if (req.body.length()<1) {	
+				// si no pasan body entendemos que han pedido una nueva partida
+				return crow::response(200, this->atenderComando("RESET",req.body));
+			} else {
+				// si pasan body entendemos que nos pasan una grabación para reproducir
+				// TODO: pensar si es mejor que lo digan por cabecera
+				// TODO: revisar el formato JSON del body para ver que es una grabación
+				// TODO: verificar si se está en modo grabación porque igual no es buena idea
+				// permitir ambos a la vez
+				replayJSON = nlohmann::json::parse(req.body); // TODO: controlar excepciones
+				estadoReproductor=REPRODUCIENDO;
+
+				// Por ahora reproducimos todo seguido
+				// TODO: exponer interfaz para poder ir paso a paso,
+				// retroceder un paso, etc.
+				std::thread replayThread([this]() {
+// ¿interesa hacer un RESET siempre para que el replay empiece desde el principio
+// o dejarlo sin RESET para que también sirva de macros
+// y si quiere RESET o cargar una partida que envíe esos comandos
+					//TODO: ?usar variable acciones declarado en .h
+					nlohmann::json accionesJSON = replayJSON["acciones"];
+					for (	nlohmann::json::iterator it = accionesJSON.begin(); 
+						it != accionesJSON.end(); 
+						++it) {
+						 // std::cout << (*it)["comando"] << " : " << (*it)["data"] << "\n*****\n";
+						// TODO: comprobar los resultados de atenderComando 
+						this->atenderComando((*it)["comando"],(*it)["data"]); 
+					}
+					estadoReproductor=JUGANDO;
+				});
+				replayThread.detach();
+				auto response = 
+R"(
+{
+    "resultado": "OK",
+    "descripcion": "Reproduciendo"
+}
+)"; 	
+				return crow::response(200, response);
+			}
+		});
+
+		CROW_ROUTE(app,"/abadIA/game/current/recording").methods("POST"_method)([this](const crow::request& req) 		{
+			if (estadoReproductor==JUGANDO||estadoReproductor==GRABANDO) {
+auto response = 
+R"(
+{
+    "resultado": "OK",
+    "descripcion": "Grabando"
+}
+)"; 	
+				estadoReproductor=GRABANDO;
+				return crow::response(200, response);
+			} else {
+auto response = 
+R"(
+{
+    "resultado": "KO",
+    "descripcion": "No se puede activar la grabación mientras se reproduce"
+}
+)"; 	
+				return crow::response(500, response);
+			}
+		});
+
+		CROW_ROUTE(app, "/abadIA/game/current/recording/current").methods("GET"_method,"DELETE"_method)([this](const crow::request& req) {
+			if (req.method=="GET"_method) {
+				replayJSON["acciones"] = acciones;
+				return crow::response(500, replayJSON.dump());
+			} else 
+				if (req.method == "DELETE"_method) {
+				auto response = 
+R"(
+{
+    "resultado": "OK",
+    "descripcion": "Grabación parada y eliminada"
+}
+)"; 	
+				replayJSON.erase("acciones");
+				acciones.clear();
+				estadoReproductor=JUGANDO; // TODO: ¿y si estabamos reproduciendo?
+				return crow::response(200,response);
+			} else  return crow::response(500,"{ \"resultado\": \"KO\" , \"descripcion\": \"crow debería haber rechazado previamente esta petición porque el método no está implementado para el recurso\" }");
 		});
 
 // TODO: ver si añadir el charset al final del accept y content-type ; charset=UTF-8
@@ -441,6 +512,7 @@ auto j2 = R"(
         webThread.detach(); 
         return true;
 #else
+/*
 	std::thread replayThread([this]() {
 
 	std::string res="OK";
@@ -451,7 +523,7 @@ auto j2 = R"(
 		// TODO: comprobar los resultados de atenderComando 
 		res = this->atenderComando((*it)["comando"],(*it)["data"]); 
 	}
-
+*/
 		
 /*
 	std::string line;
@@ -474,18 +546,15 @@ auto j2 = R"(
 					);
 		}
 	} */
+/*
         });
         replayThread.detach(); 
-        return true;
+        return true; */
 #endif
 }
 
 void HTTPInputPlugin::end()
 {
-#ifndef __abadIA_REPLAY__
-	replayJSON["acciones"] = acciones;
-	replayFile << replayJSON;
-#endif
 }
 
 void HTTPInputPlugin::acquire()
