@@ -5,3 +5,4 @@ VigasocoSDL/audio/
 VigasocoSDL/input/
 VigasocoSDL/video/
 .idea
+*.gcda
