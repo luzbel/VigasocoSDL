@@ -32,7 +32,7 @@ protected:
 	int espaciosParaFin;		// número de espacios para que la frase haya salido completamente del marcador
 	bool fraseTerminada;		// indica si se terminó una frase
 	bool reproduciendoFrase;	// indica que se está mostrando una frase en el marcador
-	char *frase;				// apunta a la frase que se está poniendo en el marcador
+	const char *frase;				// apunta a la frase que se está poniendo en el marcador
 
 	// CPC
 	//static char *frases[0x38];	// tabla de frases
@@ -41,7 +41,7 @@ protected:
 	//Anyadimos una frase mas que en la version original
 	//para limpiar el area de frases al cargar/grabar las partidas
 		// convertimos en array para cada idioma
-	static char *frases[8][0x38+1];	// tabla de frases
+	static const char *frases[8][0x38+1];	// tabla de frases
 
 // métodos
 public:
