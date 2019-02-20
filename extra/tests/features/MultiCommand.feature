@@ -5277,41 +5277,6 @@ Scenario: Ir a comer DIA II
 { "command":"RIGHT" },
 { "command":"NOP" , "repeat":98},
 
-{ "command":"UP" , "repeat":6},
-
-
-
-
-
-{ "command":"DOWN" , "repeat":14},
-{ "command":"LEFT" },
-{ "command":"DOWN" , "repeat":4},
-{ "command":"RIGHT" },
-
-
-{ "command":"UP" , "repeat":8},
-
-
-
-
-{ "command":"UP" , "repeat":6},
-
-
-
-
-
-
-
-{ "command":"UP" , "repeat":2},
-
-{ "command":"DOWN" , "repeat":5},
-{ "command":"UP" , "repeat":46},
-{ "command":"RIGHT" },
-{ "command":"UP" , "repeat":28},
-{ "command":"LEFT" },
-{ "command":"UP" , "repeat":24},
-{ "command":"LEFT" },
-	
 
 
 
@@ -5822,7 +5787,7 @@ Scenario: DIA III TERCIA CONOCER A JORGE
 
 
 
-{ "command":"UP" , "repeat":18},
+
 { "command":"RIGHT" },
 { "command":"UP" , "repeat":38},
 { "command":"NOP" , "repeat":4},
@@ -6791,7 +6756,7 @@ Scenario: DIA III NONA COGER LAMPARA COCINA
          |    0   |  0 | Guillermo |       0          |      0      |   89 |   36 |
          |    0   |  1 |  Adso     |       3          |      0      |   88 |   42 |
 
-        And la lista de "Objetos" tiene "1" elementos
+        And la lista de "Objetos" tiene "0" elementos
 	And no hago nada
 	And grabo la partida 
 
@@ -7287,9 +7252,9 @@ Scenario: DIA III NONA DESPUES DE COGER LAMPARA COCINA
 { "command":"RIGHT" },
 { "command":"UP" , "repeat":18},
 { "command":"RIGHT" },
-{ "command":"NOP" , "repeat":2183},
 
-{ "command":"NOP" , "repeat":23},
+
+
 
 
 { "command":"NOP" , "repeat":2206}
@@ -8741,11 +8706,11 @@ Scenario: DIA III NONA DESPUES DE COGER LAMPARA COCINA
 
 
 
-{ "command":"NOP" , "repeat":67},
 
 
 
-{ "command":"NOP" , "repeat":244},
+
+
 
 
 
@@ -10145,13 +10110,13 @@ Scenario: DIA III NONA DESPUES DE COGER LAMPARA COCINA
 
 
 
-{ "command":"UP" , "repeat":20},
-{ "command":"RIGHT" },
-{ "command":"UP" , "repeat":14},
-{ "command":"LEFT" },
-{ "command":"UP" , "repeat":10},
-{ "command":"RIGHT" },
-{ "command":"UP" , "repeat":12},
+
+
+
+
+
+
+
 
 { "command":"UP" , "repeat":30},
 { "command":"LEFT" },
