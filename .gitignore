@@ -6,3 +6,4 @@ VigasocoSDL/input/
 VigasocoSDL/video/
 .idea
 *.gcda
+__pycache__/
