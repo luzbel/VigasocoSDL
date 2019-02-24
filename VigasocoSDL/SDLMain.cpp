@@ -20,8 +20,14 @@ typedef std::vector<std::string> Strings;
 
 // default options
 std::string g_game("abadia");
+// abadIA se suele ejecutar en entornes headless sin salida gráfica
+#ifdef __abadIA_HEADLESS__
+std::string g_drawPluginsDLL("libVigasocoNULLVideoPlugin.so");
+std::string g_drawPlugin("NULLVideoPlugin");
+#else
 std::string g_drawPluginsDLL("libVigasocoSDLDrawPlugin.so");
 std::string g_drawPlugin("win8");
+#endif
 
 // Se aÃ±ade plugin NULLAudio sin salida de sonido
 // para poder compilar en Windows Services for Linux que no tiene soporte ALSA

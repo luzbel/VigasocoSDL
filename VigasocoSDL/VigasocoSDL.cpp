@@ -207,7 +207,24 @@ void VigasocoSDL::createAsyncThread()
 
 void VigasocoSDL::initCompleted()
 {
-	std::string titulo_ventana = "VigasocoSDL v0.094-abadIA: " + _driver->getFullName();
+	std::string titulo_ventana = 
+#ifdef __abadIA_PROFILE__
+	"VigasocoSDL v0.094-abadIA-PROFILE: "
+#else
+#ifdef __abadIA_HEADLESS__
+	"VigasocoSDL v0.094-abadIA-HEADLESS: "
+#else
+
+#ifdef __abadIA__
+	"VigasocoSDL v0.094-abadIA: "
+#else
+// Si no es una versión específica para la IA es VigasocoSDL normal
+	"VigasocoSDL v0.094:"
+#endif
+
+#endif
+#endif
+	+ _driver->getFullName();
 	SDL_WM_SetCaption(titulo_ventana.c_str(),titulo_ventana.c_str());
 	SDL_ShowCursor(SDL_DISABLE);
 }

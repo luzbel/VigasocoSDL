@@ -170,7 +170,7 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 	if (peticionValida) {
 		if (estadoReproductor==GRABANDO) {
 			nlohmann::json accion;
-			accion["comando"] = comando;
+			accion["command"] = comando;
 			accion["data"] = data;
 			acciones.push_back(accion);
 		}
@@ -227,11 +227,12 @@ bool HTTPInputPlugin::init()
 						++it) {
 						 // std::cout << (*it)["comando"] << " : " << (*it)["data"] << "\n*****\n";
 						// TODO: comprobar los resultados de atenderComando 
-						this->atenderComando((*it)["comando"],(*it)["data"]); 
+						this->atenderComando((*it)["command"],(*it)["data"]); 
 					}
 					estadoReproductor=JUGANDO;
 				});
-				replayThread.detach();
+//				replayThread.detach();
+				replayThread.join();
 				auto response = 
 R"(
 {
@@ -355,13 +356,13 @@ auto j2 = R"(
 					nlohmann::json resultados = nlohmann::json::array();
 					for (auto& element : peticionJSON) {
 						if (element.is_object()) {
-							std::cout << element << std::endl;
+							CROW_LOG_DEBUG << element ;
 							if (element.count("command")!=1) 
 								return crow::response(500,
 									R"({ "resultado": "KO" , "descripcion": "Falta el comando en un action recibida" })");
 
 							std::string command=element["command"];
-							std::cout << "comando " << command << std::endl;
+							CROW_LOG_DEBUG << "comando " << command ;
 							if (	command=="NOP" ||
 								command=="QR" || // TODO: mucha ayuda para la IA. Ver alternativas para esto
 								command=="RIGHT" ||
@@ -384,11 +385,14 @@ auto j2 = R"(
 							   ) {
 								signed int repeat=1;
 								if (element.count("repeat")==1) repeat=element["repeat"];
-								std::cout << "repeat "  << repeat << std::endl;
+								CROW_LOG_DEBUG << "repeat "  << repeat ;
+								std::string data;
+								if(element.count("data")==1) data=element["data"]; else data="";
+								CROW_LOG_DEBUG << "data "  << data ;
 								while (repeat--) {
 									resultados.push_back(
 										nlohmann::json::parse(
- 									this->atenderComando(command,req.body)));
+ 									this->atenderComando(command,data)));
 								} 
 							}
 						} else break;

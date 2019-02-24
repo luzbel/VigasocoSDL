@@ -20,8 +20,12 @@ SDLTimer::~SDLTimer()
 bool SDLTimer::init()
 {
 	if ( SDL_InitSubSystem(SDL_INIT_TIMER) == -1 ) return false;
-
+#ifdef __abadIA_HEADLESS__
+	_ticksPerSecond = calcTicksPerSecond()/2;
+	//_ticksPerSecond = calcTicksPerSecond()/16;
+#else
 	_ticksPerSecond = calcTicksPerSecond();
+#endif
 	_ticksPerMilliSecond = _ticksPerSecond/1000;
 
 	return true;

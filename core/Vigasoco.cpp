@@ -24,7 +24,11 @@
 
 Vigasoco::Vigasoco()
 {
+#ifdef __abadIA_HEADLESS__
+	_speedThrottle = false;
+#else
 	_speedThrottle = true;
+#endif
 
 	_game = "abadia";
 	_errorMsg = "";
@@ -285,6 +289,12 @@ void Vigasoco::initFrame()
 
 void Vigasoco::mainLoop()
 {
+#ifdef __abadIA_HEADLESS__
+	// En modo HEADLESS no 
+	// Ojo, no se procesan eventos, por lo que no se recibe SDL_QUIT
+	// TODO: Resolver como salir en estos casos
+	_driver->runAsync();
+#else
 	// start async game logic
 	_asyncThread->start();
 
@@ -344,6 +354,7 @@ void Vigasoco::mainLoop()
 		// end this interrupt processing
 		_timingHandler->endThisInterrupt();
 	}
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,6 @@
-#CXXFLAGS=-O3 -I../core `sdl-config --cflags` 
-CXXFLAGS=-g -std=c++11 -I../core `sdl-config --cflags` -D__abadIA__
+#CXXFLAGS=-march=native -frecord-gcc-switches -Ofast -fopenmp -std=c++11 -I../core `sdl-config --cflags` 
+CXXFLAGS=-march=x86-64 -mtune=generic -frecord-gcc-switches -Ofast -fopenmp -std=c++11 -I../core `sdl-config --cflags` 
+LDFLAGS=-frecord-gcc-switches
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 # en OBJECTS_CORE falta Operations.o ??
@@ -11,9 +12,51 @@ OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLTh
 
 OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
 
+OBJECTS_abadIA=$(OBJECTS:.o=.abadIA.o)
+OBJECTS_abadIA-HEADLESS=$(OBJECTS:.o=.abadIA-HEADLESS.o)
+OBJECTS_profile=$(OBJECTS:.o=.profile.o)
+OBJECTS_gcda=$(OBJECTS:.o=.gcda)
+
+$(OBJECTS_abadIA): CXXFLAGS+=-D__abadIA__ 
+$(OBJECTS_abadIA-HEADLESS): CXXFLAGS+=-D__abadIA__ -D__abadIA_FAST__ -D__abadIA_HEADLESS__ -fprofile-use -fprofile-correction
+$(OBJECTS_profile): CXXFLAGS+=-D__abadIA__ -D__abadIA_PROFILE__  -D__abadIA_FAST__ -D__abadIA_HEADLESS__ -fprofile-generate 
+
+%.abadIA.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+%.abadIA-HEADLESS.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+%.profile.o: %.cpp	
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+%.gcda: abadIA-profile
+	@echo No existe $@
+	@echo Ejecuta abadIA-profile y pasa un plan de pruebas para generar la información de profiling
+	#@exit 1
+
+TARGETS=VigasocoSDL abadIA-profile abadIA-HEADLESS abadIA
+
 VigasocoSDL: $(OBJECTS)
-	$(CXX) -g $(OBJECTS) `sdl-config --libs` -o VigasocoSDL
-	#strip VigasocoSDL
+	$(CXX) $^ `sdl-config --libs` -o $@
+
+abadIA-profile: LDFLAGS+=-fprofile-generate 
+
+abadIA-profile: $(OBJECTS_profile)
+	$(CXX) $(LDFLAGS) $^ `sdl-config --libs` -o $@
+
+abadIA-HEADLESS: LDFLAGS+=-fprofile-use -fprofile-correction
+
+abadIA-HEADLESS: $(OBJECTS_gcda) $(OBJECTS_abadIA-HEADLESS)
+	$(CXX) $(LDFLAGS) $(OBJECTS_abadIA-HEADLESS) `sdl-config --libs` -o $@
+
+abadIA: $(OBJECTS_abadIA)
+	$(CXX) $(LDFLAGS) $(OBJECTS_abadIA) `sdl-config --libs` -o $@
+
+all: $(TARGETS)
 
 clean:
-	rm -f $(OBJECTS) core VigasocoSDL
+	rm -f $(OBJECTS) $(OBJECTS_abadIA) $(OBJECTS_profile) $(TARGETS)
+
+mrproper: clean
+	rm -f core *.gcda gmon.out

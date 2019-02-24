@@ -139,10 +139,13 @@ def step_impl(context):
 
 #falta no tener que pasar el json
 #y que behave lo construya en base a los comandos listados
-#falta verificar que el resultado de cada comando individual es OK
+#TODO falta verificar que el resultado de cada comando individual es OK
+#TODO falta hacer uno equivalente para probar el endpoint de grabaciones si al final se mantiene
 @when('mando los comandos')
 def step_impl(context):
   r=requests.post(context.url+'/current/actions',context.text,timeout=context.timeout);
+  print("multicommand status code "+str(r.status_code));
+#  assert r.status_code>0
   assert r.status_code==200
 
 @when('cargo una partida')
