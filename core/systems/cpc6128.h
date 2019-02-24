@@ -176,6 +176,9 @@ public:
 	// pixel get/set
 	inline void setPixel(int x, int y, int color)
 	{
+#ifdef __abadIA_FAST__
+return;
+#endif
 		/* CPC
 		// sets pixel and marks the pixel as dirty
 		cs->enter();

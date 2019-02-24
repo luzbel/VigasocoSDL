@@ -45,12 +45,10 @@ void NULLVideoPlugin::end()
 
 void NULLVideoPlugin::render(bool)
 {
-printf("NULLVideoPlugin::render\n");
 }
 
 void NULLVideoPlugin::setPixel(int, int, int) 
 {
-printf("NULLVideoPlugin::setPixel\n");
 }
 
 /////////////////////////////////////////////////////////////////////////////

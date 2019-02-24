@@ -8,7 +8,8 @@ all: | $(input-plugins-dir) $(audio-plugins-dir) $(video-plugins-dir)
 	cd SDLVideoPlugins && make
 	cd SDLAudioPlugin && make
 	cd NULLAudioPlugin && make
-	cd VigasocoSDL && make
+	cd NULLVideoPlugin && make
+	cd VigasocoSDL && make all
 
 $(input-plugins-dir):
 	mkdir $(input-plugins-dir)
@@ -25,5 +26,6 @@ clean:
 	cd SDLVideoPlugins && make clean
 	cd SDLAudioPlugin && make clean
 	cd NULLAudioPlugin && make clean
-	cd VigasocoSDL && make clean
+	cd NULLVideoPlugin && make clean
+	cd VigasocoSDL && make mrproper
 	

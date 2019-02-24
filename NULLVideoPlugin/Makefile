@@ -1,5 +1,7 @@
 #CXXFLAGS=-O3 -D__abadIA__  -fPIC -I../core -I../VigasocoSDL/ 
-CXXFLAGS=-march=native -Ofast -fopenmp -D_GLIBCXX_PARALLEL -D__abadIA__  -fPIC -I../core -I../VigasocoSDL/ 
+#CXXFLAGS=-march=native -Ofast -fopenmp -D_GLIBCXX_PARALLEL -D__abadIA__  -fPIC -I../core -I../VigasocoSDL/ 
+CXXFLAGS=-march=x86-64 -mtune=generic -frecord-gcc-switches -Ofast -fopenmp -D_GLIBCXX_PARALLEL -fPIC -std=c++11 -I../core -I../VigasocoSDL/ -D__abadIA__
+LDFLAGS=-frecord-gcc-switches
 #CXXFLAGS=-g -D__abadIA__ -fPIC -I../core -I../VigasocoSDL/ 
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 

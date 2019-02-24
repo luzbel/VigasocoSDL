@@ -199,7 +199,7 @@ void Juego::ReiniciaPantalla(void)
 	marcador->decrementaObsequium(0);
 	marcador->limpiaAreaFrases();
 #ifdef __abadIA__
-			motor->compruebaCambioPantalla();
+	motor->compruebaCambioPantalla();
 #endif
 }
 
@@ -1769,14 +1769,14 @@ void Juego::run()
 	// obtiene las direcciones de los datos relativos a la habitación del espejo
 	logica->despHabitacionEspejo();
 
-//iniciar antes del menu, para que si a alguien le da por 
-//grabar antes de empezar una partida, se guarden
-//datos inicializados.
-//otra opcion seria desactivar el menu grabar
-//si se ha entrado en el menu antes de empezar a jugar
-//TODO: cambiar el bucle principal de inicializar
-//porque se esta liando bastante
-logica->inicia();
+	//iniciar antes del menu, para que si a alguien le da por 
+	//grabar antes de empezar una partida, se guarden
+	//datos inicializados.
+	//otra opcion seria desactivar el menu grabar
+	//si se ha entrado en el menu antes de empezar a jugar
+	//TODO: cambiar el bucle principal de inicializar
+	//porque se esta liando bastante
+	logica->inicia();
 	// menu, para permitir cambiar el idioma al empezar
 	// y ver el pergamino inicial en tu idioma
 #ifndef __abadIA__
@@ -1792,12 +1792,10 @@ logica->inicia();
 
 	// aquí ya se ha completado la inicialización de datos para el juego
 	// ahora realiza la inicialización para poder empezar a jugar una partida
-	while (true){
-//TODO: ?se sigue usando esta variable, ?borrar?
 #ifdef __abadIA__
-bool reiniciando=false;
+int kk=0;
 #endif
-
+	while (true){
 		// inicia la lógica del juego
 		logica->inicia();
 		//creaEntidadesJuego();
@@ -1805,46 +1803,44 @@ bool reiniciando=false;
 
 despues_de_cargar_o_iniciar:
 		ReiniciaPantalla();
-//en abadIA refrescamos por si nos piden un dump nada mÃs empezar no pasar datos de la partida anterior
-//#ifdef __abadIA__
-//				infoJuego->muestraInfo();
-//#endif
 
 		while (true){	// el bucle principal del juego empieza aquí
 #ifdef __abadIA__
+if(kk++>40000) exit(0);
+//__gcov_flush();
 			VigasocoMain->getInputHandler()->acquire();
 #endif
 
 			controles->actualizaEstado();
 
 #ifdef __abadIA__
-        if (controles->seHaPulsado(KEYBOARD_D)){  // D de DUMP
+		        if (controles->seHaPulsado(KEYBOARD_D)){  // D de DUMP
 				infoJuego->muestraInfo();
-		// si ha pedido volcado el agente, borramos la lista de frases
-		// para que la siguiente vez tenga solo las frases desde la ultima
-		// vez que nos pidio un dump
-                while (!elJuego->frases.empty()) {
-                        elJuego->frases.pop();
-		}
-		// si ha pedido volcado el agente, reiniciamos a false todo el array de sonidos
-		// para que la siguiente vez tenga solo los sonidos que han sonado
-		// desde la ultima vez que nos pidio un dump
-                // reiniciamos para volver a guardar solo los sonidos entre dump y dump
-                for (int index=0;index<12;index++)
-                        VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
+				// si ha pedido volcado el agente, borramos la lista de frases
+				// para que la siguiente vez tenga solo las frases desde la ultima
+				// vez que nos pidio un dump
+		                while (!elJuego->frases.empty()) {
+		                        elJuego->frases.pop();
+				}
+				// si ha pedido volcado el agente, reiniciamos a false todo el array de sonidos
+				// para que la siguiente vez tenga solo los sonidos que han sonado
+				// desde la ultima vez que nos pidio un dump
+				// reiniciamos para volver a guardar solo los sonidos entre dump y dump
+		                for (int index=0;index<12;index++)
+		                        VigasocoMain->getAudioPlugin()->setProperty("sonidos",index,false);
 	
-		// Devolvemos el control al HTTPPlugin para que pueda leer el DUMP	
-		VigasocoMain->getInputHandler()->unAcquire();
-		// Esperamos a que el HTTPInputPlugin haya leido el DUMP
-		VigasocoMain->getInputHandler()->acquire();
-		// Devolvemos el control al HTTPPlugin para que finalice el comando
-		VigasocoMain->getInputHandler()->unAcquire();
-		// Saltamos esta iteración del bucle principal de juego, ya que no queremos
-		// que al hacer un DUMP y no movernos
-		// TODO: ¿y si en modo multicomando me llega el DUMP junto con alguna otra pulsación?
-		// ¿tiene sentido? En teoría el agente no actuará hasta examinar con el DUMP la situación
-		continue;
-	}
+				// Devolvemos el control al HTTPPlugin para que pueda leer el DUMP	
+				VigasocoMain->getInputHandler()->unAcquire();
+				// Esperamos a que el HTTPInputPlugin haya leido el DUMP
+				VigasocoMain->getInputHandler()->acquire();
+				// Devolvemos el control al HTTPPlugin para que finalice el comando
+				VigasocoMain->getInputHandler()->unAcquire();
+				// Saltamos esta iteración del bucle principal de juego, ya que no queremos
+				// que al hacer un DUMP y no movernos
+				// TODO: ¿y si en modo multicomando me llega el DUMP junto con alguna otra pulsación?
+				// ¿tiene sentido?En teoría el agente no actuará hasta examinar con el DUMP la situación
+				continue;
+			}
 			if (compruebaReinicio()) {
 				VigasocoMain->getInputHandler()->unAcquire();
 				goto despues_de_cargar_o_iniciar;
@@ -1866,7 +1862,6 @@ despues_de_cargar_o_iniciar:
 
 			//comprueba si se intenta cargar/grabar la partida
 			compruebaSave();
-
 
 			if ( compruebaLoad() ) {
 #ifdef __abadIA__
@@ -1895,40 +1890,22 @@ despues_de_cargar_o_iniciar:
 			// actualiza las variables relacionadas con el paso del tiempo
 			logica->actualizaVariablesDeTiempo();
 
-#ifdef __abadIA__
-// este parte solo la ejecutamos mientras no haya acabado la partida
-// si ha acabado se siguen atendiendo peticiones para grabar, cargar, dump, etc.
-// pero el resto como movimientos se ignoran
-//if (!logica->haFracasado&&(!elGestorFrases->mostrandoFrase)) {
-#endif
-
 			// si guillermo ha muerto, empieza una partida
 			if (muestraPantallaFinInvestigacion()){
 				break;
 			}
 
-
 			// comprueba si guillermo lee el libro, y si lo hace sin guantes, lo mata
 			logica->compruebaLecturaLibro();
-/*
-#ifdef __abadIA__
-// este parte solo la ejecutamos mientras no haya acabado la partida
-// si ha acabado se siguen atendiendo peticiones para grabar, cargar, dump, etc.
-// pero el resto como movimientos se ignoran
-if (!logica->haFracasado) {
-#endif
-*/
+
 			// comprueba si hay que avanzar la parte del momento del día en el marcador
 			marcador->realizaScrollMomentoDia();
-
 
 			// comprueba si hay que ejecutar las acciones programadas según el momento del día
 			logica->ejecutaAccionesMomentoDia();
 
-
 			// comprueba si hay opciones de que la cámara siga a otro personaje y calcula los bonus obtenidos
 			logica->compruebaBonusYCambiosDeCamara();
-
 
 			// comprueba si se ha cambiado de pantalla y actúa en consecuencia
 			motor->compruebaCambioPantalla();
@@ -1944,10 +1921,8 @@ if (!logica->haFracasado) {
 			// comprueba si los personajes cogen o dejan algún objeto
 			logica->compruebaCogerDejarObjetos();
 
-
 			// comprueba si se abre o se cierra alguna puerta
 			logica->compruebaAbrirCerrarPuertas();
-
 
 			// ejecuta la lógica de los personajes
 			for (int i = 0; i < numPersonajes; i++){
@@ -1961,10 +1936,8 @@ if (!logica->haFracasado) {
 			// actualiza el sprite de la luz para que se mueva siguiendo a adso
 			actualizaLuz();
 
-
 			// si guillermo o adso están frente al espejo, muestra su reflejo
 			laLogica->realizaReflejoEspejo();
-
 
 			// si está en modo información, 
 			// muestra la información interna del juego
@@ -1983,9 +1956,7 @@ if (!logica->haFracasado) {
 				cambioModoInformacion=false;
 			}
 
-#ifdef __abadIA__
-//				infoJuego->muestraInfo();
-#else
+#ifndef __abadIA__
 			if (modoInformacion){
 				infoJuego->muestraInfo();
 			} else 
@@ -2011,11 +1982,11 @@ if (!logica->haFracasado) {
 				audio_plugin->Play(SONIDOS::Pasos);
 			}
 
+#ifdef __abadIA__
+			VigasocoMain->getInputHandler()->unAcquire();
+#else
 			// reinicia el contador de la interrupción
 			contadorInterrupcion = 0;
-#ifdef __abadIA__
-//} // cerramos el if de !(logica->haFracasado)
-			VigasocoMain->getInputHandler()->unAcquire();
 #endif
 		}
 	}
