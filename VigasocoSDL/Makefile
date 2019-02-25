@@ -14,8 +14,8 @@ OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL)
 
 OBJECTS_abadIA=$(OBJECTS:.o=.abadIA.o)
 OBJECTS_abadIA-HEADLESS=$(OBJECTS:.o=.abadIA-HEADLESS.o)
-OBJECTS_profile=$(OBJECTS:.o=.profile.o)
-OBJECTS_gcda=$(OBJECTS:.o=.gcda)
+OBJECTS_profile=$(OBJECTS_abadIA-HEADLESS:.abadIA-HEADLESS.o=.abadIA-HEADLESS.profile.o)
+OBJECTS_abadIA-HEADLESS-gcda=$(OBJECTS_abadIA-HEADLESS:.abadIA-HEADLESS.o=.abadIA-HEADLESS.gcda)
 
 $(OBJECTS_abadIA): CXXFLAGS+=-D__abadIA__ 
 $(OBJECTS_abadIA-HEADLESS): CXXFLAGS+=-D__abadIA__ -D__abadIA_FAST__ -D__abadIA_HEADLESS__ -fprofile-use -fprofile-correction
@@ -27,13 +27,12 @@ $(OBJECTS_profile): CXXFLAGS+=-D__abadIA__ -D__abadIA_PROFILE__  -D__abadIA_FAST
 %.abadIA-HEADLESS.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-%.profile.o: %.cpp	
+%.abadIA-HEADLESS.profile.o: %.cpp	
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-%.gcda: abadIA-profile
-	@echo No existe $@
-	@echo Ejecuta abadIA-profile y pasa un plan de pruebas para generar la información de profiling
-	#@exit 1
+%.abadIA-HEADLESS.gcda: abadIA-profile
+	@echo  $(@:.gcda=.profile.gcda) debería estar generado al ejecutarse abadIA-profile	
+	@cp $(@:.gcda=.profile.gcda) $@ 
 
 TARGETS=VigasocoSDL abadIA-profile abadIA-HEADLESS abadIA
 
@@ -44,10 +43,12 @@ abadIA-profile: LDFLAGS+=-fprofile-generate
 
 abadIA-profile: $(OBJECTS_profile)
 	$(CXX) $(LDFLAGS) $^ `sdl-config --libs` -o $@
+	./abadIA-profile
+	touch PergaminoTextos.abadIA-HEADLESS.profile.gcda
 
 abadIA-HEADLESS: LDFLAGS+=-fprofile-use -fprofile-correction
 
-abadIA-HEADLESS: $(OBJECTS_gcda) $(OBJECTS_abadIA-HEADLESS)
+abadIA-HEADLESS: $(OBJECTS_abadIA-HEADLESS-gcda) $(OBJECTS_abadIA-HEADLESS)
 	$(CXX) $(LDFLAGS) $(OBJECTS_abadIA-HEADLESS) `sdl-config --libs` -o $@
 
 abadIA: $(OBJECTS_abadIA)
@@ -56,7 +57,7 @@ abadIA: $(OBJECTS_abadIA)
 all: $(TARGETS)
 
 clean:
-	rm -f $(OBJECTS) $(OBJECTS_abadIA) $(OBJECTS_profile) $(TARGETS)
+	rm -f $(OBJECTS) $(OBJECTS_abadIA) $(OBJECTS_abadIA-HEADLESS) $(OBJECTS_profile) $(TARGETS)
 
 mrproper: clean
 	rm -f core *.gcda gmon.out

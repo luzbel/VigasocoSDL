@@ -32,6 +32,7 @@ enum ESTADOS_REPRODUCTOR {
 class HTTPInputPlugin: public IInputPlugin
 {
 private:
+	long contador=0; // cuantos comandos se han procesado
 	std::mutex mtx;
 	std::condition_variable condVar;
 	int estado=ATENDER_MENSAJE_EN_EL_HTTPINPUTPLUGIN;
