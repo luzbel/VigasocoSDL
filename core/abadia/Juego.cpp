@@ -1813,6 +1813,13 @@ if(kk++>40000) exit(0);
 
 			controles->actualizaEstado();
 
+#ifdef __abadIA_HEADLESS__
+//TODO:headless o en abadIA también???
+			if (controles->seHaPulsado(KEYBOARD_F)) {
+				goto fin;
+			}
+#endif
+
 #ifdef __abadIA__
 		        if (controles->seHaPulsado(KEYBOARD_D)){  // D de DUMP
 				infoJuego->muestraInfo();
@@ -1990,6 +1997,11 @@ if(kk++>40000) exit(0);
 #endif
 		}
 	}
+#ifdef __abadIA_HEADLESS__
+//TODO, muy cutre usar goto
+fin:
+	;
+#endif
 }
 
 // limpia el área de juego de color que se le pasa y los bordes de negro

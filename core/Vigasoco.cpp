@@ -290,9 +290,17 @@ void Vigasoco::initFrame()
 void Vigasoco::mainLoop()
 {
 #ifdef __abadIA_HEADLESS__
-	// En modo HEADLESS no 
+	// En modo HEADLESS no intentamos mantener 24fps ni tiene sentido  
+	// tener un bucle que vaya enviando a pantalla cada n iteraciones
+
 	// Ojo, no se procesan eventos, por lo que no se recibe SDL_QUIT
-	// TODO: Resolver como salir en estos casos
+	// TODO: Resolver como salir en estos casos, ahora se hace un goto
+	// feo cuando llega la tecla F de Fin, que sale de runAsync
+	
+	// TODO: Igual interesa tener un ejecutable HEADLESS sin Vigasoco
+	// como framework, simplemente tener crow como servidor web y una
+	// instancia de Abadia::Juego , que en vez de ser un bucle, vaya
+	// ejecutando un paso cada vez
 	_driver->runAsync();
 #else
 	// start async game logic

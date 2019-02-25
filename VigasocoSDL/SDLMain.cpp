@@ -343,12 +343,17 @@ bool parseCommandLine(std::string cmdLine)
 
 	// if the user hasn't set any input plugin, set the default one
 	if (g_inputPluginsDLLs.size() == 0){
+#ifdef __abadIA_PROFILE__
+		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin-profile.so");
+		g_inputPlugins.push_back("crowV3"); // TODO: cambiar el nombre al plugin en modo profile
+#else
 #ifdef __abadIA__
 		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
 		g_inputPlugins.push_back("crowV3");
 #else
 		g_inputPluginsDLLs.push_back("libVigasocoSDLInputPlugin.so");
 		g_inputPlugins.push_back("SDLInputPlugin");
+#endif
 #endif
 	}
 
