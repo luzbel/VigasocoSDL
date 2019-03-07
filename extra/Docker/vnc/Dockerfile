@@ -14,8 +14,6 @@ RUN apt-get update && apt-get install -y \
  && useradd --no-log-init -r -m -g VigasocoSDL abadIA
 
 ENV DISPLAY=:0
-RUN Xvfb -screen 0 800x600x16 & 
-RUN x11vnc & 
 
 USER abadIA
 
@@ -35,4 +33,4 @@ RUN cd /home/abadIA \
 
 
 WORKDIR /home/abadIA/VigasocoSDL/VigasocoSDL
-ENTRYPOINT ["./abadIA", ""]
+ENTRYPOINT ["./loop-abadIA.sh", ""]
