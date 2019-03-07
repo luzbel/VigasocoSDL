@@ -4,7 +4,6 @@
 
 #include "TimingHandler.h"
 
-
 const bool TimingHandler::g_skipTable[FRAMESKIP_LEVELS][FRAMESKIP_LEVELS] = {
 	{ false,false,false,false,false,false,false,false,false,false,false,false },
 	{ false,false,false,false,false,false,false,false,false,false,false, true },
@@ -31,7 +30,11 @@ TimingHandler::TimingHandler()
 	_numInterruptsPerSecond = 0;
 	_numInterruptsPerVideoUpdate = 0;
 	_numInterruptsPerLogicUpdate = 0;
+#ifdef __abadIA_HEADLES__
+	_throttle = false;
+#else
 	_throttle = true;
+#endif
 	_interruptNum = 0;
 	_videoFrameSkip = 0;
 
@@ -49,10 +52,6 @@ TimingHandler::~TimingHandler()
 // initialization and cleanup
 /////////////////////////////////////////////////////////////////////////////
 
-/* DEBUG
-#include "stdio.h"
-#include "iostream"
-*/
 bool TimingHandler::init(ITimer *t, int intsPerSecond, int intsPerVideoUpdate, int intsPerLogicUpdate)
 {
 	_timer = t;
@@ -114,8 +113,8 @@ bool TimingHandler::processLogicThisInterrupt()
 
 bool TimingHandler::processVideoThisInterrupt()
 {
-#ifdef __abadIA_FAST__
-return true;
+#ifdef __abadIA_HEADLESS__
+	return true;
 #else
 	return _numIntsModVideoInts == 0;
 #endif
@@ -133,9 +132,6 @@ bool TimingHandler::skipVideoThisInterrupt()
 
 void TimingHandler::waitThisInterrupt()
 {
-#ifdef __abadIA_FAST__
-_throttle=false;
-#endif
 	_numIntsModLogicInts = _interruptNum % _numInterruptsPerLogicUpdate;
 	_numIntsModVideoInts = _interruptNum % _numInterruptsPerVideoUpdate;
 
@@ -197,6 +193,11 @@ void TimingHandler::speedThrottle()
 // sleeps for some time taking in account the actual frameskip
 void TimingHandler::sleep(UINT32 milliSeconds)
 {
+#ifdef __abadIA_HEADLESS__
+// Igualmente en thottle sería falso y saldría en el siguiente if
+// pero nos lo ahorramos
+	return;
+#endif
 	// if we aren't throttling, return immediately
 	if (!_throttle){
 		return;

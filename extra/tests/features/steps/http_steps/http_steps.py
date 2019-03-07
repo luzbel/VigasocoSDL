@@ -58,7 +58,8 @@ def step_impl(context,comando):
     r=requests.post(context.url+'/current/actions/'+comando,timeout=context.timeout)
     assert r.status_code==200
 
-@when('no hago nada')
+#@when('no hago nada')
+@step('no hago nada')
 def step_impl(context):
     r=requests.post(context.url+'/current/actions/NOP',timeout=context.timeout)
     assert r.status_code==200
@@ -138,10 +139,13 @@ def step_impl(context):
 
 #falta no tener que pasar el json
 #y que behave lo construya en base a los comandos listados
-#falta verificar que el resultado de cada comando individual es OK
+#TODO falta verificar que el resultado de cada comando individual es OK
+#TODO falta hacer uno equivalente para probar el endpoint de grabaciones si al final se mantiene
 @when('mando los comandos')
 def step_impl(context):
   r=requests.post(context.url+'/current/actions',context.text,timeout=context.timeout);
+  print("multicommand status code "+str(r.status_code));
+#  assert r.status_code>0
   assert r.status_code==200
 
 @when('cargo una partida')
@@ -157,6 +161,9 @@ def step_impl(context):
     assert r.status_code==200
 # TODO: no se por que en el body hay una línea en blanco al final
     assert r.text.count('\n')==431
+# TODO: si está en la pantalla que indica el porcentaje completado
+# y se de a grabar, se devuelven sólo 430 líneas ¿por qué?
+
 
 @step('grabo la partida y comparo el volcado')
 def step_impl(context):
@@ -188,9 +195,21 @@ def step_impl(context,resultado):
 def step_impl(context):
     r=requests.get(context.url+'/current', headers={"accept":"application/json"},timeout=context.timeout)
     assert r.status_code==200
-    print("resultDUMP**"+str(r.json()));
     print("resultDUMPtext**"+r.text);
-    dump = r.json() 
+    valid_json=False;
+    try:
+      json_object = json.loads(r.text)
+    except ValueError:
+      print("El dump no devuelve un  JSON\n");
+      valid_json = False;
+#      assert False 
+    else:
+      valid_json = True;
+      dump = r.json() 
+      print("resultDUMP**"+str(dump));
+
+    assert valid_json;
+
     context.dump=dump;
     for head in context.table[0].headings:
       print("***"+head+"***"+type(dump[head]).__name__+"***valor recibido***"+str(dump[head])+"***valor esperado***"+str(context.table[0][head])+"***"); 

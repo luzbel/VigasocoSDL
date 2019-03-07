@@ -2,6 +2,8 @@
 //
 /////////////////////////////////////////////////////////////////////////////
 
+#ifndef __abadIA_HEADLES__
+
 #include <cassert>
 
 #include "cpc6128.h"
@@ -303,3 +305,191 @@ void CPC6128::fillRect(int x, int y, int width, int height, int color)
 		}
 	}
 }
+
+#else
+// Version recortada headless para arañar algunos segundos
+
+#include "../IPalette.h"
+
+class CPC6128
+{
+// enumerations
+public:
+
+// fields
+public:
+
+protected:
+
+// methods
+public:
+	// initialization and cleanup
+	CPC6128(ICriticalSection *criticalSection);
+	~CPC6128();
+
+	// palette related
+	void setHardwareColor(IPalette *pal, int color, int value);
+	void setInkColor(IPalette *pal, int color, int value);
+
+	// pixel drawing/retrieving
+	void setMode0Pixel(int x, int y, int color);
+	void setMode1Pixel(int x, int y, int color);
+	void setVGAPixel(int x, int y, int color); // TODO: VGA
+	void setMode2Pixel(int x, int y, int color);
+	int getMode0Pixel(int x, int y);
+	int getMode1Pixel(int x, int y);
+	int getMode2Pixel(int x, int y);
+
+	void markAllPixelsDirty();
+
+	void showMode0Screen(const UINT8 *data);
+	void showVGAScreen(const UINT8 *data);
+
+	// rectangle filling
+	void fillMode0Rect(int x, int y, int width, int height, int color);
+	void fillMode1Rect(int x, int y, int width, int height, int color);
+	void fillMode2Rect(int x, int y, int width, int height, int color);
+
+	// pixel unpacking
+	inline int unpackPixelMode0(int data, int pixel)
+	{
+		return 666;
+	}
+
+	inline int unpackPixelMode1(int data, int pixel)
+	{
+		return 666;
+	}
+
+	inline int unpackPixelMode2(int data, int pixel)
+	{
+		return 666;
+	}
+
+	// pixel packing
+	inline int packPixelMode0(int oldByte, int pixel, int color)
+	{
+		return 666;
+	}
+
+	// pixel packing
+	inline int packPixelMode1(int oldByte, int pixel, int color)
+	{
+		return 666;
+	}
+
+	// pixel packing
+	inline int packPixelMode2(int oldByte, int pixel, int color)
+	{
+		return 666;
+	}
+
+	// pixel get/set
+	inline void setPixel(int x, int y, int color)
+	{
+		return;
+	}
+
+	inline int getPixel(int x, int y)
+	{
+		return 666;
+	}
+
+// helper methods
+protected:
+	void fillRect(int x, int y, int width, int height, int color);
+};
+
+CPC6128::CPC6128(ICriticalSection *criticalSection)
+{
+}
+
+CPC6128::~CPC6128()
+{
+}
+
+void CPC6128::setHardwareColor(IPalette *pal, int numInk, int color)
+{
+}
+
+void CPC6128::setInkColor(IPalette *pal, int numInk, int color)
+{
+}
+
+// sets a pixel in mode 0 (160x200, x pixels = 4 width, y pixels = 2 height, 16 colors)
+void CPC6128::setMode0Pixel(int x, int y, int color)
+{
+}
+
+// sets a pixel in mode 1 (320x200, x pixels = 2 width, y pixels = 2 height, 4 colors)
+void CPC6128::setMode1Pixel(int x, int y, int color)
+{
+}
+
+// TODO: SEPARAR ESTO EN OTRO FUENTE QUE NO SEA CPC
+// sets a pixel in mode 1 (320x200, x pixels = 2 width, y pixels = 2 height, 256 colors)
+void CPC6128::setVGAPixel(int x, int y, int color)
+{
+}
+
+// sets a pixel in mode 2 (640x200, x pixels = 1 width, y pixels = 2 height, 2 colors)
+void CPC6128::setMode2Pixel(int x, int y, int color)
+{
+}
+
+// gets a pixel in mode 0 (160x200, x pixels = 4 width, y pixels = 2 height, 16 colors)
+int CPC6128::getMode0Pixel(int x, int y)
+{
+}
+
+// gets a pixel in mode 1 (320x200, x pixels = 2 width, y pixels = 2 height, 4 colors)
+int CPC6128::getMode1Pixel(int x, int y)
+{
+}
+
+// gets a pixel in mode 2 (640x200, x pixels = 1 width, y pixels = 2 height, 2 colors)
+int CPC6128::getMode2Pixel(int x, int y)
+{
+}
+
+// fills a rectange in mode 0 (160x200, x pixels = 4 width, y pixels = 2 height, 16 colors)
+void CPC6128::fillMode0Rect(int x, int y, int width, int height, int color)
+{
+}
+
+// sets a pixel in mode 1 (320x200, x pixels = 2 width, y pixels = 2 height, 4 colors)
+void CPC6128::fillMode1Rect(int x, int y, int width, int height, int color)
+{
+}
+
+// sets a pixel in mode 2 (640x200, x pixels = 1 width, y pixels = 2 height, 2 colors)
+void CPC6128::fillMode2Rect(int x, int y, int width, int height, int color)
+{
+}
+
+
+// shows a screen stored in standard mode 0 format
+void CPC6128::showMode0Screen(const UINT8 *data)
+{
+}
+
+// shows a screen stored in 320x200 1 pixel por byte
+void CPC6128::showVGAScreen(const UINT8 *data)
+{
+}
+
+// marks all pixels as dirty
+void CPC6128::markAllPixelsDirty()
+{
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// helper methods
+/////////////////////////////////////////////////////////////////////////////
+
+// fill a rectangle
+void CPC6128::fillRect(int x, int y, int width, int height, int color)
+{
+}
+
+#endif

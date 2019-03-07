@@ -28,7 +28,8 @@ def step_impl(context,comando):
     context.ws.send(comando);
     assert context.ws.recv() == '{ "resultado": "OK" }'
 
-@when('no hago nada')
+#@when('no hago nada')
+@step('no hago nada')
 def step_impl(context):
 #    context.execute_steps('''
 #	Given una conexion existente a la interfaz

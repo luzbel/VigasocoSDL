@@ -17,14 +17,8 @@
 #include "abadia/GestorFrases.h"
 #include "abadia/Juego.h"
 
-//para print
-#include <stdio.h>
 //para memcpy
 #include <string.h>
-
-//666 pruebas bug corrupcion texto dia
-#include <sys/mman.h>
-
 
 using namespace Abadia;
 
