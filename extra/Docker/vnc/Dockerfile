@@ -29,5 +29,9 @@ RUN cd /home/abadIA \
   && make clean \
   && make 
 
+ENV DISPLAY=:0
+RUN Xvfb -screen 0 800x600x16 &
+RUN x11vnc & 
+
 WORKDIR /home/abadIA/VigasocoSDL/VigasocoSDL
-ENTRYPOINT ["./abadIA-HEADLESS", ""]
+ENTRYPOINT ["./abadIA", ""]
