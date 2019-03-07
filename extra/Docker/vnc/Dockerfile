@@ -25,12 +25,12 @@ RUN cd /home/abadIA \
 #  && virtualenv -p python3 python3 \
 #  && source python3/bin/activate \
 #  && pip install behave websocket-client requests \\
-  && git clone https://github.com/luzbel/VigasocoSDL.git \
-  && cd VigasocoSDL \
+  && git clone https://github.com/LaAbadIAdelCrimen/VigasocoSDL-AI.git \
+  && cd VigasocoSDL-AI \
   && git checkout AbadIA-ng \
   && make clean \
   && make 
 
 
-WORKDIR /home/abadIA/VigasocoSDL/VigasocoSDL
-ENTRYPOINT ["./abadIA", ""]
+WORKDIR /home/abadIA/VigasocoSDL-AI/VigasocoSDL
+ENTRYPOINT ["./loop-abadIA.sh", ""]
