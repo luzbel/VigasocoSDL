@@ -17,10 +17,10 @@ ENV LD clang
 
 RUN cd /home/abadIA && git clone https://github.com/luzbel/VigasocoSDL.git \
   && cd VigasocoSDL \
-  && git checkout pruebasAbadIA \
-  && mkdir VigasocoSDL/audio \
-  && mkdir VigasocoSDL/video \
-  && mkdir VigasocoSDL/input \
+  && git checkout AbadIA-ng \
+  && mkdir -p VigasocoSDL/audio \
+  && mkdir -p VigasocoSDL/video \
+  && mkdir -p VigasocoSDL/input \
   && make clean \
   && make
 
