@@ -413,6 +413,14 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 		case L'¿': caracter=0x40; break;
 		case L'Ñ': caracter=0x57; break;
 		case L'W': caracter=0xd1; break;
+		// En la ROM original el caracter . se usa para representar
+		// una combinación de más de una letra
+		// Pero el . también se usa ahora para algunas frases multiidiona
+		// en AbadiaDriver::filesLoaded se parchea la ROM para usar
+		// el caracter ~ en vez del .
+		// Aquí deshacemos el cambio para que se imprima el gráfico asociado
+		// a . en el original
+		case L'~': caracter='.' ; break;
 	}
 
 
@@ -480,6 +488,14 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 		case 0xd1: data=d1; break; // la ñ se cambia por la w y la w por esta
 		case L'-': data=ui; break;
 		case L'\'': data=uj; break; 
+		// En la ROM original el caracter - se usa para representar
+		// una combinación de más de una letra
+		// Pero el - también se usa ahora para algunas frases multiidiona
+		// en AbadiaDriver::filesLoaded se parchea la ROM para usar
+		// el caracter # en vez del -
+		// Aquí deshacemos el cambio para que se imprima el gráfico asociado
+		// a - en el original
+		case L'#': caracter='-'; // no hacer break, queremos que busque el grafico original asociado a -
 		default: {
 
 				 if ((unsigned int)caracter>127) 
