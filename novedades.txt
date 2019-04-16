@@ -1,3 +1,13 @@
+v0.095
+======
+
+Correcciones a errores detectados durante las pruebas del proyecto abadIA
+- Se pasan los textos a UTF-8 para mejor gestión en GitHub y editores modernos de código
+- Adaptaciones a compiladores modernos de C++
+- Se modifica la visualización de textos en pantalla para ser compatibles con las fuentes en UTF-8
+- Corrección bug: Al reiniciar una partida Adso se quedaba con los objetos que tuviese de la partida anterior
+- Se visualizan correctamente textos que fallaban desde que se habían metido las traducciones. Por ejemplo, el texto COMPLETAS en el marcador
+
 v0.094
 ======
 
