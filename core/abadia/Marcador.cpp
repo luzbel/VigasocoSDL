@@ -14,6 +14,10 @@
 //para printf trazas
 #include <stdio.h>
 
+// para manejar UTF8
+#include <codecvt>
+#include <locale>
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -380,19 +384,35 @@ void Marcador::limpiaAreaFrases()
 // recorre los caracteres de la frase, mostrándolos por pantalla
 void Marcador::imprimeFrase(std::string frase, int x, int y, int colorTexto, int colorFondo)
 {
-	for (unsigned int i = 0; i < frase.length(); i++){
-		imprimirCaracter(frase[i], x + 8*i, y, colorTexto, colorFondo);
-	}
+//	for (unsigned int i = 0; i < frase.length(); i++){
+//		imprimirCaracter(frase[i], x + 8*i, y, colorTexto, colorFondo);
+//	}
+
+	// Los ficheros fuente están ahora guardados en UTF8 y no en ASCII
+	// aquí convertimos a utf32 para poder iterar facilmente
+	// En gestofrases he optado por recorrer el char* sacando cada 
+	// caracter ya sea de 1-4 bytes y metiendolo todo en un int
+	// porque no hago todo en el mismo bucle y tengo que ir iterando por
+	// la frase
+	// Aquí convierto a utf32 y ya puedo sacar cada int con el valor de cada
+	// caracter en cada paso del for
+        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
+        std::u32string utf32str = conv.from_bytes(frase);
+        int i=0;
+        for (auto &letter : utf32str) {
+                imprimirCaracter(letter, x + 8*i, y, colorTexto, colorFondo);
+                i++;
+        }
 }
 
 void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int colorFondo)
 {
 	switch(caracter) {
-		case ',': caracter=0x3c; break;
-		case '.': caracter=0x3d; break;
-		case '¿': caracter=0x40; break;
-		case 'Ñ': caracter=0x57; break;
-		case 'W': caracter=0xd1; break;
+		case L',': caracter=0x3c; break;
+		case L'.': caracter=0x3d; break;
+		case L'¿': caracter=0x40; break;
+		case L'Ñ': caracter=0x57; break;
+		case L'W': caracter=0xd1; break;
 	}
 
 
@@ -434,27 +454,32 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 
 	switch(caracter)
 	{
-		case 'À': data=c0; break;
-		case 'Á': data=c1; break;
-		case 'Â': data=c2; break;
-		case 'Ã': data=c3; break;
-		case 'Ä': data=c4; break;
-		case 'Ç': data=c7; break;
-		case 'È': data=c8; break;
-		case 'É': data=c9; break;
-		case 'Ê': data=ca; break;
-		case 'Í': data=cd; break;
-		case 'Ï': data=cf; break;
+		case L'À': data=c0; break;
+		case L'Á': data=c1; break;
+		case L'Â': data=c2; break;
+		case L'Ã': data=c3; break;
+		case L'Ä': data=c4; break;
+		case L'Ç': data=c7; break;
+		case L'È': data=c8; break;
+		case L'É': data=c9; break;
+		case L'Ê': data=ca; break;
+		case L'Í': data=cd; break;
+		case L'Ï': data=cf; break;
 		// case 'Ñ': data=; break; // intercambiado con la W 0x57
-		case 'Ò': data=d2; break;
-		case 'Ó': data=d3; break;
-		case 'Õ': data=d6; break;
-		case 'Ö': data=d5; break;
-		case 'Ù': data=d9; break;
-		case 'Ú': data=da; break;
+		case L'Ò': data=d2; break;
+		case L'Ó': data=d3; break;
+//		case 'Õ': data=d6; break;
+//		case 'Ö': data=d5; break;
+		// Estos dos estaban bailados o ha saltado el error 
+		// al probar UTF8
+		case L'Õ': data=d5; break;
+		case L'Ö': data=d6; break;
+
+		case L'Ù': data=d9; break;
+		case L'Ú': data=da; break;
 		case 0xd1: data=d1; break; // la ñ se cambia por la w y la w por esta
-		case '-': data=ui; break;
-		case '\'': data=uj; break;
+		case L'-': data=ui; break;
+		case L'\'': data=uj; break; 
 		default: {
 
 				 if ((unsigned int)caracter>127) 
