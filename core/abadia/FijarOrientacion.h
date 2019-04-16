@@ -1,6 +1,6 @@
 // FijarOrientacion.h
 //
-//	Clases para indicar las posiciones a las que hay que ir según la orientación a coger
+//	Clases para indicar las posiciones a las que hay que ir segÃºn la orientaciÃ³n a coger
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -14,11 +14,11 @@ class RejillaPantalla;			// definido en RejillaPantalla.h
 
 class FijarOrientacion
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void fijaPos(RejillaPantalla *rejilla) = 0;
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	FijarOrientacion(){}
 	virtual ~FijarOrientacion(){}
 
@@ -29,28 +29,28 @@ protected:
 
 class FijaOrientacion0 : public FijarOrientacion
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void fijaPos(RejillaPantalla *rejilla);
 };
 
 class FijaOrientacion1 : public FijarOrientacion
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void fijaPos(RejillaPantalla *rejilla);
 };
 
 class FijaOrientacion2 : public FijarOrientacion
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void fijaPos(RejillaPantalla *rejilla);
 };
 
 class FijaOrientacion3 : public FijarOrientacion
 {
-// métodos
+// mÃ©todos
 public:
 	virtual void fijaPos(RejillaPantalla *rejilla);
 };

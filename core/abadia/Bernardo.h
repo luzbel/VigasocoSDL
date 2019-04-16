@@ -17,16 +17,16 @@ class Bernardo : public Monje
 {
 // campos
 public:
-	bool estaEnLaAbadia;						// indica si está en la abadía o no
+	bool estaEnLaAbadia;						// indica si estÃ¡ en la abadÃ­a o no
 
 protected:
-	static PosicionJuego posicionesPredef[5];	// posiciones a las que puede ir el personaje según el estado
+	static PosicionJuego posicionesPredef[5];	// posiciones a las que puede ir el personaje segÃºn el estado
 
-// métodos
+// mÃ©todos
 public:
 	virtual void piensa();
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Bernardo(SpriteMonje *spr);
 	virtual ~Bernardo();
 };

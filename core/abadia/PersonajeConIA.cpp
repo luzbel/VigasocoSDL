@@ -13,26 +13,26 @@ using namespace Abadia;
 int PersonajeConIA::bufferDatosPersonaje[10];
 
 /////////////////////////////////////////////////////////////////////////////
-// tabla con los comandos para cambiar de orientaciÛn y avanzar
+// tabla con los comandos para cambiar de orientaci√≥n y avanzar
 /////////////////////////////////////////////////////////////////////////////
 
 UINT16 PersonajeConIA::comandosGirar[4][2] = {
-	{ 0x8000, 1 },	// avanzar una posiciÛn hacia delante (no deberÌa llamarse nunca)
+	{ 0x8000, 1 },	// avanzar una posici√≥n hacia delante (no deber√≠a llamarse nunca)
 	{ 0x4000, 3 },	// girar a la derecha
 	{ 0x6c00, 6 },	// girar 2 veces a la izquierda
 	{ 0x6000, 3 }	// girar a la izquierda
 };
 
 UINT16 PersonajeConIA::comandosAvanzar[5][2] = {
-	{ 0x8000, 2 },	// si est· girado, avanza, en otro caso sube (y sigue ocupando una posiciÛn) (sÛlo usado si el personaje ocupa una posiciÛn)
-	{ 0x2000, 4 },	// sube (y si ocupaba una posiciÛn pasa a ocupar 4 posiciones)
-	{ 0xc000, 2 },	// baja (y sigue ocupando una posiciÛn)
-	{ 0x3000, 4 },	// baja (y si ocupaba una posiciÛn pasa a ocupar 4 posiciones)
-	{ 0x8000, 1 }	// avanza (sÛlo usado si el personaje ocupa 4 posiciones)
+	{ 0x8000, 2 },	// si est√° girado, avanza, en otro caso sube (y sigue ocupando una posici√≥n) (s√≥lo usado si el personaje ocupa una posici√≥n)
+	{ 0x2000, 4 },	// sube (y si ocupaba una posici√≥n pasa a ocupar 4 posiciones)
+	{ 0xc000, 2 },	// baja (y sigue ocupando una posici√≥n)
+	{ 0x3000, 4 },	// baja (y si ocupaba una posici√≥n pasa a ocupar 4 posiciones)
+	{ 0x8000, 1 }	// avanza (s√≥lo usado si el personaje ocupa 4 posiciones)
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// tabla con las distancias permisibles seg˙n la orientaciÛn
+// tabla con las distancias permisibles seg√∫n la orientaci√≥n
 /////////////////////////////////////////////////////////////////////////////
 
 int PersonajeConIA::distanciasOri[4][4] = {
@@ -43,7 +43,7 @@ int PersonajeConIA::distanciasOri[4][4] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 PersonajeConIA::PersonajeConIA(Sprite *spr) : Personaje(spr)
@@ -65,16 +65,16 @@ PersonajeConIA::~PersonajeConIA()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos relacionados con el comportamiento del personaje
+// m√©todos relacionados con el comportamiento del personaje
 /////////////////////////////////////////////////////////////////////////////
 
-// mÈtodo llamado desde el bucle principal para que el personaje interactue con el mundo virtual
+// m√©todo llamado desde el bucle principal para que el personaje interactue con el mundo virtual
 void PersonajeConIA::run()
 {
 	// inicialmente el personaje va a tratar de moverse
 	elBuscadorDeRutas->seBuscaRuta = true;
 
-	// ejecuta la lÛgica del personaje
+	// ejecuta la l√≥gica del personaje
 	piensa();
 
 	// modifica la tabla de conexiones de las habitaciones dependiendo de las puertas a las que se tenga acceso
@@ -118,18 +118,18 @@ void PersonajeConIA::ejecutaMovimiento()
 
 	int difAltura1, difAltura2, avanceX, avanceY;
 
-	// en otro caso hay que avanzar. Como sÛlo tenemos calculada la rejilla de la pantalla que muestra el
-	// motor, si el personaje que quiere avanzar no est· en la pantalla que se muestra, hacemos trampa
-	// e indicamos que el movimiento va a poder realizarse con Èxito. Si el personaje est· en la pantalla
-	// que se est· mostrando actualmente, el movimiento se realiza de forma precisa y sin hacer trampas
+	// en otro caso hay que avanzar. Como s√≥lo tenemos calculada la rejilla de la pantalla que muestra el
+	// motor, si el personaje que quiere avanzar no est√° en la pantalla que se muestra, hacemos trampa
+	// e indicamos que el movimiento va a poder realizarse con √©xito. Si el personaje est√° en la pantalla
+	// que se est√° mostrando actualmente, el movimiento se realiza de forma precisa y sin hacer trampas
 
 	// obtiene la altura de las posiciones hacia las que se va a mover
 	if (!elMotorGrafico->rejilla->obtenerAlturaPosicionesAvance(this, difAltura1, difAltura2, avanceX, avanceY)){
-		// si llega aquÌ es porque el personaje no est· en la pantalla que muestra la c·mara
+		// si llega aqu√≠ es porque el personaje no est√° en la pantalla que muestra la c√°mara
 
 		// si el personaje ocupa 4 posiciones
 		if (!enDesnivel){
-			difAltura2 = 0;	// no se utilizar· en trataDeAvanzar
+			difAltura2 = 0;	// no se utilizar√° en trataDeAvanzar
 
 			if (comando == 1){
 				difAltura1 = 0;
@@ -141,7 +141,7 @@ void PersonajeConIA::ejecutaMovimiento()
 				}
 			}
 		} else {
-			// si el personaje ocupa una posiciÛn
+			// si el personaje ocupa una posici√≥n
 			if (comando == 0){
 				if (giradoEnDesnivel){
 					difAltura1 = 0; difAltura2 = 0;
@@ -159,13 +159,13 @@ void PersonajeConIA::ejecutaMovimiento()
 			}
 		}
 
-		// guarda el avance en cada coordenada seg˙n la orientaciÛn en la que se quiere avanzar
+		// guarda el avance en cada coordenada seg√∫n la orientaci√≥n en la que se quiere avanzar
 		avanceX = elMotorGrafico->tablaDespOri[orientacion][0];
 		avanceY = elMotorGrafico->tablaDespOri[orientacion][1];
 	}
 	trataDeAvanzar(difAltura1, difAltura2, avanceX, avanceY);
 
-	// si el personaje no ha podido moverse a donde querÌa, deshace los cambios
+	// si el personaje no ha podido moverse a donde quer√≠a, deshace los cambios
 	if (!laLogica->hayMovimiento){
 		cargaEstado();
 	}
@@ -182,7 +182,7 @@ int PersonajeConIA::leeBit()
 		posAcciones++;
 	}
 
-	// devuelve el bit correspondiente de la acciÛn
+	// devuelve el bit correspondiente de la acci√≥n
 	bool bitAccion = (accionActual & (1 << (7 - numBitAcciones))) != 0;
 
 	// incrementa los bits procesados
@@ -195,7 +195,7 @@ int PersonajeConIA::leeComando()
 {
 	int rdo = 0;
 
-	// comprueba si el personaje tiene que avanzar y si es asÌ, devuelve 0 o 1
+	// comprueba si el personaje tiene que avanzar y si es as√≠, devuelve 0 o 1
 	if (enDesnivel){
 		if (leeBit() == 1){
 			return leeBit();
@@ -216,7 +216,7 @@ int PersonajeConIA::leeComando()
 		return 4 + leeBit();
 	}
 
-	// si se leyÛ 0000
+	// si se ley√≥ 0000
 	if (leeBit() == 0){
 		if (enDesnivel){
 			return 0;
@@ -230,7 +230,7 @@ int PersonajeConIA::leeComando()
 			return leeComando();
 		}
 	} else {
-		// si se leyÛ 0001, indica que hay que pensar un nuevo movimiento
+		// si se ley√≥ 0001, indica que hay que pensar un nuevo movimiento
 		pensarNuevoMovimiento = true;
 
 		return -1;
@@ -238,10 +238,10 @@ int PersonajeConIA::leeComando()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos relacionados con la generaciÛn de comandos de movimiento
+// m√©todos relacionados con la generaci√≥n de comandos de movimiento
 /////////////////////////////////////////////////////////////////////////////
 
-// escribe los comandos necesarios para obtener la orientaciÛn desesada
+// escribe los comandos necesarios para obtener la orientaci√≥n desesada
 void PersonajeConIA::modificaOrientacion(int oriDeseada)
 {
 	// calcula cuanto hay que girar
@@ -267,7 +267,7 @@ void PersonajeConIA::avanzaPosicion(int difAltura1, int difAltura2, int avanceX,
 
 	// si el personaje ocupa 4 posiciones
 	if (!enDesnivel){
-		// si se quiere subir o bajar, cambia la altura e indica que el personaje est· en desnivel
+		// si se quiere subir o bajar, cambia la altura e indica que el personaje est√° en desnivel
 		if (difAltura1 == 1){
 			numEntrada = 1;
 			altura++;
@@ -291,10 +291,10 @@ void PersonajeConIA::avanzaPosicion(int difAltura1, int difAltura2, int avanceX,
 			}
 		}
 	} else {
-		// si el personaje ocupa 1 posiciÛn
+		// si el personaje ocupa 1 posici√≥n
 		numEntrada = 0;
 
-		// si est· girado en desnivel, avanza
+		// si est√° girado en desnivel, avanza
 		if (giradoEnDesnivel){
 			incrementaPos(avanceX, avanceY);
 		} else {
@@ -307,7 +307,7 @@ void PersonajeConIA::avanzaPosicion(int difAltura1, int difAltura2, int avanceX,
 				bajando = true;
 			}
 
-			// si las 2 posiciones que hay avanzando tienen la misma altura, indica que ya no est· en desnivel
+			// si las 2 posiciones que hay avanzando tienen la misma altura, indica que ya no est√° en desnivel
 			if (difAltura1 == difAltura2){
 				numEntrada++;
 				enDesnivel = false;
@@ -323,11 +323,11 @@ void PersonajeConIA::avanzaPosicion(int difAltura1, int difAltura2, int avanceX,
 		}
 	}
 
-	// escribe los comandos necesarios para avanzar seg˙n la situaciÛn
+	// escribe los comandos necesarios para avanzar seg√∫n la situaci√≥n
 	escribeComandos(comandosAvanzar[numEntrada][0], comandosAvanzar[numEntrada][1]);
 }
 
-// fija la primera posiciÛn para coger comandos del buffer
+// fija la primera posici√≥n para coger comandos del buffer
 void PersonajeConIA::reiniciaPosicionBuffer()
 {
 	numBitAcciones = 0;
@@ -359,7 +359,7 @@ void PersonajeConIA::escribeComandos(UINT16 comandos, int bits)
 			// graba el comando actual
 			bufAcciones[posAcciones] = accionActual;
 
-			// avanza la posiciÛn del buffer
+			// avanza la posici√≥n del buffer
 			posAcciones++;
 		}
 
@@ -401,12 +401,12 @@ void PersonajeConIA::cargaEstado()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos auxiliares para la lÛgica
+// m√©todos auxiliares para la l√≥gica
 /////////////////////////////////////////////////////////////////////////////
 
 bool PersonajeConIA::estaCerca(Personaje *pers)
 {
-	// si los 2 personajes no est·n en la misma planta, devuelve false
+	// si los 2 personajes no est√°n en la misma planta, devuelve false
 	if (elMotorGrafico->obtenerAlturaBasePlanta(altura) != elMotorGrafico->obtenerAlturaBasePlanta(pers->altura)){
 		return false;
 	}
@@ -423,11 +423,11 @@ bool PersonajeConIA::estaCerca(Personaje *pers)
 		return false;
 	}
 
-	// si llega aquÌ es porque el personaje est· cerca
+	// si llega aqu√≠ es porque el personaje est√° cerca
 	return true;
 }
 
-// si ha llegado al sitio al que querÌa llegar, avanza el estado
+// si ha llegado al sitio al que quer√≠a llegar, avanza el estado
 bool PersonajeConIA::siHaLlegadoAvanzaEstado()
 {
 	if (aDondeHaLlegado != aDondeVa){

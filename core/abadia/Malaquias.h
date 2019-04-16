@@ -1,6 +1,6 @@
 // Malaquias.h
 //
-//	Clase que representa a MalaquÌas
+//	Clase que representa a Malaqu√≠as
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -17,18 +17,18 @@ class Malaquias : public Monje
 {
 // campos
 public:
-	int estaMuerto;								// indica si el personaje est· muerto o muriÈndose
-	int estado2;								// guarda informaciÛn extra sobre el estado del personaje
+	int estaMuerto;								// indica si el personaje est√° muerto o muri√©ndose
+	int estado2;								// guarda informaci√≥n extra sobre el estado del personaje
 
 protected:
-	int contadorEnScriptorium;					// indica el tiempo que guillermo est· sin salir del scriptorium
-	static PosicionJuego posicionesPredef[9];	// posiciones a las que puede ir el personaje seg˙n el estado
+	int contadorEnScriptorium;					// indica el tiempo que guillermo est√° sin salir del scriptorium
+	static PosicionJuego posicionesPredef[9];	// posiciones a las que puede ir el personaje seg√∫n el estado
 
-// mÈtodos
+// m√©todos
 public:
 	virtual void piensa();
 
-	// inicializaciÛn y limpieza
+	// inicializaci√≥n y limpieza
 	Malaquias(SpriteMonje *spr);
 	virtual ~Malaquias();
 

@@ -18,16 +18,16 @@ class Monje : public PersonajeConIA
 {
 // campos
 protected:
-	int datosCara[2];							// dirección de los gráficos de la cara
+	int datosCara[2];							// direcciÃ³n de los grÃ¡ficos de la cara
 	SpriteMonje *sprMonje;						// sprite del monje
 
-	static DatosFotograma tablaAnimacion[8];	// tabla con los distintos fotogramas de animación
+	static DatosFotograma tablaAnimacion[8];	// tabla con los distintos fotogramas de animaciÃ³n
 
-// métodos
+// mÃ©todos
 public:
 	virtual DatosFotograma *calculaFotograma();
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Monje(SpriteMonje *spr);
 	virtual ~Monje();
 };

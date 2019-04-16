@@ -20,28 +20,28 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// posiciones a las que puede ir el personaje seg˙n el estado
+// posiciones a las que puede ir el personaje seg√∫n el estado
 /////////////////////////////////////////////////////////////////////////////
 
 PosicionJuego Malaquias::posicionesPredef[9] = {
-	PosicionJuego(ABAJO, 0x84, 0x48, 0x02),		// posiciÛn en la iglesia
-	PosicionJuego(ARRIBA, 0x2f, 0x37, 0x02),	// posiciÛn en el refectorio
-	PosicionJuego(ABAJO, 0x37, 0x38, 0x0f),		// posiciÛn en la mesa que est· en la entrada del pasillo para poder subir a la biblioteca
-	PosicionJuego(IZQUIERDA, 0x3a, 0x34, 0x0f),	// posiciÛn para cerrar el paso al pasillo que lleva a la biblioteca
-	PosicionJuego(DERECHA, 0x5d, 0x77, 0x00),	// posiciÛn para cerrar las 2 puertas del ala izquierda de la abadÌa
-	PosicionJuego(DERECHA, 0x58, 0x2a, 0x00),	// posiciÛn en frente de la mesa de la cocina de delante del pasadizo
-	PosicionJuego(ABAJO, 0x35, 0x37, 0x13),		// posiciÛn donde deja la llave en la mesa que est· en la entrada del pasillo para poder subir a la biblioteca
-	PosicionJuego(DERECHA, 0xbc, 0x18, 0x02),	// posiciÛn en su celda
-	PosicionJuego(DERECHA, 0x68, 0x52, 0x00)	// posiciÛn en la celda de severino
+	PosicionJuego(ABAJO, 0x84, 0x48, 0x02),		// posici√≥n en la iglesia
+	PosicionJuego(ARRIBA, 0x2f, 0x37, 0x02),	// posici√≥n en el refectorio
+	PosicionJuego(ABAJO, 0x37, 0x38, 0x0f),		// posici√≥n en la mesa que est√° en la entrada del pasillo para poder subir a la biblioteca
+	PosicionJuego(IZQUIERDA, 0x3a, 0x34, 0x0f),	// posici√≥n para cerrar el paso al pasillo que lleva a la biblioteca
+	PosicionJuego(DERECHA, 0x5d, 0x77, 0x00),	// posici√≥n para cerrar las 2 puertas del ala izquierda de la abad√≠a
+	PosicionJuego(DERECHA, 0x58, 0x2a, 0x00),	// posici√≥n en frente de la mesa de la cocina de delante del pasadizo
+	PosicionJuego(ABAJO, 0x35, 0x37, 0x13),		// posici√≥n donde deja la llave en la mesa que est√° en la entrada del pasillo para poder subir a la biblioteca
+	PosicionJuego(DERECHA, 0xbc, 0x18, 0x02),	// posici√≥n en su celda
+	PosicionJuego(DERECHA, 0x68, 0x52, 0x00)	// posici√≥n en la celda de severino
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Malaquias::Malaquias(SpriteMonje *spr) : Monje(spr)
 {
-	// coloca los datos de la cara de malaquÌas
+	// coloca los datos de la cara de malaqu√≠as
 	// CPC
 	/*
 	datosCara[0] = 0xb1cb;
@@ -65,14 +65,14 @@ Malaquias::~Malaquias()
 // comportamiento
 /////////////////////////////////////////////////////////////////////////////
 
-// Los estados en los que puede estar malaquÌas son:
+// Los estados en los que puede estar malaqu√≠as son:
 //		0x00 -> estado en su mesa de trabajo del scriptorium
-//		0x02 -> estado despuÈs de coger la llave de su mesa
-//		0x03 -> estado despuÈs de advertir a guillermo que abandone el scriptorium
+//		0x02 -> estado despu√©s de coger la llave de su mesa
+//		0x03 -> estado despu√©s de advertir a guillermo que abandone el scriptorium
 //		0x04 -> una vez que guillermo ha bajado del scriptorium, va a cerrar las puertas del ala izquierda
 //		0x05 -> una vez cerradas las puertas, se dirige a la cocina
-//		0x06 -> va a la iglesia (en vÌsperas)
-//		0x07 -> despuÈs de que haya llegado a su sitio en la iglesia
+//		0x06 -> va a la iglesia (en v√≠speras)
+//		0x07 -> despu√©s de que haya llegado a su sitio en la iglesia
 //		0x08 -> si se va a su celda en completas/noche
 //		0x09 -> va a la iglesia (en prima)
 //		0x0a -> estado en el que va a su mesa de trabajo
@@ -82,14 +82,14 @@ void Malaquias::piensa()
 {
 	int momentoDia = laLogica->momentoDia;
 
-	// si malaquÌas ha muerto, sale
+	// si malaqu√≠as ha muerto, sale
 	if (estaMuerto == 2){
 		elBuscadorDeRutas->seBuscaRuta = false;
 
 		return;
 	}
 
-	// si malaquÌas est· muriendo, incrementa su altura
+	// si malaqu√≠as est√° muriendo, incrementa su altura
 	if (estaMuerto == 1){
 		altura++;
 
@@ -104,7 +104,7 @@ void Malaquias::piensa()
 		return;
 	}
 
-	// si el abad va a echar a guillermo de la abadÌa, se queda quieto
+	// si el abad va a echar a guillermo de la abad√≠a, se queda quieto
 	if (laLogica->abad->estado == 0x0b){
 		elBuscadorDeRutas->seBuscaRuta = false;
 
@@ -120,7 +120,7 @@ void Malaquias::piensa()
 	}
 
 	if (laLogica->momentoDia == VISPERAS){
-		// en el estado 0x0c, busca al abad para que eche a guillermo de la abadÌa
+		// en el estado 0x0c, busca al abad para que eche a guillermo de la abad√≠a
 		if (estado == 0x0c){
 			aDondeVa = POS_ABAD;
 
@@ -132,7 +132,7 @@ void Malaquias::piensa()
 			return;
 		}
 
-		// si est· en el estado 0, va a por la llave de su mesa
+		// si est√° en el estado 0, va a por la llave de su mesa
 		if (estado == 0x00){
 			mascaraObjetos = LLAVE3;
 			aDondeVa = 6;
@@ -144,9 +144,9 @@ void Malaquias::piensa()
 			}
 		}
 
-		// si a˙n no se ha ido del scriptorium
+		// si a√∫n no se ha ido del scriptorium
 		if (estado < 0x04){
-			// si guillermo est· en el scriptorium, va a por Èl
+			// si guillermo est√° en el scriptorium, va a por √©l
 			if (laLogica->guillermo->altura >= 0x0c){
 				aDondeVa = POS_GUILLERMO;
 			} else {
@@ -155,9 +155,9 @@ void Malaquias::piensa()
 				return;
 			}
 
-			// si est· yÈndose del scriptorium y pasa cerca de guillermo, le advierte que debe marcharse
+			// si est√° y√©ndose del scriptorium y pasa cerca de guillermo, le advierte que debe marcharse
 			if (estado == 0x02){
-				// si est· cerca de guillermo, le dice que abandone el scriptorium, pasa al estado 3 e inicia un contador de tiempo
+				// si est√° cerca de guillermo, le dice que abandone el scriptorium, pasa al estado 3 e inicia un contador de tiempo
 				if (estaCerca(laLogica->guillermo)){
 					// pone en el marcador la frase DEBEIS ABANDONAR EDIFICIO, HERMANO
 					elGestorFrases->muestraFraseYa(0x09);
@@ -184,7 +184,7 @@ void Malaquias::piensa()
 			}
 		}
 
-		// si guillermo ya se ha marchado del scriptorium, va a cerrar las puertas del ala izquierda de la abadÌa
+		// si guillermo ya se ha marchado del scriptorium, va a cerrar las puertas del ala izquierda de la abad√≠a
 		if (estado == 0x04){
 			aDondeVa = 4;
 
@@ -203,12 +203,12 @@ void Malaquias::piensa()
 			return;
 		}
 
-		// despuÈs de cerrar las puertas, se va a la mesa de la cocina delante del pasadizo
+		// despu√©s de cerrar las puertas, se va a la mesa de la cocina delante del pasadizo
 		if (estado == 0x05){
 			aDondeVa = 5;
 			laLogica->mascaraPuertas = 0xdf;
 
-			// si guillermo se ha quedado en el ala izquierda de la abadÌa, advierte al abad
+			// si guillermo se ha quedado en el ala izquierda de la abad√≠a, advierte al abad
 			if (laLogica->guillermo->posX < 0x60){
 				estado = 0x0c;
 			}
@@ -227,7 +227,7 @@ void Malaquias::piensa()
 			siHaLlegadoAvanzaEstado();
 		}
 
-		// si est· en el estado 0x0b, empieza a morirse
+		// si est√° en el estado 0x0b, empieza a morirse
 		if (estado == 0x0b){
 			if (!elGestorFrases->mostrandoFrase){
 				estaMuerto = 0x01;
@@ -237,10 +237,10 @@ void Malaquias::piensa()
 		}
 
 		if (estado == 0x07){
-			// si es el quinto dÌa y est· en la iglesia, pasa al estado en el que empieza a morirse
+			// si es el quinto d√≠a y est√° en la iglesia, pasa al estado en el que empieza a morirse
 			if (laLogica->dia == 5){
 				if ((elMotorGrafico->numPantalla == 0x22) || (elMotorGrafico->numPantalla == 0x22)){
-					// indica que no ha llegado a la iglesia todavÌa
+					// indica que no ha llegado a la iglesia todav√≠a
 					aDondeHaLlegado = 1;
 
 					// pasa al estado de morirse
@@ -264,7 +264,7 @@ void Malaquias::piensa()
 		return;
 	}
 
-	// si malaquÌas ha llegado a su puesto en el scriptorium, deja la llave del pasadizo (si la tiene)
+	// si malaqu√≠as ha llegado a su puesto en el scriptorium, deja la llave del pasadizo (si la tiene)
 	if (aDondeHaLlegado == 2){
 		estado = 0x00;
 		mascaraObjetos = 0;
@@ -283,7 +283,7 @@ void Malaquias::piensa()
 	}
 
 	if (estado == 0){
-		// si est· cerca guillermo
+		// si est√° cerca guillermo
 		if (estaCerca(laLogica->guillermo)){
 			// si ha ido a cerrarle el paso a guillermo
 			if (aDondeVa == 3){
@@ -297,9 +297,9 @@ void Malaquias::piensa()
 						elGestorFrases->muestraFraseYa(0x33);
 					}
 				} else {
-					// si no le ha dicho que berengario le puede enseÒar el scriptorium
+					// si no le ha dicho que berengario le puede ense√±ar el scriptorium
 					if ((estado2 & 0x40) == 0){
-						// si es el segundo dÌa y no est· reproduciendo una frase, le dice que berengario le puede enseÒar el scriptorium
+						// si es el segundo d√≠a y no est√° reproduciendo una frase, le dice que berengario le puede ense√±ar el scriptorium
 						if ((laLogica->dia == 2) && (!elGestorFrases->mostrandoFrase)){
 							estado2 |= 0x40;
 
@@ -312,12 +312,12 @@ void Malaquias::piensa()
 				return;
 			}
 
-			// si no ha ido a cerrarle el paso a guillermo, pero Èste est· cerca
+			// si no ha ido a cerrarle el paso a guillermo, pero √©ste est√° cerca
 
 			// descarta los movimientos pensados
 			descartarMovimientosPensados();
 
-			// si guillermo no avanza, malaquÌas se queda quieto
+			// si guillermo no avanza, malaqu√≠as se queda quieto
 			if (!losControles->estaSiendoPulsado(P1_UP)){
 				elBuscadorDeRutas->seBuscaRuta = false;
 			} else {
@@ -325,7 +325,7 @@ void Malaquias::piensa()
 				aDondeVa = 3;
 			}
 		} else {
-			// si guillermo no est· cerca, va a su mesa
+			// si guillermo no est√° cerca, va a su mesa
 			aDondeVa = 2;
 		}
 		
@@ -333,11 +333,11 @@ void Malaquias::piensa()
 	}
 
 	if (laLogica->momentoDia == TERCIA){
-		// si es el quinto dÌa, va a matar a severino
+		// si es el quinto d√≠a, va a matar a severino
 		if ((estado == 0x09) && (laLogica->dia == 5)){
 			aDondeVa = 8;
 
-			// si ha llegado a la celda de severino y Èste est· en la celda, mata a severino y pasa al estado 0x0a
+			// si ha llegado a la celda de severino y √©ste est√° en la celda, mata a severino y pasa al estado 0x0a
 			if ((aDondeHaLlegado == 8) && (laLogica->severino->aDondeHaLlegado == 2)){
 				laLogica->severino->estaVivo = false;
 				laLogica->severino->posX = laLogica->severino->posY = laLogica->severino->altura = 0;  
@@ -353,14 +353,14 @@ void Malaquias::piensa()
 	}
 }
 
-// dependiendo de como estÈ la animaciÛn del personaje, avanza la animaciÛn o realiza un movimiento
+// dependiendo de como est√© la animaci√≥n del personaje, avanza la animaci√≥n o realiza un movimiento
 void Malaquias::avanzaAnimacionOMueve()
 {
-	// si se est· muriendo, actualiza el sprite
+	// si se est√° muriendo, actualiza el sprite
 	if (estaMuerto == 1){
 		actualizaSprite();
 	} else {
-		// en otro caso, avanza la animaciÛn o realiza un movimiento
+		// en otro caso, avanza la animaci√≥n o realiza un movimiento
 		PersonajeConIA::avanzaAnimacionOMueve();
 	}
 }

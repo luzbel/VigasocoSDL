@@ -1,6 +1,6 @@
 // BuscadorRutas.h
 //
-//	Clase que contiene los métodos para buscar rutas y caminos entre posiciones
+//	Clase que contiene los mÃ©todos para buscar rutas y caminos entre posiciones
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -25,36 +25,36 @@ class BuscadorRutas : public Singleton<BuscadorRutas>
 {
 // campos
 public:
-	bool generadoCamino;					// indica si se ha generado algún camino en esta iteración del bucle principal
+	bool generadoCamino;					// indica si se ha generado algÃºn camino en esta iteraciÃ³n del bucle principal
 	bool seBuscaRuta;						// indica si se ejecuta el buscador de rutas o no
-	int contadorAnimGuillermo;				// contador de la animación de guillermo al inicio de esta iteración del bucle principal
+	int contadorAnimGuillermo;				// contador de la animaciÃ³n de guillermo al inicio de esta iteraciÃ³n del bucle principal
 
-	int numAlternativas;					// número de alternativas generadas
-	int alternativaActual;					// alternativa que se está probando actualmente
-	int nivelRecursion;						// nivel de recursión de la última ejecución del algoritmo de búsqueda de caminos
-	int posXIni, posYIni;					// datos sobre la posición final de las búsquedas
-	int posXFinal, posYFinal, oriFinal;		// datos sobre la posición final de las búsquedas
+	int numAlternativas;					// nÃºmero de alternativas generadas
+	int alternativaActual;					// alternativa que se estÃ¡ probando actualmente
+	int nivelRecursion;						// nivel de recursiÃ³n de la Ãºltima ejecuciÃ³n del algoritmo de bÃºsqueda de caminos
+	int posXIni, posYIni;					// datos sobre la posiciÃ³n final de las bÃºsquedas
+	int posXFinal, posYFinal, oriFinal;		// datos sobre la posiciÃ³n final de las bÃºsquedas
 
 	RejillaPantalla *rejilla;				// objeto para realizar operaciones relacionadas con la rejilla de pantalla
 
 protected:
-	INT32 *buffer;							// buffer para la búsqueda de caminos
-	int lgtudBuffer;						// longitud del buffer de búsqueda
+	INT32 *buffer;							// buffer para la bÃºsqueda de caminos
+	int lgtudBuffer;						// longitud del buffer de bÃºsqueda
 
-	static UINT8 habitaciones[3][256];		// tabla con las habitaciones alcanzables desde una habitación concreta
+	static UINT8 habitaciones[3][256];		// tabla con las habitaciones alcanzables desde una habitaciÃ³n concreta
 	static UINT8 habitacionesPuerta[6][4];	// tabla con las puertas y las habitaciones que comunican
-	static PosicionJuego alternativas[5];	// posiciones alternativas para la búsqueda del camino
-	static int despOrientacion[4][2];		// tabla de desplazamientos según la orientación
-	static int posDestinoOrientacion[4][2];	// tabla con las posiciones de destino según la orientación
+	static PosicionJuego alternativas[5];	// posiciones alternativas para la bÃºsqueda del camino
+	static int despOrientacion[4][2];		// tabla de desplazamientos segÃºn la orientaciÃ³n
+	static int posDestinoOrientacion[4][2];	// tabla con las posiciones de destino segÃºn la orientaciÃ³n
 	
-	int posPila;							// posición actual de la pila
-	int posProcesadoPila;					// posición de la pila mientras se examinan las alternativas
+	int posPila;							// posiciÃ³n actual de la pila
+	int posProcesadoPila;					// posiciÃ³n de la pila mientras se examinan las alternativas
 
-	FijarOrientacion *fijaPosOri[4];		// objetos para indicar las posiciones a las que hay que ir según la orientación a coger
+	FijarOrientacion *fijaPosOri[4];		// objetos para indicar las posiciones a las que hay que ir segÃºn la orientaciÃ³n a coger
 
-// métodos
+// mÃ©todos
 public:
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	BuscadorRutas(UINT8 *buf, int lgtud);
 	~BuscadorRutas();
 
@@ -66,9 +66,9 @@ public:
 	bool esPosicionDestino(int posX, int posY, int altura, int alturaBase, bool buscandoSolucion);
 	void limpiaBitsBusquedaEnPantalla();
 
-// métodos de ayuda
+// mÃ©todos de ayuda
 protected:
-	// métodos de más alto nivel relacionados con la búsqueda y generación de rutas
+	// mÃ©todos de mÃ¡s alto nivel relacionados con la bÃºsqueda y generaciÃ³n de rutas
 	void generaAlternativas(PosicionJuego *pos, int oriInicial, int oldOri);
 	void generaAlternativa(PosicionJuego *pos, int orientacion, int oldOri);
 	void procesaAlternativas(PersonajeConIA *pers, PosicionJuego *destino);
@@ -85,14 +85,14 @@ protected:
 	void grabaComandosCamino(PersonajeConIA *pers);
 	void reconstruyeCamino(PersonajeConIA *pers);
 
-	// métodos relacionados con la búsqueda de caminos en una pantalla
+	// mÃ©todos relacionados con la bÃºsqueda de caminos en una pantalla
 	bool buscaEnPantalla();
 	bool buscaEnPantallaSiAlcanzable(int posXDest, int posYDest);
 	bool buscaEnPantallaComun();
 	bool esPosicionAlcanzable(int posX, int posY, int altura);
 	bool esPosicionDestino(int posX, int posY, int alturaBase);
 
-	// métodos relacionados con la búsqueda de caminos entre pantallas
+	// mÃ©todos relacionados con la bÃºsqueda de caminos entre pantallas
 	bool buscaPantalla(int numPlanta, int mascara);
 	bool buscaPantalla(int posXDest, int posYDest, int numPlanta);
 	bool esPantallaDestino(int posX, int posY, int numPlanta, int mascara, int mascaraDestino);

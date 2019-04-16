@@ -9,7 +9,7 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// tabla de la animaci髇 de los monjes
+// tabla de la animaci贸n de los monjes
 /////////////////////////////////////////////////////////////////////////////
 
 // CPC
@@ -37,7 +37,7 @@ Personaje::DatosFotograma Monje::tablaAnimacion[8] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaci髇 y limpieza
+// inicializaci贸n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Monje::Monje(SpriteMonje *spr) : PersonajeConIA(spr)
@@ -45,7 +45,7 @@ Monje::Monje(SpriteMonje *spr) : PersonajeConIA(spr)
 	// guarda una referencia al sprite del monje
 	sprMonje = spr;
 
-	// asigna la tabla de animaci髇 del personaje
+	// asigna la tabla de animaci贸n del personaje
 	animacion = tablaAnimacion;
 	numFotogramas = 8;
 
@@ -58,26 +58,26 @@ Monje::~Monje()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// animaci髇 del monje
+// animaci贸n del monje
 /////////////////////////////////////////////////////////////////////////////
 
 // calcula el fotograma que hay que poner al monje
 Personaje::DatosFotograma * Monje::calculaFotograma()
 {
-	// obtiene la orientaci髇 del personaje seg鷑 la posici髇 de la c醡ara
+	// obtiene la orientaci贸n del personaje seg煤n la posici贸n de la c谩mara
 	int oriCamara = elMotorGrafico->ajustaOrientacionSegunCamara(orientacion);
 
-	// actualiza la animaci髇 del traje
+	// actualiza la animaci贸n del traje
 	sprMonje->animacionTraje = (oriCamara << 2) | contadorAnimacion;
 
-	// selecciona un fotograma dependiendo de la orientaci髇 y de si el personaje va hacia la derecha o a la izquierda
+	// selecciona un fotograma dependiendo de la orientaci贸n y de si el personaje va hacia la derecha o a la izquierda
 	int numAnim = (((oriCamara + 1) & 0x02) << 1) | contadorAnimacion;
 
 	assert(numAnim < numFotogramas);
 
-	// modifica los datos del fotograma con la direcci髇 de la cara del personaje
+	// modifica los datos del fotograma con la direcci贸n de la cara del personaje
 	animacion[numAnim].dirGfx = datosCara[(numAnim & 0x04) ? 1 : 0];
 
-	// devuelve los datos del fotograma de la animaci髇 del personaje
+	// devuelve los datos del fotograma de la animaci贸n del personaje
 	return &animacion[numAnim];
 }

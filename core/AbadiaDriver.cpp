@@ -33,7 +33,7 @@ AbadiaDriver::AbadiaDriver() : GameDriver("abadia", "La abadia del crimen", 300)
 	_videoInfo.width = 640;
 	_videoInfo.height = 400;
 	_videoInfo.visibleArea = Rect(_videoInfo.width, _videoInfo.height);
-	_videoInfo.colors = 32;			// 16 del juego + 16 para mostrar informaciÛn interna del juego
+	_videoInfo.colors = 32;			// 16 del juego + 16 para mostrar informaci√≥n interna del juego
 	_videoInfo.colors = 256;		// TODO: PRUEBAS VGA
 	_videoInfo.refreshRate = 50;
 
@@ -60,7 +60,7 @@ AbadiaDriver::~AbadiaDriver()
 
 void AbadiaDriver::createGameDataEntities()
 {
-	// el cÛdigo y los gr·ficos est·n mezclados en la imagen
+	// el c√≥digo y los gr√°ficos est√°n mezclados en la imagen
 	GameDataEntity *roms = new GameDataEntity(MIXED, "Code + Graphics + Sound");
 	roms->addFile(new GameFile("abadia.dsk", 0x00000, 0x27400, 0xd37cf8e7, 0));
 	_gameFiles.push_back(roms);
@@ -183,7 +183,7 @@ void AbadiaDriver::filesLoaded()
 	// Los sonidos no se copian, y se cargan directamente en Audioplugin
 }
 
-// reordena los datos gr·ficos y los copia en el destino
+// reordena los datos gr√°ficos y los copia en el destino
 void AbadiaDriver::reOrderAndCopy(UINT8 *src, UINT8 *dst, int size)
 {
 	for (int i = 0; i < size; i++){
@@ -193,11 +193,11 @@ void AbadiaDriver::reOrderAndCopy(UINT8 *src, UINT8 *dst, int size)
 
 void AbadiaDriver::finishInit()
 {
-	// crea e inicia la secciÛn crÌtica para la sincronizaciÛn del dibujado de gr·ficos
+	// crea e inicia la secci√≥n cr√≠tica para la sincronizaci√≥n del dibujado de gr√°ficos
 	cs = VigasocoMain->createCriticalSection();
 	cs->init();
 
-	//crea el objeto para tratar con gr·ficos del amstrad
+	//crea el objeto para tratar con gr√°ficos del amstrad
 	cpc6128 = new CPC6128(cs);
 
 	// crea el objeto del juego
@@ -283,13 +283,13 @@ void AbadiaDriver::audioFinalizing(IAudioPlugin *ap)
 
 void AbadiaDriver::end()
 {
-	// destruye la secciÛn crÌtica
+	// destruye la secci√≥n cr√≠tica
 	if (cs != 0){
 		cs->destroy();
 		delete cs;
 	}
 
-	// borra el objeto de ayuda para los gr·ficos
+	// borra el objeto de ayuda para los gr√°ficos
 	delete cpc6128;
 
 	// borra el objeto del juego
@@ -306,10 +306,10 @@ void AbadiaDriver::end()
 void AbadiaDriver::runSync()
 {
 	if (!_abadiaGame->pausa){
-		// incrementa el contador de la interrupciÛn
+		// incrementa el contador de la interrupci√≥n
 		_abadiaGame->contadorInterrupcion++;
 
-		// si se est· mostrando alguna frase en el marcador, contin˙a mostr·ndola
+		// si se est√° mostrando alguna frase en el marcador, contin√∫a mostr√°ndola
 		elGestorFrases->procesaFraseActual();
 	}
 }
@@ -355,7 +355,7 @@ void AbadiaDriver::render(IDrawPlugin *dp)
 
 void AbadiaDriver::showGameLogic(IDrawPlugin *dp)
 {
-	// actualiza el modo de informaciÛn
+	// actualiza el modo de informaci√≥n
 	if (theInputHandler->hasBeenPressed(FUNCTION_5)){
 		_abadiaGame->modoInformacion = !_abadiaGame->modoInformacion;
 		_abadiaGame->cambioModoInformacion = true;

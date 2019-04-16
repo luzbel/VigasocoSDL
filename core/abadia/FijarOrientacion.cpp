@@ -8,10 +8,10 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos para indicar las posiciones a las que hay que ir según la orientación a coger
+// mÃ©todos para indicar las posiciones a las que hay que ir segÃºn la orientaciÃ³n a coger
 /////////////////////////////////////////////////////////////////////////////
 
-// marca el rango de posiciones especificado como destino de la búsqueda
+// marca el rango de posiciones especificado como destino de la bÃºsqueda
 void FijarOrientacion::marcaPosiciones(RejillaPantalla *rejilla, int posX, int posY, int incX, int incY)
 {
 	for (int i = 0; i < 16; i++){

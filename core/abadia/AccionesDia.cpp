@@ -27,12 +27,12 @@ using namespace Abadia;
 AccionProgramada *AccionesDia::acciones[7];
 
 /////////////////////////////////////////////////////////////////////////////
-// inicialización y limpieza
+// inicializaciÃ³n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 AccionesDia::AccionesDia()
 {
-	// crea las acciones programadas según el momento del día
+	// crea las acciones programadas segÃºn el momento del dÃ­a
 	acciones[0] = new AccionesNoche();
 	acciones[1] = new AccionesPrima();
 	acciones[2] = new AccionesTercia();
@@ -50,39 +50,39 @@ AccionesDia::~AccionesDia()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// ejecución de las acciones programadas
+// ejecuciÃ³n de las acciones programadas
 /////////////////////////////////////////////////////////////////////////////
 
 void AccionesDia::ejecutaAccionesProgramadas()
 {
-	// si no ha cambiado el momento del día, sale
+	// si no ha cambiado el momento del dÃ­a, sale
 	if (laLogica->momentoDia == laLogica->oldMomentoDia) return;
 
 	laLogica->oldMomentoDia = laLogica->momentoDia;
 
 	laLogica->cntMovimiento = 0;
 
-	// ejecuta unas acciones dependiendo del momento del día
+	// ejecuta unas acciones dependiendo del momento del dÃ­a
 	acciones[laLogica->momentoDia]->ejecuta(this);
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// acciones programadas según el momento del día
+// acciones programadas segÃºn el momento del dÃ­a
 /////////////////////////////////////////////////////////////////////////////
 
 void AccionesNoche::ejecuta(AccionesDia *ad)
 {
 	if (laLogica->dia == 5){
-		// pone las gafas en la habitación iluminada del laberinto
+		// pone las gafas en la habitaciÃ³n iluminada del laberinto
 		ad->colocaObjeto(elJuego->objetos[2], 0x1b, 0x23, 0x18);
 
 		// pone la llave 1 en el altar
 		ad->colocaObjeto(elJuego->objetos[4], 0x89, 0x3e, 0x08);
 	} else if (laLogica->dia == 6){
-		// pone la llave de la habitación de severino en la mesa de malaquías
+		// pone la llave de la habitaciÃ³n de severino en la mesa de malaquÃ­as
 		ad->colocaObjeto(elJuego->objetos[5], 0x35, 0x35, 0x13);
 
-		// coloca a jorge en la habitación de detrás del espejo
+		// coloca a jorge en la habitaciÃ³n de detrÃ¡s del espejo
 		ad->colocaPersonaje(laLogica->jorge, 0x12, 0x65, 0x18, ARRIBA);
 		laLogica->jorge->estaActivo = true;
 	}
@@ -96,10 +96,10 @@ void AccionesPrima::ejecuta(AccionesDia *ad)
 	// modifica las puertas que pueden abrirse
 	laLogica->mascaraPuertas = 0xef;
 
-	// fija la paleta de día
+	// fija la paleta de dÃ­a
 	elJuego->paleta->setGamePalette(2);
 
-	// abre las puertas del ala izquierda de la abadía
+	// abre las puertas del ala izquierda de la abadÃ­a
 	elJuego->puertas[5]->orientacion = IZQUIERDA;
 	elJuego->puertas[5]->haciaDentro = true;
 	elJuego->puertas[5]->estaFija = true;
@@ -112,10 +112,10 @@ void AccionesPrima::ejecuta(AccionesDia *ad)
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Campanas);
 	
 	if (laLogica->dia >= 3){
-		// si se ha usado la lámpara, desaparece
+		// si se ha usado la lÃ¡mpara, desaparece
 		laLogica->reiniciaContadoresLampara();
 
-		// si la lámpara había desaparecido, la pone en la cocina
+		// si la lÃ¡mpara habÃ­a desaparecido, la pone en la cocina
 		if (laLogica->lamparaDesaparecida){
 			laLogica->lamparaDesaparecida = false;
 
@@ -148,17 +148,17 @@ void AccionesPrima::ejecuta(AccionesDia *ad)
 		ad->colocaPersonaje(laLogica->jorge, 0xc8, 0x24, 0x00, DERECHA);
 		laLogica->jorge->estaActivo = true;
 
-		// indica que el abad no tiene ningún objeto
+		// indica que el abad no tiene ningÃºn objeto
 		laLogica->abad->objetos = 0;
 
-		// si guillermo no tiene el pergamino, se coloca en la habitación de detrás del espejo
+		// si guillermo no tiene el pergamino, se coloca en la habitaciÃ³n de detrÃ¡s del espejo
 		if ((laLogica->guillermo->objetos & PERGAMINO) == 0){
 			ad->colocaObjeto(elJuego->objetos[3], 0x18, 0x64, 0x18);
 			laLogica->pergaminoGuardado = true;
 		}
 	}
 
-	// si es el quinto día y no tenemos la llave 1, ésta desaparece
+	// si es el quinto dÃ­a y no tenemos la llave 1, Ã©sta desaparece
 	if ((laLogica->dia == 5) && ((laLogica->guillermo->objetos & LLAVE1) == 0)){
 		ad->colocaObjeto(elJuego->objetos[4], 0, 0, 0);
 	}
@@ -177,7 +177,7 @@ void AccionesSexta::ejecuta(AccionesDia *ad)
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Campanas);
 
 	if (laLogica->dia == 4){
-		// bernardo gui aparece en las escaleras de la abadía
+		// bernardo gui aparece en las escaleras de la abadÃ­a
 		laLogica->bernardo->estaEnLaAbadia = true;
 		ad->colocaPersonaje(laLogica->bernardo, 0x88, 0x88, 0x02, DERECHA);
 
@@ -191,7 +191,7 @@ void AccionesNona::ejecuta(AccionesDia *ad)
 	// dibuja el efecto de la espiral
 	ad->dibujaEfectoEspiral();
 
-	// si es el tercer día, jorge pasa a estar inactivo y desaparece
+	// si es el tercer dÃ­a, jorge pasa a estar inactivo y desaparece
 	if (laLogica->dia == 3){
 		laLogica->jorge->estaActivo = false;
 		laLogica->jorge->posX = laLogica->jorge->posY = laLogica->jorge->altura = 0; 
@@ -239,7 +239,7 @@ void AccionesDia::dibujaEspiral(int color)
 	// obtiene acceso al temporizador
 	TimingHandler *timer = elJuego->timer;
 
-	// fija la posición inicial
+	// fija la posiciÃ³n inicial
 	int posX = 0;
 	int posY = 0;
 
@@ -325,7 +325,7 @@ void AccionesDia::dibujaBloque(int posX, int posY, int color)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// método de ayuda para colocar los objetos y los personajes
+// mÃ©todo de ayuda para colocar los objetos y los personajes
 /////////////////////////////////////////////////////////////////////////////
 
 void AccionesDia::colocaObjeto(Objeto *obj, int posX, int posY, int altura)
