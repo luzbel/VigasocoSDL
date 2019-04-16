@@ -20,7 +20,7 @@ using namespace Abadia;
 	//Anyadimos una frase mas que en la version original
 	//para limpiar el area de frases al cargar/grabar las partidas
 	//Cambiamos a un array de frases por cada idioma
-	char * GestorFrases::frases[8][0x38+1] = {
+	const char * GestorFrases::frases[8][0x38+1] = {
 		{ // 0 Castellano
 	"SECRETUM FINISH AFRICAE, MANUS SUPRA XXX AGE PRIMUM ET SEPTIMUM DE QUATOR",
 	"BIENVENIDO A ESTA ABADIA, HERMANO. OS RUEGO QUE ME SIGAIS. HA SUCEDIDO ALGO TERRIBLE",
