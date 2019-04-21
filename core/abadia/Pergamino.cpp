@@ -590,8 +590,53 @@ void Pergamino::dibujaTexto(const unsigned char *texto)
 		if (losControles->estaSiendoPulsado(P1_BUTTON1) || losControles->estaSiendoPulsado(KEYBOARD_SPACE)){
 			break;
 		} else {
+			UINT32 codePoint=0;
+			char firstByte=*texto;
+			std::string::difference_type offset=1; //TODO: esta var se puede ahorrar al ir incrementando mientras se lee cada byte
+			if(firstByte&128) { // This means the first byte has a value greater than 127, and so is beyond the ASCII range.
+        			if(firstByte & 32) // This means that the first byte has a value greater than 191, and so it must be at least a three-octet code point.
+        			{
+					if(firstByte & 16) // This means that the first byte has a value greater than 224, and so it must be a four-octet code point.
+					{
+						codePoint = (firstByte & 0x07) << 18;
+						char secondByte = *(texto + 1);
+						codePoint +=  (secondByte & 0x3f) << 12;
+						char thirdByte = *(texto + 2);
+						codePoint +=  (thirdByte & 0x3f) << 6;;
+						char fourthByte = *(texto + 3);
+						codePoint += (fourthByte & 0x3f);
+
+						offset=4;	
+					}
+					else
+					{
+						codePoint = (firstByte & 0x0f) << 12;
+						char secondByte = *(texto + 1);
+						codePoint += (secondByte & 0x3f) << 6;
+						char thirdByte = *(texto + 2);
+						codePoint +=  (thirdByte & 0x3f);
+
+						offset=3;	
+					}
+				}
+				else
+				{
+					codePoint = (firstByte & 0x1f) << 6;
+					char secondByte = *(texto + 1);
+					codePoint +=  (secondByte & 0x3f);
+
+					offset=2;	
+				}
+			}
+			else
+			{
+				codePoint = firstByte;
+			}
+//			texto+=offset;
+			int caracter = codePoint;
+//fprintf(stderr,"caracter %ld 0x%04x\n", caracter,caracter);
 			// dependiendo del carácter leido
-			switch (*texto){
+			switch (caracter){
 				case 0x1a:			// fín de pergamino
 					break;
 				case 0x0d:			// salto de línea
@@ -620,7 +665,8 @@ void Pergamino::dibujaTexto(const unsigned char *texto)
 
 				default:			// carácter imprimible
 					UINT8 const * pTrazosCaracter= 
-						TablapTrazosCaracter[(*texto)-0x20];
+//						TablapTrazosCaracter[(*texto)-0x20];
+						TablapTrazosCaracter[(caracter)-0x20];
 					// elige un color dependiendo de si es mayúsculas o minúsculas
 
 					// la paleta CPC del pergamino es 07,28,20,12
@@ -632,20 +678,24 @@ void Pergamino::dibujaTexto(const unsigned char *texto)
 
 					//CPC					int color = (((*texto) & 0x60) == 0x40) ? 3 : 2;
 					//Para VGA pongo el color 1?? para las mayusculas y el color 0?? para las minusculas
-					int color = (((*texto) & 0x60) == 0x40) ? 1 : 0;
+					// TODO: revisar para UTF8
+					//int color = (((*texto) & 0x60) == 0x40) ? 1 : 0;
+					int color = (((caracter) & 0x60) == 0x40) ? 1 : 0;
 
 					// obtiene el desplazamiento a los datos de formación del carácter
 					// transformando del dato nativo en litte_endian
 					// al tipo del sistema (si es little_endian no hace nada,
 					// y si es big_endian intercambia el orden)
-					int charOffset = SDL_SwapLE16(charTable[(*texto) - 0x20]);
+					//int charOffset = SDL_SwapLE16(charTable[(*texto) - 0x20]);
+					int charOffset = SDL_SwapLE16(charTable[(caracter) - 0x20]);
 
 					// para alertar si nos hemos dejado algo sin definir
 					if (*texto!='z' && charOffset==SDL_SwapLE16(charTable['z'-0x20])) 	
 						printf("¡¡¡ NOS HEMOS DEJADO ALGUN CARACTER SIN DEFINIR !!! %c\n",*texto);
 
 					// si el caracter no está definido, muestra una 'z'
-					if (charTable[(*texto) - 0x20] == 0){
+					//if (charTable[(*texto) - 0x20] == 0){
+					if (charTable[(caracter) - 0x20] == 0){
 						charOffset = SDL_SwapLE16(charTable['z' - 0x20]);
 					}
 
@@ -675,8 +725,11 @@ void Pergamino::dibujaTexto(const unsigned char *texto)
 			}
 
 			// apunta al siguiente carácter a imprimir
-			if (*texto != 0x1a){
+/*			if (*texto != 0x1a){
 				texto++;
+			} */
+			if (caracter != 0x1a){
+				texto+=offset;
 			}
 		}
 	}

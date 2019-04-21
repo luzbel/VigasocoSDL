@@ -15,7 +15,7 @@
 #include <stdio.h>
 
 // para manejar UTF8
-#include <codecvt>
+//#include <codecvt>
 #include <locale>
 
 using namespace Abadia;
@@ -384,25 +384,95 @@ void Marcador::limpiaAreaFrases()
 // recorre los caracteres de la frase, mostrándolos por pantalla
 void Marcador::imprimeFrase(std::string frase, int x, int y, int colorTexto, int colorFondo)
 {
+/* Código original
 //	for (unsigned int i = 0; i < frase.length(); i++){
 //		imprimirCaracter(frase[i], x + 8*i, y, colorTexto, colorFondo);
 //	}
+*/
+
+/* Código en la rama abadIA
+   donde compilamos con -std=c++11 y podemos hacer esto
 
 	// Los ficheros fuente están ahora guardados en UTF8 y no en ASCII
-	// aquí convertimos a utf32 para poder iterar facilmente
 	// En gestofrases he optado por recorrer el char* sacando cada 
 	// caracter ya sea de 1-4 bytes y metiendolo todo en un int
 	// porque no hago todo en el mismo bucle y tengo que ir iterando por
 	// la frase
 	// Aquí convierto a utf32 y ya puedo sacar cada int con el valor de cada
 	// caracter en cada paso del for
-        std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv;
+        std::wstring_convert<std::codecvt_utf8<UINT32>, UINT32> conv;
         std::u32string utf32str = conv.from_bytes(frase);
+        std::u32string utf32str = "aa";
         int i=0;
         for (auto &letter : utf32str) {
                 imprimirCaracter(letter, x + 8*i, y, colorTexto, colorFondo);
                 i++;
-        }
+        } 
+*/
+
+	// en la rama master no queremos reducir el número de sistemas a los que poder compilar VigasocoSDL
+	// limitando a los que tienen soporte de c++11
+	// y que queremos llegar a cualquiera con un compilador de C++ básico y SDL
+	// Así que ...
+
+	// Los ficheros fuente están ahora guardados en UTF8 y no en ASCII
+	// Al igual que en gestofrases he optado por recorrer el char* sacando cada 
+	// caracter ya sea de 1-4 bytes y metiendolo todo en un int
+
+	
+	const char *_frase=frase.c_str();
+	int i=0;
+
+	while(*_frase!='\0') {
+		UINT32 codePoint=0;
+		char firstByte=*_frase;
+		std::string::difference_type offset=1; //TODO: esta var se puede ahorrar al ir incrementando mientras se lee cada byte
+		if(firstByte&128) { // This means the first byte has a value greater than 127, and so is beyond the ASCII range.
+        		if(firstByte & 32) // This means that the first byte has a value greater than 191, and so it must be at least a three-octet code point.
+        		{
+				if(firstByte & 16) // This means that the first byte has a value greater than 224, and so it must be a four-octet code point.
+				{
+					codePoint = (firstByte & 0x07) << 18;
+					char secondByte = *(_frase + 1);
+					codePoint +=  (secondByte & 0x3f) << 12;
+					char thirdByte = *(_frase + 2);
+					codePoint +=  (thirdByte & 0x3f) << 6;;
+					char fourthByte = *(_frase + 3);
+					codePoint += (fourthByte & 0x3f);
+
+					offset=4;	
+				}
+				else
+				{
+					codePoint = (firstByte & 0x0f) << 12;
+					char secondByte = *(_frase + 1);
+					codePoint += (secondByte & 0x3f) << 6;
+					char thirdByte = *(_frase + 2);
+					codePoint +=  (thirdByte & 0x3f);
+
+					offset=3;	
+				}
+			}
+			else
+			{
+				codePoint = (firstByte & 0x1f) << 6;
+				char secondByte = *(_frase + 1);
+				codePoint +=  (secondByte & 0x3f);
+
+				offset=2;	
+			}
+		}
+		else
+		{
+			codePoint = firstByte;
+		}
+		_frase+=offset;
+		int caracter = codePoint;
+                imprimirCaracter(caracter, x + 8*i, y, colorTexto, colorFondo);
+		i++;
+	}
+
+	
 }
 
 void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int colorFondo)

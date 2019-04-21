@@ -605,7 +605,11 @@ void GestorFrases::procesaFraseActual()
 //const unsigned char kThirdBitMask = 32; // 0010000
 //const unsigned char kFourthBitMask = 16; // 0001000
 //const unsigned char kFifthBitMask = 8; // 0000100
-		char32_t codePoint=0;
+		//char32_t codePoint=0; // en la rama abadIA compilamos con -std=c++11 que en uchar.h define char32_t
+		//para la rama master de VigasocoSDL usamos los tipos de Vigasoco definidos en core/Types.h
+		//y eliminamos dependencias ya que queremos compilar VigasocoSDL en diversos sistemas
+		//que igual solo tienen un compilador C++ básico y SDL
+		UINT32 codePoint=0;
 		char firstByte=*frase;
 		std::string::difference_type offset=1; //TODO: esta var se puede ahorrar al ir incrementando mientras se lee cada byte
 		if(firstByte&128) { // This means the first byte has a value greater than 127, and so is beyond the ASCII range.
