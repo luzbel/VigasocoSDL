@@ -7,7 +7,7 @@ AR = $(EE_PREFIX)ar
 OBJCOPY = $(EE_PREFIX)objcopy
 STRIP = $(EE_PREFIX)strip
 
-PS2SDK=/mnt/hda1/ps2sdk
+#PS2SDK=/mnt/hda1/ps2sdk
 
 CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -mhard-float -msingle-float -G 0 -I../core -I$(PS2SDK)/ports/include/SDL -D_EE -O2 -c -fno-rtti -fno-builtin -ffreestanding -fno-exceptions -fsingle-precision-constant -ansi -Wno-long-long -I$(PS2SDK)/ee/include -I$(PS2SDK)/common/include -I$(PS2SDK)/ports/include -I.  
 
@@ -24,8 +24,8 @@ OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLTh
 
 OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
 
-ABADIA.ELF: $(OBJECTS) video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a
-	$(CC) -G 0 -mno-crt0 -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/ee/lib -L$(PS2SDK)/ports/lib -o ABADIA.ELF  $(PS2SDK)/ee/startup/crt0.o $(OBJECTS) video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a -lmc -lsdl -lstdc++ -lm -lc -lkernel -lg
+ABADIA.ELF: $(OBJECTS) video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a audio/libVigasocoNULLAudioPlugin.a
+	$(CC) -G 0 -mno-crt0 -T$(PS2SDK)/ee/startup/linkfile -L$(PS2SDK)/ee/lib -L$(PS2SDK)/ports/lib -o ABADIA.ELF  $(PS2SDK)/ee/startup/crt0.o $(OBJECTS) video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a audio/libVigasocoNULLAudioPlugin.a -lmc -lsdl -lstdc++ -lm -lc -lkernel -lg
 	$(STRIP) ABADIA.ELF
 
 clean:
