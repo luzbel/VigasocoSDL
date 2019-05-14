@@ -480,8 +480,12 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 	switch(caracter) {
 		case L',': caracter=0x3c; break;
 		case L'.': caracter=0x3d; break;
-		case L'¿': caracter=0x40; break;
-		case L'Ñ': caracter=0x57; break;
+		//case L'¿': caracter=0x40; break;
+		//No uso ¿ porque la versión PS2 se compila con gcc3.2 que no soporta fichero fuentes UTF8
+		case L'\u00bf': caracter=0x40; break; 
+		//case L'Ñ': caracter=0x57; break;
+		//No uso Ñ porque la versión PS2 se compila con gcc3.2 que no soporta ficheros fuentes UTF8
+		case L'\u00d1': caracter=0x57; break;
 		case L'W': caracter=0xd1; break;
 		// En la ROM original el caracter . se usa para representar
 		// una combinación de más de una letra
@@ -532,29 +536,31 @@ void Marcador::imprimirCaracter(int caracter, int x, int y, int colorTexto, int 
 
 	switch(caracter)
 	{
-		case L'À': data=c0; break;
-		case L'Á': data=c1; break;
-		case L'Â': data=c2; break;
-		case L'Ã': data=c3; break;
-		case L'Ä': data=c4; break;
-		case L'Ç': data=c7; break;
-		case L'È': data=c8; break;
-		case L'É': data=c9; break;
-		case L'Ê': data=ca; break;
-		case L'Í': data=cd; break;
-		case L'Ï': data=cf; break;
+		// la versión PS2 compila con gcc3.2 que no soporta UTF8 en los fuentes
+		// así que en vez de case L'À' ponemos L'\u00c0' 
+		case L'\u00c0' /* L'À' */: data=c0; break;
+		case L'\u00c1' /* L'Á' */: data=c1; break;
+		case L'\u00c2' /* L'Â' */: data=c2; break;
+		case L'\u00c3' /* L'Ã' */: data=c3; break;
+		case L'\u00c4' /* L'Ä' */: data=c4; break;
+		case L'\u00c7' /* L'Ç' */: data=c7; break;
+		case L'\u00c8' /* L'È' */: data=c8; break;
+		case L'\u00c9' /* L'É' */: data=c9; break;
+		case L'\u00ca' /* L'Ê' */: data=ca; break;
+		case L'\u00cd' /* L'Í' */: data=cd; break;
+		case L'\u00cf' /* L'Ï' */: data=cf; break;
 		// case 'Ñ': data=; break; // intercambiado con la W 0x57
-		case L'Ò': data=d2; break;
-		case L'Ó': data=d3; break;
+		case L'\u00d2' /* L'Ò' */: data=d2; break;
+		case L'\u00d3' /* L'Ó' */: data=d3; break;
 //		case 'Õ': data=d6; break;
 //		case 'Ö': data=d5; break;
 		// Estos dos estaban bailados o ha saltado el error 
 		// al probar UTF8
-		case L'Õ': data=d5; break;
-		case L'Ö': data=d6; break;
+		case L'\u00d5' /* L'Õ' */: data=d5; break;
+		case L'\u00d6' /* L'Ö' */: data=d6; break;
 
-		case L'Ù': data=d9; break;
-		case L'Ú': data=da; break;
+		case L'\u00d9' /* L'Ù' */: data=d9; break;
+		case L'\u00da' /* L'Ú' */: data=da; break;
 		case 0xd1: data=d1; break; // la ñ se cambia por la w y la w por esta
 		case L'-': data=ui; break;
 		case L'\'': data=uj; break; 
