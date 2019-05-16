@@ -20,7 +20,7 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// tabla con los desplazamientos seg˙n la orientaciÛn
+// tabla con los desplazamientos seg√∫n la orientaci√≥n
 /////////////////////////////////////////////////////////////////////////////
 
 int MotorGrafico::tablaDespOri[4][2] = {
@@ -31,7 +31,7 @@ int MotorGrafico::tablaDespOri[4][2] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// mapa de las plantas de la abadÌa
+// mapa de las plantas de la abad√≠a
 /////////////////////////////////////////////////////////////////////////////
 
 UINT8 MotorGrafico::plantas[3][256] = {
@@ -104,7 +104,7 @@ UINT8 MotorGrafico::plantas[3][256] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 MotorGrafico::MotorGrafico(UINT8 *buffer, int lgtudBuffer)
@@ -122,7 +122,7 @@ MotorGrafico::MotorGrafico(UINT8 *buffer, int lgtudBuffer)
 	rejilla = new RejillaPantalla(this);
 	mezclador = new MezcladorSprites(genPant, buffer, lgtudBuffer);
 
-	// crea las transformaciones dependientes de la c·mara
+	// crea las transformaciones dependientes de la c√°mara
 	transCamara[0] = new Camara0();
 	transCamara[1] = new Camara1();
 	transCamara[2] = new Camara2();
@@ -131,7 +131,7 @@ MotorGrafico::MotorGrafico(UINT8 *buffer, int lgtudBuffer)
 
 MotorGrafico::~MotorGrafico()
 {
-	// borra las transformaciones depentdientes de la c·mara
+	// borra las transformaciones depentdientes de la c√°mara
 	for (int i = 0; i < 4; i++){
 		delete transCamara[i];
 	}
@@ -147,31 +147,31 @@ MotorGrafico::~MotorGrafico()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// comprobaciÛn del cambio de pantalla y actualizaciÛn de entidades del juego
+// comprobaci√≥n del cambio de pantalla y actualizaci√≥n de entidades del juego
 /////////////////////////////////////////////////////////////////////////////
 
-// comprueba si el personaje al que sigue la c·mara ha cambiado de pantalla y si es asÌ, actualiza las variables del motor
+// comprueba si el personaje al que sigue la c√°mara ha cambiado de pantalla y si es as√≠, actualiza las variables del motor
 // obtiene los datos de altura de la nueva pantalla y ajusta las posiciones de las entidades del juego
-// seg˙n la orientaciÛn con la que se ve la pantalla actual
+// seg√∫n la orientaci√≥n con la que se ve la pantalla actual
 // forzarCambio es para redibujar siempre al volver del modo informacion
 void MotorGrafico::compruebaCambioPantalla(bool forzarCambio)
 {
 	// inicialmente no hay cambio de pantalla
 	bool cambioPantalla = false;
 
-	// si el personaje al que sigue la c·mara cambia de pantalla en x
+	// si el personaje al que sigue la c√°mara cambia de pantalla en x
 	if ((personaje->posX & 0xf0) != posXPantalla){
 		cambioPantalla = true;
 
-		// actualiza la posiciÛn x del motor
+		// actualiza la posici√≥n x del motor
 		posXPantalla = personaje->posX & 0xf0;
 	}
 
-	// si el personaje al que sigue la c·mara cambia de pantalla en y
+	// si el personaje al que sigue la c√°mara cambia de pantalla en y
 	if ((personaje->posY & 0xf0) != posYPantalla){
 		cambioPantalla = true;
 
-		// actualiza la posiciÛn y del motor
+		// actualiza la posici√≥n y del motor
 		posYPantalla = personaje->posY & 0xf0;
 	}
 
@@ -190,14 +190,14 @@ void MotorGrafico::compruebaCambioPantalla(bool forzarCambio)
 	hayQueRedibujar = true;
 	pantallaIluminada = true;
 
-	// si est· en la segunda planta, comprueba si es una de las pantallas iluminadas
+	// si est√° en la segunda planta, comprueba si es una de las pantallas iluminadas
 	if (obtenerPlanta(alturaBasePantalla) == 2){
-		// si no est· detr·s del espejo o en la habitaciÛn iluminada del laberinto
+		// si no est√° detr√°s del espejo o en la habitaci√≥n iluminada del laberinto
 		if (posXPantalla >= 0x20){
 			if (posXPantalla != 0x20){
 				pantallaIluminada = false;
 			} else {
-				// si est· en la pantalla del espejo
+				// si est√° en la pantalla del espejo
 				pantallaIluminada = posYPantalla == 0x60;
 			}
 		}
@@ -206,38 +206,38 @@ void MotorGrafico::compruebaCambioPantalla(bool forzarCambio)
 	// marca el sprite de la luz como no visible
 	elJuego->sprites[Juego::spriteLuz]->esVisible = false;
 
-	// obtiene el n˙mero de pantalla que se va a mostrar
+	// obtiene el n√∫mero de pantalla que se va a mostrar
 	numPantalla = plantas[obtenerPlanta(alturaBasePantalla)][posYPantalla | ((posXPantalla  >> 4) & 0x0f)];
 
 	// rellena el buffer de alturas con los datos de altura de la pantalla actual
 	rejilla->rellenaAlturasPantalla(personaje);
 
-	// calcula la orientaciÛn de la c·mara para la pantalla que se va a mostrar
+	// calcula la orientaci√≥n de la c√°mara para la pantalla que se va a mostrar
 	oriCamara = (((posXPantalla >> 4)& 0x01) << 1) | (((posXPantalla  >> 4) & 0x01)^((posYPantalla  >> 4) & 0x01));
 
-	// recorre las puertas, y para las visibles, actualiza su posiciÛn y marca la altura que ocupan
+	// recorre las puertas, y para las visibles, actualiza su posici√≥n y marca la altura que ocupan
 	actualizaPuertas();
 
-	// recorre los objetos, y para los visibles, actualiza su posiciÛn
+	// recorre los objetos, y para los visibles, actualiza su posici√≥n
 	actualizaObjetos();
 
-	// recorre los personajes, y para los visibles, actualiza su posiciÛn y animaciÛn y marca la altura que ocupan
+	// recorre los personajes, y para los visibles, actualiza su posici√≥n y animaci√≥n y marca la altura que ocupan
 	actualizaPersonajes();
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// actualizaciÛn de las entidades del juego seg˙n la c·mara
+// actualizaci√≥n de las entidades del juego seg√∫n la c√°mara
 /////////////////////////////////////////////////////////////////////////////
 
 void MotorGrafico::actualizaPuertas()
 {
-	// recorre las puertas, y para las visibles, actualiza su posiciÛn y marca la altura que ocupan
+	// recorre las puertas, y para las visibles, actualiza su posici√≥n y marca la altura que ocupan
 	for (int i = 0; i < Juego::numPuertas; i++){
 		int posXPant, posYPant, sprPosY;
 
 		Puerta *puerta = elJuego->puertas[i];
 
-		// actualiza la posiciÛn del sprite seg˙n la c·mara
+		// actualiza la posici√≥n del sprite seg√∫n la c√°mara
 		if (actualizaCoordCamara(puerta, posXPant, posYPant, sprPosY) != -1){
 			puerta->notificaVisibleEnPantalla(posXPant, posYPant, sprPosY);
 		} else {
@@ -251,13 +251,13 @@ void MotorGrafico::actualizaPuertas()
 
 void MotorGrafico::actualizaObjetos()
 {
-	// recorre los objetos, y para los visibles, actualiza su posiciÛn
+	// recorre los objetos, y para los visibles, actualiza su posici√≥n
 	for (int i = 0; i < Juego::numObjetos; i++){
 		int posXPant, posYPant, sprPosY;
 
 		Objeto *objeto = elJuego->objetos[i];
 
-		// actualiza la posiciÛn del sprite seg˙n la c·mara
+		// actualiza la posici√≥n del sprite seg√∫n la c√°mara
 		if (actualizaCoordCamara(objeto, posXPant, posYPant, sprPosY) != -1){
 			objeto->notificaVisibleEnPantalla(posXPant, posYPant, sprPosY);
 		} else {
@@ -271,20 +271,20 @@ void MotorGrafico::actualizaObjetos()
 
 void MotorGrafico::actualizaPersonajes()
 {
-	// recorre los personajes, y para los visibles, actualiza su posiciÛn y animaciÛn y marca la altura que ocupan
+	// recorre los personajes, y para los visibles, actualiza su posici√≥n y animaci√≥n y marca la altura que ocupan
 	for (int i = 0; i < Juego::numPersonajes; i++){
 		int posXPant, posYPant, sprPosY;
 
 		Personaje *pers = elJuego->personajes[i];
 
-		// actualiza la posiciÛn del sprite seg˙n la c·mara
+		// actualiza la posici√≥n del sprite seg√∫n la c√°mara
 		if (actualizaCoordCamara(pers, posXPant, posYPant, sprPosY) != -1){
 			pers->notificaVisibleEnPantalla(posXPant, posYPant, sprPosY);
 		} else {
 			pers->sprite->esVisible = false;
 		}
 
-		// si el personaje est· en las posiciones centrales de la pantalla actual, marca las posiciones que ocupa
+		// si el personaje est√° en las posiciones centrales de la pantalla actual, marca las posiciones que ocupa
 		pers->marcaPosicion(rejilla, pers->valorPosicion);
 	}
 }
@@ -295,7 +295,7 @@ void MotorGrafico::actualizaPersonajes()
 
 void MotorGrafico::dibujaSprites()
 {
-	// si la habitaciÛn no est· iluminada, evita dibujar los sprites visibles
+	// si la habitaci√≥n no est√° iluminada, evita dibujar los sprites visibles
 	if (!pantallaIluminada){
 		for (int i = 0; i < Juego::numSprites; i++){
 			if (elJuego->sprites[i]->esVisible){
@@ -303,12 +303,12 @@ void MotorGrafico::dibujaSprites()
 			}
 		}
 		
-		// si adso es visible en la pantalla actual y tiene la l·mpara, activa el sprite de la luz
+		// si adso es visible en la pantalla actual y tiene la l√°mpara, activa el sprite de la luz
 		if ((elJuego->personajes[1]->sprite->esVisible) && ((elJuego->personajes[1]->objetos & LAMPARA) != 0)){
 			elJuego->sprites[Juego::spriteLuz]->esVisible = true;
 			elJuego->sprites[Juego::spriteLuz]->haCambiado = true;
 
-			// fija una profundidad muy alta para que sea el ˙ltimo sprite que se dibuje
+			// fija una profundidad muy alta para que sea el √∫ltimo sprite que se dibuje
 			elJuego->sprites[Juego::spriteLuz]->profundidad = 0x3c;
 		}
 	}
@@ -320,7 +320,7 @@ void MotorGrafico::dibujaSprites()
 void MotorGrafico::dibujaPantalla()
 {
 	if (hayQueRedibujar){
-		// elige un color de fondo seg˙n el tipo de pantalla
+		// elige un color de fondo seg√∫n el tipo de pantalla
 		// CPC int colorFondo = (pantallaIluminada) ? 0 : 3;
 		int colorFondo = (pantallaIluminada) ? 12 : 0; // VGA 
 		// el 3 era el negro en  CPC , pero para el caso contrario 
@@ -358,10 +358,10 @@ void MotorGrafico::dibujaPantalla()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos relacionados con la transformaciÛn de c·mara
+// m√©todos relacionados con la transformaci√≥n de c√°mara
 /////////////////////////////////////////////////////////////////////////////
 
-// actualiza el sprite con las nuevas coordenadas de c·mara correspondiente a las coordenadas de mundo actuales
+// actualiza el sprite con las nuevas coordenadas de c√°mara correspondiente a las coordenadas de mundo actuales
 // y si es sprite es visible, devuelve en posXPant y posYPant las coordenadas de pantalla del sprite
 int MotorGrafico::actualizaCoordCamara(EntidadJuego *entidad, int &posXPant, int &posYPant, int &sprPosY)
 {
@@ -370,18 +370,18 @@ int MotorGrafico::actualizaCoordCamara(EntidadJuego *entidad, int &posXPant, int
 	int posYLocal = entidad->posY - (posYPantalla - 12);
 	int alturaLocal = entidad->altura - alturaBasePantalla;
 
-	// si la entidad no est· en la zona visible, devuelve false
+	// si la entidad no est√° en la zona visible, devuelve false
 	if ((posXLocal < 0) || (posXLocal >= 40)) return -1;
 	if ((posYLocal < 0) || (posYLocal >= 40)) return -1;
 	if (obtenerAlturaBasePlanta(entidad->altura) != alturaBasePantalla) return -1;
 	
-	// transforma las coordenadas locales a coordenadas de c·mara
+	// transforma las coordenadas locales a coordenadas de c√°mara
 	transCoordLocalesACoordCamara(posXLocal, posYLocal);
 	
 	entidad->sprite->posXLocal = posXLocal;
 	entidad->sprite->posYLocal = posYLocal;
 
-	// convierte las coordenadas de c·mara en coordenadas de pantalla
+	// convierte las coordenadas de c√°mara en coordenadas de pantalla
 	posYPant = posXLocal + posYLocal - alturaLocal;
 
 	if (posYPant < 0) return -1;
@@ -403,20 +403,20 @@ int MotorGrafico::actualizaCoordCamara(EntidadJuego *entidad, int &posXPant, int
 	return sprPosY;
 }
 
-// transforma las coordenadas locales seg˙n la orientaciÛn de la c·mara
+// transforma las coordenadas locales seg√∫n la orientaci√≥n de la c√°mara
 void MotorGrafico::transCoordLocalesACoordCamara(int &x, int &y)
 {
 	transCamara[oriCamara]->transforma(x, y);
 }
 
-// ajusta la orientaciÛn que se le pasa seg˙n la orientaciÛn de la c·mara
+// ajusta la orientaci√≥n que se le pasa seg√∫n la orientaci√≥n de la c√°mara
 int MotorGrafico::ajustaOrientacionSegunCamara(int orientacion)
 {
 	return (orientacion - oriCamara) & 0x03;
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos relacionados con al altura
+// m√©todos relacionados con al altura
 /////////////////////////////////////////////////////////////////////////////
 
 // devuelve la altura base de la planta a la que corresponde la altura que se le pasa
@@ -440,10 +440,10 @@ int MotorGrafico::obtenerPlanta(int alturaBase)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos de ayuda
+// m√©todos de ayuda
 /////////////////////////////////////////////////////////////////////////////
 
-// dada una pantalla, obtiene la direcciÛn donde empieza
+// dada una pantalla, obtiene la direcci√≥n donde empieza
 int MotorGrafico::obtenerDirPantalla(int numPant)
 {
 	int desp = 0x1c000;

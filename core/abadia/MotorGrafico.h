@@ -1,6 +1,6 @@
 // MotorGrafico.h
 //
-//	Clase que contiene los mÈtodos de generaciÛn de pantallas
+//	Clase que contiene los m√©todos de generaci√≥n de pantallas
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -27,38 +27,38 @@ class MotorGrafico : public Singleton<MotorGrafico>
 // campos
 public:
 	RejillaPantalla *rejilla;		// objeto para realizar operaciones relacionadas con la rejilla de pantalla
-	GeneradorPantallas *genPant;	// generador de pantallas interpretando los bloques de construcciÛn
+	GeneradorPantallas *genPant;	// generador de pantallas interpretando los bloques de construcci√≥n
 	MezcladorSprites *mezclador;	// mezclador de los sprites con el resto de la pantalla
 
-	int posXPantalla;				// posiciÛn x de la pantalla actual en coordenadas de mundo
-	int posYPantalla;				// posiciÛn y de la pantalla actual en coordenadas de mundo
+	int posXPantalla;				// posici√≥n x de la pantalla actual en coordenadas de mundo
+	int posYPantalla;				// posici√≥n y de la pantalla actual en coordenadas de mundo
 	int alturaBasePantalla;			// altura base de la planta que se muestra en la pantalla actual
-	bool pantallaIluminada;			// indica si la pantalla est· iluminada o no
+	bool pantallaIluminada;			// indica si la pantalla est√° iluminada o no
 	bool hayQueRedibujar;			// indica que hay que redibujar la pantalla
-	int numPantalla;				// n˙mero de la pantalla que muestra la c·mara
-	int oriCamara;					// orientaciÛn de la c·mara para ver la pantalla actual
+	int numPantalla;				// n√∫mero de la pantalla que muestra la c√°mara
+	int oriCamara;					// orientaci√≥n de la c√°mara para ver la pantalla actual
 
-	Personaje *personaje;			// personaje al que sigue la c·mara
+	Personaje *personaje;			// personaje al que sigue la c√°mara
 
-	static int tablaDespOri[4][2];	// tabla con los desplazamientos seg˙n la orientaciÛn
-	static UINT8 plantas[3][256];	// mapa de las plantas de la abadÌa
+	static int tablaDespOri[4][2];	// tabla con los desplazamientos seg√∫n la orientaci√≥n
+	static UINT8 plantas[3][256];	// mapa de las plantas de la abad√≠a
 
 protected:
 	UINT8 *roms;					// puntero a los datos del juego
 
-	// objetos para la transformaciÛn de coordenadas seg˙n el tipo de c·mara de la pantalla
+	// objetos para la transformaci√≥n de coordenadas seg√∫n el tipo de c√°mara de la pantalla
 	TransformacionCamara *transCamara[4];
 
-// mÈtodos
+// m√©todos
 public:
-	// comprobaciÛn del cambio de pantalla
+	// comprobaci√≥n del cambio de pantalla
 	void compruebaCambioPantalla(bool forzarCambio=false);
 
-	// mÈtodos relacionados con la altura
+	// m√©todos relacionados con la altura
 	int obtenerPlanta(int alturaBase);
 	int obtenerAlturaBasePlanta(int altura);
 
-	// transformaciones relacionadas con la c·mara
+	// transformaciones relacionadas con la c√°mara
 	int ajustaOrientacionSegunCamara(int orientacion);
 	void transCoordLocalesACoordCamara(int &x, int &y);
 	int actualizaCoordCamara(EntidadJuego *entidad, int &posXPant, int &posYPant, int &sprPosY);
@@ -67,15 +67,15 @@ public:
 	void dibujaPantalla();
 	void dibujaSprites();
 
-	// inicializaciÛn y limpieza
+	// inicializaci√≥n y limpieza
 	MotorGrafico(UINT8 *buffer, int lgtudBuffer);
 	~MotorGrafico();
 
-// mÈtodos de ayuda
+// m√©todos de ayuda
 protected:
 	int obtenerDirPantalla(int numPant);
 
-	// actualizaciÛn de las entidades del juego seg˙n la c·mara
+	// actualizaci√≥n de las entidades del juego seg√∫n la c√°mara
 	void actualizaPuertas();
 	void actualizaObjetos();
 	void actualizaPersonajes();

@@ -10,7 +10,7 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// inicialización y limpieza
+// inicializaciÃ³n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Objeto::Objeto(Sprite *spr) : EntidadJuego(spr)
@@ -25,10 +25,10 @@ Objeto::~Objeto()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// actualización del entorno cuando un objeto es visible en la pantalla actual
+// actualizaciÃ³n del entorno cuando un objeto es visible en la pantalla actual
 /////////////////////////////////////////////////////////////////////////////
 
-// actualiza la posición del sprite dependiendo de su posición con respecto a la cámara
+// actualiza la posiciÃ³n del sprite dependiendo de su posiciÃ³n con respecto a la cÃ¡mara
 void Objeto::notificaVisibleEnPantalla(int posXPant, int posYPant, int profundidad)
 {
 	// si el objeto no se ha cogido
@@ -38,39 +38,39 @@ void Objeto::notificaVisibleEnPantalla(int posXPant, int posYPant, int profundid
 		sprite->esVisible = true;
 		sprite->profundidad = profundidad;
 
-		// ajusta la posición del sprite (-8, -8)
+		// ajusta la posiciÃ³n del sprite (-8, -8)
 		sprite->posXPant = posXPant - 2;
 		sprite->posYPant = posYPant - 8;
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos relacionados con coger/dejar los objetos
+// mÃ©todos relacionados con coger/dejar los objetos
 /////////////////////////////////////////////////////////////////////////////
 
 // comprueba si el personaje puede coger el objeto
 bool Objeto::seHaCogidoPor(Personaje *pers, int mascara)
 {
-	// si el objeto se está cogiendo o dejando, no puede ser cogido
+	// si el objeto se estÃ¡ cogiendo o dejando, no puede ser cogido
 	if (seEstaCogiendo) return false;
 
-	// guarda la posición del objeto
+	// guarda la posiciÃ³n del objeto
 	int posXObj = posX;
 	int posYObj = posY;
 	int alturaObj = altura;
 
-	// si el objeto está cogido, su posición viene dada por la del personaje que lo tiene
+	// si el objeto estÃ¡ cogido, su posiciÃ³n viene dada por la del personaje que lo tiene
 	if (seHaCogido){
 		// si el personaje no puede quitar objetos, sale
 		if (!pers->puedeQuitarObjetos) return false;
 
-		// obtiene la posición del personaje
+		// obtiene la posiciÃ³n del personaje
 		posXObj = personaje->posX;
 		posYObj = personaje->posY;
 		alturaObj = personaje->altura;
 	}
 
-	// comprueba si el personaje está en una posición que permita coger el objeto
+	// comprueba si el personaje estÃ¡ en una posiciÃ³n que permita coger el objeto
 	int difAltura = alturaObj - pers->altura;
 	if ((difAltura < 0) || (difAltura >= 5)) return false;
 
@@ -80,7 +80,7 @@ bool Objeto::seHaCogidoPor(Personaje *pers, int mascara)
 	int posYPers = pers->posY + 2*elMotorGrafico->tablaDespOri[pers->orientacion][1];
 	if (posYObj != posYPers) return false;
 
-	// si el objeto está cogido por un personaje, se lo quita
+	// si el objeto estÃ¡ cogido por un personaje, se lo quita
 	if (seHaCogido){
 		personaje->objetos = personaje->objetos ^ mascara;
 	}
@@ -101,10 +101,10 @@ bool Objeto::seHaCogidoPor(Personaje *pers, int mascara)
 	return true;
 }
 
-// deja el objeto que tenía el personaje en la posición indicada
+// deja el objeto que tenÃ­a el personaje en la posiciÃ³n indicada
 void Objeto::dejar(Personaje *pers, int mascara, int posXObj, int posYObj, int alturaObj)
 {
-	// guarda la posición y orientación del objeto e indica que ya no está cogido
+	// guarda la posiciÃ³n y orientaciÃ³n del objeto e indica que ya no estÃ¡ cogido
 	posX = posXObj;
 	posY = posYObj;
 	altura = alturaObj;
@@ -117,7 +117,7 @@ void Objeto::dejar(Personaje *pers, int mascara, int posXObj, int posYObj, int a
 	pers->objetos = pers->objetos & (~mascara);
 
 	// salta a la rutina de redibujado de objetos para redibujar solo el objeto que se deja
-	// actualiza la posición del sprite según la cámara
+	// actualiza la posiciÃ³n del sprite segÃºn la cÃ¡mara
 	int posXPant, posYPant, sprPosY;
 
 	if (elMotorGrafico->actualizaCoordCamara(this, posXPant, posYPant, sprPosY) != -1){

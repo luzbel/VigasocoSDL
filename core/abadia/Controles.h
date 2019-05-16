@@ -24,7 +24,7 @@ protected:
 	int _controles[END_OF_INPUTS];				// datos sobre los controles
 	int _oldControles[END_OF_INPUTS];			// datos anteriores sobre los controles
 
-// métodos
+// mÃ©todos
 public:
 	void init(InputHandler *input);
 	void actualizaEstado();
@@ -32,7 +32,7 @@ public:
 	bool estaSiendoPulsado(Inputs input) const { return (_controles[input] > 0); }
 	bool seHaPulsado(Inputs input);
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Controles();
 	~Controles();
 };

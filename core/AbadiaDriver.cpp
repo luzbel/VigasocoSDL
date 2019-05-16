@@ -33,7 +33,7 @@ AbadiaDriver::AbadiaDriver() : GameDriver("abadia", "La abadia del crimen", 300)
 	_videoInfo.width = 640;
 	_videoInfo.height = 400;
 	_videoInfo.visibleArea = Rect(_videoInfo.width, _videoInfo.height);
-	_videoInfo.colors = 32;			// 16 del juego + 16 para mostrar informaciÛn interna del juego
+	_videoInfo.colors = 32;			// 16 del juego + 16 para mostrar informaci√≥n interna del juego
 	_videoInfo.colors = 256;		// TODO: PRUEBAS VGA
 	_videoInfo.refreshRate = 50;
 
@@ -60,7 +60,7 @@ AbadiaDriver::~AbadiaDriver()
 
 void AbadiaDriver::createGameDataEntities()
 {
-	// el cÛdigo y los gr·ficos est·n mezclados en la imagen
+	// el c√≥digo y los gr√°ficos est√°n mezclados en la imagen
 	GameDataEntity *roms = new GameDataEntity(MIXED, "Code + Graphics + Sound");
 	roms->addFile(new GameFile("abadia.dsk", 0x00000, 0x27400, 0xd37cf8e7, 0));
 	_gameFiles.push_back(roms);
@@ -181,9 +181,35 @@ void AbadiaDriver::filesLoaded()
 	memcpy(&romsPtr[0x24000-1+_gameFiles[1]->getTotalSize()+21600],_gameFiles[1]->getData(),_gameFiles[1]->getTotalSize());
 	memcpy(&romsPtr[0x24000-1+(_gameFiles[1]->getTotalSize()+21600)*2],_gameFiles[2]->getData(),_gameFiles[1]->getTotalSize());
 	// Los sonidos no se copian, y se cargan directamente en Audioplugin
+
+        // En la versi√≥n 0.09 se incluyeron nuevos caracteres para soportar nuevos idiomas
+        // Esos nuevos caracteres incluian '-' y '.' , a los que se le a√±adio nuevo gr√°fico
+        // Pero en el c√≥digo original algunos caracteres como - . > /
+        // se usan para representar varios caracteres a la vez
+        // Por ejemplo, COMPLETAS no cabe en el hueco del Marcador
+        // donde se muestra el d√≠a
+        // Y en la ROM est√° grabado como COM-./>
+        // El gr√°fico del gui√≥n es el texto PL comprimido y ajustado para que
+        // COMPLETAS entre en el marcador
+        //
+        // Parcheamos el texto de COMPLETAS en la ROM para que en vez de usar - y .
+        // como caracteres especiales que representan varias letras a la vez,
+        // se usen @ y ~  , que son c√≥digos ASCII que no se usan en ninguno de los
+        // nuevos textos multiidioma
+        // Junto a este cambio, se modifica Marcador::imprimirCaracter para que
+        // se tenga en cuenta este parche y cuando se imprima @ o ~
+        // se usan los antiguos gr√°ficos asociados a - y .
+        //
+        // Accedemos a la posici√≥n de la ROM d√≥nd est√° el texto COM-./>
+        UINT8*tmp=&romsPtr[0x4000+0x4fbc + 7*6];
+        // Modificamos el tercer byte cambiando - por #
+        *(tmp+3)='#';
+        // Modificamos el cuarto byte cambiando . por ~
+        *(tmp+4)='~';
+
 }
 
-// reordena los datos gr·ficos y los copia en el destino
+// reordena los datos gr√°ficos y los copia en el destino
 void AbadiaDriver::reOrderAndCopy(UINT8 *src, UINT8 *dst, int size)
 {
 	for (int i = 0; i < size; i++){
@@ -193,11 +219,11 @@ void AbadiaDriver::reOrderAndCopy(UINT8 *src, UINT8 *dst, int size)
 
 void AbadiaDriver::finishInit()
 {
-	// crea e inicia la secciÛn crÌtica para la sincronizaciÛn del dibujado de gr·ficos
+	// crea e inicia la secci√≥n cr√≠tica para la sincronizaci√≥n del dibujado de gr√°ficos
 	cs = VigasocoMain->createCriticalSection();
 	cs->init();
 
-	//crea el objeto para tratar con gr·ficos del amstrad
+	//crea el objeto para tratar con gr√°ficos del amstrad
 	cpc6128 = new CPC6128(cs);
 
 	// crea el objeto del juego
@@ -283,13 +309,13 @@ void AbadiaDriver::audioFinalizing(IAudioPlugin *ap)
 
 void AbadiaDriver::end()
 {
-	// destruye la secciÛn crÌtica
+	// destruye la secci√≥n cr√≠tica
 	if (cs != 0){
 		cs->destroy();
 		delete cs;
 	}
 
-	// borra el objeto de ayuda para los gr·ficos
+	// borra el objeto de ayuda para los gr√°ficos
 	delete cpc6128;
 
 	// borra el objeto del juego
@@ -306,10 +332,10 @@ void AbadiaDriver::end()
 void AbadiaDriver::runSync()
 {
 	if (!_abadiaGame->pausa){
-		// incrementa el contador de la interrupciÛn
+		// incrementa el contador de la interrupci√≥n
 		_abadiaGame->contadorInterrupcion++;
 
-		// si se est· mostrando alguna frase en el marcador, contin˙a mostr·ndola
+		// si se est√° mostrando alguna frase en el marcador, contin√∫a mostr√°ndola
 		elGestorFrases->procesaFraseActual();
 	}
 }
@@ -355,7 +381,7 @@ void AbadiaDriver::render(IDrawPlugin *dp)
 
 void AbadiaDriver::showGameLogic(IDrawPlugin *dp)
 {
-	// actualiza el modo de informaciÛn
+	// actualiza el modo de informaci√≥n
 	if (theInputHandler->hasBeenPressed(FUNCTION_5)){
 		_abadiaGame->modoInformacion = !_abadiaGame->modoInformacion;
 		_abadiaGame->cambioModoInformacion = true;

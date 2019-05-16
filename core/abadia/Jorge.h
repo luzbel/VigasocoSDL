@@ -17,17 +17,17 @@ class Jorge : public Monje
 {
 // campos
 public:
-	bool estaActivo;							// indica si el personaje está activo o no
+	bool estaActivo;							// indica si el personaje estÃ¡ activo o no
 	int contadorHuida;							// contador usado para la huida
 
 protected:
-	static PosicionJuego posicionesPredef[2];	// posiciones a las que puede ir el personaje según el estado
+	static PosicionJuego posicionesPredef[2];	// posiciones a las que puede ir el personaje segÃºn el estado
 
-// métodos
+// mÃ©todos
 public:
 	virtual void piensa();
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Jorge(SpriteMonje *spr);
 	virtual ~Jorge();
 };

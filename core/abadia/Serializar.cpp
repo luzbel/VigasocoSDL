@@ -701,10 +701,10 @@ std::ifstream& Abadia::operator>> (
 	}
 	else
 	{
-		// modifica los datos de altura de la habitación del espejo para que guillermo puede atravesarlo
+		// modifica los datos de altura de la habitaciÃ³n del espejo para que guillermo puede atravesarlo
                 logica->roms[logica->despDatosAlturaEspejo] = 0xff;
 
-		// cambia los datos de un bloque de la habitación del espejo para que el espejo esté abierto
+		// cambia los datos de un bloque de la habitaciÃ³n del espejo para que el espejo estÃ© abierto
                 logica->roms[logica->despBloqueEspejo] = 0x51;
 
 		// indica que se ha abierto el espejo y hay que la pantalla ha cambiado

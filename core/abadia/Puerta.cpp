@@ -14,7 +14,7 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// tabla para el c·lculo de los desplazamientos de las puertas seg˙n la orientaciÛn
+// tabla para el c√°lculo de los desplazamientos de las puertas seg√∫n la orientaci√≥n
 /////////////////////////////////////////////////////////////////////////////
 
 int Puerta::despOrientacion[4][12] = {
@@ -25,7 +25,7 @@ int Puerta::despOrientacion[4][12] = {
 };
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Puerta::Puerta(Sprite *spr) : EntidadJuego(spr)
@@ -42,13 +42,13 @@ Puerta::~Puerta()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// actualizaciÛn del entorno cuando una puerta es visible en la pantalla actual
+// actualizaci√≥n del entorno cuando una puerta es visible en la pantalla actual
 /////////////////////////////////////////////////////////////////////////////
 
-// actualiza la posiciÛn del sprite dependiendo de su posiciÛn con respecto a la c·mara
+// actualiza la posici√≥n del sprite dependiendo de su posici√≥n con respecto a la c√°mara
 void Puerta::notificaVisibleEnPantalla(int posXPant, int posYPant, int profundidad)
 {
-	// pone la posiciÛn y dimensiones actuales como posiciÛn y dimensiones antiguas
+	// pone la posici√≥n y dimensiones actuales como posici√≥n y dimensiones antiguas
 	sprite->preparaParaCambio();
 
 	int oriEntrada = elMotorGrafico->ajustaOrientacionSegunCamara(ARRIBA);
@@ -75,18 +75,18 @@ void Puerta::notificaVisibleEnPantalla(int posXPant, int posYPant, int profundid
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos para abrir y cerrar las puertas
+// m√©todos para abrir y cerrar las puertas
 /////////////////////////////////////////////////////////////////////////////
 
 // comprueba si hay que abrir o cerrar una puerta
 void Puerta::compruebaAbrirCerrar(Personaje **personajes, int numPersonajes)
 {
-	// si la puerta est· fija, sale
+	// si la puerta est√° fija, sale
 	if (estaFija) return;
 
 	int mascara = (laLogica->mascaraPuertas | 0x10) & identificador;
 
-	// TODO: si guillermo o adso est·n cerca de la puerta y no tienen permisos para abrirla, se cierra
+	// TODO: si guillermo o adso est√°n cerca de la puerta y no tienen permisos para abrirla, se cierra
 
 	for (int i = 0; i < numPersonajes; i++){
 		// si tiene permisos para entrar en esa puerta
@@ -97,21 +97,21 @@ void Puerta::compruebaAbrirCerrar(Personaje **personajes, int numPersonajes)
 		}
 	}
 
-	// aquÌ llega si la puerta no se ha abierto
+	// aqu√≠ llega si la puerta no se ha abierto
 
 	// ejecuta las acciones correspondientes para cerrar la puerta
 	accionesAbrirCerrar(false);
 }
 
-// comprueba si el personaje est· cerca de la puerta y si es asÌ, si se puede abrir
+// comprueba si el personaje est√° cerca de la puerta y si es as√≠, si se puede abrir
 bool Puerta::puedeAbrir(Personaje *pers)
 {
 	int difX = pers->posX - (posX - 1);
-	// si no est· cerca de la puerta en x, sale
+	// si no est√° cerca de la puerta en x, sale
 	if ((difX < 0) || (difX >= 4)) return false;
 
 	int difY = pers->posY - (posY - 1);
-	// si no est· cerca de la puerta en y, sale
+	// si no est√° cerca de la puerta en y, sale
 	if ((difY < 0) || (difY >= 4)) return false;
 
 	// ejecuta las acciones correspondientes para abrir la puerta
@@ -122,12 +122,12 @@ bool Puerta::puedeAbrir(Personaje *pers)
 bool Puerta::accionesAbrirCerrar(bool abrir)
 {
 	if (abrir){
-		// si la puerta est· abierta, sale
+		// si la puerta est√° abierta, sale
 		if (estaAbierta) return true;
 		// si lo ponemos aqui, suena aunque la puerta no este en la pantalla actual
 		//VigasocoMain->getAudioPlugin()->Play(1,false);
 	} else {
-		// si la puerta est· cerrada, sale
+		// si la puerta est√° cerrada, sale
 		if (!estaAbierta) return true;
 		//VigasocoMain->getAudioPlugin()->Play(2,false);
 	}
@@ -141,18 +141,18 @@ bool Puerta::accionesAbrirCerrar(bool abrir)
 
 	int difOri = (abrir) ? 1 : -1;
 
-	// cambia la orientaciÛn de la puerta dependiendo de hacia donde se abra o se cierre
+	// cambia la orientaci√≥n de la puerta dependiendo de hacia donde se abra o se cierre
 	orientacion = (haciaDentro) ? (orientacion - difOri) & 0x03 : (orientacion + difOri) & 0x03;
 
 	int posXRejilla, posYRejilla;
 	RejillaPantalla *rejilla = elMotorGrafico->rejilla;
 
-	// si la puerta est· en las 20x20 posiciones centrales de la rejilla
+	// si la puerta est√° en las 20x20 posiciones centrales de la rejilla
 	if (rejilla->estaEnRejillaCentral(this, posXRejilla, posYRejilla)){
 		posXRejilla += 2*despOrientacion[orientacion][10];
 		posYRejilla += 2*despOrientacion[orientacion][11];
 
-		// si no hay un personaje en la posiciÛn en la que se abre o cierra la puerta, sale
+		// si no hay un personaje en la posici√≥n en la que se abre o cierra la puerta, sale
 		//if ((rejilla->bufAlturas[posYRejilla][posXRejilla] & 0xf0) == 0) return true;
 		if ((rejilla->bufAlturas[posYRejilla][posXRejilla] & 0xf0) == 0)
 		{
@@ -179,7 +179,7 @@ bool Puerta::accionesAbrirCerrar(bool abrir)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos de ayuda
+// m√©todos de ayuda
 /////////////////////////////////////////////////////////////////////////////
 
 // marca la altura de las posiciones ocupadas por la puerta
@@ -187,7 +187,7 @@ void Puerta::marcaPosiciones(RejillaPantalla *rejilla, int valor)
 {
 	int posXRejilla, posYRejilla;
 
-	// si la puerta est· en las 20x20 posiciones centrales de la rejilla, marca las posiciones que ocupa
+	// si la puerta est√° en las 20x20 posiciones centrales de la rejilla, marca las posiciones que ocupa
 	if (rejilla->estaEnRejillaCentral(this, posXRejilla, posYRejilla)){
 		for (int i = 0; i < 3; i++){
 			rejilla->bufAlturas[posYRejilla][posXRejilla] = valor;

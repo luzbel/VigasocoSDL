@@ -41,12 +41,12 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// inicialización y limpieza
+// inicializaciÃ³n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Logica::Logica(UINT8 *romData, UINT8 *buf, int lgtud)
 {
-	// crea los objetos usados por la lógica
+	// crea los objetos usados por la lÃ³gica
 	accionesDia = new AccionesDia();
 	buscRutas = new BuscadorRutas(buf, lgtud);
 	gestorFrases = new GestorFrases();
@@ -55,17 +55,17 @@ Logica::Logica(UINT8 *romData, UINT8 *buf, int lgtud)
 
 Logica::~Logica()
 {
-	// borra los objetos usados por la lógica
+	// borra los objetos usados por la lÃ³gica
 	delete accionesDia;
 	delete buscRutas;
 	delete gestorFrases;
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// incialización de las variables para una nueva partida
+// incializaciÃ³n de las variables para una nueva partida
 /////////////////////////////////////////////////////////////////////////////
 
-// inicia la lógica
+// inicia la lÃ³gica
 void Logica::inicia()
 {
 	// inicia las entidades del juego
@@ -74,10 +74,10 @@ void Logica::inicia()
 	iniciaPuertas();
 	iniciaObjetos();
 
-	// inicia la lógica relacionada con la habitación del espejo
+	// inicia la lÃ³gica relacionada con la habitaciÃ³n del espejo
 	iniciaHabitacionEspejo();
 
-	// inicia las variables de la lógica del juego
+	// inicia las variables de la lÃ³gica del juego
 	dia = 1;
 	momentoDia = NONA;
 	duracionMomentoDia = 0;
@@ -104,7 +104,7 @@ void Logica::inicia()
 	hayMovimiento = false;
 	cntMovimiento = 0;
 
-	// inicialmente la cámara sigue a guillermo
+	// inicialmente la cÃ¡mara sigue a guillermo
 	numPersonajeCamara = 0;
 	opcionPersonajeCamara = 0;
 	elMotorGrafico->personaje = guillermo;
@@ -113,7 +113,7 @@ void Logica::inicia()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos relacionados con el libro
+// mÃ©todos relacionados con el libro
 /////////////////////////////////////////////////////////////////////////////
 
 void Logica::compruebaLecturaLibro()
@@ -141,16 +141,16 @@ void Logica::compruebaLecturaLibro()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos relacionados con los bonus y los cambios de cámara
+// mÃ©todos relacionados con los bonus y los cambios de cÃ¡mara
 /////////////////////////////////////////////////////////////////////////////
 
 void Logica::actualizaBonusYCamara()
 {
 	// Este comportamiento difiere al original
 	// es una ayuda-trampa-cheat 
-	// ¡¡¡ojo!!! estas teclas (1-7) se usan tambien para infuego.cpp
+	// Â¡Â¡Â¡ojo!!! estas teclas (1-7) se usan tambien para infuego.cpp
 	// aunque algunas no funcionan en SDL por carencias del SDLVideoPlugin
-	// pero 5 y 6 si coinciden: ¡¡¡ CAMBIAR EN INFOJUEGO !!!
+	// pero 5 y 6 si coinciden: Â¡Â¡Â¡ CAMBIAR EN INFOJUEGO !!!
 	if (losControles->estaSiendoPulsado(KEYBOARD_1)) 
 	{
 		opcionPersonajeCamara=3; // abad
@@ -197,7 +197,7 @@ void Logica::actualizaBonusYCamara()
 
 	// comprueba si hay que seguir a berengario
 	if (((berengario->aDondeVa == POS_LIBRO) && (berengario->posX < 0x50) && (berengario->estaVivo)) ||	(berengario->aDondeVa == POS_ABAD)){
-		// si va al scriptorium a por el libro o va a avisar al abad, indica el posible cambio de cámara
+		// si va al scriptorium a por el libro o va a avisar al abad, indica el posible cambio de cÃ¡mara
 		opcionPersonajeCamara = 4;
 
 		return;
@@ -205,7 +205,7 @@ void Logica::actualizaBonusYCamara()
 
 	// comprueba si hay que seguir a bernardo gui
 	if (bernardo->aDondeVa == POS_ABAD){
-		// si va a avisar al abad, indica el posible cambio de cámara
+		// si va a avisar al abad, indica el posible cambio de cÃ¡mara
 		opcionPersonajeCamara = 7;
 
 		return;
@@ -213,16 +213,16 @@ void Logica::actualizaBonusYCamara()
 
 	// comprueba si hay que seguir al abad
 	if (((momentoDia == SEXTA) && (abad->aDondeHaLlegado >= 2)) || (abad->estado == 0x15) || (abad->guillermoHaCogidoElPergamino) || (abad->estado == 0x0b)){
-		// si en sexta va a algún lugar interesante o si va a dejar el pergamino a su celda o si berengario le ha dicho
-		// que bernardo tiene el pergamino o si está en estado de echar a guillermo, indica el posible cambio de cámara
+		// si en sexta va a algÃºn lugar interesante o si va a dejar el pergamino a su celda o si berengario le ha dicho
+		// que bernardo tiene el pergamino o si estÃ¡ en estado de echar a guillermo, indica el posible cambio de cÃ¡mara
 		opcionPersonajeCamara = 3;
 
 		return;
 	}
 
-	// comprueba si hay que seguir a malaquías
+	// comprueba si hay que seguir a malaquÃ­as
 	if ((malaquias->aDondeVa == POS_ABAD) || ((momentoDia == VISPERAS) && (malaquias->estado < 0x06))){
-		// si va a avisar al abad o es vísperas y no ha llegado a la cocina, indica el posible cambio de cámara
+		// si va a avisar al abad o es vÃ­speras y no ha llegado a la cocina, indica el posible cambio de cÃ¡mara
 		opcionPersonajeCamara = 2;
 
 		return;
@@ -230,13 +230,13 @@ void Logica::actualizaBonusYCamara()
 
 	// comprueba si hay que seguir a severino
 	if (severino->aDondeVa == POS_GUILLERMO){
-		// si va hacia la posición de guillermo, indica el posible cambio de cámara
+		// si va hacia la posiciÃ³n de guillermo, indica el posible cambio de cÃ¡mara
 		opcionPersonajeCamara = 5;
 
 		return;
 	}
 
-	// en otro caso, la cámara sigue a guillermo
+	// en otro caso, la cÃ¡mara sigue a guillermo
 	opcionPersonajeCamara = 0;
 
 	// actualiza los bonus dependiendo de si guillermo y adso tienen los objetos que dan bonus
@@ -244,7 +244,7 @@ void Logica::actualizaBonusYCamara()
 
 	// si guillermo tiene el pergamino
 	if ((guillermo->objetos & PERGAMINO) == PERGAMINO){
-		// si es la noche del tercer día
+		// si es la noche del tercer dÃ­a
 		if ((dia == 3) && (momentoDia == NOCHE)){
 			bonus |= 0x1000;
 		}
@@ -254,7 +254,7 @@ void Logica::actualizaBonusYCamara()
 			bonus |= 0x0100;
 		}
 
-		// si guillermo entra en la habitación del abad
+		// si guillermo entra en la habitaciÃ³n del abad
 		if ((elMotorGrafico->numPantalla == 0x0d) && (numPersonajeCamara == 0)){
 			bonus |= 0x2000;
 		}
@@ -265,14 +265,14 @@ void Logica::actualizaBonusYCamara()
 		bonus |= 0x0001;
 	}
 	
-	// si guillermo está en la biblioteca
+	// si guillermo estÃ¡ en la biblioteca
 	if (guillermo->altura >= 0x16){
 		// si tiene las gafas
 		if ((guillermo->objetos & GAFAS) == GAFAS){
 			bonus |= 0x0080;
 		}
 
-		// si adso ha cogido la lámpara
+		// si adso ha cogido la lÃ¡mpara
 		if ((adso->objetos & LAMPARA) == LAMPARA){
 			bonus |= 0x0020;
 		}
@@ -280,7 +280,7 @@ void Logica::actualizaBonusYCamara()
 		bonus |= 0x0010;
 	}
 
-	// si ha entrado en la habitación que hay detrás del espejo
+	// si ha entrado en la habitaciÃ³n que hay detrÃ¡s del espejo
 	if (elMotorGrafico->numPantalla == 0x72){
 		bonus |= 0x0200;
 	}
@@ -288,51 +288,51 @@ void Logica::actualizaBonusYCamara()
 
 void Logica::compruebaBonusYCambiosDeCamara()
 {
-	// comprueba si hay opción de seguir a algún monje y actualiza los bonus
+	// comprueba si hay opciÃ³n de seguir a algÃºn monje y actualiza los bonus
 	actualizaBonusYCamara();
 
 	bool teclaPulsada = false;
 
-	// si estamos en la conversación con jorge sobre el libro, la cámara sigue a jorge
+	// si estamos en la conversaciÃ³n con jorge sobre el libro, la cÃ¡mara sigue a jorge
 	if (((guillermo->objetos & GUANTES) == GUANTES) && ((jorge->estado == 0x0d) || (jorge->estado == 0x0e) || (jorge->estado == 0x0f))){
 		cntMovimiento = 0x32;
 		opcionPersonajeCamara = 6;
 	} else {
-		// comprueba si se está moviendo guillermo
+		// comprueba si se estÃ¡ moviendo guillermo
 		if ((losControles->estaSiendoPulsado(P1_UP)) || (losControles->estaSiendoPulsado(P1_LEFT)) || (losControles->estaSiendoPulsado(P1_RIGHT))){
 			teclaPulsada = true;
 		}
 	}
 
-	// si no se pulsa ninguna tecla y el contador llega al umbral, comprueba los cambios de cámara
+	// si no se pulsa ninguna tecla y el contador llega al umbral, comprueba los cambios de cÃ¡mara
 	if (!teclaPulsada){
 		cntMovimiento++;
 
-		// si no se ha llegado al límite, sale
+		// si no se ha llegado al lÃ­mite, sale
 		if (cntMovimiento < 0x32){
 			return;
 		}
 
 		VigasocoMain->getAudioPlugin()->Play(SONIDOS::Fondo,true);
 
-		// si hay la opción de seguir a un personaje distinto, cambia de cámara
+		// si hay la opciÃ³n de seguir a un personaje distinto, cambia de cÃ¡mara
 		if (numPersonajeCamara != opcionPersonajeCamara){
 			numPersonajeCamara = opcionPersonajeCamara;
 			cntMovimiento = opcionPersonajeCamara;
 		}
 	} else {
 		VigasocoMain->getAudioPlugin()->Stop(SONIDOS::Fondo);
-		// en otro caso, la cámara sigue a guillermo
+		// en otro caso, la cÃ¡mara sigue a guillermo
 		numPersonajeCamara = 0;
 		cntMovimiento = 0;
 	}
 
-	// fija el personaje al que sigue la cámara
+	// fija el personaje al que sigue la cÃ¡mara
 	elMotorGrafico->personaje = elJuego->personajes[numPersonajeCamara & 0x7f];
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos para coger/dejar objetos
+// mÃ©todos para coger/dejar objetos
 /////////////////////////////////////////////////////////////////////////////
 
 // comprueba los objetos que pueden coger los personajes
@@ -342,12 +342,12 @@ void Logica::compruebaCogerObjetos()
 	for (int i = 0; i < Juego::numPersonajes; i++){
 		Personaje *pers = elJuego->personajes[i];
 		
-		// si el personaje está cogiendo o dejando un objeto, pasa al siguiente personaje
+		// si el personaje estÃ¡ cogiendo o dejando un objeto, pasa al siguiente personaje
 		pers->contadorObjetos--;
 		if (pers->contadorObjetos != -1) return;
 		pers->contadorObjetos++;
 
-		// elimina de la máscara de los objetos que podemos coger los que ya tenemos
+		// elimina de la mÃ¡scara de los objetos que podemos coger los que ya tenemos
 		int objetosACoger = (pers->mascaraObjetos ^ pers->objetos) & pers->mascaraObjetos;
 
 		int mascara = 1 << Juego::numObjetos;
@@ -386,10 +386,10 @@ void Logica::compruebaCogerDejarObjetos()
 	int objetosGuillermo = guillermo->objetos;
 	int objetosAdso = adso->objetos;
 
-	// comprueba si los personajes cogen algún objeto
+	// comprueba si los personajes cogen algÃºn objeto
 	compruebaCogerObjetos();
 
-	// comprueba si los personajes dejan algún objeto
+	// comprueba si los personajes dejan algÃºn objeto
 	// si se pulsa el espacio, deja un objeto (si tiene)
 	if (losControles->estaSiendoPulsado(P1_BUTTON1)){
 		dejaObjeto(guillermo);
@@ -403,7 +403,7 @@ void Logica::compruebaCogerDejarObjetos()
 	int difObjetos = guillermo->objetos ^ objetosGuillermo;
 
 	// si ha cambiado el estado de las gafas o el pergamino, y si tenemos los 2 objetos, comprueba 
-	// si hay que generar el número del espejo y muestra el texto del pergamino
+	// si hay que generar el nÃºmero del espejo y muestra el texto del pergamino
 	if ((difObjetos & (PERGAMINO | GAFAS)) != 0){
 		if ((guillermo->objetos & (PERGAMINO | GAFAS)) == (PERGAMINO | GAFAS)){
 			generaNumeroRomano();
@@ -425,14 +425,14 @@ void Logica::compruebaCogerDejarObjetos()
 		VigasocoMain->getAudioPlugin()->Play(SONIDOS::Coger);
 	}
 
-	// recorre los objetos indicando que ya no se están cogiendo
+	// recorre los objetos indicando que ya no se estÃ¡n cogiendo
 	for (int i = 0; i < Juego::numObjetos; i++){
 		elJuego->objetos[i]->seEstaCogiendo = false;
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos relacionados con las puertas
+// mÃ©todos relacionados con las puertas
 /////////////////////////////////////////////////////////////////////////////
 
 void Logica::compruebaAbrirCerrarPuertas()
@@ -448,7 +448,7 @@ void Logica::compruebaAbrirCerrarPuertas()
 
 		int posXPant, posYPant, sprPosY;
 
-		// actualiza la posición del sprite según la cámara
+		// actualiza la posiciÃ³n del sprite segÃºn la cÃ¡mara
 		if (elMotorGrafico->actualizaCoordCamara(puerta, posXPant, posYPant, sprPosY) != -1){
 			puerta->notificaVisibleEnPantalla(posXPant, posYPant, sprPosY);
 		} else {
@@ -467,7 +467,7 @@ void Logica::ejecutaAccionesMomentoDia()
 	// obtiene el estado actualizado del gestor de frases
 	gestorFrases->actualizaEstado();
 
-	// si el personaje que muestra la cámara está en medio de una animación, sale
+	// si el personaje que muestra la cÃ¡mara estÃ¡ en medio de una animaciÃ³n, sale
 	if ((elMotorGrafico->personaje->contadorAnimacion & 0x01) != 0) return;
 
 	if (!avanzarMomentoDia){
@@ -476,58 +476,58 @@ void Logica::ejecutaAccionesMomentoDia()
 		return;
 	}
 
-	// si está mostrando una frase, sale
+	// si estÃ¡ mostrando una frase, sale
 	if (elGestorFrases->mostrandoFrase) return;
 
-	// si ha cambiado el momento del día, ejecuta unas acciones dependiendo del momento del día
+	// si ha cambiado el momento del dÃ­a, ejecuta unas acciones dependiendo del momento del dÃ­a
 	avanzarMomentoDia = false;
 	elMarcador->avanzaMomentoDia();
 	accionesDia->ejecutaAccionesProgramadas();
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos relacionados con el tiempo
+// mÃ©todos relacionados con el tiempo
 /////////////////////////////////////////////////////////////////////////////
 
-// comprueba si se ha agotado la lámpara
+// comprueba si se ha agotado la lÃ¡mpara
 void Logica::compruebaFinLampara()
 {
-	// si adso no tiene la lámpara, sale
+	// si adso no tiene la lÃ¡mpara, sale
 	if ((adso->objetos & LAMPARA) == 0) return;
 
-	// si no se está usando la lámpara, sale
+	// si no se estÃ¡ usando la lÃ¡mpara, sale
 	if (!usandoLampara) return;
 
-	// si está en una pantalla iluminada, sale
+	// si estÃ¡ en una pantalla iluminada, sale
 	if (elMotorGrafico->pantallaIluminada) return;
 
-	// si llega aquí es porque se está usando la lámpara
+	// si llega aquÃ­ es porque se estÃ¡ usando la lÃ¡mpara
 	tiempoUsoLampara++;
 
 	// cada 0x100 veces, comprueba el estado
 	if ((tiempoUsoLampara & 0xff) != 0) return;
 
-	// si no se ha procesado todavía el último cambio en el estado de la lámpara, sale
+	// si no se ha procesado todavÃ­a el Ãºltimo cambio en el estado de la lÃ¡mpara, sale
 	if (cambioEstadoLampara != 0) return;
 
 	if (((tiempoUsoLampara >> 8) & 0xff) == 3){
-		// si el tiempo de uso de la lámpara llega a 0x300, indica que se está agotando la lámpara
+		// si el tiempo de uso de la lÃ¡mpara llega a 0x300, indica que se estÃ¡ agotando la lÃ¡mpara
 		cambioEstadoLampara = 1;
 	} else if (((tiempoUsoLampara >> 8) & 0xff) == 6){
-		// si el tiempo de uso de la lámpara llega a 0x600, indica que se ha agotado la lámpara
+		// si el tiempo de uso de la lÃ¡mpara llega a 0x600, indica que se ha agotado la lÃ¡mpara
 		cambioEstadoLampara = 2;
 	}
 }
 
-// comprueba si se está acabando la noche
+// comprueba si se estÃ¡ acabando la noche
 void Logica::compruebaFinNoche()
 {
 	seAcabaLaNoche = false;
 
-	// si esta etapa del día no tiene una duración programada, sale
+	// si esta etapa del dÃ­a no tiene una duraciÃ³n programada, sale
 	if (duracionMomentoDia == 0) return;
 
-	// cada 0x100 veces, comprueba si se está acabando la noche
+	// cada 0x100 veces, comprueba si se estÃ¡ acabando la noche
 	if (((duracionMomentoDia & 0xff) == 0) && (momentoDia == NOCHE)){
 		if (((duracionMomentoDia >> 8) & 0xff) == 2){
 			seAcabaLaNoche = true;
@@ -542,26 +542,26 @@ void Logica::compruebaFinNoche()
 // actualiza las variables relacionadas con el paso del tiempo
 void Logica::actualizaVariablesDeTiempo()
 {
-	// comprueba si hay que pasar al siguiente momento del día
+	// comprueba si hay que pasar al siguiente momento del dÃ­a
 	compruebaFinMomentoDia();
 
-	// comprueba si se ha agotado la lámpara
+	// comprueba si se ha agotado la lÃ¡mpara
 	compruebaFinLampara();
 
-	// comprueba si se está acabando la noche
+	// comprueba si se estÃ¡ acabando la noche
 	compruebaFinNoche();
 }
 
-// comprueba si hay que pasar al siguiente momento del día
+// comprueba si hay que pasar al siguiente momento del dÃ­a
 void Logica::compruebaFinMomentoDia()
 {
-	// si se pulsa intro, avanza el momento del día (sólo en modo información)
-	// NOTA: usar esto con mucho cuidado ya que puede romper la lógica normal del juego al no producirse algunos eventos
+	// si se pulsa intro, avanza el momento del dÃ­a (sÃ³lo en modo informaciÃ³n)
+	// NOTA: usar esto con mucho cuidado ya que puede romper la lÃ³gica normal del juego al no producirse algunos eventos
 	if (losControles->seHaPulsado(KEYBOARD_INTRO) && elJuego->modoInformacion){
 		elMarcador->avanzaMomentoDia();
 	}
 
-	// si esta etapa del día tiene una duración programada, comprueba si ha terminado
+	// si esta etapa del dÃ­a tiene una duraciÃ³n programada, comprueba si ha terminado
 	if (duracionMomentoDia != 0){
 		duracionMomentoDia--;
 
@@ -571,14 +571,14 @@ void Logica::compruebaFinMomentoDia()
 	}
 }
 
-// calcula el porcentaje de misión completada. Si se ha completado el juego, muestra el final
+// calcula el porcentaje de misiÃ³n completada. Si se ha completado el juego, muestra el final
 int Logica::calculaPorcentajeMision()
 {
 	if (!investigacionCompleta){
-		// asigna un porcentaje según el tiempo que haya pasado de misión
+		// asigna un porcentaje segÃºn el tiempo que haya pasado de misiÃ³n
 		int porc = 7*(dia - 1) + momentoDia;
 
-		// modifica el porcentaje según los bonus obtenidos
+		// modifica el porcentaje segÃºn los bonus obtenidos
 		for (int i = 0; i < 16; i++){
 			if ((bonus & (1 << i)) != 0){
 				porc += 4;
@@ -592,7 +592,7 @@ int Logica::calculaPorcentajeMision()
 
 		return porc;
 	} else {
-		// si se ha completado la investigación, muestra el pergamino del final
+		// si se ha completado la investigaciÃ³n, muestra el pergamino del final
 		elJuego->muestraFinal();
 
 		return 0;
@@ -601,18 +601,18 @@ int Logica::calculaPorcentajeMision()
 
 void Logica::reiniciaContadoresLampara()
 {
-	// si malaquías no tiene la lámpara y no se ha usado, sale
+	// si malaquÃ­as no tiene la lÃ¡mpara y no se ha usado, sale
 	if (((malaquias->objetos & LAMPARA) == 0) && (tiempoUsoLampara == 0)) return;
 
-	// pone a 0 el tiempo de uso de la lámpara e indica que no se está usando
+	// pone a 0 el tiempo de uso de la lÃ¡mpara e indica que no se estÃ¡ usando
 	tiempoUsoLampara = 0;
 	usandoLampara = false;
 
-	// se asegura de que ni adso ni malaquías tengan la lámpara
+	// se asegura de que ni adso ni malaquÃ­as tengan la lÃ¡mpara
 	adso->objetos = adso->objetos & ~LAMPARA;
 	malaquias->objetos = malaquias->objetos & ~LAMPARA;
 
-	// desaparece la lámpara
+	// desaparece la lÃ¡mpara
 	lamparaDesaparecida = true;
 	elJuego->objetos[7]->seHaCogido = false;
 	elJuego->objetos[7]->seEstaCogiendo = false;
@@ -624,10 +624,10 @@ void Logica::reiniciaContadoresLampara()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// métodos relacionados con la habitación del espejo
+// mÃ©todos relacionados con la habitaciÃ³n del espejo
 /////////////////////////////////////////////////////////////////////////////
 
-// si el espejo está cerrado, actualiza los sprites de los reflejos de adso y guillermo
+// si el espejo estÃ¡ cerrado, actualiza los sprites de los reflejos de adso y guillermo
 void Logica::realizaReflejoEspejo()
 {
 	if (espejoCerrado){
@@ -643,24 +643,24 @@ void Logica::realizaReflejoEspejo()
 	}
 }
 
-// comprueba si un personaje está enfrente del espejo, y si es así, rellena el sprite con su reflejo
+// comprueba si un personaje estÃ¡ enfrente del espejo, y si es asÃ­, rellena el sprite con su reflejo
 bool Logica::reflejaPersonaje(Personaje *pers, Sprite *spr)
 {
-	// si no se está en la habitación del espejo, sale
+	// si no se estÃ¡ en la habitaciÃ³n del espejo, sale
 	if (elMotorGrafico->rejilla->minPosX != 0x1c) return false;
 	if (elMotorGrafico->rejilla->minPosY != 0x5c) return false;
 	if (elMotorGrafico->obtenerAlturaBasePlanta(pers->altura) != 0x16) return false;
 
-	// si el personaje no está a una altura donde puede reflejarse en el espejo, sale
+	// si el personaje no estÃ¡ a una altura donde puede reflejarse en el espejo, sale
 	if ((pers->altura - elMotorGrafico->obtenerAlturaBasePlanta(pers->altura)) >= 8) return false;
 
-	// si el personaje no está en frente del espejo, sale
+	// si el personaje no estÃ¡ en frente del espejo, sale
 	int posX = pers->posX - 0x20;
 	if ((posX < 0) || (posX >= 10)) return false;
 	int posY = pers->posY - 0x62;
 	if ((posY < 0) || (posY >= 10)) return false;
 
-	// guarda los valores del personaje que se modificarán
+	// guarda los valores del personaje que se modificarÃ¡n
 	int orientacion = pers->orientacion;
 	int contadorAnimacion = pers->contadorAnimacion;
 	int oldPosX = pers->posX;
@@ -695,10 +695,10 @@ bool Logica::reflejaPersonaje(Personaje *pers, Sprite *spr)
 	return true;
 }
 
-// comprueba si se está delante del espejo y si se ha pulsado la Q y la R en alguna de las escaleras
+// comprueba si se estÃ¡ delante del espejo y si se ha pulsado la Q y la R en alguna de las escaleras
 int Logica::pulsadoQR()
 {
-	// si no está delante del espejo, sale
+	// si no estÃ¡ delante del espejo, sale
 	if ((guillermo->posX != 0x22) || (guillermo->altura != 0x1a)){
 		return 0;
 	}
@@ -710,24 +710,24 @@ int Logica::pulsadoQR()
 
 	// comprueba si se ha pulsado la Q y la R en una de las escaleras
 	switch (guillermo->posY){
-		case 0x6d:	// si está en la escalera de la izquierda, sale devolviendo 1
+		case 0x6d:	// si estÃ¡ en la escalera de la izquierda, sale devolviendo 1
 			return 1;
-		case 0x69:	// si está en la escalera del centro, sale devolviendo 2
+		case 0x69:	// si estÃ¡ en la escalera del centro, sale devolviendo 2
 			return 2;
-		case 0x65:	// si está en la escalera de la derecha, sale devolviendo 3
+		case 0x65:	// si estÃ¡ en la escalera de la derecha, sale devolviendo 3
 			return 3;
 		default:	// en otro caso, devuelve 0
 			return 0;
 	}
 }
 
-// comprueba si se ha pulsado QR en la habitación del espejo y actúa en consecuencia
+// comprueba si se ha pulsado QR en la habitaciÃ³n del espejo y actÃºa en consecuencia
 void Logica::compruebaAbreEspejo()
 {
 	// si se ha abierto el espejo, sale
 	if (!espejoCerrado) return;
 
-	// comprueba si se está delante del espejo y si se ha pulsado la Q y la R en alguna de las escaleras
+	// comprueba si se estÃ¡ delante del espejo y si se ha pulsado la Q y la R en alguna de las escaleras
 	int estadoQR = pulsadoQR();
 
 	// si no se ha pulsado QR en alguna escalera del espejo, sale
@@ -736,19 +736,19 @@ void Logica::compruebaAbreEspejo()
 	// marca como conseguido el bonus de abrir el espejo
 	bonus |= 0x0400;
 
-	// si pulsó QR en el lugar correcto
+	// si pulsÃ³ QR en el lugar correcto
 	if (estadoQR == numeroRomano){
-		// modifica los datos de altura de la habitación del espejo para que guillermo puede atravesarlo
+		// modifica los datos de altura de la habitaciÃ³n del espejo para que guillermo puede atravesarlo
 		roms[despDatosAlturaEspejo] = 0xff;
 
-		// cambia los datos de un bloque de la habitación del espejo para que el espejo esté abierto
+		// cambia los datos de un bloque de la habitaciÃ³n del espejo para que el espejo estÃ© abierto
 		roms[despBloqueEspejo] = 0x51;
 	} else {
 		// en otro caso, cambia el estado de guillermo y lo mata
 		guillermo->estado = 0x14;
 		haFracasado = true;
 
-		// cambia los datos de un bloque de la habitación del espejo para que se abra una trampa y se caiga guillermo
+		// cambia los datos de un bloque de la habitaciÃ³n del espejo para que se abra una trampa y se caiga guillermo
 		roms[despBloqueEspejo - 2] = 0x6b;
 
 		// escribe en el marcador la frase: ESTAIS MUERTO, FRAY GUILLERMO, HABEIS CAIDO EN LA TRAMPA
@@ -762,7 +762,7 @@ void Logica::compruebaAbreEspejo()
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Espejo);
 }
 
-// si no se había generado el número romano para el enigma de la habitación del espejo, lo genera
+// si no se habÃ­a generado el nÃºmero romano para el enigma de la habitaciÃ³n del espejo, lo genera
 void Logica::generaNumeroRomano()
 {
 	static const char* tablaNumerosRomanos[3] = {
@@ -772,7 +772,7 @@ void Logica::generaNumeroRomano()
 	};
 
 	if (numeroRomano == 0){
-		// genera un número aleatorio entre 1 y 3
+		// genera un nÃºmero aleatorio entre 1 y 3
 		srand((unsigned int)elJuego->timer->getTime());
 		numeroRomano = rand() & 0x03;
 
@@ -780,7 +780,7 @@ void Logica::generaNumeroRomano()
 			numeroRomano = 1;
 		}
 
-		// copia el número romano a la frase que se muestra al leer el manuscrito
+		// copia el nÃºmero romano a la frase que se muestra al leer el manuscrito
 		for (int i = 0; i < 3; i++){
 			gestorFrases->frasePergamino[37 + i] = tablaNumerosRomanos[numeroRomano - 1][i];
 		}
@@ -791,44 +791,44 @@ void Logica::generaNumeroRomano()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// inicialización de la habitación del espejo
+// inicializaciÃ³n de la habitaciÃ³n del espejo
 /////////////////////////////////////////////////////////////////////////////
 
-// obtiene el desplazamiento hasta los datos de la habitación del espejo
+// obtiene el desplazamiento hasta los datos de la habitaciÃ³n del espejo
 void Logica::despHabitacionEspejo()
 {
-	// apunta a datos de altura de la segunda planta de la abadía
+	// apunta a datos de altura de la segunda planta de la abadÃ­a
 	int desp = 0x18000 + 0x1056;
 
-	// busca el fín de la tabla
+	// busca el fÃ­n de la tabla
 	while (roms[desp] != 0xff){
 		desp = ((roms[desp] & 0x08) == 0x08) ? desp + 5 : desp + 4;
 	}
 
-	// guarda la dirección para luego
+	// guarda la direcciÃ³n para luego
 	despDatosAlturaEspejo = desp;
 
 	// apunta al inicio de los datos de los bloques que forman las pantallas
 	desp = 0x1c000;
 
-	// avanza hasta la habitación del espejo
+	// avanza hasta la habitaciÃ³n del espejo
 	for (int i = 0; i < 0x72; i++){
 		desp = desp + roms[desp];
 	}
 
 	despBloqueEspejo = 0;
 
-	// recorre los datos que forman la habitación del espejo buscando el bloque del espejo
+	// recorre los datos que forman la habitaciÃ³n del espejo buscando el bloque del espejo
 	for (int i = 0; i < 0x100; i++){
 		if (roms[desp] == 0x1f){
-			// si encuentra el bloque que forma el espejo y está abierto
+			// si encuentra el bloque que forma el espejo y estÃ¡ abierto
 			if ((roms[desp + 1] == 0xaa) && (roms[desp + 2] == 0x51)){
 				desp = desp + 2;
 
 				// modifica el bloque para que el espejo se muestre cerrado
 				roms[desp] = 0x11;
 
-				// guarda el desplazamiento al bloque para después
+				// guarda el desplazamiento al bloque para despuÃ©s
 				despBloqueEspejo = desp;
 				break;
 			}
@@ -838,32 +838,32 @@ void Logica::despHabitacionEspejo()
 	}
 }
 
-// fija el estado inicial de la habitación del espejo
+// fija el estado inicial de la habitaciÃ³n del espejo
 void Logica::iniciaHabitacionEspejo()
 {
-	// inicialmente, el espejo está cerrado y no se ha generado el número romano para el enigma del espejo
+	// inicialmente, el espejo estÃ¡ cerrado y no se ha generado el nÃºmero romano para el enigma del espejo
 	espejoCerrado = true;
     numeroRomano = 0;
 
 	int datosAltura[] = { 0xf5, 0x20, 0x62, 0x0b, 0xff };
 
-	// modifica los datos de altura de la habitación del espejo
+	// modifica los datos de altura de la habitaciÃ³n del espejo
 	for (int i = 0; i < 5; i++){
 		roms[despDatosAlturaEspejo + i] = datosAltura[i];
 	}
 
-	// modifica la habitación del espejo para que el espejo aparezca cerrado
+	// modifica la habitaciÃ³n del espejo para que el espejo aparezca cerrado
 	roms[despBloqueEspejo] = 0x11;
 
-	// modifica la habitación del espejo para que la trampa no esté abierta
+	// modifica la habitaciÃ³n del espejo para que la trampa no estÃ© abierta
 	roms[despBloqueEspejo - 2] = 0x1f;
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// inicialización de las entidades del juego
+// inicializaciÃ³n de las entidades del juego
 /////////////////////////////////////////////////////////////////////////////
 
-// inicia los sprites del juego poniéndolos como no visibles
+// inicia los sprites del juego poniÃ©ndolos como no visibles
 void Logica::iniciaSprites()
 {
 	for (int i = 0; i < Juego::numSprites; i++){
@@ -884,7 +884,7 @@ void Logica::iniciaPersonajes()
 	jorge = (Jorge *)elJuego->personajes[6];
 	bernardo = (Bernardo *)elJuego->personajes[7];
 
-	// recorre los personajes e inicia sus características comunes
+	// recorre los personajes e inicia sus caracterÃ­sticas comunes
 	for (int i = 0; i < Juego::numPersonajes; i++){
 		Personaje *pers = elJuego->personajes[i];
 		pers->contadorAnimacion = 0;
@@ -899,7 +899,7 @@ void Logica::iniciaPersonajes()
 		persIA->numBitAcciones = 0;
 		persIA->pensarNuevoMovimiento = false;
 		persIA->posAcciones = 0;
-		persIA->bufAcciones[0] = 0x10;	// acción para que piense un nuevo movimiento
+		persIA->bufAcciones[0] = 0x10;	// acciÃ³n para que piense un nuevo movimiento
 	}
 
 	// guillermo
@@ -924,8 +924,9 @@ void Logica::iniciaPersonajes()
 	adso->oldEstado = 0;
 	adso->movimientosFrustados = 0;
 	adso->cntParaDormir = 0;
+	adso->objetos=0;
 	
-	// malaquías
+	// malaquÃ­as
 	malaquias->posX = 0x26;
 	malaquias->posY = 0x26;
 	malaquias->altura = 0x0f;
@@ -999,7 +1000,7 @@ void Logica::iniciaPuertas()
 {
 	Puerta **puertas = elJuego->puertas;
 
-	// puerta de la habitación del abad
+	// puerta de la habitaciÃ³n del abad
 	puertas[0]->identificador = 0x01;
 	puertas[0]->orientacion = ABAJO;
 	puertas[0]->posX = 0x61;
@@ -1007,7 +1008,7 @@ void Logica::iniciaPuertas()
 	puertas[0]->altura = 0x02;
 	puertas[0]->haciaDentro = true;
 
-	// puerta de la habitación de los monjes
+	// puerta de la habitaciÃ³n de los monjes
 	puertas[1]->identificador = 0x02;
 	puertas[1]->orientacion = IZQUIERDA;
 	puertas[1]->posX = 0xb7;
@@ -1015,7 +1016,7 @@ void Logica::iniciaPuertas()
 	puertas[1]->altura = 0x02;
 	puertas[1]->haciaDentro = true;
 
-	// puerta de la habitación de severino
+	// puerta de la habitaciÃ³n de severino
 	puertas[2]->identificador = 0x04;
 	puertas[2]->orientacion = DERECHA;
 	puertas[2]->posX = 0x66;
@@ -1031,7 +1032,7 @@ void Logica::iniciaPuertas()
 	puertas[3]->altura = 0x02;
 	puertas[3]->haciaDentro = true;
 
-	// puerta del pasadizo de detrás de la cocina
+	// puerta del pasadizo de detrÃ¡s de la cocina
 	puertas[4]->identificador = 0x10;
 	puertas[4]->orientacion = ARRIBA;
 	puertas[4]->posX = 0x7e;
@@ -1039,7 +1040,7 @@ void Logica::iniciaPuertas()
 	puertas[4]->altura = 0x02;
 	puertas[4]->haciaDentro = false;
 
-	// primera puerta que cierra el paso a la parte izquierda de la planta baja de la abadía
+	// primera puerta que cierra el paso a la parte izquierda de la planta baja de la abadÃ­a
 	puertas[5]->identificador = 0x00;
 	puertas[5]->orientacion = IZQUIERDA;
 	puertas[5]->posX = 0x60;
@@ -1049,7 +1050,7 @@ void Logica::iniciaPuertas()
 	puertas[5]->estaFija = true;
 	puertas[5]->estaAbierta = true;
 
-	// segunda puerta que cierra el paso a la parte izquierda de la planta baja de la abadía
+	// segunda puerta que cierra el paso a la parte izquierda de la planta baja de la abadÃ­a
 	puertas[6]->identificador = 0x00;
 	puertas[6]->orientacion = IZQUIERDA;
 	puertas[6]->posX = 0x60;
@@ -1106,7 +1107,7 @@ void Logica::iniciaObjetos()
 	objetos[6]->posY = 0x35;
 	objetos[6]->altura = 0x13;
 
-	// lámpara
+	// lÃ¡mpara
 	objetos[7]->orientacion = DERECHA;
 	objetos[7]->posX = 0x08;
 	objetos[7]->posY = 0x08;

@@ -15,7 +15,7 @@
 
 using namespace Abadia;
 
-// TODO Falta la Z may˙scula, pero creo que no se usa en los textos
+// TODO Falta la Z may√∫scula, pero creo que no se usa en los textos
 
 const UINT8 Pergamino::char27[] = { // '
 0x10, 
@@ -26,8 +26,8 @@ const UINT8 Pergamino::char27[] = { // '
 const UINT8 Pergamino::char42[] = { // B
 0x27, 0x36, 0x37, 0x46, 0x47, 0x56, 0x57, 0x66, 0x67, 0x76, 0x77, 0x86, 0x87, 0x95, 0x96, 0x20, 0x11, 0x02, 0x12, 0x03, 0x13, 0x23, 0x04, 0x14, 0x24, 0x05, 0x15, 0x25, 0x16, 0x18, 0x19, 0x0a, 0x1a, 0x0b, 0x1b, 0x2b, 0x0c, 0x1c, 0x1d, 0x2d, 0x2c, 0x3c, 0x4b, 0x5a, 0x6b, 0x6c, 0x7c, 0x7d, 0x8c, 0x8d, 0x9c, 0x9d, 0xac, 0xad, 0xbb, 0xba, 0xa9, 0xb9, 0xc9, 0xd8, 0xc8, 0xa8, 0xb8, 0xa7, 0xb7, 0xc7, 0xc6, 0xb6, 0xa6, 0xa5, 0xb5, 0xa4, 0xb4, 0xb3, 0xc3, 0xc2, 0xd1, 0x49, 0x59, 0x69, 0x79, 0x7a, 0x7b, 0x89, 0x99, 0x9a, 0x9b, 0x43, 0x44, 0x53, 0x54, 0x64, 0x63, 0x73, 0x74, 0x84, 0x83, 0x93, 0x62, 0x72, 0x71, 0x61, 0x70, 0x80, 0xff
 };
-// La F se ve muy fea, pero sale asÌ en el remake PC de Antonio Giner
-// TODO: quitar una lÌnea vertical pegada a la derecha del caracter
+// La F se ve muy fea, pero sale as√≠ en el remake PC de Antonio Giner
+// TODO: quitar una l√≠nea vertical pegada a la derecha del caracter
 // que le hace parecer una A
 const UINT8 Pergamino::char46[] = { // F
 0x22, 0x13, 0x04, 0x14, 0x05, 0x15, 0x16, 0x06, 0x07, 0x17, 0x18, 0x08, 0x09, 0x1a, 0x1b, 0x0b, 0x0c, 0x1c, 0x1d, 0x1e, 0x0e, 0x27, 0x29, 0x2a, 0x36, 0x37, 0x39, 0x3a, 0x46, 0x47, 0x49, 0x4a, 0x56, 0x57, 0x59, 0x5a, 0x66, 0x67, 0x69, 0x6a, 0x76, 0x77, 0x79, 0x7a, 0x86, 0x87, 0x89, 0x8a, 0x96, 0x97, 0x99, 0x9a, 0xa6, 0xaa, 0xa9, 0xb9, 0xc8, 0xc7, 0xd6, 0xc6, 0xd5, 0xc5, 0xb5, 0xb4, 0xc4, 0xc3, 0xb3, 0xa3, 0xa2, 0xb2, 0xb1, 0xc0, 0x73, 0x63, 0x54, 0x64, 0x45, 0x55, 0x65, 0x6b, 0x5b, 0x5c, 0x6c, 0x6d, 0x5d, 0x2d, 0x3d, 0x4d, 0x7d, 0x8d, 0x9d, 0xad, 0xbd, 0xff
@@ -112,7 +112,7 @@ const UINT8 Pergamino::char77[] = { // w
 	0x68, 0x67, 0x57, 0x58,
 	0x59, 0x48, 0xfb
 };
-const UINT8 Pergamino::charD6[] = { // ÷
+const UINT8 Pergamino::charD6[] = { // √ñ
 
 	0x32, 0x42, 0x41, 0x52 , 
 	0x51, 0x50, 0x60, 0x61 , 
@@ -138,7 +138,7 @@ const UINT8 Pergamino::charD6[] = { // ÷
 	0x87, 0x03, 0x04, 0x06, 
 	0x07, 0xfc
 };
-const UINT8 Pergamino::charE0[] = { // ‡ 
+const UINT8 Pergamino::charE0[] = { // √† 
 	0x40, 0x41, 0x51, 0x52, 
 	0x43, 0x44, 0x54, 0x55, 
 	0x46, 0x65, 0x64, 0x75, 
@@ -151,7 +151,7 @@ const UINT8 Pergamino::charE0[] = { // ‡
 	0x71, 0x72, 0x83, 0x25, 
 	0x24, 0x14, 0x13, 0xf8 
 };
-const UINT8 Pergamino::charE1[] = { // ·
+const UINT8 Pergamino::charE1[] = { // √°
 	0x40, 0x41, 0x51, 0x52, 
 	0x43, 0x44, 0x54, 0x55, 
 	0x46, 0x65, 0x64, 0x75, 
@@ -164,7 +164,7 @@ const UINT8 Pergamino::charE1[] = { // ·
 	0x71, 0x72, 0x83, 0x22, 
 	0x23, 0x13, 0x14, 0xf8
 };
-const UINT8 Pergamino::charE3[] = { // „ 
+const UINT8 Pergamino::charE3[] = { // √£ 
 	0x40, 0x41, 0x51, 0x52, 
 	0x43, 0x44, 0x54, 0x55, 
 	0x46, 0x65, 0x64, 0x75, 
@@ -178,7 +178,7 @@ const UINT8 Pergamino::charE3[] = { // „
 	0x11, 0x12, 0x23, 0x24, 
 	0x25, 0x16, 0xf8
 };
-const UINT8 Pergamino::charE4[] = { // ‰
+const UINT8 Pergamino::charE4[] = { // √§
 	0x40, 0x41, 0x51, 0x52, 
 	0x43, 0x44, 0x54, 0x55, 
 	0x46, 0x65, 0x64, 0x75, 
@@ -191,7 +191,7 @@ const UINT8 Pergamino::charE4[] = { // ‰
 	0x71, 0x72, 0x83, 0x21, 
 	0x22, 0x24, 0x25, 0xf8
 };
-const UINT8 Pergamino::charE7[] = { // Á
+const UINT8 Pergamino::charE7[] = { // √ß
 	0xb6, 0xb5, 0xc4, 0xc3,
 	0xc2, 0xb3, 0xb2, 0xb1,
 	0xb0, 0xa1, 0xa2, 0x92,
@@ -202,7 +202,7 @@ const UINT8 Pergamino::charE7[] = { // Á
 	0x65, 0xd4, 0xe3, 0xe2,
 	0xf8
 };
-const UINT8 Pergamino::charE8[] = { // Ë
+const UINT8 Pergamino::charE8[] = { // √®
 	0xa6, 0xb5, 0xc4, 0xc3,
 	0xc2, 0xb3, 0xb2, 0xb1,
 	0xb0, 0xa1, 0xa2, 0x91,
@@ -213,7 +213,7 @@ const UINT8 Pergamino::charE8[] = { // Ë
 	0x65, 0x74, 0x83, 0x25,
 	0x24, 0x14, 0x13, 0xf8
 };
-const UINT8 Pergamino::charE9[] = { // È
+const UINT8 Pergamino::charE9[] = { // √©
 	0xa6, 0xb5, 0xc4, 0xc3,
 	0xc2, 0xb3, 0xb2, 0xb1,
 	0xb0, 0xa1, 0xa2, 0x91,
@@ -224,7 +224,7 @@ const UINT8 Pergamino::charE9[] = { // È
 	0x65, 0x74, 0x83, 0x22,
 	0x23, 0x13, 0x14, 0xf8
 };
-const UINT8 Pergamino::charEA[] = { // Í
+const UINT8 Pergamino::charEA[] = { // √™
 	0xa6, 0xb5, 0xc4, 0xc3,
 	0xc2, 0xb3, 0xb2, 0xb1,
 	0xb0, 0xa1, 0xa2, 0x91,
@@ -236,7 +236,7 @@ const UINT8 Pergamino::charEA[] = { // Í
 	0x22, 0x13, 0x14, 0x25,
 	0x26, 0xf8
 };
-const UINT8 Pergamino::charEC[] = { // Ï
+const UINT8 Pergamino::charEC[] = { // √¨
 	0x50, 0x41, 0x52, 0x51,
 	0x61, 0x62, 0x72, 0x71,
 	0x81, 0x82, 0x92, 0x91,
@@ -244,7 +244,7 @@ const UINT8 Pergamino::charEC[] = { // Ï
 	0xc2, 0xb3, 0x21, 0x22,
 	0x11, 0x10, 0xf5
 };
-const UINT8 Pergamino::charED[] = { // Ì
+const UINT8 Pergamino::charED[] = { // √≠
 	0x50, 0x41, 0x52, 0x51,
 	0x61, 0x62, 0x72, 0x71,
 	0x81, 0x82, 0x92, 0x91,
@@ -252,7 +252,7 @@ const UINT8 Pergamino::charED[] = { // Ì
 	0xc2, 0xb3, 0x20, 0x21,
 	0x12, 0xf5
 };
-const UINT8 Pergamino::charEF[] = { // Ô
+const UINT8 Pergamino::charEF[] = { // √Ø
 	0x50, 0x41, 0x52, 0x51,
 	0x61, 0x62, 0x72, 0x71,
 	0x81, 0x82, 0x92, 0x91,
@@ -260,7 +260,7 @@ const UINT8 Pergamino::charEF[] = { // Ô
 	0xc2, 0xb3, 0x20, 0x21,
 	0x23, 0x24, 0xf5
 };
-const UINT8 Pergamino::charF1[] = { // Ò
+const UINT8 Pergamino::charF1[] = { // √±
 	0x50, 0x41, 0x52, 0x51,
 	0x61, 0x62, 0x72, 0x71,
 	0x81, 0x82, 0x92, 0x91,
@@ -274,7 +274,7 @@ const UINT8 Pergamino::charF1[] = { // Ò
 	0x32, 0x33, 0x34, 0x35,
 	0x26, 0xf8
 };
-const UINT8 Pergamino::charF2[] = { // Ú
+const UINT8 Pergamino::charF2[] = { // √≤
 	0x42, 0x43, 0x44, 0x53,
 	0x54, 0x55, 0x64, 0x65,
 	0x74, 0x75, 0x84, 0x85,
@@ -287,7 +287,7 @@ const UINT8 Pergamino::charF2[] = { // Ú
 	0x24, 0x23, 0x13, 0x12,
 	0xf7
 };
-const UINT8 Pergamino::charF3[] = { // Û
+const UINT8 Pergamino::charF3[] = { // √≥
 	0x42, 0x43, 0x44, 0x53,
 	0x54, 0x55, 0x64, 0x65,
 	0x74, 0x75, 0x84, 0x85,
@@ -300,7 +300,7 @@ const UINT8 Pergamino::charF3[] = { // Û
 	0x21, 0x22, 0x12, 0x13,
 	0xf7
 };
-const UINT8 Pergamino::charF6[] = { // ˆ
+const UINT8 Pergamino::charF6[] = { // √∂
 	0x42, 0x43, 0x44, 0x53,
 	0x54, 0x55, 0x64, 0x65,
 	0x74, 0x75, 0x84, 0x85,
@@ -313,7 +313,7 @@ const UINT8 Pergamino::charF6[] = { // ˆ
 	0x21, 0x22, 0x24, 0x25,
 	0xf7
 };
-const UINT8 Pergamino::charF9[] = { // ˘
+const UINT8 Pergamino::charF9[] = { // √π
 	0x50, 0x41, 0x52, 0x51, 
 	0x61, 0x62, 0x72, 0x71, 
 	0x81, 0x82, 0x92, 0x91, 
@@ -326,7 +326,7 @@ const UINT8 Pergamino::charF9[] = { // ˘
 	0xb7, 0x24, 0x23, 0x13, 
 	0x12, 0xf8
 };
-const UINT8 Pergamino::charFA[] = { // ˙
+const UINT8 Pergamino::charFA[] = { // √∫
 	0x50, 0x41, 0x52, 0x51, 
 	0x61, 0x62, 0x72, 0x71,
 	0x81, 0x82, 0x92, 0x91, 
@@ -339,7 +339,7 @@ const UINT8 Pergamino::charFA[] = { // ˙
 	0xb7, 0x21, 0x22, 0x12, 
 	0x13, 0xf8 
 };
-const UINT8 Pergamino::charFC[] = { // ¸
+const UINT8 Pergamino::charFC[] = { // √º
 	0x50, 0x41, 0x52, 0x51, 
 	0x61, 0x62, 0x72, 0x71, 
 	0x81, 0x82, 0x92, 0x91, 
@@ -368,7 +368,7 @@ int Pergamino::AdaptaColorAPaletaVGA(int a,int b)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 Pergamino::Pergamino()
@@ -376,70 +376,70 @@ Pergamino::Pergamino()
 	cpc6128 = elJuego->cpc6128;
 	roms = elJuego->roms;
 
-	// puntero a la tabla de punteros a los gr·ficos de los caracteres
+	// puntero a la tabla de punteros a los gr√°ficos de los caracteres
 	UINT16* charTable = (UINT16*) &roms[0x680c];
 
 	for (unsigned char c=0;c<255-0x20;c++) 
 	{
-		// si el caracter no est· definido, muestra una 'z'
+		// si el caracter no est√° definido, muestra una 'z'
 		TablapTrazosCaracter[c]=roms+SDL_SwapLE16(charTable['z'-0x20]);
 	}
 	// Recorre desde el caracter 0x21 hasta el 0x126 , apuntando
 	// a los datos de la rom original donde se encuentran los
 	// datos para dibujar los trazos
 	// son los caracteres imprimibles del ASCII
-	// a˙n asÌ algunos no est·n definidos porque el juego original no los usaba
+	// a√∫n as√≠ algunos no est√°n definidos porque el juego original no los usaba
 	for (char c='!';c<'~';c++) 
 	{
-		// si el caracter no est· definido, dejamos apuntando a la 'z'
+		// si el caracter no est√° definido, dejamos apuntando a la 'z'
 		if (charTable[c - 0x20] != 0)
 			TablapTrazosCaracter[c-0x20]=roms+SDL_SwapLE16(charTable[c-0x20]);
 	}
-	// Se aÒaden los caracteres usados en las traducciones del remake PC
+	// Se a√±aden los caracteres usados en las traducciones del remake PC
 	// de los textos del pergamino
 
-	//TablapTrazosCaracter['÷'-0x20]=charD6; 
+	//TablapTrazosCaracter['√ñ'-0x20]=charD6; 
 	TablapTrazosCaracter[0xD6-0x20]=charD6; 
-	//TablapTrazosCaracter['‡'-0x20]=charE0;
+	//TablapTrazosCaracter['√†'-0x20]=charE0;
 	TablapTrazosCaracter[0xE0-0x20]=charE0;
-	//TablapTrazosCaracter['·'-0x20]=charE1;
+	//TablapTrazosCaracter['√°'-0x20]=charE1;
 	TablapTrazosCaracter[0xE1-0x20]=charE1;
-	//TablapTrazosCaracter['„'-0x20]=charE3;
+	//TablapTrazosCaracter['√£'-0x20]=charE3;
 	TablapTrazosCaracter[0xE3-0x20]=charE3;
-	//TablapTrazosCaracter['‰'-0x20]=charE4;
+	//TablapTrazosCaracter['√§'-0x20]=charE4;
 	TablapTrazosCaracter[0xE4-0x20]=charE4;
-	//TablapTrazosCaracter['Á'-0x20]=charE7;
+	//TablapTrazosCaracter['√ß'-0x20]=charE7;
 	TablapTrazosCaracter[0xE7-0x20]=charE7;
-	//TablapTrazosCaracter['Ë'-0x20]=charE8;
+	//TablapTrazosCaracter['√®'-0x20]=charE8;
 	TablapTrazosCaracter[0xE8-0x20]=charE8;
-	//TablapTrazosCaracter['È'-0x20]=charE9;
+	//TablapTrazosCaracter['√©'-0x20]=charE9;
 	TablapTrazosCaracter[0xE9-0x20]=charE9;
-	//TablapTrazosCaracter['Í'-0x20]=charEA;
+	//TablapTrazosCaracter['√™'-0x20]=charEA;
 	TablapTrazosCaracter[0xEA-0x20]=charEA;
-	//TablapTrazosCaracter['Ï'-0x20]=charEC;
+	//TablapTrazosCaracter['√¨'-0x20]=charEC;
 	TablapTrazosCaracter[0xEC-0x20]=charEC;
-	//TablapTrazosCaracter['Ì'-0x20]=charED;
+	//TablapTrazosCaracter['√≠'-0x20]=charED;
 	TablapTrazosCaracter[0xED-0x20]=charED;
-	//TablapTrazosCaracter['Ô'-0x20]=charEF;
+	//TablapTrazosCaracter['√Ø'-0x20]=charEF;
 	TablapTrazosCaracter[0xEF-0x20]=charEF;
-	//TablapTrazosCaracter['Ò'-0x20]=charF1;
+	//TablapTrazosCaracter['√±'-0x20]=charF1;
 	TablapTrazosCaracter[0xF1-0x20]=charF1;
-	//TablapTrazosCaracter['Ú'-0x20]=charF2;
+	//TablapTrazosCaracter['√≤'-0x20]=charF2;
 	TablapTrazosCaracter[0xF2-0x20]=charF2;
-	//TablapTrazosCaracter['Û'-0x20]=charF3;
+	//TablapTrazosCaracter['√≥'-0x20]=charF3;
 	TablapTrazosCaracter[0xF3-0x20]=charF3;
-	//TablapTrazosCaracter['ˆ'-0x20]=charF6;
+	//TablapTrazosCaracter['√∂'-0x20]=charF6;
 	TablapTrazosCaracter[0xF6-0x20]=charF6;
-	//TablapTrazosCaracter['˘'-0x20]=charF9;
+	//TablapTrazosCaracter['√π'-0x20]=charF9;
 	TablapTrazosCaracter[0xF9-0x20]=charF9;
-	//TablapTrazosCaracter['˙'-0x20]=charFA;
+	//TablapTrazosCaracter['√∫'-0x20]=charFA;
 	TablapTrazosCaracter[0xFA-0x20]=charFA;
-	//TablapTrazosCaracter['¸'-0x20]=charFC; 
+	//TablapTrazosCaracter['√º'-0x20]=charFC; 
 	TablapTrazosCaracter[0xFC-0x20]=charFC; 
 
 	// En el original, no se usaba la w,
-	// asÌ que la aprovechaban para la Ò
-	// aquÌ la Ò est·n en charF1
+	// as√≠ que la aprovechaban para la √±
+	// aqu√≠ la √± est√°n en charF1
 	// asi que dejamos la w en su sitio, 0x77
 	//TablapTrazosCaracter['w'-0x20]=char77; 
 	TablapTrazosCaracter[0x77-0x20]=char77; 
@@ -489,7 +489,7 @@ void Pergamino::dibuja()
 	//CPC	cpc6128->fillMode1Rect(0, 0, 320, 200, 0);
 	cpc6128->fillMode1Rect(0, 0, 320, 200, 255); // VGA
 
-	// limpia los bordes del rect·ngulo que formar· el pergamino
+	// limpia los bordes del rect√°ngulo que formar√° el pergamino
 	/* CPC
 	cpc6128->fillMode1Rect(0, 0, 64, 200, 1);
 	cpc6128->fillMode1Rect(192 + 64, 0, 64, 200, 1);
@@ -575,31 +575,76 @@ void Pergamino::dibujaTexto(const unsigned char *texto)
 	// obtiene acceso al temporizador y a las entradas
 	TimingHandler *timer = elJuego->timer;
 
-	// posiciÛn inicial del texto en el pergamino
+	// posici√≥n inicial del texto en el pergamino
 	int posX = 76;
 	int posY = 16;
 
-	// puntero a la tabla de punteros a los gr·ficos de los caracteres
+	// puntero a la tabla de punteros a los gr√°ficos de los caracteres
 	UINT16* charTable = (UINT16*) &roms[0x680c];
 
-	// repite hasta que se pulse el botÛn 1
+	// repite hasta que se pulse el bot√≥n 1
 	while (true){
 		losControles->actualizaEstado();
 
-		// si se pulsÛ el botÛn 1 o espacio, termina
+		// si se puls√≥ el bot√≥n 1 o espacio, termina
 		if (losControles->estaSiendoPulsado(P1_BUTTON1) || losControles->estaSiendoPulsado(KEYBOARD_SPACE)){
 			break;
 		} else {
-			// dependiendo del car·cter leido
-			switch (*texto){
-				case 0x1a:			// fÌn de pergamino
+			UINT32 codePoint=0;
+			char firstByte=*texto;
+			std::string::difference_type offset=1; //TODO: esta var se puede ahorrar al ir incrementando mientras se lee cada byte
+			if(firstByte&128) { // This means the first byte has a value greater than 127, and so is beyond the ASCII range.
+        			if(firstByte & 32) // This means that the first byte has a value greater than 191, and so it must be at least a three-octet code point.
+        			{
+					if(firstByte & 16) // This means that the first byte has a value greater than 224, and so it must be a four-octet code point.
+					{
+						codePoint = (firstByte & 0x07) << 18;
+						char secondByte = *(texto + 1);
+						codePoint +=  (secondByte & 0x3f) << 12;
+						char thirdByte = *(texto + 2);
+						codePoint +=  (thirdByte & 0x3f) << 6;;
+						char fourthByte = *(texto + 3);
+						codePoint += (fourthByte & 0x3f);
+
+						offset=4;	
+					}
+					else
+					{
+						codePoint = (firstByte & 0x0f) << 12;
+						char secondByte = *(texto + 1);
+						codePoint += (secondByte & 0x3f) << 6;
+						char thirdByte = *(texto + 2);
+						codePoint +=  (thirdByte & 0x3f);
+
+						offset=3;	
+					}
+				}
+				else
+				{
+					codePoint = (firstByte & 0x1f) << 6;
+					char secondByte = *(texto + 1);
+					codePoint +=  (secondByte & 0x3f);
+
+					offset=2;	
+				}
+			}
+			else
+			{
+				codePoint = firstByte;
+			}
+//			texto+=offset;
+			int caracter = codePoint;
+//fprintf(stderr,"caracter %ld 0x%04x\n", caracter,caracter);
+			// dependiendo del car√°cter leido
+			switch (caracter){
+				case 0x1a:			// f√≠n de pergamino
 					break;
-				case 0x0d:			// salto de lÌnea
+				case 0x0d:			// salto de l√≠nea
 					posX = 76;
 					posY += 16;
 					timer->sleep(600);
 
-					// si hay que pasar p·gina del pergamino
+					// si hay que pasar p√°gina del pergamino
 					if (posY > 164){
 						posX = 76;
 						posY = 16;
@@ -611,17 +656,18 @@ void Pergamino::dibujaTexto(const unsigned char *texto)
 					posX += 10;
 					timer->sleep(30);
 					break;
-				case 0x0a:			// salto de p·gina
+				case 0x0a:			// salto de p√°gina
 					posX = 76;
 					posY = 16;
 					timer->sleep(3*525);
 					pasaPagina();
 					break;
 
-				default:			// car·cter imprimible
+				default:			// car√°cter imprimible
 					UINT8 const * pTrazosCaracter= 
-						TablapTrazosCaracter[(*texto)-0x20];
-					// elige un color dependiendo de si es may˙sculas o min˙sculas
+//						TablapTrazosCaracter[(*texto)-0x20];
+						TablapTrazosCaracter[(caracter)-0x20];
+					// elige un color dependiendo de si es may√∫sculas o min√∫sculas
 
 					// la paleta CPC del pergamino es 07,28,20,12
 					// o sea
@@ -632,24 +678,28 @@ void Pergamino::dibujaTexto(const unsigned char *texto)
 
 					//CPC					int color = (((*texto) & 0x60) == 0x40) ? 3 : 2;
 					//Para VGA pongo el color 1?? para las mayusculas y el color 0?? para las minusculas
-					int color = (((*texto) & 0x60) == 0x40) ? 1 : 0;
+					// TODO: revisar para UTF8
+					//int color = (((*texto) & 0x60) == 0x40) ? 1 : 0;
+					int color = (((caracter) & 0x60) == 0x40) ? 1 : 0;
 
-					// obtiene el desplazamiento a los datos de formaciÛn del car·cter
+					// obtiene el desplazamiento a los datos de formaci√≥n del car√°cter
 					// transformando del dato nativo en litte_endian
 					// al tipo del sistema (si es little_endian no hace nada,
 					// y si es big_endian intercambia el orden)
-					int charOffset = SDL_SwapLE16(charTable[(*texto) - 0x20]);
+					//int charOffset = SDL_SwapLE16(charTable[(*texto) - 0x20]);
+					int charOffset = SDL_SwapLE16(charTable[(caracter) - 0x20]);
 
 					// para alertar si nos hemos dejado algo sin definir
 					if (*texto!='z' && charOffset==SDL_SwapLE16(charTable['z'-0x20])) 	
-						printf("°°° NOS HEMOS DEJADO ALGUN CARACTER SIN DEFINIR !!! %c\n",*texto);
+						printf("¬°¬°¬° NOS HEMOS DEJADO ALGUN CARACTER SIN DEFINIR !!! %c\n",*texto);
 
-					// si el caracter no est· definido, muestra una 'z'
-					if (charTable[(*texto) - 0x20] == 0){
+					// si el caracter no est√° definido, muestra una 'z'
+					//if (charTable[(*texto) - 0x20] == 0){
+					if (charTable[(caracter) - 0x20] == 0){
 						charOffset = SDL_SwapLE16(charTable['z' - 0x20]);
 					}
 
-					// mientras queden trazos del car·cter
+					// mientras queden trazos del car√°cter
 //					while ((roms[charOffset] & 0xf0) != 0xf0){
 					while ((*pTrazosCaracter & 0xf0) != 0xf0){
 						// halla el desplazamiento del trazo
@@ -658,47 +708,50 @@ void Pergamino::dibujaTexto(const unsigned char *texto)
 						int newPosX = posX+(*pTrazosCaracter & 0x0f);
 						int newPosy=posY+((*pTrazosCaracter>>4)&0x0f);
 
-						// dibuja el trazo del car·cter
+						// dibuja el trazo del car√°cter
 						//CPC cpc6128->setMode1Pixel(newPosX, newPosy, color);
 						cpc6128->setVGAPixel(newPosX, newPosy, color);
 
 						charOffset++;
 						pTrazosCaracter++;
 
-						// espera un poco para que se pueda apreciar como se traza el car·cter
+						// espera un poco para que se pueda apreciar como se traza el car√°cter
 						timer->sleep(8);
 					}
 
-					// avanza la posiciÛn hasta el siguiente car·cter
+					// avanza la posici√≥n hasta el siguiente car√°cter
 //					posX += roms[charOffset] & 0x0f;
 					posX += *pTrazosCaracter & 0x0f;
 			}
 
-			// apunta al siguiente car·cter a imprimir
-			if (*texto != 0x1a){
+			// apunta al siguiente car√°cter a imprimir
+/*			if (*texto != 0x1a){
 				texto++;
+			} */
+			if (caracter != 0x1a){
+				texto+=offset;
 			}
 		}
 	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// paso de p·gina del pergamino
+// paso de p√°gina del pergamino
 /////////////////////////////////////////////////////////////////////////////
 
-// dibuja un tri·ngulo rect·ngulo de color1 con catetos paralelos a los ejes x e y, y limpia los 4 
-//  pixels a la derecha de la hipotenusa del tri·ngulo con el color2
+// dibuja un tri√°ngulo rect√°ngulo de color1 con catetos paralelos a los ejes x e y, y limpia los 4 
+//  pixels a la derecha de la hipotenusa del tri√°ngulo con el color2
 void Pergamino::dibujaTriangulo(int x, int y, int lado, int color1, int color2)
 {
 	lado = lado*4;
 
 	for (int j = 0; j < lado; j++){
-		// dibuja el tri·ngulo
+		// dibuja el tri√°ngulo
 		for (int i = 0; i <= j; i++){
 			cpc6128->setMode1Pixel(x + i, y + j, color1);
 		}
 
-		// elimina restos de una ejecuciÛn anterior
+		// elimina restos de una ejecuci√≥n anterior
 		for (int i = 0; i < 4; i++){
 			// CPC cpc6128->setMode1Pixel(x + j + i + 1, y + j, 0); 
 			cpc6128->setMode1Pixel(x + j + i + 1, y + j, 255); 
@@ -764,7 +817,7 @@ void Pergamino::restauraParteInferior(int x, int y, int lado)
 	}
 }
 
-// realiza el efecto de pasar una p·gina del pergamino
+// realiza el efecto de pasar una p√°gina del pergamino
 void Pergamino::pasaPagina()
 {
 	// obtiene acceso al temporizador
@@ -774,7 +827,7 @@ void Pergamino::pasaPagina()
 	int y = 0;
 	int dim = 3;
 
-	// realiza el efecto del paso de p·gina desde la esquina superior derecha hasta la mitad de la p·gina
+	// realiza el efecto del paso de p√°gina desde la esquina superior derecha hasta la mitad de la p√°gina
 	for (int num = 0; num < 45; num++){
 		dibujaTriangulo(x, y, dim, 1, 0);
 		timer->sleep(20);
@@ -789,7 +842,7 @@ void Pergamino::pasaPagina()
 	y = 4;
 	dim = 47;
 
-	// realiza el efecto del paso de p·gina desde la mitad de la p·gina hasta terminar en la esquina inferior izquierda
+	// realiza el efecto del paso de p√°gina desde la mitad de la p√°gina hasta terminar en la esquina inferior izquierda
 	for (int num = 0; num < 46; num++){
 		dibujaTriangulo(x, y, dim, 1, 0);
 		timer->sleep(20);

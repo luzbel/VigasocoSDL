@@ -1,10 +1,24 @@
-all:
+input-plugins-dir := VigasocoSDL/input
+audio-plugins-dir := VigasocoSDL/audio
+video-plugins-dir := VigasocoSDL/video
+
+all: | $(input-plugins-dir) $(audio-plugins-dir) $(video-plugins-dir)
 	cd SDLInputKeyboardPlugin && make -f Makefile.PS2
 	cd SDLVideoPlugins && make -f Makefile.PS2
+	cd NULLAudioPlugin && make -f Makefile.PS2
 	cd VigasocoSDL && make -f Makefile.PS2
+
+$(input-plugins-dir):
+	mkdir $(input-plugins-dir)
+
+$(audio-plugins-dir):
+	mkdir $(audio-plugins-dir)
+
+$(video-plugins-dir):
+	mkdir $(video-plugins-dir)
 
 clean:
 	cd SDLInputKeyboardPlugin && make -f Makefile.PS2 clean
 	cd SDLVideoPlugins && make -f Makefile.PS2 clean
+	cd NULLAudioPlugin && make -f Makefile.PS2 clean
 	cd VigasocoSDL && make -f Makefile.PS2 clean
-	

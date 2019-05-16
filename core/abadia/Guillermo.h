@@ -19,17 +19,17 @@ class Guillermo : public Personaje
 {
 // campos
 public:
-	int incrPosY;								// incremento de la posición y si el estado no es 0
+	int incrPosY;								// incremento de la posiciÃ³n y si el estado no es 0
 
 protected:
-	static DatosFotograma tablaAnimacion[8];	// tabla con los distintos fotogramas de la animación del personaje
+	static DatosFotograma tablaAnimacion[8];	// tabla con los distintos fotogramas de la animaciÃ³n del personaje
 
-// métodos
+// mÃ©todos
 public:
 	virtual void run();
 	virtual void ejecutaMovimiento();
 
-	// inicialización y limpieza
+	// inicializaciÃ³n y limpieza
 	Guillermo(Sprite *spr);
 	virtual ~Guillermo();
 };

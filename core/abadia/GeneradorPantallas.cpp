@@ -17,7 +17,7 @@
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
-// inicializaciÛn y limpieza
+// inicializaci√≥n y limpieza
 /////////////////////////////////////////////////////////////////////////////
 
 GeneradorPantallas::GeneradorPantallas()
@@ -31,7 +31,7 @@ GeneradorPantallas::GeneradorPantallas()
 	estadoOpsX[2] = 1;
 	estadoOpsX[3] = 0;
 
-	// crea los comandos de generaciÛn de bloques
+	// crea los comandos de generaci√≥n de bloques
 	manejadores[0xff^0xff] = new EndBlock();
 	manejadores[0xfe^0xff] = new WhileParam1();
 	manejadores[0xfd^0xff] = new WhileParam2();
@@ -61,14 +61,14 @@ GeneradorPantallas::GeneradorPantallas()
 	manejadores[0xe5^0xff] = new FlipX();
 	manejadores[0xe4^0xff] = new CallPreserve();
 
-	// genera las m·scaras para combinar los pixels
+	// genera las m√°scaras para combinar los pixels
 	generaMascaras();
 
 }
 
 GeneradorPantallas::~GeneradorPantallas()
 {
-	// elimina los comandos de generaciÛn de bloques
+	// elimina los comandos de generaci√≥n de bloques
 	for (int i = 0; i < 0x1c; i++){
 		delete manejadores[i];
 	}
@@ -132,11 +132,11 @@ struct parche {
 	int bg;	// elemento del fondo
 	} parches[]=
 	{
-// Algunos errores son porque no coincide el n∫ de tile
+// Algunos errores son porque no coincide el n¬∫ de tile
 // del mapa CPC y los tiles del remake
 // para no tener que tocar
 // todas las pantallas donde sale
-// se actualiza el n∫ de tile en ::grabaTile
+// se actualiza el n¬∫ de tile en ::grabaTile
 // y no se toca aqui
 
 
@@ -278,7 +278,7 @@ struct parche {
 // no lo aplico
 //{ 0x18,2,16,224,55 },
 
-// Corrigen un pequeÒo
+// Corrigen un peque√±o
 // y casi inapreciable detale
 { 0x1f,8,8,1,222},
 { 0x1f,8,9,0,223 },
@@ -501,18 +501,18 @@ struct parche {
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos de generaciÛn de bloques
+// m√©todos de generaci√≥n de bloques
 //
 // Los bloques puede tener 3 o 4 bytes de longitud. El formato del bloque es:
 //		byte 0:
 //			bits 7-1: tipo del bloque a construir
 //			bit 0: si es 1 indica que el bloque puede ocultar a los sprites
 //		byte 1:
-//			bits 7-5: par·metro 1 (su funciÛn depende del tipo de bloque a construir)
-//			bits 4-0: posiciÛn inicial en x (sistema de coordenadas del buffer de tiles)
+//			bits 7-5: par√°metro 1 (su funci√≥n depende del tipo de bloque a construir)
+//			bits 4-0: posici√≥n inicial en x (sistema de coordenadas del buffer de tiles)
 //		byte 2:
-//			bits 7-5: par·metro 2 (su funciÛn depende del tipo de bloque a construir)
-//			bits 4-0: posiciÛn inicial en y (sistema de coordenadas del buffer de tiles)
+//			bits 7-5: par√°metro 2 (su funci√≥n depende del tipo de bloque a construir)
+//			bits 4-0: posici√≥n inicial en y (sistema de coordenadas del buffer de tiles)
 //		byte 3: altura inicial del bloque
 //
 /////////////////////////////////////////////////////////////////////////////
@@ -523,7 +523,7 @@ void GeneradorPantallas::genera(UINT8 *datosPantalla)
 	// inicia la pila
 	posPila = 0;
 
-	// repite el proceso de generaciÛn de bloques hasta que no se encuentre el marcador de fin de datos
+	// repite el proceso de generaci√≥n de bloques hasta que no se encuentre el marcador de fin de datos
 	while (*datosPantalla != 0xff){
 
 		if (datosPantalla[0] == 0x2f){
@@ -531,7 +531,7 @@ void GeneradorPantallas::genera(UINT8 *datosPantalla)
 				int a = 0;
 			}
 		}
-		// los 7 bits m·s significativos del primer byte de los datos indican el tipo de bloque a construir
+		// los 7 bits m√°s significativos del primer byte de los datos indican el tipo de bloque a construir
 		int despTipoBloque = obtenerDir(0x156d + (datosPantalla[0] & 0xfe));
 
 		// obtiene un puntero a los tiles que forman el bloque
@@ -540,11 +540,11 @@ void GeneradorPantallas::genera(UINT8 *datosPantalla)
 		// avanza el desplazamiento hasta los comandos que forman el bloque
 		comandosBloque = despTipoBloque + 2;
 
-		// lee la posiciÛn desde donde se dibujar· el bloque
+		// lee la posici√≥n desde donde se dibujar√° el bloque
 		tilePosX = datosPantalla[1] & 0x1f;
 		tilePosY = datosPantalla[2] & 0x1f;
 
-		// lee los par·metros del bloque
+		// lee los par√°metros del bloque
 		datosBloque[12] = (datosPantalla[1] >> 5) & 0x07;
 		datosBloque[13] = (datosPantalla[2] >> 5) & 0x07;
 
@@ -553,8 +553,8 @@ void GeneradorPantallas::genera(UINT8 *datosPantalla)
 
 		int altura = 0xff;
 
-		// si la entrada es de 4 bytes, el cuarto byte indica la altura del bloque, y tambiÈn implica
-		// que se calcular·n los datos de profundidad a lo largo del proceso de generaciÛn del bloque
+		// si la entrada es de 4 bytes, el cuarto byte indica la altura del bloque, y tambi√©n implica
+		// que se calcular√°n los datos de profundidad a lo largo del proceso de generaci√≥n del bloque
 		if (datosPantalla[0] & 0x01){
 			altura = datosPantalla[3];
 			datosPantalla++;
@@ -563,15 +563,15 @@ void GeneradorPantallas::genera(UINT8 *datosPantalla)
 		// avanza a la siguiente entrada
 		datosPantalla += 3;
 
-		// guarda la altura para despuÈs
+		// guarda la altura para despu√©s
 		datosBloque[14] = altura;
 
-		// inicia la evaluaciÛn del bloque
+		// inicia la evaluaci√≥n del bloque
 		iniciaInterpretacionBloque(tilesBloque, true, altura);
 	}
 }
 
-// realiza la iniciaciÛn necesaria para interpretar los datos de un bloque
+// realiza la iniciaci√≥n necesaria para interpretar los datos de un bloque
 void GeneradorPantallas::iniciaInterpretacionBloque(UINT8 *tilesBloque, bool modificaTiles, int altura)
 {
 	if (modificaTiles){
@@ -581,20 +581,20 @@ void GeneradorPantallas::iniciaInterpretacionBloque(UINT8 *tilesBloque, bool mod
 		}
 	}
 
-	// transforma la posiciÛn del bloque en el buffer de tiles al sistema de coordenadas de la rejilla
+	// transforma la posici√≥n del bloque en el buffer de tiles al sistema de coordenadas de la rejilla
 	transformaCoordBloqueRejilla(altura);
 
 	// comienza a interpretar los comandos
 	interpretaComandos();
 }
 
-// transforma la posiciÛn del bloque en el buffer de tiles al sistema de coordenadas de la rejilla
+// transforma la posici√≥n del bloque en el buffer de tiles al sistema de coordenadas de la rejilla
 // las ecuaciones de cambio de sistema de coordenadas son:
 // mapa de tiles -> rejilla:		Xrejilla = Ymapa + Xmapa - 15
 //									Yrejilla = Ymapa - Xmapa + 16
 void GeneradorPantallas::transformaCoordBloqueRejilla(int altura)
 {
-	// solo realiza la transformaciÛn si el bloque puede ocultar a los sprites
+	// solo realiza la transformaci√≥n si el bloque puede ocultar a los sprites
 	if (altura != 0xff){
 		datosBloque[15] = (tilePosY + altura/2) + tilePosX - 15;
 		datosBloque[16] = (tilePosY + altura/2) - tilePosX + 16;
@@ -606,7 +606,7 @@ void GeneradorPantallas::interpretaComandos()
 {
 	while (true){
 		UINT8 *comando = &roms[comandosBloque];
-		// obtiene el n˙mero de la rutina que est· complementado
+		// obtiene el n√∫mero de la rutina que est√° complementado
 		int numRutina = (*comando) ^ 0xff;
 
 		comandosBloque++;
@@ -614,7 +614,7 @@ void GeneradorPantallas::interpretaComandos()
 		// llama a la rutina correspondiente para que realice su procesamiento
 		bool terminado = manejadores[numRutina]->ejecutar(this);
 
-		// si era el ˙ltimo comando de generaciÛn del bloque, sale
+		// si era el √∫ltimo comando de generaci√≥n del bloque, sale
 		if (terminado){
 			break;
 		}
@@ -622,7 +622,7 @@ void GeneradorPantallas::interpretaComandos()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos de ayuda para los comandos de dibujo de los tiles
+// m√©todos de ayuda para los comandos de dibujo de los tiles
 /////////////////////////////////////////////////////////////////////////////
 
 // actualiza los datos de un tile del buffer de tiles
@@ -677,7 +677,7 @@ void GeneradorPantallas::grabaTile(int tile)
 	// TODO: Usar el GraficosVGA del nuevo remake
 	// o el tiles.png del remake Java en los que el orden
 	// parece correcto. Lo malo del GraficosVGA nuevo
-	// es que habrÌa que recalcular todas las posiciones
+	// es que habr√≠a que recalcular todas las posiciones
 	// de la pantalla de introduccion, los sprites,etc.
 	
 	// Cambio los tiles de los libros del mapa CPC 
@@ -688,7 +688,7 @@ void GeneradorPantallas::grabaTile(int tile)
 	if (tile==105) tile=237;
 
 
-	// actualiza la informaciÛn de esa entrada del tile en el buffer de tiles
+	// actualiza la informaci√≥n de esa entrada del tile en el buffer de tiles
 	actualizaTile(tile, &bufferTiles[posY][posX]);
 }
 
@@ -738,7 +738,7 @@ int GeneradorPantallas::leeDatoORegistro(int *posReg)
 		return dato;
 	}
 
-	// si se cambiÛ el sentido de las x, intercambia los registros 0x70 y 0x71
+	// si se cambi√≥ el sentido de las x, intercambia los registros 0x70 y 0x71
 	if (dato >= 0x70){
 		dato = dato ^ estadoOpsX[3];
 	}
@@ -746,42 +746,42 @@ int GeneradorPantallas::leeDatoORegistro(int *posReg)
 	// en otro caso, es una lectura de un registro del buffer con los datos del bloque
 	int pos = dato - 0x61;
 
-	// si se nos solicitÛ la posiciÛn del registro, la graba
+	// si se nos solicit√≥ la posici√≥n del registro, la graba
 	if (posReg != 0){
 		*posReg = pos;
 	}
 
-	// devuelve el dato que habÌa en el registro
+	// devuelve el dato que hab√≠a en el registro
 	return datosBloque[pos];
 }
 
-// obtiene el valor de un registro de generaciÛn el bloque actual
+// obtiene el valor de un registro de generaci√≥n el bloque actual
 int GeneradorPantallas::obtenerRegistro(int reg, int *posReg)
 {
 	assert((reg != 0x82) && (reg > 0x60));
 
-	// si se cambiÛ el sentido de las x, intercambia los registros 0x70 y 0x71
+	// si se cambi√≥ el sentido de las x, intercambia los registros 0x70 y 0x71
 	if (reg >= 0x70){
 		reg = estadoOpsX[3];
 	}
 
 	int pos = reg - 0x61;
 
-	// si se nos solicitÛ la posiciÛn del registro, la graba
+	// si se nos solicit√≥ la posici√≥n del registro, la graba
 	if (posReg != 0){
 		*posReg = pos;
 	}
 
-	// devuelve el dato que habÌa en el registro
+	// devuelve el dato que hab√≠a en el registro
 	return datosBloque[pos];
 }
 
-// actualiza un registro de generaciÛn del bloque actual
+// actualiza un registro de generaci√≥n del bloque actual
 int GeneradorPantallas::actualizaRegistro(int reg, int delta)
 {
 	assert((reg != 0x82) && (reg > 0x60));
 
-	// si se cambiÛ el sentido de las x, intercambia los registros 0x70 y 0x71
+	// si se cambi√≥ el sentido de las x, intercambia los registros 0x70 y 0x71
 	if (reg >= 0x70){
 		reg = reg ^ estadoOpsX[3];
 	}
@@ -794,19 +794,19 @@ int GeneradorPantallas::actualizaRegistro(int reg, int delta)
 	return datosBloque[pos];
 }
 
-// evalua una ristra de bytes calculando la expresiÛn generada
+// evalua una ristra de bytes calculando la expresi√≥n generada
 int GeneradorPantallas::evaluaExpresion(int rdo)
 {
 	while (true){
 		// lee un byte de datos
 		int op = roms[comandosBloque];
 
-		// si se ha terminado la expresiÛn, sale
+		// si se ha terminado la expresi√≥n, sale
 		if (op >= 0xc8){
 			return rdo;
 		}
 
-		// 0x84 indica el cambio de signo de la expresiÛn calculada
+		// 0x84 indica el cambio de signo de la expresi√≥n calculada
 		if (op == 0x84){
 			rdo = -rdo;
 			comandosBloque++;
@@ -818,13 +818,13 @@ int GeneradorPantallas::evaluaExpresion(int rdo)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos de dibujo del buffer de tiles
+// m√©todos de dibujo del buffer de tiles
 /////////////////////////////////////////////////////////////////////////////
 
 // dibuja en pantalla el contenido del buffer de tiles desde el centro hacia fuera
 void GeneradorPantallas::dibujaBufferTiles()
 {
-	// posiciÛn inicial en el buffer de tiles
+	// posici√≥n inicial en el buffer de tiles
 	int x = 7;
 	int y = 8;
 
@@ -851,7 +851,7 @@ void GeneradorPantallas::dibujaBufferTiles()
 		dibujaTira(x, y, 0, -1,  arriba);
 		dibujaTira(x, y, -1, 0, izquierda); 
 
-		// aumenta el tamaÒo del rect·ngulo que dibuja
+		// aumenta el tama√±o del rect√°ngulo que dibuja
 		abajo += 2;
 		derecha += 2;
 		arriba += 2;
@@ -869,10 +869,10 @@ void GeneradorPantallas::dibujaTira(int &x, int &y, int deltaX, int deltaY, int 
 	for (int i = 0; i < veces; i++){
 		// por cada capa de profundidad
 		for (int k = 0; k < nivelesProfTiles; k++){
-			// obtiene el n˙mero de tile asociado a esta profundidad del buffer de tiles
+			// obtiene el n√∫mero de tile asociado a esta profundidad del buffer de tiles
 			int tile = bufferTiles[y][x].tile[k];
 
-			// si hay alg˙n tile, lo dibuja
+			// si hay alg√∫n tile, lo dibuja
 			/* CPC
 			if (tile != 0){
 				dibujaTile(32 + x*16, y*8, tile);
@@ -884,13 +884,13 @@ void GeneradorPantallas::dibujaTira(int &x, int &y, int deltaX, int deltaY, int 
 			dibujaTile(32 + x*16, y*8, tile);
 		}
 
-		// pasa a la siguiente posiciÛn
+		// pasa a la siguiente posici√≥n
 		x = x + deltaX;
 		y = y + deltaY;
 	}
 }
 /* codigo original 
-// dibuja un tile de 16x8 en la posiciÛn indicada
+// dibuja un tile de 16x8 en la posici√≥n indicada
 void GeneradorPantallas::dibujaTile(int x, int y, int num)
 {
 	assert((num >= 0x00) && (num < 0x100));
@@ -904,7 +904,7 @@ void GeneradorPantallas::dibujaTile(int x, int y, int num)
 	for (int j = 0; j < 8; j++){
 		// repite para 4 bytes (16 pixels)
 		for (int i = 0; i < 4; i++){
-			// lee un byte del gr·fico (4 pixels)
+			// lee un byte del gr√°fico (4 pixels)
 			int data = *tileData;
 
 			// para cada pixel del byte leido
@@ -925,10 +925,10 @@ void GeneradorPantallas::dibujaTile(int x, int y, int num)
 				x++;
 			}
 
-			// avanza la posiciÛn del gr·fico
+			// avanza la posici√≥n del gr√°fico
 			tileData++;
 		}
-		// pasa a la siguiente lÌnea de pantalla
+		// pasa a la siguiente l√≠nea de pantalla
 		x -= 16;
 		y++;
 	}
@@ -941,7 +941,7 @@ void GeneradorPantallas::dibujaTile(int x, int y, int num)
  * 3 - 20 black 
  */
 
-// dibuja un tile de 16x8 en la posiciÛn indicada
+// dibuja un tile de 16x8 en la posici√≥n indicada
 void GeneradorPantallas::dibujaTile(int x, int y, int num)
 {
 	assert((num >= 0x00) && (num < 0x100));
@@ -966,7 +966,7 @@ void GeneradorPantallas::dibujaTile(int x, int y, int num)
 	for (int j = 0; j < 8; j++){
 		// repite para 16 bytes (16 pixels)
 		for (int i = 0; i < 16; i++){
-			// lee un byte del gr·fico (4 pixels)
+			// lee un byte del gr√°fico (4 pixels)
 			int data = *tileData;
 			if(data!=0)
 			{
@@ -975,10 +975,10 @@ void GeneradorPantallas::dibujaTile(int x, int y, int num)
                         // avanza al siguiente pixel
                         x++;
 
-			// avanza la posiciÛn del gr·fico
+			// avanza la posici√≥n del gr√°fico
 			tileData++;
 		}
-		// pasa a la siguiente lÌnea de pantalla
+		// pasa a la siguiente l√≠nea de pantalla
 		x -= 16;
 		y++;
 	}
@@ -986,39 +986,39 @@ void GeneradorPantallas::dibujaTile(int x, int y, int num)
 
 
 /////////////////////////////////////////////////////////////////////////////
-// mÈtodos de ayuda
+// m√©todos de ayuda
 /////////////////////////////////////////////////////////////////////////////
 
-// obtiene la direcciÛn de memoria que hay en una direcciÛn de memoria
+// obtiene la direcci√≥n de memoria que hay en una direcci√≥n de memoria
 int GeneradorPantallas::obtenerDir(int direccion)
 {
 	UINT8 *aux = &roms[direccion];
 	return aux[0] | (aux [1] << 8);
 }
 
-// genera las m·scaras necesarias para combinar los gr·ficos
+// genera las m√°scaras necesarias para combinar los gr√°ficos
 void GeneradorPantallas::generaMascaras()
 {
-	// rellena las tablas de las m·scaras
+	// rellena las tablas de las m√°scaras
 	for (int i = 0; i < 4; i++){
 		int bit0 = (i >> 0) & 0x01;
 		int bit1 = (i >> 1) & 0x01;
 
-		// tabla de m·scaras or (0->0, 1->1, 2->0, 3->3)
+		// tabla de m√°scaras or (0->0, 1->1, 2->0, 3->3)
 		mascaras[0][i] = ((bit1 & bit0) << 1) | bit0;
 
-		// tabla de m·scaras and (0->0, 1->0, 2->3, 3->0)
+		// tabla de m√°scaras and (0->0, 1->0, 2->3, 3->0)
 		mascaras[1][i] = (((bit1 ^ bit0) & bit1) << 1) | ((bit1 ^ bit0) & bit1);
 
-		// tabla de m·scaras or (0->0, 1->0, 2->2, 3->3)
+		// tabla de m√°scaras or (0->0, 1->0, 2->2, 3->3)
 		mascaras[2][i] = ((bit1) << 1) | (bit1 & bit0);
 
-		// tabla de m·scaras and (0->0, 1->3, 2->0, 3->0)
+		// tabla de m√°scaras and (0->0, 1->3, 2->0, 3->0)
 		mascaras[3][i] = (((bit1 ^ bit0) & bit0) << 1) | ((bit1 ^ bit0) & bit0);
 	}
 }
 
-// prepara el buffer de tiles y limpia el ·rea de juego
+// prepara el buffer de tiles y limpia el √°rea de juego
 void GeneradorPantallas::limpiaPantalla(int color)
 {
 	// limpia el buffer de tiles
@@ -1032,6 +1032,6 @@ void GeneradorPantallas::limpiaPantalla(int color)
 		}
 	}
 
-	// limpia el ·rea de juego
+	// limpia el √°rea de juego
 	cpc6128->fillMode1Rect(32, 0, 256, 160, color);
 }

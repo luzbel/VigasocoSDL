@@ -1,6 +1,6 @@
 // Paleta.h
 //
-//	Clase con todos los mÈtodos relacionados con la paleta
+//	Clase con todos los m√©todos relacionados con la paleta
 //
 /////////////////////////////////////////////////////////////////////////////
 
@@ -19,18 +19,18 @@ class Paleta
 // campos
 protected:
 	IPalette *paleta;		// paleta real del juego
-	CPC6128	*cpc6128;		// objeto que presta ayuda para realizar operaciones gr·ficas del cpc6128
+	CPC6128	*cpc6128;		// objeto que presta ayuda para realizar operaciones gr√°ficas del cpc6128
 
-// mÈtodos
+// m√©todos
 public:
 	void setIntroPalette();
 	void setGamePalette(int pal);
 
-	// inicializaciÛn y limpieza
+	// inicializaci√≥n y limpieza
 	Paleta(UINT8 *gfxVGA);
 	~Paleta();
 
-// paletas gr·ficas
+// paletas gr√°ficas
 protected:
 	static int introPalette[16];
 	static int palettes[4][4];

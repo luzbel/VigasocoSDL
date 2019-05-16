@@ -1,7 +1,17 @@
+v0.095
+======
+
+Correcciones a errores detectados durante las pruebas del proyecto abadIA
+- Se pasan los textos a UTF-8 para mejor gestiÃ³n en GitHub y editores modernos de cÃ³digo
+- Adaptaciones a compiladores modernos de C++
+- Se modifica la visualizaciÃ³n de textos en pantalla para ser compatibles con las fuentes en UTF-8
+- CorrecciÃ³n bug: Al reiniciar una partida Adso se quedaba con los objetos que tuviese de la partida anterior
+- Se visualizan correctamente textos que fallaban desde que se habÃ­an metido las traducciones. Por ejemplo, el texto COMPLETAS en el marcador
+
 v0.094
 ======
 
-Limpieza código
+Limpieza cÃ³digo
 Adaptacion a pepper35 en la version PNACL, usando la inicializacion por defecto
 
 v0.093
@@ -12,13 +22,13 @@ Menus para seleccionar idioma, grabar/cargar ...
 v0.092
 ======
 
-Limpieza código
+Limpieza cÃ³digo
 
 v0.091
 ======
 
 Faltaban los caracteres - y ' en los caracteres del juego
-La pantalla de fin de investigación usaba letras minúsculas en algunos idiomas que no estaban definidas
+La pantalla de fin de investigaciÃ³n usaba letras minÃºsculas en algunos idiomas que no estaban definidas
 
 
 v0.09
@@ -27,22 +37,22 @@ v0.09
 intento traducciones sobre la v0.082
 pasados los textos del gestor frases
 faltan los de los pergaminos
-falta añadir a los creditos los nombres de los traductores
+falta aÃ±adir a los creditos los nombres de los traductores
 
-falla mucho, porque los graficos de la rom solo incluyen caracteres para textos en español
+falla mucho, porque los graficos de la rom solo incluyen caracteres para textos en espaÃ±ol
 (ni siquiera esta la w, que no se usa) 
 
 asi que en cuanto salen caracteres raros de otros idiomas, no se visualizan bien
-¿copiar los graficos del remake pc?
+Â¿copiar los graficos del remake pc?
 
 ahora mismo pone textos gestorfrases a 7 (portugues a fuego)
-¿como configurar? deberia ser una variable publica en Juego para que GestorFrases y pergamino
-la leyesen, pero ¿como inicializar y cambiar?
-abadiadriver deberia iniciarla, pero¿como? ¿si se recibe como argumento en linea comando le podria llegar a abadiadriver???
-¿o una pantalla antes del pergamino con opciones y segun se pulse poner un idioma u otro???
+Â¿como configurar? deberia ser una variable publica en Juego para que GestorFrases y pergamino
+la leyesen, pero Â¿como inicializar y cambiar?
+abadiadriver deberia iniciarla, peroÂ¿como? Â¿si se recibe como argumento en linea comando le podria llegar a abadiadriver???
+Â¿o una pantalla antes del pergamino con opciones y segun se pulse poner un idioma u otro???
 temporalmente he puesto un menu despues de la portada y antes de los pergaminos
-¿se podria convertir en un menu para sacar en cualquier momento de la partida
-y añadir cargar/grabar/salir/pausa/...?
+Â¿se podria convertir en un menu para sacar en cualquier momento de la partida
+y aÃ±adir cargar/grabar/salir/pausa/...?
 
 v0.082
 ======
@@ -70,7 +80,7 @@ Cambios en la version PNACL (Portable Native Client para Google Chrome)
 
 Pruebas a poder cambiar la camara y espiar a otros personajes como ayuda para el juego (teclas 1 a 7)
 Se anulan las teclas 1 a 7 de la ayuda de juego que no se mostraban
-Se probó a cambiar la ayuda para mostrar los mapas a las teclas 8,9 y 0 (previa activacion con F5)
+Se probÃ³ a cambiar la ayuda para mostrar los mapas a las teclas 8,9 y 0 (previa activacion con F5)
 Los mapas se muestran sin transparencias, tapando toda la pantalla (se activa/desactiva con F5 ). Se muestran las 3 mapas sin necesidad de activarlos con 8,9 ni 0
 
 PRUEBAS a facilitar el juego, empezando porque el abad sea mas comprensivo
@@ -101,7 +111,7 @@ v0.070
 
 Cambios en la version SDL a 256 colores:
 	- Se reduce el consumo de memoria al cargar los sonidos en formato wav directamente el plugin de audio, sin almacenarse por duplicado en la estructura rom. Se espera que asi entre en los 16MB de la Sega Dreamcast
-	- Limpieza del código
+	- Limpieza del cÃ³digo
 	- Se restaura correctamente la capucha de Berengario al cargar
 	  partidas
 
@@ -109,7 +119,7 @@ v0.064c
 =======
 
 Cambios en la version SDL a 256 colores:
-	- Version con ficheros de sonido con menos calidad y tamaño para poder instalarse en la flash de la PS3 como un OtherOS sin necesidad de mas archivos
+	- Version con ficheros de sonido con menos calidad y tamaÃ±o para poder instalarse en la flash de la PS3 como un OtherOS sin necesidad de mas archivos
 
 
 v0.063b
@@ -124,33 +134,33 @@ el valor del numeroRomano.
 v0.063a
 =======
 
-Actualización de la versión SDL a 256 colores con los cambios de la versión 0.053:
+ActualizaciÃ³n de la versiÃ³n SDL a 256 colores con los cambios de la versiÃ³n 0.053:
 	- Soporte para compilar en Windows con MingW32.
 
 v0.053
 ======
 
-Revisión de la versión SDL:
+RevisiÃ³n de la versiÃ³n SDL:
 	- Soporte para compilar en Windows con MingW32.
 
 v0.062
 ======
 
-Actualización de la versión SDL a 256 colores con los cambios de la versión 0.052:
-	- Soporte para poder compilarse de forma estática y no depender de las librerías de C++ y SDL que se tengan instaladas.
-	- Nueva opción para cambiar entre el modo de pantalla completa y ventana con la tecla F3 (no funciona correctamente en todos los sistemas).
+ActualizaciÃ³n de la versiÃ³n SDL a 256 colores con los cambios de la versiÃ³n 0.052:
+	- Soporte para poder compilarse de forma estÃ¡tica y no depender de las librerÃ­as de C++ y SDL que se tengan instaladas.
+	- Nueva opciÃ³n para cambiar entre el modo de pantalla completa y ventana con la tecla F3 (no funciona correctamente en todos los sistemas).
 
 v0.052
 ======
 
-Revisión de la antigua versión SDL sin 256 colores: 
-        - Soporte para poder compilarse de forma estática y no depender de las librerías de C++ y SDL que se tengan instaladas.
-        - Nueva opción para cambiar entre el modo de pantalla completa y ventana con la tecla F3 (no funciona correctamente en todos los sistemas).
+RevisiÃ³n de la antigua versiÃ³n SDL sin 256 colores: 
+        - Soporte para poder compilarse de forma estÃ¡tica y no depender de las librerÃ­as de C++ y SDL que se tengan instaladas.
+        - Nueva opciÃ³n para cambiar entre el modo de pantalla completa y ventana con la tecla F3 (no funciona correctamente en todos los sistemas).
 
 v0.061
 ======
 
-Soporte en la versión SDL 256 colores para cambiar de GraficosCPC a GraficosVGA en caliente  con la tecla F2.
+Soporte en la versiÃ³n SDL 256 colores para cambiar de GraficosCPC a GraficosVGA en caliente  con la tecla F2.
 
 v0.06
 =====
@@ -158,15 +168,15 @@ v0.06
 Cambios en la version SDL para soportar los graficos a 256 colores del remake:
 	- Falta implementar las transparencias en las ventanas.
 	- El pergamino no se ha actualizado a 256 colores.
-	- Hay algunos errores gráficos por diferencias entre los tiles VGA y los de la ROM original.
+	- Hay algunos errores grÃ¡ficos por diferencias entre los tiles VGA y los de la ROM original.
 
 v0.051
 ======
 
 Cambios en la version SDL:
-- Mejoras para soportar versiones de G++ más modernas.
+- Mejoras para soportar versiones de G++ mÃ¡s modernas.
 - La llamada a SDL_Timer(0) da problemas en versiones modernas de linux y se cambia el codigo del temporizador.
-- Se abandona el uso de timers con RDTSC ya que no funciona en sistemas con mas de un núcleo.
+- Se abandona el uso de timers con RDTSC ya que no funciona en sistemas con mas de un nÃºcleo.
 
 v0.05
 =====
@@ -178,7 +188,7 @@ Nuevas versiones de los plugins graficos para SDL:
 	Por problemas en el port de SDL para ps2sdk, los plugins anteriores no dan buen rendimiento. 
 	Se proporciona una version hackeada que da buen rendimiento con el SDL de PS2
 Nuevo plugin de entrada para soportar el PAD de la PlayStation2:
-	El plugin anterior debería funcionar con teclados USB en Playstation2 , pero no ha sido probado.
+	El plugin anterior deberÃ­a funcionar con teclados USB en Playstation2 , pero no ha sido probado.
 
 (Por ahora, la version de PlayStation2 no soporta carga de librerias dinamicas, por lo que los plugins
 se linkan de forma estatica)
@@ -214,11 +224,11 @@ v0.02
 Nuevos juegos soportados:
 	* La Abadia del Crimen [Manuel Abadia]
 
-Cambios en el código fuente:
-	* Arreglados algunos fallos en el núcleo [vMAB]
-	* Creación de una clase para tratar con juegos basados en el Amstrad CPC6128 y otra clase para cargar archvos DSK [Manuel Abadia]
-	* Añadido soporte multihilo (necesario para La Abadia del Crimen) [Manuel Abadia]
-	* Pequeños cambios al funcionamiento del plugin de dibujo [vMAB]
-	* Añadido un gestor de fuentes para poder escribir texto en los bitmaps [Manuel Abadia]
+Cambios en el cÃ³digo fuente:
+	* Arreglados algunos fallos en el nÃºcleo [vMAB]
+	* CreaciÃ³n de una clase para tratar con juegos basados en el Amstrad CPC6128 y otra clase para cargar archvos DSK [Manuel Abadia]
+	* AÃ±adido soporte multihilo (necesario para La Abadia del Crimen) [Manuel Abadia]
+	* PequeÃ±os cambios al funcionamiento del plugin de dibujo [vMAB]
+	* AÃ±adido un gestor de fuentes para poder escribir texto en los bitmaps [Manuel Abadia]
 	* Rescrito el sistema de control de tiempo [Manuel Abadia]
-	* Cambios cosméticos al pacman [vMAB]
+	* Cambios cosmÃ©ticos al pacman [vMAB]

@@ -5,22 +5,22 @@ Copyright (c) 2003-2005 "VIGASOCO Project Team"
 Acerca de:
 ==========
 
-VIGASOCOWin32 es la versiÛn para Windows del proyecto VIGASOCO.
+VIGASOCOWin32 es la versi√≥n para Windows del proyecto VIGASOCO.
 
 
-Licencia y distribuciÛn:
+Licencia y distribuci√≥n:
 ========================
 
 La misma que el proyecto VIGASOCO (consultar leeme.txt para los detalles).
 
 Uso:
 ===
-La versiÛn para windows de VIGASOCO se diseÒo entorno al concepto de plugin:
-	* Los plugins gr·ficos deben grabarse en un directorio llamado VIDEO.
+La versi√≥n para windows de VIGASOCO se dise√±o entorno al concepto de plugin:
+	* Los plugins gr√°ficos deben grabarse en un directorio llamado VIDEO.
 	* Los plugins de entrada deben grabarse en un directorio llamado INPUT.
 	* Los plugins de carga deben grabarse en un directorio llamado LOADERS.
 	
-La distribuciÛn oficial viene con los siguientes plugins:
+La distribuci√≥n oficial viene con los siguientes plugins:
 	* VIDEO\MDDraw.dll
 		- win16: modo ventana, 16 bpp usando DirectDraw
 		- win32: modo ventana, 32 bpp usando DirectDraw
@@ -31,26 +31,26 @@ La distribuciÛn oficial viene con los siguientes plugins:
 	* INPUT\DIKeyb.dll
 		- DIKeyb: teclado usando DirectInput
 	* LOADERS\ZipLoader.dll
-		- ZipLoader: carga de archivos ZIP (usando la librerÌa ZipArchive (c) 2000-2003 Tadeusz Dracz)
+		- ZipLoader: carga de archivos ZIP (usando la librer√≠a ZipArchive (c) 2000-2003 Tadeusz Dracz)
 
-Si lo deseas, puedes desarrollar tus propios plugins (m·s informaciÛn en el cÛdigo fuente).
+Si lo deseas, puedes desarrollar tus propios plugins (m√°s informaci√≥n en el c√≥digo fuente).
 
-El ejecutable acepta par·metros en el formato siguiente:
+El ejecutable acepta par√°metros en el formato siguiente:
 VigasocoWin32.exe <juego> <-video:pluginDLL,plugin> <-input:{pluginDLL,plugin;}* pluginDLL,plugin> <-path:{path;}* path>
 
-Si no especificas ning˙n par·metro, los par·metros por defecto son:
+Si no especificas ning√∫n par√°metro, los par√°metros por defecto son:
 	pacman -video:MDDraw.dll,full16 -input:DIKeyb.dll,DIKeyb
 	
-Nota: en los nombres de los plugins (no el nombre de las dll) hay distinciÛn entre may˙sculas y min˙sculas.
+Nota: en los nombres de los plugins (no el nombre de las dll) hay distinci√≥n entre may√∫sculas y min√∫sculas.
 
-Pueden funcionar a la vez m˙ltiples plugins de entrada. El programa trata de cargar todas las DLL
+Pueden funcionar a la vez m√∫ltiples plugins de entrada. El programa trata de cargar todas las DLL
 que encuentra en el directorio LOADERS, y obtener de ellas un plugin llamado CustomLoader, 
-por lo que se pueden cargar archivos en mas formatos aÒadiendo m·s plugins de carga.
+por lo que se pueden cargar archivos en mas formatos a√±adiendo m√°s plugins de carga.
 
 Por defecto, VIGASOCO busca las ROMs de los juegos en el directorio ROMS, pero se pueden especificar
-m·s directorios en los que buscar con la opciÛn -path. Si no hay ning˙n plugin en el directorio LOADERS
-tratar· de cargar los archivos descomprimidos en la ruta ROMS/nombredeljuego. El plugin ZipLoader
-buscar· el archivo ROMS/nombredeljuego.zip
+m√°s directorios en los que buscar con la opci√≥n -path. Si no hay ning√∫n plugin en el directorio LOADERS
+tratar√° de cargar los archivos descomprimidos en la ruta ROMS/nombredeljuego. El plugin ZipLoader
+buscar√° el archivo ROMS/nombredeljuego.zip
 
 Ejemplo:
 	VigasocoWin32 pacman -video:MDDraw.dll,win16 -path:../arcade/roms
@@ -71,7 +71,7 @@ Las teclas por defecto del plugin DIKeyb (DIKeyb.dll) son:
 	1 -> Jugador 1 Empezar
 	5 -> Jugador 1 Insertar moneda 
 	
-	F5 -> mostrar informaciÛn interna sobre el funcionamiento del juego
+	F5 -> mostrar informaci√≥n interna sobre el funcionamiento del juego
 	F8, F9 -> control de avance de frames
 	F10 -> control de velocidad
 
@@ -79,16 +79,16 @@ Las teclas por defecto del plugin DIKeyb (DIKeyb.dll) son:
 Juegos soportados:
 ==================
 
-                        Nombre del juego        Nombre ROM       InformaciÛn interna sobre el funcionamiento del juego
+                        Nombre del juego        Nombre ROM       Informaci√≥n interna sobre el funcionamiento del juego
 ------------------------------------------------------------------------------------------------------------------------------
-PACMAN:                 pacman                  puckman          divisiÛn lÛgica en celdas + posiciÛn de destino deseada por los fantasmas
+PACMAN:                 pacman                  puckman          divisi√≥n l√≥gica en celdas + posici√≥n de destino deseada por los fantasmas
 ------------------------------------------------------------------------------------------------------------------------------
-LA ABADIA DEL CRIMEN:   abadia                  abadia           rejilla de pantalla + mapas de las plantas + jugadores + objetos + puertas + lÛgica
+LA ABADIA DEL CRIMEN:   abadia                  abadia           rejilla de pantalla + mapas de las plantas + jugadores + objetos + puertas + l√≥gica
 ------------------------------------------------------------------------------------------------------------------------------
 
 Contacto:
 =========
-En el cÛdigo fuente se incluye informaciÛn de contacto.
+En el c√≥digo fuente se incluye informaci√≥n de contacto.
 
 
 Agradecimientos:
