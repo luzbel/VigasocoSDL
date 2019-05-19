@@ -1,3 +1,21 @@
+v0.096
+======
+
+Primeras pruebas con emscripten ahora que soporta pthreads
+
+Sin soporte de sonidos
+Hay que cambiar 
+
+TODO:
+Audio: Probar sonidos, pero además de usar el SDL_Mixer de SDL1.2 , hay que ver como incorporar los .wav sin gastar mucha memoria (buscar alternativa a usar --preload-file
+al compilar subiendo todo el contenido de la carpeta roms)--preload-file
+Los wavs ahora estan a cero bytes para no ocupar
+
+Video: Sólo funciona el plugin de 8bpp (ni siquiera el wingris). Hay que usa HWPALETTE y eso implica cambiar SDL.defaults.copyOnLock 
+	Con otros bpp salen artefactos y no se termina de ver bien la pantalla
+
+argc/argv: Ver como pasar argumentos para cambiar de plugin
+
 v0.095
 ======
 

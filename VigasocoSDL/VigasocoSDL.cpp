@@ -207,7 +207,7 @@ void VigasocoSDL::createAsyncThread()
 
 void VigasocoSDL::initCompleted()
 {
-	std::string titulo_ventana = "VigasocoSDL v0.095: " + _driver->getFullName();
+	std::string titulo_ventana = "VigasocoSDL v0.096: " + _driver->getFullName();
 	SDL_WM_SetCaption(titulo_ventana.c_str(),titulo_ventana.c_str());
 	SDL_ShowCursor(SDL_DISABLE);
 }

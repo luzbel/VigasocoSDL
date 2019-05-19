@@ -5,6 +5,10 @@
 #include "SDLBasicDrawPlugin.h"
 #include "IPalette.h"
 
+#ifdef __EMSCRIPTEN__
+#include "emscripten.h"
+#endif
+
 // 6 para cuadricula de 64*64 pixeles (2^6)
 // 7 para cuadricula de 128*128 pixeles (2^7)
 #define FACTOR_REJILLA 6
@@ -24,8 +28,15 @@ bool SDLBasicDrawPlugin<T>::init(const VideoInfo *vi, IPalette *pal)
 				vi->width,vi->height,_bpp,SDL_GetError());
 		return false;
 	}
-	printf("set %dx%dx%d video mode(%s): %s\n",
-				vi->width,vi->height,_bpp,screen->flags & SDL_DOUBLEBUF?"DOUBLEBUFF":"No double buffer",SDL_GetError());
+	printf("set %dx%dx%d BytesPerPixel %d video mode(%s): %s\n",
+				vi->width,vi->height,_bpp, screen->format->BytesPerPixel,
+				screen->flags & SDL_DOUBLEBUF?"DOUBLEBUFF":"No double buffer",SDL_GetError());
+
+/* No funciona, en el JS generado sigue habiendo una inicializacion con copyOnLock a true  
+#ifdef __EMSCRIPTEN__
+  EM_ASM("SDL.defaults.copyOnLock = false; SDL.defaults.discardOnLock = true; SDL.defaults.opaqueFrontBuffer = false;");
+#endif
+*/
 
 	_originalPalette=pal;
 
@@ -112,7 +123,22 @@ inline void SDLBasicDrawPlugin<T>::updateRect(int x,int y)
 template<typename T>
 void SDLBasicDrawPlugin<T>::render(bool throttle)
 {
+#ifdef __EMSCRIPTEN__
+	if ( SDL_MUSTLOCK(screen) ) {
+		SDL_UnlockSurface(screen);
+	} 
+#endif
+
 	SDL_Flip(screen);
+
+#ifdef __EMSCRIPTEN__
+	if ( SDL_MUSTLOCK(screen) ) {
+		if ( SDL_LockSurface(screen) < 0 ) {
+			return;
+		}
+	}
+#endif
+
 	/*
 #ifdef _EE
 	SDL_UpdateRects(screen,0,NULL);
@@ -150,6 +176,7 @@ void SDLBasicDrawPlugin<T>::render(bool throttle)
 template<typename T>
 void SDLBasicDrawPlugin<T>::setPixel(int x, int y, int color)
 {
+#ifndef __EMSCRIPTEN__
 	/* Lock the screen for direct access to the pixels */
 	if ( SDL_MUSTLOCK(screen) ) {
 		if ( SDL_LockSurface(screen) < 0 ) {
@@ -157,7 +184,7 @@ void SDLBasicDrawPlugin<T>::setPixel(int x, int y, int color)
 			return;
 		}
 	}
-
+#endif
 	updateRect(x,y);
 
 	int __bpp = screen->format->BytesPerPixel;
@@ -165,8 +192,9 @@ void SDLBasicDrawPlugin<T>::setPixel(int x, int y, int color)
 	Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * __bpp;
 
 	*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
-
+#ifndef __EMSCRIPTEN__
 	if ( SDL_MUSTLOCK(screen) ) {
 		SDL_UnlockSurface(screen);
 	}
+#endif
 };

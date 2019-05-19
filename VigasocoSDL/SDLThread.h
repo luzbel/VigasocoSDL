@@ -12,11 +12,19 @@
 #include "SDL.h"
 #include "SDL_thread.h"
 
+#ifdef __EMSCRIPTEN_PTHREADS__ 
+#include <pthread.h>
+#endif
+
 class SDLThread : public IThread
 {
 // fields
 protected:
+#ifdef __EMSCRIPTEN_PTHREADS__ 
+	pthread_t _handle;
+#else
 	SDL_Thread *_handle;
+#endif
 
 public:
 	// initialization and cleanup
