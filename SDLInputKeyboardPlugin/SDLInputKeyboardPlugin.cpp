@@ -161,8 +161,11 @@ void SDLInputKeyboardPlugin::process(int *inputs)
 {
 	//Uint8 *keystate = SDL_GetKeyState(NULL);
 	int size;
-	//Uint8 *keystate_tmp=SDL_GetKeyState(&size);
+#ifndef __EMSCRIPTEN__
+	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
+#else
 	Uint8 *keystate_tmp=SDL_GetKeyboardState(&size);
+#endif
 	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
 
 #if defined _EE || defined _PS3

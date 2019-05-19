@@ -16,6 +16,9 @@ Video: Sólo funciona el plugin de 8bpp (ni siquiera el wingris). Hay que usa HW
 
 argc/argv: Ver como pasar argumentos para cambiar de plugin
 
+
+Cargar/Grabar partidas: Ahora mismo se usa el MEMFS y aunque se graba y carga, todos los ficheros desaparecen con la sesión del navegador y no hay persistencia.
+
 v0.095
 ======
 
