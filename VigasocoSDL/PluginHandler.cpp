@@ -144,7 +144,7 @@ void PluginHandler::unloadPlugin(DLLEntry *info)
 	// delete plugin and free DLL
 	if (info->libHandle != 0){
 		info->destroyPlugin(info->plugin);
-		SDL_UnloadObject(info->libHandle);
+//		SDL_UnloadObject(info->libHandle);
 		info->libHandle = 0;
 		info->createPlugin = 0;
 		info->destroyPlugin = 0;

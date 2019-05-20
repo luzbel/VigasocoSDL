@@ -56,6 +56,7 @@ void SDLDrawPlugin8bpp::render(bool throttle)
 
 void SDLDrawPlugin8bpp::setPixel(int x, int y, int color)
 {
+#ifndef __EMSCRIPTEN__
 	// Lock the screen for direct access to the pixels 
 	if ( SDL_MUSTLOCK(screen) ) {
 		if ( SDL_LockSurface(screen) < 0 ) {
@@ -63,6 +64,8 @@ void SDLDrawPlugin8bpp::setPixel(int x, int y, int color)
 			return;
 		}
 	}
+#endif
+
 	updateRect(x,y);
 
 	int bpp = screen->format->BytesPerPixel;
@@ -70,7 +73,9 @@ void SDLDrawPlugin8bpp::setPixel(int x, int y, int color)
 	Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * bpp;
 	*p=color;
 
+#ifndef __EMSCRIPTEN__
 	if ( SDL_MUSTLOCK(screen) ) {
 		SDL_UnlockSurface(screen);
 	}
+#endif
 };

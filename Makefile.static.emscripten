@@ -1,0 +1,42 @@
+# Instalar el SDK
+# git clone https://github.com/juj/emsdk.git
+# cd emsdk
+# ./emsdk install latest
+# ./emsdk activate latest
+#
+# en cada sesión de compilación previamente hay que ir al directorio donde se ha instalado el emsdk y ejecutar
+# source ./emsdk_env.sh --build=Release
+#
+# Compilar con emmake make -f Makefile.static.emscripten
+# Ejecutar dentro del subdirectorio VigasocoSDL con emrun --no_browser --port 8080 .
+# y cargar en el navegador con http://localhost:8080/VigasocoSDL.html
+#
+# Probado con emsdk 1.38
+
+input-plugins-dir := VigasocoSDL/input
+audio-plugins-dir := VigasocoSDL/audio
+video-plugins-dir := VigasocoSDL/video
+
+all: | $(input-plugins-dir) $(audio-plugins-dir) $(video-plugins-dir)
+	cd SDLInputKeyboardPlugin && emmake make -f Makefile.static.emscripten
+	cd SDLVideoPlugins.DOUBLE-BUFFER && emmake make -f Makefile.static.emscripten
+#	cd SDLAudioPlugin && emmake make -f Makefile.static.emscripten
+	cd NULLAudioPlugin && emmake make -f Makefile.static.emscripten
+	cd VigasocoSDL && emmake make -f Makefile.static.emscripten
+
+$(input-plugins-dir):
+	mkdir $(input-plugins-dir)
+
+$(audio-plugins-dir):
+	mkdir $(audio-plugins-dir)
+
+$(video-plugins-dir):
+	mkdir $(video-plugins-dir)
+
+clean:
+	cd SDLInputKeyboardPlugin && emmake make -f Makefile.static.emscripten clean
+	cd SDLVideoPlugins.DOUBLE-BUFFER && emmake make -f Makefile.static.emscripten clean
+#	cd SDLAudioPlugin && emmake make -f Makefile.static.emscripten clean
+	cd NULLAudioPlugin && emmake make -f Makefile.static.emscripten clean
+	cd VigasocoSDL && emmake make -f Makefile.static.emscripten clean
+	
