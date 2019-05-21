@@ -20,8 +20,14 @@ typedef std::vector<std::string> Strings;
 
 // default options
 std::string g_game("abadia");
+// abadIA se suele ejecutar en entornes headless sin salida gráfica
+#ifdef __abadIA_HEADLESS__
+std::string g_drawPluginsDLL("libVigasocoNULLVideoPlugin.so");
+std::string g_drawPlugin("NULLVideoPlugin");
+#else
 std::string g_drawPluginsDLL("libVigasocoSDLDrawPlugin.so");
 std::string g_drawPlugin("win8");
+#endif
 
 // Se aÃ±ade plugin NULLAudio sin salida de sonido
 // para poder compilar en Windows Services for Linux que no tiene soporte ALSA
@@ -337,12 +343,17 @@ bool parseCommandLine(std::string cmdLine)
 
 	// if the user hasn't set any input plugin, set the default one
 	if (g_inputPluginsDLLs.size() == 0){
+#ifdef __abadIA_PROFILE__
+		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin-profile.so");
+		g_inputPlugins.push_back("crowV3"); // TODO: cambiar el nombre al plugin en modo profile
+#else
 #ifdef __abadIA__
 		g_inputPluginsDLLs.push_back("libVigasocoHTTPInputPlugin.so");
 		g_inputPlugins.push_back("crowV3");
 #else
 		g_inputPluginsDLLs.push_back("libVigasocoSDLInputPlugin.so");
 		g_inputPlugins.push_back("SDLInputPlugin");
+#endif
 #endif
 	}
 

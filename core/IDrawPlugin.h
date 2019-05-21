@@ -67,7 +67,7 @@ public:
 
 	// access to custom plugin properties
 	virtual const std::string *getProperties(int *num) const = 0;
-	virtual const int *getPropertiesType() const = 0;
+	virtual const unsigned int *getPropertiesType() const = 0;
 	virtual void setProperty(std::string prop, int data) = 0;
 	virtual void setProperty(std::string prop, int index, int data) = 0;
 	virtual int getProperty(std::string prop) const = 0;

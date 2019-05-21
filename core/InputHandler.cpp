@@ -211,3 +211,10 @@ void InputHandler::enableNonGameInputs()
 		_inputs[i] = 0;
 	}
 }
+
+void InputHandler::setStringProperty(std::string property, std::string data)
+{
+	for (Plugins::iterator i = _plugins.begin(); i != _plugins.end(); i++){
+		(*i)->setStringProperty(property,data);
+	}
+}

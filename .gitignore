@@ -1,1 +1,9 @@
 *.o
+*.save
+VigasocoSDL/VigasocoSDL
+VigasocoSDL/audio/
+VigasocoSDL/input/
+VigasocoSDL/video/
+.idea
+*.gcda
+__pycache__/

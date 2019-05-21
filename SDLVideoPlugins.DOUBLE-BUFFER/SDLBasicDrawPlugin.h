@@ -77,7 +77,7 @@ public:
 
 	// access to custom plugin properties
 	 virtual const std::string *getProperties(int *num) const {};
-	 virtual const int *getPropertiesType() const {};
+	 virtual const unsigned int *getPropertiesType() const {};
 	 virtual void setProperty(std::string prop, int data) {
 		std::string ToggleFullScreen("ToggleFullScreen");
 		if ( prop == ToggleFullScreen )

@@ -15,7 +15,7 @@ Ahora está en la rama oficial VigasocoSDL-ng
 Parto de lanzar un contenedor basado en ubuntu:xenial
 
 ```
-docker run -ti -p 5900:5900 -p 4477:4477 -p 8182:8182 ubuntu bash
+docker run -ti -p 5900:5900 -p 4477:4477 -p 8182:8182 ubuntu:xenial bash
 ```
 
 
@@ -33,12 +33,14 @@ source python3/bin/activate
 
 pip install behave websocket-client requests
 
-git clone https://github.com/luzbel/VigasocoSDL.git
-cd VigasocoSDL/
+git clone https://github.com/LaAbadIAdelCrimen/VigasocoSDL-AI.git
+cd VigasocoSDL-AI/
 
+git checkout AbadIA-ng
+make all 
 
-git checkout abadIA-timing-by-webserver
 export DISPLAY=:0
+
 Xvfb -screen 0 800x600x16 &
 x11vnc &
 cat > ~/.vimrc
@@ -46,6 +48,12 @@ set fileencodings=utf-8
 set encoding=utf-8
 [CTRL-D]
 ```
+
+Para ejecutar VigasocoSDL: 
+
+```
+cd VigasocoSDL 
+./VigasocoSDL & 
 
 /* revisar a que se refiere */ 
 

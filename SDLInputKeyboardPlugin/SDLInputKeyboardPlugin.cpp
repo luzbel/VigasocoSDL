@@ -356,11 +356,11 @@ const std::string SDLInputKeyboardPlugin::g_properties[] = {
 	"keyConfig"
 };
 
-const int SDLInputKeyboardPlugin::g_paramTypes[] = {
+const unsigned int SDLInputKeyboardPlugin::g_paramTypes[] = {
 	PARAM_ARRAY | PARAM_INPUT
 };
 
-const int * SDLInputKeyboardPlugin::getPropertiesType() const
+const unsigned int * SDLInputKeyboardPlugin::getPropertiesType() const
 {
 	return SDLInputKeyboardPlugin::g_paramTypes;
 }
@@ -398,3 +398,10 @@ int SDLInputKeyboardPlugin::getProperty(std::string prop, int index) const
 	} 
 	return -1; 
 };
+
+void SDLInputKeyboardPlugin::setStringProperty(std::string prop, std::string data) {
+}
+
+std::string SDLInputKeyboardPlugin::getStringProperty(std::string prop) const {
+	return "SDLInputKeyboardPlugin::getStringPropert unimplemented";
+}
