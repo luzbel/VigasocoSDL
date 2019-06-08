@@ -1,83 +1,44 @@
-# Instrucciones para desarrollar con Dockers (Verano del 2018)
-
-**Este texto proviene de un hilo de Slack y deberíamos actualizarlo**
-
-El dockerfile antiguo estaba en:
-
-https://github.com/luzbel/VigasocoSDL/blob/pruebasAbadIA/extra/Docker/dev/Dockerfile 
-
-Ahora está en la rama oficial VigasocoSDL-ng
+# Instrucciones para desarrollar con Dockers (Junio 2019)
 
 
+Instalacion de AbadIA para Ubuntu 18.04.02
 
 ## Pasos ##
- 
-Parto de lanzar un contenedor basado en ubuntu:xenial
+
+En Chrome descargamos la app de VNC:
+https://chrome.google.com/webstore/detail/vnc%C2%AE-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla/related?utm_source=chrome-app-launcher-info-dialog
+
+
+Abrimos terminal:
 
 ```
-docker run -ti -p 5900:5900 -p 4477:4477 -p 8182:8182 ubuntu:xenial bash
-```
-
-
-Los puertos exportados son los que usan VNC y la interfaz web.
-
-Dentro de ese bash hago:
-
-```
-apt-get update
-apt-get install -y git vim xvfb make g++ libsdl1.2-dev x11vnc libboost-all-dev virtualenv
-
-virtualenv -p python3 python3
-source python3/bin/activate
-
-
-pip install behave websocket-client requests
-
 git clone https://github.com/LaAbadIAdelCrimen/VigasocoSDL-AI.git
-cd VigasocoSDL-AI/
-
-git checkout AbadIA-ng
-make all 
-
-export DISPLAY=:0
-
-Xvfb -screen 0 800x600x16 &
-x11vnc &
-cat > ~/.vimrc
-set fileencodings=utf-8
-set encoding=utf-8
-[CTRL-D]
-```
-
-Para ejecutar VigasocoSDL: 
+cd VigasocoSDL-AI/extra/Docker/vnc/
+docker build -t vigasoco .
+docker run -p 4477:4477 -p 5900:5900 vigasoco
 
 ```
-cd VigasocoSDL 
-./VigasocoSDL & 
-
-/* revisar a que se refiere */ 
-
-Luego salgo del contenedor y hago commit ID-CONTENEDOR abadIA
 
 
-## Cuando queremos trabajar con la imagen 
+Abrimos otro nuevo terminal:
 
 ```
-docker run -ti -p 5900:5900 -p 4477:4477 -p 8182:8182 abadIA bash
+git clone https://github.com/LaAbadIAdelCrimen/abadia-gym.git
+cd abadia-gym/
+apt install virtualenv
+apt install python3-pip
+virtualenv -p python3 python3
+source ./python3/bin/activate
+pip3 install -r requirements.txt
+mkdir -p snapshoots
+mkdir -p models
+cd models/
+wget https://storage.googleapis.com/abadia-data/models/last_model_v6.model
+wget https://storage.googleapis.com/abadia-data/models/last_value_v1.model
+cd ..
+python3 agentv6_ngdqn.py --learning=false --episodes=5 --steps=2000 --initmodel=models/last_model_v6.model
 ```
 
-y dentro export DISPLAY y arrancar Xvfb y x11vnc
-
-Si compilo VigasocoSDL y lo arranco (no hay que pasar argumentos porque en esa rama ya usa por defecto el NULLAudioPlugin y el HTTPInputPlugin ) lo puedo ver desde cualquier cliente VNC conectando a localhost:5900 (el puerto está mapeado del contenedor al host)
-
-Yo uso https://chrome.google.com/webstore/detail/vnc%C2%AE-viewer-for-google-ch/iabmpiboiopbgfabjmgeedhcmjenhbla?utm_source=chrome-app-launcher-info-dialog
  
 ##  Notas
-
-Suelo lanzar VigasocoSDL desde el contenedor y abrir otro bash con docker exec -ti ID-CONTENEDOR bash
-
-Los cambios que hago en código suelo hacer push a github
-
-Para el resto de cambios, pues como no tengo Dockerfile, hago commit de vez en cuando (si, sé que es mala practica)
-
-Ah, y el docker de windows con hyper-v cuando arranca va muy bien (combinado con el ubuntu bash para win es una delicia)
+Para visualizar en el vnc de chrome usar localhost:5900
