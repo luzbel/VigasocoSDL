@@ -1792,9 +1792,6 @@ void Juego::run()
 
 	// aquí ya se ha completado la inicialización de datos para el juego
 	// ahora realiza la inicialización para poder empezar a jugar una partida
-#ifdef __abadIA__
-int kk=0;
-#endif
 	while (true){
 		// inicia la lógica del juego
 		logica->inicia();
@@ -1806,7 +1803,6 @@ despues_de_cargar_o_iniciar:
 
 		while (true){	// el bucle principal del juego empieza aquí
 #ifdef __abadIA__
-if(kk++>40000) exit(0);
 //__gcov_flush();
 			VigasocoMain->getInputHandler()->acquire();
 #endif
