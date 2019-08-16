@@ -325,11 +325,17 @@ void MotorGrafico::dibujaPantalla()
 	if (hayQueRedibujar){
 		// elige un color de fondo según el tipo de pantalla
 		// CPC int colorFondo = (pantallaIluminada) ? 0 : 3;
+#ifdef __abadIA__
+		// en __abadIA__ lo dejo a cero/negro porque 
+		// al ir el juego acelerado queda muy feo el amarillo
+		int colorFondo = 0;
+#else
 		int colorFondo = (pantallaIluminada) ? 12 : 0; // VGA 
 		// el 3 era el negro en  CPC , pero para el caso contrario 
 		// el 0 era el cyan, ? cual se pone en VGA ??
 		// voy a poner el 12 que es un amarillo cantoso a ver si lo veo
 		// y comparo con Abadia32
+#endif
 
 		// prepara el buffer de tiles y limpia la pantalla
 		genPant->limpiaPantalla(colorFondo);

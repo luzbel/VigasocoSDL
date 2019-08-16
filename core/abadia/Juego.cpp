@@ -180,8 +180,14 @@ void Juego::ReiniciaPantalla(void)
 {
 	// limpia el área de juego y dibuja el marcador
 	// CPC limpiaAreaJuego(0);
+#ifdef __abadIA__
+	// en __abadIA__ lo dejo a cero/negro porque 
+	// al ir el juego acelerado queda muy feo el amarillo
+	limpiaAreaJuego(0); 
+#else
 	limpiaAreaJuego(12); // el 0 es el cyan en CPC, no se cual poner en VGA
 	// pongo el 12 que es un amarillo cantoso, para comparar con Abadia32
+#endif
 
 	marcador->dibujaMarcador();
 
