@@ -5,15 +5,6 @@ Feature: PartidaPerfecta
   Scenario: Llegar a la celda
 	Given una partida recien iniciada
 	When giro a la izquierda
-	And giro a la derecha
-	And giro a la derecha
-	And giro a la derecha
-	And giro a la derecha
-	And giro a la derecha
-	And giro a la derecha
-	And giro a la derecha
-	And giro a la derecha
-	And giro a la derecha	
 	And avanzo "19" pasos
 	And espero "101" iteraciones 
 	And avanzo "10" pasos
@@ -15576,7 +15567,15 @@ Scenario: ESPEJO
 	And giro a la izquierda
 	And avanzo "11" pasos
 	And giro a la derecha
-	And espero "5" iteraciones 
-
+#	And espero "2" iteraciones 
+	And no hago nada
+	And los valores iniciales son correctos:
+           | bonus | dia | haFracasado | investigacionCompleta | momentoDia | numPantalla | numeroRomano | obsequium | planta | porcentaje |
+           | 16383 |  7  |   True      |         True          |      0     |    103      |        3     |     31    |    2   |    100     |
+	# esperamos bastante para que se vea 
+	# lo de resuelto el 100% en las capturas
+	# de pantalla y grabaciones
+	And espero "5000" iteraciones 
+	And pulso espacio
 	
 	

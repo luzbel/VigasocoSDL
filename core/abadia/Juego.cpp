@@ -1799,10 +1799,15 @@ void Juego::run()
 
 
 despues_de_cargar_o_iniciar:
+		bool chivato_partida_perfecta=true;
 		ReiniciaPantalla();
 
 		while (true){	// el bucle principal del juego empieza aquí
 #ifdef __abadIA__
+			if (chivato_partida_perfecta && laLogica->obsequium!=31) {
+				fprintf(stderr,"¡¡¡ OH, VAYA, NO ES LA PARTIDA PERFECTA !!!\n");
+				chivato_partida_perfecta=false;
+			}
 //__gcov_flush();
 			VigasocoMain->getInputHandler()->acquire();
 #endif
