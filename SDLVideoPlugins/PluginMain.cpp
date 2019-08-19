@@ -10,7 +10,8 @@ static const char * const description = "VIGASOCO SDL Video Plugins v1.1";
 
 static const char *plugins[] = {
 	 "win8"  , "win16" , "win24"  , "win32"  , "wingris8" ,
-	 "full8" , "full16", "full24" , "full32" , "fullgris8"
+	 "full8" , "full16", "full24" , "full32" , "fullgris8",
+	 "xbr4x" , "hq4x"
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -44,6 +45,10 @@ void createPlugin(const char *name,void**a)
 		*a=new SDLDrawPluginFullScreen32bpp();
 	} else if (strcmp(name, plugins[9]) == 0){
 		*a=new SDLDrawPluginFullScreenPaletaGrises8bpp();
+	} else if (strcmp(name, plugins[10]) == 0){
+		*a=new SDLDrawPluginXBR();
+	} else if (strcmp(name, plugins[11]) == 0){
+		*a=new SDLDrawPluginHQX();
 	} else {
 		*a=NULL;
 	}

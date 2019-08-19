@@ -6,6 +6,7 @@
 
 #include "SDLBasicDrawPlugin.h"
 #include "SDL.h"
+#include "filters.h"
 
 class SDLDrawPlugin8bpp : public SDLBasicDrawPlugin<UINT8>
 {
@@ -39,6 +40,34 @@ class SDLDrawPlugin32bpp : public SDLBasicDrawPlugin<UINT32>
 {
 	public:
 		SDLDrawPlugin32bpp() { _bpp = 32; }
+};
+
+class SDLDrawPluginXBR: public SDLBasicDrawPlugin<UINT32>
+{
+	public:
+		SDLDrawPluginXBR() { _bpp = 32; }
+		virtual bool init(const VideoInfo *vi, IPalette *pal);
+		virtual void render(bool throttle);
+		virtual void setPixel(int x, int y, int color);
+	private:
+		uint8_t *inBuffer, *outBuffer;
+		int scaleFactor=4;
+		xbr_data *xbrData;
+		xbr_params xbrParams;
+};
+
+class SDLDrawPluginHQX: public SDLBasicDrawPlugin<UINT32>
+{
+	public:
+		SDLDrawPluginHQX() { _bpp = 32; }
+		virtual bool init(const VideoInfo *vi, IPalette *pal);
+		virtual void render(bool throttle);
+		virtual void setPixel(int x, int y, int color);
+	private:
+		uint8_t *inBuffer, *outBuffer;
+		int scaleFactor=4;
+		xbr_data *xbrData;
+		xbr_params xbrParams;
 };
 
 class SDLDrawPluginPaletaGrises8bpp : public SDLBasicDrawPlugin<UINT8>

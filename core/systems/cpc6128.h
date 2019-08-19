@@ -56,11 +56,14 @@ public:
 
 // fields
 public:
-	UINT8 screenBuffer[640*200];	// CPC6128 video RAM
+	// el CPC tiene un modo 2 de 640*200
+	// pero no se usa en la abadía, así que solo usamos 320x200
+	// y escalamos en el video plugin, donde podemos  usar xbr o similares
+	UINT8 screenBuffer[320*200];	// CPC6128 video RAM
 	//TODO VGA hay que usar esto ya que no se puede usar un bit como marcador
 	//al igual que en CPC
 	//UINT8 DirtyPixels[sizeof(screenBuffer)/8]; // pixeles modificados en la CPC6128 video RAM
-	UINT8 DirtyPixels[(640*200)/8]; // pixeles modificados en la CPC6128 video RAM
+	UINT8 DirtyPixels[(320*200)/8]; // pixeles modificados en la CPC6128 video RAM
 
 protected:
 	ICriticalSection *cs;			// critical section to sync drawing between threads
@@ -186,10 +189,10 @@ public:
 		// VGA
 		cs->enter();
 		// set pixel
-		screenBuffer[y*640 + x] = color;
+		screenBuffer[y*320 + x] = color;
 		// mark the pixel as dirty
-		UINT8 *p=&(DirtyPixels[(y*640 + x)/8]);
-		UINT8 bit = 1<<((y*640 + x)%8);
+		UINT8 *p=&(DirtyPixels[(y*320 + x)/8]);
+		UINT8 bit = 1<<((y*320 + x)%8);
 		*p = *p|bit;
 		cs->leave();
 	}
@@ -198,7 +201,7 @@ public:
 	{
 		// CPC return screenBuffer[y*640 + x] & 0x0f;
 		// VGA
-		return screenBuffer[y*640 + x];
+		return screenBuffer[y*320 + x];
 	}
 
 // helper methods

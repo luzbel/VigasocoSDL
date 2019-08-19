@@ -30,8 +30,8 @@ using namespace Abadia;
 
 AbadiaDriver::AbadiaDriver() : GameDriver("abadia", "La abadia del crimen", 300)
 {
-	_videoInfo.width = 640;
-	_videoInfo.height = 400;
+	_videoInfo.width = 320;
+	_videoInfo.height = 200;
 	_videoInfo.visibleArea = Rect(_videoInfo.width, _videoInfo.height);
 	_videoInfo.colors = 32;			// 16 del juego + 16 para mostrar información interna del juego
 	_videoInfo.colors = 256;		// TODO: PRUEBAS VGA
@@ -356,18 +356,17 @@ void AbadiaDriver::render(IDrawPlugin *dp)
 	// dibuja los datos que el juego escribe en el otro hilo en el buffer de pantalla
 	cs->enter();
 	for (int y = 0; y < 200; y++){
-		for (int x = 0; x < 640; x++){
+		for (int x = 0; x < 320; x++){
 
-			UINT8 *dirtyByte = &(cpc6128->DirtyPixels[(y*640 + x)/8]);
-			UINT8 bit = 1<<((y*640 + x)%8);
+			UINT8 *dirtyByte = &(cpc6128->DirtyPixels[(y*320 + x)/8]);
+			UINT8 bit = 1<<((y*320 + x)%8);
 			bool dirty = *dirtyByte & bit;
 
 			if ( dirty )
 			{
 				*dirtyByte = *dirtyByte & (~bit);
 				int data = *posPant;
-				dp->setPixel(x, 2*y, data);
-				dp->setPixel(x, 2*y + 1, data);
+				dp->setPixel(x, y, data);
 			}
 			posPant++;
 		}

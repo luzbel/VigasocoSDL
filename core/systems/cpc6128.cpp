@@ -139,8 +139,7 @@ void CPC6128::setMode1Pixel(int x, int y, int color)
 //CPC	assert((color >= 0) && (color < 4));
 	assert((color >= 0) && (color < 256)); //TODO VGA
 
-	setPixel(2*x, y, color);
-	setPixel(2*x + 1, y, color);
+	setPixel(x, y, color);
 }
 
 // TODO: SEPARAR ESTO EN OTRO FUENTE QUE NO SEA CPC
@@ -151,13 +150,18 @@ void CPC6128::setVGAPixel(int x, int y, int color)
 	assert((y >= 0) && (y < 200));
 	assert((color >= 0) && (color < 256));
 
-	setPixel(2*x, y, color);
-	setPixel(2*x + 1, y, color);
+	setPixel(x, y, color);
 }
 
 // sets a pixel in mode 2 (640x200, x pixels = 1 width, y pixels = 2 height, 2 colors)
 void CPC6128::setMode2Pixel(int x, int y, int color)
 {
+	// No emulamos el mode 2 para abadia y usamos un framebuffer de 320x200
+	// El escalado lo hacemos en el Video Plugin, y asi podemos usar XBR
+	// u otro algoritmo de escalado pensando en pixels
+	// La abadia del crimen no usa el mode 2
+	assert(false); 
+
 	assert((x >= 0) && (x < 640));
 	assert((y >= 0) && (y < 200));
 	assert((color >= 0) && (color < 2));
@@ -180,12 +184,18 @@ int CPC6128::getMode1Pixel(int x, int y)
 	assert((x >= 0) && (x < 320));
 	assert((y >= 0) && (y < 200));
 
-	return getPixel(2*x, y);
+	return getPixel(x, y);
 }
 
 // gets a pixel in mode 2 (640x200, x pixels = 1 width, y pixels = 2 height, 2 colors)
 int CPC6128::getMode2Pixel(int x, int y)
 {
+	// No emulamos el mode 2 para abadia y usamos un framebuffer de 320x200
+	// El escalado lo hacemos en el Video Plugin, y asi podemos usar XBR
+	// u otro algoritmo de escalado pensando en pixels
+	// La abadia del crimen no usa el mode 2
+	assert(false); 
+
 	assert((x >= 0) && (x < 640));
 	assert((y >= 0) && (y < 200));
 
@@ -212,12 +222,18 @@ void CPC6128::fillMode1Rect(int x, int y, int width, int height, int color)
 	assert((color >= 0) && (color < 256)); // VGA ya que se llama en Marcador::dibujaBarra y ya se usan colores VGA
 	assert(((x + width) <= 320) && ((y + height) <= 200));
 
-	fillRect(x*2, y, width*2, height, color);
+	fillRect(x, y, width, height, color);
 }
 
 // sets a pixel in mode 2 (640x200, x pixels = 1 width, y pixels = 2 height, 2 colors)
 void CPC6128::fillMode2Rect(int x, int y, int width, int height, int color)
 {
+	// No emulamos el mode 2 para abadia y usamos un framebuffer de 320x200
+	// El escalado lo hacemos en el Video Plugin, y asi podemos usar XBR
+	// u otro algoritmo de escalado pensando en pixels
+	// La abadia del crimen no usa el mode 2
+	assert(false); 
+
 	assert((x >= 0) && (x < 640));
 	assert((y >= 0) && (y < 200));
 	assert((color >= 0) && (color < 2));

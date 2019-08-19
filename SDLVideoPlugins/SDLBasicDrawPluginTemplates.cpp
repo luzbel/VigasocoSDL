@@ -18,15 +18,22 @@ bool SDLBasicDrawPlugin<T>::init(const VideoInfo *vi, IPalette *pal)
 		return false;
 	}
 
+	// TODO: Añadir scale a VideoInfo
 	screen = SDL_SetVideoMode(vi->width, vi->height, _bpp, _flags);
 //	screen = SDL_SetVideoMode(640, 480, 8, SDL_SWSURFACE|SDL_ANYFORMAT);
+//	screen = SDL_SetVideoMode(640*2, 480*2, 32, SDL_SWSURFACE|SDL_ANYFORMAT);
 	if ( screen == NULL ) {
 		fprintf(stderr, "Couldn't set %dx%dx%d video mode: %s\n",
 				vi->width,vi->height,_bpp,SDL_GetError());
 		return false;
 	}
-//	printf("set %dx%dx%d video mode(%s): %s\n",
-//				vi->width,vi->height,_bpp,screen->flags & SDL_DOUBLEBUF?"DOUBLEBUFF":"No double buffer",SDL_GetError());
+	printf("set %dx%dx%d video mode(%s) format(%X-%X-%X-%X); ERROR: %s\n",
+		screen->w,
+		screen->h,
+		screen->format->BitsPerPixel,
+		screen->flags & SDL_DOUBLEBUF?"DOUBLEBUFF":"No double buffer",
+		screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,screen->format->Amask,
+		SDL_GetError());
 
 	_originalPalette=pal;
 
@@ -56,7 +63,7 @@ bool SDLBasicDrawPlugin<T>::init(const VideoInfo *vi, IPalette *pal)
 #endif
 
 	_isInitialized = true;
-	
+
 	return _isInitialized;
 };
 

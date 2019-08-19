@@ -9,4 +9,3 @@
 //y pasa de lo que le pases
 const Uint32 DEFAULT::flags=0;
 const int DEFAULT::bpp=8;
-
