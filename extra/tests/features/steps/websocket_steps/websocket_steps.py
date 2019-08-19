@@ -38,6 +38,16 @@ def step_impl(context):
     context.ws.send("NOP");
     assert context.ws.recv()=='{ "resultado": "OK" }'
 
+@step('duplico la velocidad')
+def step_impl(context):
+    context.ws.send("SPEEDUP");
+    assert context.ws.recv()=='{ "resultado": "OK" }'
+
+@step('reduzco la velocidad')
+def step_impl(context):
+    context.ws.send("SLOWDOWN");
+    assert context.ws.recv()=='{ "resultado": "OK" }'
+
 @when('digo que SI')
 def step_impl(context):
     context.ws.send("SI");

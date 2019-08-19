@@ -161,6 +161,12 @@ if (!x) return "ERROR LOADJSON"; // conn.send_text("ERROR LOADJSON");
 		HTTPInputPlugin::keystate[SDLK_c]=true; // c de Cargar
 		HTTPInputPlugin::keystate[SDLK_s]=true; // s de Si, para confirmar la carga
 	} else
+        if (comando=="SPEEDUP") {
+                HTTPInputPlugin::keystate[SDLK_PLUS]=true;
+        } else
+        if (comando=="SLOWDOWN") {
+                HTTPInputPlugin::keystate[SDLK_MINUS]=true;
+        } else
 	if (comando=="FIN"||comando=="END"||comando=="GAMEOVER"||comando=="GAME OVER") {
 		SDL_Event sdlevent = {};
 		sdlevent.type = SDL_QUIT;
@@ -390,7 +396,9 @@ auto j2 = R"(
 								command=="GAME OVER" ||
 								command=="GAMEOVER" ||
 								command=="SI" ||
-								command=="NO"
+								command=="NO" ||
+								command=="SPEEDUP" ||
+								command=="SLOWDOWN"
 							   ) {
 								signed int repeat=1;
 								if (element.count("repeat")==1) repeat=element["repeat"];
@@ -435,7 +443,9 @@ auto j2 = R"(
 				command=="GAME OVER" ||
 				command=="GAMEOVER" ||
 				command=="SI" ||
-				command=="NO"
+				command=="NO" ||
+				command=="SPEEDUP" ||
+				command=="SLOWDOWN"
 			) {
 				nlohmann::json resultados = nlohmann::json::array();
 				signed int repeat=1;
@@ -684,8 +694,8 @@ void HTTPInputPlugin::initRemapTable()
 	g_keyMapping[START_2] = SDLK_2;
 	g_keyMapping[COIN_1] = SDLK_5;
 	g_keyMapping[COIN_2] = SDLK_6;
-	g_keyMapping[SERVICE_1] = SDLK_9;
-	g_keyMapping[SERVICE_2] = SDLK_0;
+	g_keyMapping[SERVICE_1] = SDLK_PLUS;
+	g_keyMapping[SERVICE_2] = SDLK_MINUS;
 
 	// keyboard inputs
 	g_keyMapping[KEYBOARD_A] = SDLK_a;

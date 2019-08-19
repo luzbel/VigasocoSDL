@@ -64,6 +64,17 @@ def step_impl(context):
     r=requests.post(context.url+'/current/actions/NOP',timeout=context.timeout)
     assert r.status_code==200
 
+
+@step('duplico la velocidad')
+def step_impl(context):
+    r=requests.post(context.url+'/current/actions/SPEEDUP',timeout=context.timeout)
+    assert r.status_code==200
+
+@step('reduzco la velocidad')
+def step_impl(context):
+    r=requests.post(context.url+'/current/actions/SLOWDOWN',timeout=context.timeout)
+    assert r.status_code==200
+
 @when('digo que SI')
 def step_impl(context):
     r=requests.post(context.url+'/current/actions/SI',timeout=context.timeout)

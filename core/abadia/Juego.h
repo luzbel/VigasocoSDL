@@ -55,6 +55,7 @@ public:
 private:
 	bool mute;
 	unsigned short slot;
+	int _numInterruptsPerLogicUpdate=0x24;
 public:
 	int idioma;  // idioma de los textos TODO ponerlo como un enumerado
 	// GraficosCPC estaba como privado

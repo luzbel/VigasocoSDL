@@ -5,6 +5,9 @@ Feature: PartidaPerfecta
   Scenario: Llegar a la celda
 	Given una partida recien iniciada
 	When giro a la izquierda
+	And duplico la velocidad
+	And duplico la velocidad
+	And duplico la velocidad
 	And avanzo "19" pasos
 	And espero "101" iteraciones 
 	And avanzo "10" pasos
@@ -11848,6 +11851,7 @@ Scenario: DIA VI NOCHE
 	And giro a la derecha
 	And avanzo "14" pasos
 	And giro a la derecha
+	And avanzo "14" pasos
 	And avanzo "31" pasos
 	And giro a la izquierda
 	And avanzo "25" pasos

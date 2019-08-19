@@ -73,3 +73,11 @@ GAME OVER
 GAMEOVER
 SI
 NO
+SPEEDUP
+SLOWDOWN
+
+## Repeat
+```
+curl -X POST http://localhost:4477/abadIA/game/current/actions/NOP?repeat=10
+```
+

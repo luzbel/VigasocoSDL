@@ -136,11 +136,7 @@ Juego::Juego(UINT8 *romData, CPC6128 *cpc)
 	infoJuego = new InfoJuego();
 	controles = new Controles();
 
-#ifdef __abadIA__
-	pausa = true;
-#else
 	pausa = false;
-#endif
 	modoInformacion = false;
 }
 
@@ -1828,6 +1824,23 @@ despues_de_cargar_o_iniciar:
 #endif
 
 #ifdef __abadIA__
+                        if (controles->seHaPulsado(SERVICE_1)){
+                                // SPEEDUP, duplicar la velocidad para tener visionados
+                                // más rápidos de partidas
+                                _numInterruptsPerLogicUpdate=_numInterruptsPerLogicUpdate/2;
+                                //TODO: ¿se puede quedar a cero y ya no se podría recuperar la velocidad con SLOWDOWN?
+                                VigasocoMain->getInputHandler()->unAcquire();
+                                continue;
+                        }
+
+                        if (controles->seHaPulsado(SERVICE_2)){
+                                // SLOWDOWN, reducir la velocidad para tener visionados
+                                // a cámara lenta
+                                _numInterruptsPerLogicUpdate=_numInterruptsPerLogicUpdate*2;
+                                VigasocoMain->getInputHandler()->unAcquire();
+                                continue;
+                        }
+
 		        if (controles->seHaPulsado(KEYBOARD_D)){  // D de DUMP
 				infoJuego->muestraInfo();
 				// si ha pedido volcado el agente, borramos la lista de frases
@@ -1984,9 +1997,9 @@ despues_de_cargar_o_iniciar:
 				motor->dibujaSprites();
 			}
 
-#ifndef __abadIA__
+#ifndef __abadIA_HEADLESS__
 			// espera un poco para actualizar el estado del juego
-			while (contadorInterrupcion < 0x24){
+			while (contadorInterrupcion < _numInterruptsPerLogicUpdate){
 				timer->sleep(5);
 			}
 #endif
@@ -1998,10 +2011,9 @@ despues_de_cargar_o_iniciar:
 
 #ifdef __abadIA__
 			VigasocoMain->getInputHandler()->unAcquire();
-#else
+#endif
 			// reinicia el contador de la interrupción
 			contadorInterrupcion = 0;
-#endif
 		}
 	}
 #ifdef __abadIA_HEADLESS__

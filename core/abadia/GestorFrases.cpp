@@ -555,7 +555,7 @@ void GestorFrases::muestraFraseYa(int numFrase)
 void GestorFrases::actualizaEstado()
 {
 #ifdef __abadIA__
-procesaFraseActual();
+	procesaFraseActual();
 #endif
 	mostrandoFrase = reproduciendoFrase;
 }

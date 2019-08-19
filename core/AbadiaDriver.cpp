@@ -335,8 +335,10 @@ void AbadiaDriver::runSync()
 		// incrementa el contador de la interrupción
 		_abadiaGame->contadorInterrupcion++;
 
+#ifndef __abadIA__
 		// si se está mostrando alguna frase en el marcador, continúa mostrándola
 		elGestorFrases->procesaFraseActual();
+#endif
 	}
 }
 
