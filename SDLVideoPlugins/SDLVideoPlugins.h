@@ -8,6 +8,7 @@
 #include "SDL.h"
 #include "filters.h"
 
+
 class SDLDrawPlugin8bpp : public SDLBasicDrawPlugin<UINT8>
 {
 	private:
@@ -42,13 +43,18 @@ class SDLDrawPlugin32bpp : public SDLBasicDrawPlugin<UINT32>
 		SDLDrawPlugin32bpp() { _bpp = 32; }
 };
 
-class SDLDrawPluginXBR: public SDLBasicDrawPlugin<UINT32>
+class SDLDrawPluginPixelScaler: public SDLBasicDrawPlugin<UINT32>
 {
 	public:
-		SDLDrawPluginXBR() { _bpp = 32; }
+		virtual ~SDLDrawPluginPixelScaler() = 0;
+		SDLDrawPluginPixelScaler() { _bpp = 32; }
 		virtual bool init(const VideoInfo *vi, IPalette *pal);
 		virtual void render(bool throttle);
 		virtual void setPixel(int x, int y, int color);
+	protected:
+		// TODO: Seguro que hay formas más elegantes en C++
+		// que usar un puntero a una función
+		void (*xbr_filter_function)(const xbr_params *);
 	private:
 		uint8_t *inBuffer, *outBuffer;
 		int scaleFactor=4;
@@ -56,18 +62,17 @@ class SDLDrawPluginXBR: public SDLBasicDrawPlugin<UINT32>
 		xbr_params xbrParams;
 };
 
-class SDLDrawPluginHQX: public SDLBasicDrawPlugin<UINT32>
+
+class SDLDrawPluginXBR: public SDLDrawPluginPixelScaler
 {
 	public:
-		SDLDrawPluginHQX() { _bpp = 32; }
 		virtual bool init(const VideoInfo *vi, IPalette *pal);
-		virtual void render(bool throttle);
-		virtual void setPixel(int x, int y, int color);
-	private:
-		uint8_t *inBuffer, *outBuffer;
-		int scaleFactor=4;
-		xbr_data *xbrData;
-		xbr_params xbrParams;
+};
+
+class SDLDrawPluginHQX: public SDLDrawPluginPixelScaler
+{
+	public:
+		virtual bool init(const VideoInfo *vi, IPalette *pal);
 };
 
 class SDLDrawPluginPaletaGrises8bpp : public SDLBasicDrawPlugin<UINT8>
@@ -77,11 +82,32 @@ class SDLDrawPluginPaletaGrises8bpp : public SDLBasicDrawPlugin<UINT8>
 		virtual bool init(const VideoInfo *vi, IPalette *pal);
 };
 
+class SDLDrawPluginPaletaGrises16bpp : public SDLBasicDrawPluginGrayScale<UINT16>
+{
+	public:
+		SDLDrawPluginPaletaGrises16bpp() { _bpp = 16; }
+};
+
+class SDLDrawPluginPaletaGrises24bpp : public SDLBasicDrawPluginGrayScale<UINT32>
+{
+	public:
+		SDLDrawPluginPaletaGrises24bpp() { _bpp = 24; }
+};
+
+class SDLDrawPluginPaletaGrises32bpp : public SDLBasicDrawPluginGrayScale<UINT32>
+{
+	public:
+		SDLDrawPluginPaletaGrises32bpp() { _bpp = 32; }
+};
+
 typedef SDLDrawPlugin8bpp SDLDrawPluginWindow8bpp;
 typedef SDLDrawPlugin16bpp SDLDrawPluginWindow16bpp;
 typedef SDLDrawPlugin24bpp SDLDrawPluginWindow24bpp;
 typedef SDLDrawPlugin32bpp SDLDrawPluginWindow32bpp;
 typedef SDLDrawPluginPaletaGrises8bpp SDLDrawPluginWindowPaletaGrises8bpp;
+typedef SDLDrawPluginPaletaGrises16bpp SDLDrawPluginWindowPaletaGrises16bpp;
+typedef SDLDrawPluginPaletaGrises24bpp SDLDrawPluginWindowPaletaGrises24bpp;
+typedef SDLDrawPluginPaletaGrises32bpp SDLDrawPluginWindowPaletaGrises32bpp;
 
 template <class T>
 class SDLDrawPluginFullScreen: public T
@@ -95,5 +121,8 @@ typedef SDLDrawPluginFullScreen<SDLDrawPlugin16bpp> SDLDrawPluginFullScreen16bpp
 typedef SDLDrawPluginFullScreen<SDLDrawPlugin24bpp> SDLDrawPluginFullScreen24bpp;
 typedef SDLDrawPluginFullScreen<SDLDrawPlugin32bpp> SDLDrawPluginFullScreen32bpp;
 typedef SDLDrawPluginFullScreen<SDLDrawPluginPaletaGrises8bpp> SDLDrawPluginFullScreenPaletaGrises8bpp;
+typedef SDLDrawPluginFullScreen<SDLDrawPluginPaletaGrises16bpp> SDLDrawPluginFullScreenPaletaGrises16bpp;
+typedef SDLDrawPluginFullScreen<SDLDrawPluginPaletaGrises24bpp> SDLDrawPluginFullScreenPaletaGrises24bpp;
+typedef SDLDrawPluginFullScreen<SDLDrawPluginPaletaGrises32bpp> SDLDrawPluginFullScreenPaletaGrises32bpp;
 
 #endif // _SDL_VIDEO_PLUGINS_H_

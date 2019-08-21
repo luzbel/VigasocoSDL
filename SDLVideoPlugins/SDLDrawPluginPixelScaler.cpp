@@ -4,7 +4,11 @@
 
 #include "SDLVideoPlugins.h"
 
-bool SDLDrawPluginXBR::init(const VideoInfo *vi, IPalette *pal)
+SDLDrawPluginPixelScaler::~SDLDrawPluginPixelScaler()
+{
+}
+
+bool SDLDrawPluginPixelScaler::init(const VideoInfo *vi, IPalette *pal)
 {
 	// sobrecargamos el metodo init
 	// e inicializamos lo necesario para escalar con XBR
@@ -35,7 +39,7 @@ bool SDLDrawPluginXBR::init(const VideoInfo *vi, IPalette *pal)
 	return _isInitialized;
 }
 
-void SDLDrawPluginXBR::render(bool throttle)
+void SDLDrawPluginPixelScaler::render(bool throttle)
 {
 	/* Lock the screen for direct access to the pixels */
 	if ( SDL_MUSTLOCK(screen) ) {
@@ -45,8 +49,9 @@ void SDLDrawPluginXBR::render(bool throttle)
 		}
 	}
 
+
 	// TODO: Escalar solo los Rect actualizados
-	xbr_filter_xbr4x(&xbrParams);
+	(*xbr_filter_function)(&xbrParams);
 	memcpy(screen->pixels,outBuffer,xbrParams.inWidth*scaleFactor*xbrParams.inHeight*scaleFactor*4);
 
 	if ( SDL_MUSTLOCK(screen) ) {
@@ -56,8 +61,21 @@ void SDLDrawPluginXBR::render(bool throttle)
 	SDL_Flip(screen);
 }
 
-void SDLDrawPluginXBR::setPixel(int x, int y, int color)
+void SDLDrawPluginPixelScaler::setPixel(int x, int y, int color)
 {
 	uint8_t *p = inBuffer+ y*xbrParams.inWidth*4 + x*4;
 	*(UINT32 *)p = _palette[color];
 }
+
+bool SDLDrawPluginXBR::init(const VideoInfo *vi, IPalette *pal)
+{
+	xbr_filter_function=xbr_filter_xbr4x;
+	return SDLDrawPluginPixelScaler::init(vi,pal);
+}
+
+bool SDLDrawPluginHQX::init(const VideoInfo *vi, IPalette *pal)
+{
+	xbr_filter_function=xbr_filter_hq4x;
+	return SDLDrawPluginPixelScaler::init(vi,pal);
+}
+

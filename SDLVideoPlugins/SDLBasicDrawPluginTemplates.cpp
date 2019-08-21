@@ -10,6 +10,11 @@
 #define FACTOR_REJILLA 6
 
 template<typename T>
+SDLBasicDrawPlugin<T>::~SDLBasicDrawPlugin()
+{
+}
+
+template<typename T>
 bool SDLBasicDrawPlugin<T>::init(const VideoInfo *vi, IPalette *pal)
 {
 	if ( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
@@ -100,6 +105,49 @@ void SDLBasicDrawPlugin<T>::update(IPalette *palette, int data)
 
 		palette->getColor(data, r, g, b);
 		_palette[data] = SDL_MapRGB(screen->format,r,g,b);
+	} else {
+		// full palette update
+		updateFullPalette(palette);	
+	}
+}
+
+template<typename T>
+SDLBasicDrawPluginGrayScale<T>::~SDLBasicDrawPluginGrayScale()
+{
+}
+
+template<typename T>
+void SDLBasicDrawPluginGrayScale<T>::updateFullPalette(IPalette *palette)
+{
+	for (int i = 0; i < palette->getTotalColors(); i++){
+		UINT8 r, g, b;
+
+		palette->getColor(i, r, g, b);
+		UINT8 gray=0.212671f * r + 0.715160f * g + 0.072169f * b;
+		SDLBasicDrawPluginGrayScale<T>::_palette[i] = 
+			SDL_MapRGB(
+				SDLBasicDrawPluginGrayScale<T>::screen->format,
+				gray,
+				gray,
+				gray);
+	}
+}
+
+template<typename T>
+void SDLBasicDrawPluginGrayScale<T>::update(IPalette *palette, int data)
+{
+	if (data != -1){
+		// single color update
+		UINT8 r, g, b;
+
+		palette->getColor(data, r, g, b);
+		UINT8 gray=0.212671f * r + 0.715160f * g + 0.072169f * b;
+		SDLBasicDrawPluginGrayScale<T>::_palette[data] = 
+			SDL_MapRGB(
+				SDLBasicDrawPluginGrayScale<T>::screen->format,
+				gray,
+				gray,
+				gray);
 	} else {
 		// full palette update
 		updateFullPalette(palette);	
