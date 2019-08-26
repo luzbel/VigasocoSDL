@@ -15,8 +15,8 @@ bool SDLDrawPluginPixelScaler::init(const VideoInfo *vi, IPalette *pal)
 	scaleFactor=4; // de 320x240 a 1280x960
 	VideoInfo *_vi=new VideoInfo;
 	memcpy(_vi,&vi,sizeof(VideoInfo));
-	_vi->width= vi->width*scaleFactor;
-	_vi->height = vi->height*scaleFactor;
+	_vi->width= vi->width*scaleFactor/2;
+	_vi->height = vi->height*scaleFactor/2;
 	_isInitialized = SDLBasicDrawPlugin<UINT32>::init(_vi,pal);
 
 	if ( _isInitialized )

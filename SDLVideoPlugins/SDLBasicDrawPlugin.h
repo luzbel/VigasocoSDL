@@ -9,13 +9,19 @@
 
 #include "SDLDrawPlugin.h"
 
+// TODO: Meter en un namespace SDLVideoPlugins
 class DEFAULT
 {
 	public:
-		static const Uint32 flags;
-		static const int bpp;
+		static const Uint32 flags=0;
+		static const int scale=2;
+//		static const int bpp;
 };
 
+
+// Clase abstracta. Forzamos que no se pueda instanciar
+// porque para 8 y 24 bpp es necesario código específico
+// y no se puede usar la clase base por defecto
 template<typename T>
 class SDLBasicDrawPlugin : public SDLDrawPlugin
 {
@@ -28,12 +34,13 @@ class SDLBasicDrawPlugin : public SDLDrawPlugin
 
 		bool _isInitialized;
 		UINT32 _flags;
+		int _scale=2;
 		int _bpp;
 		T *_palette;
 	private:
 		IPalette *_originalPalette;
 	public:
-		SDLBasicDrawPlugin(){ screen = NULL; _isInitialized=false; _flags = DEFAULT::flags; _bpp = DEFAULT::bpp ; _palette = NULL; _originalPalette=NULL; }
+		SDLBasicDrawPlugin(){ screen = NULL; _isInitialized=false; _flags = DEFAULT::flags; _scale=DEFAULT::scale ;  _bpp = sizeof(T)*8; _palette = NULL; _originalPalette=NULL; }
 		virtual ~SDLBasicDrawPlugin() = 0; 
 		virtual bool init(const VideoInfo *vi, IPalette *pal);
 		virtual void end(void);
@@ -98,11 +105,13 @@ class SDLBasicDrawPlugin : public SDLDrawPlugin
 		virtual void updateRect(int x,int y);
 };
 
+
+// TODO: Impedir que  se instancia la versión de 8bpp
+// TODO: Verificar que la de 24bpp funciona
+// TODO: si se puede instanciar, renombrar sin Basic
 template<typename T>
 class SDLBasicDrawPluginGrayScale : public SDLBasicDrawPlugin<T>
 {
-	public:
-		virtual ~SDLBasicDrawPluginGrayScale() = 0;
 	protected:
 		// palette changed notification
 		virtual void update(IPalette *palette, int data);

@@ -24,20 +24,20 @@ bool SDLBasicDrawPlugin<T>::init(const VideoInfo *vi, IPalette *pal)
 	}
 
 	// TODO: Añadir scale a VideoInfo
-	screen = SDL_SetVideoMode(vi->width, vi->height, _bpp, _flags);
-//	screen = SDL_SetVideoMode(640, 480, 8, SDL_SWSURFACE|SDL_ANYFORMAT);
-//	screen = SDL_SetVideoMode(640*2, 480*2, 32, SDL_SWSURFACE|SDL_ANYFORMAT);
+	//screen = SDL_SetVideoMode(vi->width, vi->height, _bpp, _flags);
+	screen = SDL_SetVideoMode(vi->width *2, vi->height *2, _bpp, _flags);
 	if ( screen == NULL ) {
 		fprintf(stderr, "Couldn't set %dx%dx%d video mode: %s\n",
 				vi->width,vi->height,_bpp,SDL_GetError());
 		return false;
 	}
-	printf("set %dx%dx%d video mode(%s) format(%X-%X-%X-%X); ERROR: %s\n",
+	printf("set %dx%dx%d video mode(%s) format(%X-%X-%X-%X) pitch(%d); ERROR: %s\n",
 		screen->w,
 		screen->h,
 		screen->format->BitsPerPixel,
 		screen->flags & SDL_DOUBLEBUF?"DOUBLEBUFF":"No double buffer",
 		screen->format->Rmask,screen->format->Gmask,screen->format->Bmask,screen->format->Amask,
+		screen->pitch,
 		SDL_GetError());
 
 	_originalPalette=pal;
@@ -112,11 +112,6 @@ void SDLBasicDrawPlugin<T>::update(IPalette *palette, int data)
 }
 
 template<typename T>
-SDLBasicDrawPluginGrayScale<T>::~SDLBasicDrawPluginGrayScale()
-{
-}
-
-template<typename T>
 void SDLBasicDrawPluginGrayScale<T>::updateFullPalette(IPalette *palette)
 {
 	for (int i = 0; i < palette->getTotalColors(); i++){
@@ -168,6 +163,7 @@ inline void SDLBasicDrawPlugin<T>::updateRect(int x,int y)
 template<typename T>
 void SDLBasicDrawPlugin<T>::render(bool throttle)
 {
+SDL_Flip(screen); return; //666
 #ifdef _EE
 	SDL_UpdateRects(screen,0,NULL);
 #else
@@ -215,9 +211,28 @@ void SDLBasicDrawPlugin<T>::setPixel(int x, int y, int color)
 
 	int __bpp = screen->format->BytesPerPixel;
 	/* Here p is the address to the pixel we want to set */
-	Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * __bpp;
+	//Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * __bpp;
+Uint8 *p = (Uint8 *)screen->pixels + (y * 2 * screen->pitch) + x * 2 * __bpp;
+*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+//*(T *)p = _palette[12]; // Vale para todos los bpp, excepto 24bpp
+p = (Uint8 *)screen->pixels + (y * 2 * screen->pitch) + (x * __bpp *2) + __bpp;
+*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+p = (Uint8 *)screen->pixels + ((y * 2 * screen->pitch)+screen->pitch) + (x * __bpp *2) ;
+*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+p = (Uint8 *)screen->pixels + ((y * 2 * screen->pitch)+screen->pitch) + (x * __bpp *2) + __bpp;
+*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
 
-	*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+
+
+
+///p = (Uint8 *)screen->pixels + y * screen->pitch + __bpp + x * __bpp;
+//*(T *)p = _palette[12]; // Vale para todos los bpp, excepto 24bpp
+//*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+//p = (Uint8 *)screen->pixels + y * screen->pitch *2 +1 + x * __bpp*2;
+//*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
+//p = (Uint8 *)screen->pixels + y * screen->pitch *2 +1 + x * __bpp*2+1;
+
+//	*(T *)p = _palette[color]; // Vale para todos los bpp, excepto 24bpp
 
 	if ( SDL_MUSTLOCK(screen) ) {
 		SDL_UnlockSurface(screen);

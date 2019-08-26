@@ -67,10 +67,19 @@ void SDLDrawPlugin8bpp::setPixel(int x, int y, int color)
 
 	int bpp = screen->format->BytesPerPixel;
 	// Here p is the address to the pixel we want to set 
-	Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * bpp;
-	*p=color;
+// Sin escalar
+//	Uint8 *p = (Uint8 *)screen->pixels + y * screen->pitch + x * bpp;
+//	*p=color;
+Uint8 *p = (Uint8 *)screen->pixels + (y * 2 * screen->pitch) + x * 2 * __bpp;
+*(T *)p = color; 
+p = (Uint8 *)screen->pixels + (y * 2 * screen->pitch) + (x * __bpp *2) + __bpp;
+*(T *)p = color; 
+p = (Uint8 *)screen->pixels + ((y * 2 * screen->pitch)+screen->pitch) + (x * __bpp *2) ;
+*(T *)p = color; 
+p = (Uint8 *)screen->pixels + ((y * 2 * screen->pitch)+screen->pitch) + (x * __bpp *2) + __bpp;
+*(T *)p = color; 
 
 	if ( SDL_MUSTLOCK(screen) ) {
 		SDL_UnlockSurface(screen);
 	}
-};
+}; 
