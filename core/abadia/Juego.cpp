@@ -1711,7 +1711,9 @@ void Juego::run()
 
 	// muestra la imagen de presentación
 
+//#ifndef LENG
 	muestraPresentacion();
+//#endif
 
 	// para borrar la presentacion antes del menu
 	marcador->limpiaAreaMarcador();
@@ -2241,7 +2243,11 @@ void Juego::compruebaSave()
 	if (controles->seHaPulsado(KEYBOARD_G))
 	{
 		// Frase vacia para parar la frase actual
+#ifdef LENG
+		elGestorFrases->muestraFraseYa(0x0);
+#else
 		elGestorFrases->muestraFraseYa(0x38);
+#endif
 		// Esperamos a que se limpie el marcador
 		while (elGestorFrases->mostrandoFrase)
 		{
@@ -2272,7 +2278,11 @@ void Juego::compruebaSave()
 			}
 		}
 		while (losControles->estaSiendoPulsado(KEYBOARD_N) == false);
+#ifdef LENG
+		elGestorFrases->muestraFraseYa(0x0);
+#else
 		elGestorFrases->muestraFraseYa(0x38);
+#endif
 	}
 }
 
@@ -2287,7 +2297,11 @@ bool Juego::compruebaLoad()
 	{
 
 		// Frase vacia para parar la frase actual
+#ifdef LENG
+		elGestorFrases->muestraFraseYa(0x0);
+#else
 		elGestorFrases->muestraFraseYa(0x38);
+#endif
 
 		// Esperamos a que se limpie el marcador
 		while (elGestorFrases->mostrandoFrase)
@@ -2310,7 +2324,11 @@ bool Juego::compruebaLoad()
 
 		}
 		while (losControles->estaSiendoPulsado(KEYBOARD_N) == false);
+#ifdef LENG
+		elGestorFrases->muestraFraseYa(0x0);
+#else
 		elGestorFrases->muestraFraseYa(0x38);
+#endif
 	} 
 	return false;
 }

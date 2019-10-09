@@ -260,8 +260,43 @@ void Adso::run()
 //		0x05 -> estado que se alcanza una vez que guillermo le dice que no se duerme
 //		0x06 -> estado fuera de la celda por la noche o en completas para dirigirse a su celda
 //		0x07 -> estado en sexta para ir al refectorio
+
+// LENG
+//	0x00 -> estado inicial
+//	0x01 -> Contesta a la frase "¿qué extraño lugar es este" con "Algo nos ha traído"
+//	0x02 -> Contesta a la frase "Algo nos ha traído" con "No lo sé, Harley"
+//	0x03 -> fin conversacion primera noche en la celda
 void Adso::piensa()
 {
+#ifdef LENG
+	Personaje *guillermo = laLogica->guillermo;
+	aDondeVa = POS_GUILLERMO;
+	switch (laLogica->dia){
+		case 1: 
+			switch (laLogica->momentoDia){
+				case NOCHE: 
+					// si estamos cerca de guillermo y en nuestra celda
+					if (estado==0 && estaCerca(guillermo) && (elMotorGrafico->numPantalla == 0x3e)){
+						elGestorFrases->muestraFrase(0x1); 
+						estado=0x1;
+					}
+					if (estado==0x1 && !elGestorFrases->mostrandoFrase) {
+						elGestorFrases->muestraFrase(0x2);
+						estado=0x2;
+					}
+					if (estado==0x2 && !elGestorFrases->mostrandoFrase) {
+						elGestorFrases->muestraFrase(0x3);
+						estado=0x3;
+					}
+					if (estado==0x3 && !elGestorFrases->mostrandoFrase) {
+						laLogica->haFracasado = true;
+					}
+
+				break;
+			}
+			break;
+	}
+#else
 	int numFrase = 0;
 	Personaje *guillermo = laLogica->guillermo;
 	
@@ -436,6 +471,7 @@ void Adso::piensa()
 		}
 		estado = oldEstado;
 	}
+#endif
 }
 
 // oculta o muestra el texto S:N

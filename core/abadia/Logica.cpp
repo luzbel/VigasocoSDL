@@ -79,7 +79,11 @@ void Logica::inicia()
 
 	// inicia las variables de la lógica del juego
 	dia = 1;
+#ifdef LENG
+	momentoDia = NOCHE;
+#else
 	momentoDia = NONA;
+#endif
 	duracionMomentoDia = 0;
 	oldMomentoDia = 0;
 	avanzarMomentoDia = false;
@@ -903,12 +907,24 @@ void Logica::iniciaPersonajes()
 	}
 
 	// guillermo
+#ifndef LENG
 	guillermo->objetos = GAFAS;
+#endif
 	guillermo->mascaraObjetos = LIBRO | GUANTES | GAFAS | PERGAMINO | LLAVE1 | LLAVE2;
 	guillermo->permisosPuertas = 0x08;
+#ifdef LENG
+// para probar que la puerta doble está cerrada
+//	guillermo->posX = 88;
+//	guillermo->posY = 121;
+//	guillermo->altura = 0;
 	guillermo->posX = 0x88;
 	guillermo->posY = 0xa8;
 	guillermo->altura = 0x00;
+#else
+	guillermo->posX = 0x88;
+	guillermo->posY = 0xa8;
+	guillermo->altura = 0x00;
+#endif
 	guillermo->estado = 0x00;
 	guillermo->incrPosY = 2;
 
@@ -927,9 +943,18 @@ void Logica::iniciaPersonajes()
 	adso->objetos=0;
 	
 	// malaquías
+#ifdef LENG
+	malaquias->posX = guillermo->posX-6;
+	malaquias->posY = guillermo->posY;
+	malaquias->altura = guillermo->altura;
+//	malaquias->posX = 0x26;
+//	malaquias->posY = 0x26;
+//	malaquias->altura = 0x0f;
+#else
 	malaquias->posX = 0x26;
 	malaquias->posY = 0x26;
 	malaquias->altura = 0x0f;
+#endif
 	malaquias->mascaraObjetos = LLAVE3 | LAMPARA;
 	malaquias->permisosPuertas = 0x1f;
 	malaquias->estado = 0;
@@ -993,6 +1018,21 @@ void Logica::iniciaPersonajes()
 	bernardo->estado = 0;
 	bernardo->aDondeHaLlegado = -6;
 	bernardo->estaEnLaAbadia = false;
+
+#ifdef LENG
+	malaquias->posX = 0x00;
+	malaquias->posY = 0x00;
+	malaquias->altura = 0x00;
+	abad->posX = 0x00;
+	abad->posY = 0x00;
+	abad->altura = 0x00;
+	berengario->posX = 0x00;
+	berengario->posY = 0x00;
+	berengario->altura = 0x00;
+	severino->posX = 0x00;
+	severino->posY = 0x00;
+	severino->altura = 0x00;
+#endif
 }
 
 // inicia las puertas del juego
@@ -1049,6 +1089,10 @@ void Logica::iniciaPuertas()
 	puertas[5]->haciaDentro = true;
 	puertas[5]->estaFija = true;
 	puertas[5]->estaAbierta = true;
+#ifdef LENG
+	puertas[5]->orientacion = ARRIBA;
+	puertas[5]->estaAbierta = false;
+#endif
 
 	// segunda puerta que cierra el paso a la parte izquierda de la planta baja de la abadía
 	puertas[6]->identificador = 0x00;
@@ -1059,6 +1103,14 @@ void Logica::iniciaPuertas()
 	puertas[6]->haciaDentro = false;
 	puertas[6]->estaFija = true;
 	puertas[6]->estaAbierta = true;
+#ifdef LENG
+	puertas[6]->orientacion = ABAJO;
+	puertas[6]->estaAbierta = false;
+#endif
+
+#ifdef LENG
+//mascaraPuertas=0xdf;
+#endif
 }
 
 // inicia los objetos del juego

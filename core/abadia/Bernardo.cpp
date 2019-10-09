@@ -61,6 +61,9 @@ Bernardo::~Bernardo()
 //		0x14 -> estado en el que ya no tiene nada que hacer, por lo que tan sólo se pasea por la abadía
 void Bernardo::piensa()
 {
+#ifdef LENG
+return;
+#endif
 	// si bernardo no está en la abadía, sale
 	if (!estaEnLaAbadia){
 		elBuscadorDeRutas->seBuscaRuta = false;

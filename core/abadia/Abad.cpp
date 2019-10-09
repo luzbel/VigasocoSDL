@@ -101,6 +101,9 @@ Abad::~Abad()
 // si el bit 7 del estado es 1 indica que está recriminandole algo a guillermo
 void Abad::piensa()
 {
+#ifdef LENG
+return;
+#endif
 	// si guillermo visita el ala izquierda de la abadía el primer día o cuando es prima, lo echa
 	if ((laLogica->guillermo->posX < 0x60) && ((laLogica->dia == 1) || (laLogica->momentoDia == PRIMA))){
 		estado = 0x0b;

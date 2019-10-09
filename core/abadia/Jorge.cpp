@@ -64,6 +64,9 @@ Jorge::~Jorge()
 //		0x1f -> estado en el que jorge habla con guillermo después de que hayan sido presentados
 void Jorge::piensa()
 {
+#ifdef LENG
+return;
+#endif
 	// si jorge no está activo, sale
 	if (!estaActivo){
 		elBuscadorDeRutas->seBuscaRuta = false;

@@ -21,6 +21,10 @@
 
 #include "sonidos.h"
 
+#ifdef LENG
+#include <stdio.h>
+#endif
+
 using namespace Abadia;
 
 // tabla con las acciones programadas
@@ -72,6 +76,17 @@ void AccionesDia::ejecutaAccionesProgramadas()
 
 void AccionesNoche::ejecuta(AccionesDia *ad)
 {
+#ifdef LENG
+	// fija la paleta de noche
+	elJuego->paleta->setGamePalette(3);
+	// TODO revisar si es necesario establecer siempre la paleta
+	// para el día 1 se podría fijar al iniciar el juego
+	// y aquí no haría falta si ya se ha fijado en visperas y completas
+	// pero ojo con los saltos en el tiempo
+	elJuego->puertas[5]->estaFija=false;
+	elJuego->puertas[5]->estaFija=false;
+fprintf(stderr,"LENG AccionesNoche::ejecuta\n");
+#else
 	if (laLogica->dia == 5){
 		// pone las gafas en la habitación iluminada del laberinto
 		ad->colocaObjeto(elJuego->objetos[2], 0x1b, 0x23, 0x18);
@@ -86,10 +101,13 @@ void AccionesNoche::ejecuta(AccionesDia *ad)
 		ad->colocaPersonaje(laLogica->jorge, 0x12, 0x65, 0x18, ARRIBA);
 		laLogica->jorge->estaActivo = true;
 	}
+#endif
 }
 
 void AccionesPrima::ejecuta(AccionesDia *ad)
 {
+#ifdef LENG
+#else
 	// dibuja el efecto de la espiral
 	ad->dibujaEfectoEspiral();
 
@@ -162,18 +180,24 @@ void AccionesPrima::ejecuta(AccionesDia *ad)
 	if ((laLogica->dia == 5) && ((laLogica->guillermo->objetos & LLAVE1) == 0)){
 		ad->colocaObjeto(elJuego->objetos[4], 0, 0, 0);
 	}
+#endif
 }
 
 void AccionesTercia::ejecuta(AccionesDia *ad)
 {
+#ifdef LENG
+#else
 	// dibuja el efecto de la espiral
 	ad->dibujaEfectoEspiral();
 
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Tintineo);
+#endif
 }
 
 void AccionesSexta::ejecuta(AccionesDia *ad)
 {
+#ifdef LENG
+#else
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Campanas);
 
 	if (laLogica->dia == 4){
@@ -184,10 +208,13 @@ void AccionesSexta::ejecuta(AccionesDia *ad)
 		// indica que bernardo puede coger el pergamino
 		laLogica->bernardo->mascaraObjetos = PERGAMINO;
 	}
+#endif
 }
 
 void AccionesNona::ejecuta(AccionesDia *ad)
 {
+#ifdef LENG
+#else
 	// dibuja el efecto de la espiral
 	ad->dibujaEfectoEspiral();
 
@@ -198,15 +225,21 @@ void AccionesNona::ejecuta(AccionesDia *ad)
 	}
 	
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Tintineo);
+#endif
 }
 
 void AccionesVisperas::ejecuta(AccionesDia *ad)
 {
+#ifdef LENG
+#else
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Campanas);
+#endif
 }
 
 void AccionesCompletas::ejecuta(AccionesDia *ad)
 {
+#ifdef LENG
+#else
 	// dibuja el efecto de la espiral
 	ad->dibujaEfectoEspiral();
 
@@ -217,6 +250,7 @@ void AccionesCompletas::ejecuta(AccionesDia *ad)
 	laLogica->mascaraPuertas = 0xdf;
 	
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Tintineo);
+#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////

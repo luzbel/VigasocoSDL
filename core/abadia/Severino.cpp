@@ -58,6 +58,9 @@ Severino::~Severino()
 //		bit 2 -> indica que se ha presentado ante guillermo
 void Severino::piensa()
 {
+#ifdef LENG
+return;
+#endif
 	// severino ha muerto, sale
 	if (!estaVivo){
 		elBuscadorDeRutas->seBuscaRuta = false;

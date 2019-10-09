@@ -1,5 +1,5 @@
 #CXXFLAGS=-g -D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl-config --cflags` -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4 -s PROXY_TO_PTHREAD=1
-CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl-config --cflags` -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4 -s PROXY_TO_PTHREAD=1
+CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl-config --cflags` -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4 -s PROXY_TO_PTHREAD=1 -DLENG
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 # en OBJECTS_CORE falta Operations.o ??

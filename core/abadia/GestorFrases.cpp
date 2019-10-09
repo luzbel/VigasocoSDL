@@ -22,6 +22,15 @@ using namespace Abadia;
 	//Cambiamos a un array de frases por cada idioma
 	const char * GestorFrases::frases[8][0x38+1] = {
 		{ // 0 Castellano
+#ifdef LENG
+	// Tiene que tener al menos un caracter, sino al hacer un frase++
+	// en el bucle que recorre la frase se va de madre, al pensar
+	// que al menos hay un caracter...
+	" ", //	Limpiar el area de frases al cargar/salvar una partida
+	"¿QUE EXTRAÑO LUGAR ES ESTE Y COMO HEMOS LLEGADO AQUI? ¿QUE ES ESTE TERRIBLE SILENCIO?",
+	"ALGO NOS HA TRAIDO, ESTOY SEGURO PICKMAN, PERO ¿EL QUE?",
+	"NO LO SE, HARLEY. LO AVERIGUAREMOS. ESTA NOCHE PARECE ETERNA"
+#else
 	"SECRETUM FINISH AFRICAE, MANUS SUPRA XXX AGE PRIMUM ET SEPTIMUM DE QUATOR",
 	"BIENVENIDO A ESTA ABADIA, HERMANO. OS RUEGO QUE ME SIGAIS. HA SUCEDIDO ALGO TERRIBLE",
 	"TEMO QUE UNO DE LOS MONJES HA COMETIDO UN CRIMEN. OS RUEGO QUE LO ENCONTREIS ANTES DE QUE LLEGUE BERNARDO GUI, PUES NO DESEO QUE SE MANCHE EL NOMBRE DE ESTA ABADIA",
@@ -82,6 +91,7 @@ using namespace Abadia;
 	// en el bucle que recorre la frase se va de madre, al pensar
 	// que al menos hay un caracter...
 	, " " //	Limpiar el area de frases al cargar/salvar una partida
+#endif
 		}, // Fin textos 0 castellano
 		{  // 1 Inglés
 	"SECRETUM FINIS AFRICAE, MANUS SUPRA AAA IDOLUM AGE PRIMUM ET SEPTIMUM DE QUATUOR",

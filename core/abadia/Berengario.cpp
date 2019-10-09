@@ -58,6 +58,9 @@ Berengario::~Berengario()
 //		0x06 -> en este estado se ha colocado la capucha y se va a por el libro y después a la celda de severino
 void Berengario::piensa()
 {
+#ifdef LENG
+return;
+#endif
 	// si no está vivo, sale
 	if (!estaVivo){
 		elBuscadorDeRutas->seBuscaRuta = false;

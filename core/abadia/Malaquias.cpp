@@ -17,6 +17,10 @@
 #include "Puerta.h"
 #include "Severino.h"
 
+#ifdef LENG
+#include <stdio.h>
+#endif
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -80,6 +84,9 @@ Malaquias::~Malaquias()
 //		0x0c -> va a buscar al abad para que eche a guillermo
 void Malaquias::piensa()
 {
+#ifdef LENG
+return;
+#endif
 	int momentoDia = laLogica->momentoDia;
 
 	// si malaquías ha muerto, sale
@@ -119,7 +126,13 @@ void Malaquias::piensa()
 		return;
 	}
 
+#ifdef LENG
+//	if (laLogica->momentoDia == VISPERAS){
+	if (laLogica->momentoDia == NONA){
+estado=0x04;
+#else
 	if (laLogica->momentoDia == VISPERAS){
+#endif
 		// en el estado 0x0c, busca al abad para que eche a guillermo de la abadía
 		if (estado == 0x0c){
 			aDondeVa = POS_ABAD;
@@ -190,7 +203,12 @@ void Malaquias::piensa()
 
 			// si ha llegado a las puertas y no han salido berengario o bernardo, los espera
 			if (aDondeHaLlegado == 4){
-				if ((laLogica->berengario->estaVivo && (laLogica->berengario->posX < 0x62)) || (laLogica->bernardo->estaEnLaAbadia && (laLogica->bernardo->posX < 0x62))){
+				if (
+#ifdef LENG
+false ) {
+#else
+(laLogica->berengario->estaVivo && (laLogica->berengario->posX < 0x62)) || (laLogica->bernardo->estaEnLaAbadia && (laLogica->bernardo->posX < 0x62))){
+#endif
 					elBuscadorDeRutas->seBuscaRuta = false;
 				} else {
 					// pasa al estado 5 y cierra las puertas
