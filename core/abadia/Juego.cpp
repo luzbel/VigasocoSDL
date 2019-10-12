@@ -2121,6 +2121,8 @@ void Juego::compruebaPausa()
 // comprueba si se desea cambiar los graficos VGA por CPC
 void Juego::cambioCPC_VGA()
 {
+//TODO: en LENG parece que hay problemas con la paleta
+// y se vuelve a poner la de dia
 	// En Memoria esta la rom de 0x24000 bytes 
 	//  seguidos de 174065 bytes con los graficos de 8 bits a usar
 	//  seguidos de 174065+21600 bytes con los graficos VGA de 8 bits
@@ -2591,7 +2593,7 @@ void Juego::creaEntidadesJuego()
 	// crea los personajes del juego
 	personajes[0] = new Guillermo(sprites[0]);
 	personajes[1] = new Adso(sprites[1]);
-	personajes[2] = new Malaquias((SpriteMonje *)sprites[2]);
+	personajes[2] = new Malaquias((SpriteMonje *)sprites[2]); // TODO LENG renombrar la clase a Sombra/Randolph Carter
 	personajes[3] = new Abad((SpriteMonje *)sprites[3]);
 	personajes[4] = new Berengario((SpriteMonje *)sprites[4]);
 	personajes[5] = new Severino((SpriteMonje *)sprites[5]);

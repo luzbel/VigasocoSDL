@@ -17,6 +17,11 @@ namespace Abadia {
 class Adso : public PersonajeConIA
 {
 // campos
+#ifdef LENG
+//private: // entonces no lo puede reinicar a cero la Logica ... pero es que debería haber un Adso::inicia TODO
+public:
+	int contador; // contador usado en varias ocasiones para avanzar la trama, por ejemplo, si el primer día se pierden por la abadía y no llegan a la celda
+#endif
 public:
 	int oldEstado;								// indica el estado anterior de adso
 	int movimientosFrustados;					// indica el número de movimientos frustados del personaje

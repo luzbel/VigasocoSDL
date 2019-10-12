@@ -16,7 +16,13 @@
 #include "MotorGrafico.h"
 #include "RejillaPantalla.h"
 
+#ifdef LENG
+#include <stdio.h>
+//#include <cstdio>
+#endif
+
 using namespace Abadia;
+
 
 /////////////////////////////////////////////////////////////////////////////
 // tabla de orientaciones a probar para moverse en un determinado sentido
@@ -102,6 +108,10 @@ Adso::Adso(Sprite *spr) : PersonajeConIA(spr)
 
 	// asigna las posiciones predefinidas
 	posiciones = posicionesPredef;
+
+#ifdef LENG
+	contador=0;
+#endif
 }
 
 Adso::~Adso()
@@ -272,13 +282,27 @@ void Adso::piensa()
 	Personaje *guillermo = laLogica->guillermo;
 	aDondeVa = POS_GUILLERMO;
 	switch (laLogica->dia){
-		case 1: 
+		case 1:
+			// Empezamos en COMPLETAS y al poco pasamos a DIA 2 NOCHE
+			if (contador>50) {
+			//if (contador>15) {
+				contador=0;
+				laLogica->avanzarMomentoDia = true;
+			} else contador++;
+		case 2: 
 			switch (laLogica->momentoDia){
 				case NOCHE: 
 					// si estamos cerca de guillermo y en nuestra celda
-					if (estado==0 && estaCerca(guillermo) && (elMotorGrafico->numPantalla == 0x3e)){
+					if ( estado==0 && estaCerca(guillermo) && ( contador> 1500 || elMotorGrafico->numPantalla == 0x3e)){
+					//if ( estado==0 && estaCerca(guillermo) && ( contador> 15 || elMotorGrafico->numPantalla == 0x3e)){ // rapido durante pruebas
 						elGestorFrases->muestraFrase(0x1); 
 						estado=0x1;
+						contador=0;
+					} else {
+						contador++;
+						// Un usuario que vaya directamente de la entrada a la celda conociendo el camino
+						// deja el contador a 700 para lograrlo.
+						// la condicion de salida es algo mas del doble (1500) para dejar tiempo a explorar
 					}
 					if (estado==0x1 && !elGestorFrases->mostrandoFrase) {
 						elGestorFrases->muestraFrase(0x2);
@@ -289,7 +313,10 @@ void Adso::piensa()
 						estado=0x3;
 					}
 					if (estado==0x3 && !elGestorFrases->mostrandoFrase) {
-						laLogica->haFracasado = true;
+						laLogica->avanzarMomentoDia = true;
+						// pone una posición de pantalla inválida para que se redibuje la pantalla
+//						elJuego->motor->posXPantalla = elJuego->motor->posYPantalla = -1; // esto o hay que llamar a Juego::ReiniciaPantalla
+//						laLogica->haFracasado = true;
 					}
 
 				break;

@@ -80,7 +80,10 @@ void Logica::inicia()
 	// inicia las variables de la lógica del juego
 	dia = 1;
 #ifdef LENG
-	momentoDia = NOCHE;
+//	momentoDia = NOCHE;
+	momentoDia = COMPLETAS;
+
+//dia=2; momentoDia=PRIMA; // pruebas seguir sombra
 #else
 	momentoDia = NONA;
 #endif
@@ -91,8 +94,11 @@ void Logica::inicia()
 	haFracasado = false;
 	investigacionCompleta = false;
 	bonus = 0;
-
+#ifdef LENG
+	mascaraPuertas = 0x00;
+#else
 	mascaraPuertas = 0xef;
+#endif
 
 	seAcabaLaNoche = false;
 	haAmanecido = false;
@@ -400,9 +406,15 @@ void Logica::compruebaCogerDejarObjetos()
 	}
 
 	// actualiza las puertas a las que pueden entrar guillermo y adso
+#ifdef LENG
+// TODO: actualizar con las llaves que se usen realmente en LENG
+//	guillermo->permisosPuertas = (guillermo->permisosPuertas) | ((guillermo->objetos & LLAVE1) >> 3) | (guillermo->objetos & LLAVE2);
+//	adso->permisosPuertas = (adso->permisosPuertas f) | ((adso->objetos & LLAVE3) << 3);
+//fprintf(stderr,"Logica::compruebaCogerDejarObjetos  adso->permisosPuertas %d\n", adso->permisosPuertas);
+#else
 	guillermo->permisosPuertas = (guillermo->permisosPuertas) | ((guillermo->objetos & LLAVE1) >> 3) | (guillermo->objetos & LLAVE2);
 	adso->permisosPuertas = (adso->permisosPuertas & 0xef) | ((adso->objetos & LLAVE3) << 3);
-
+#endif
 	// calcula los objetos que se han cambiado
 	int difObjetos = guillermo->objetos ^ objetosGuillermo;
 
@@ -913,6 +925,8 @@ void Logica::iniciaPersonajes()
 	guillermo->mascaraObjetos = LIBRO | GUANTES | GAFAS | PERGAMINO | LLAVE1 | LLAVE2;
 	guillermo->permisosPuertas = 0x08;
 #ifdef LENG
+//guillermo->objetos=LLAVE1||LLAVE2||LLAVE3||GAFAS;
+//guillermo->objetos=LLAVE1;
 // para probar que la puerta doble está cerrada
 //	guillermo->posX = 88;
 //	guillermo->posY = 121;
@@ -941,6 +955,9 @@ void Logica::iniciaPersonajes()
 	adso->movimientosFrustados = 0;
 	adso->cntParaDormir = 0;
 	adso->objetos=0;
+#ifdef LENG
+	adso->contador=0;
+#endif
 	
 	// malaquías
 #ifdef LENG
@@ -950,17 +967,23 @@ void Logica::iniciaPersonajes()
 //	malaquias->posX = 0x26;
 //	malaquias->posY = 0x26;
 //	malaquias->altura = 0x0f;
+	malaquias->mascaraObjetos = 0; //  LLAVE3 | LAMPARA;
+	malaquias->permisosPuertas = 0; // 0x1f;
+	malaquias->estado = 0;
+	malaquias->aDondeHaLlegado = -6;
+	malaquias->estado2 = 0;
+	malaquias->estaMuerto = 0;
 #else
 	malaquias->posX = 0x26;
 	malaquias->posY = 0x26;
 	malaquias->altura = 0x0f;
-#endif
 	malaquias->mascaraObjetos = LLAVE3 | LAMPARA;
 	malaquias->permisosPuertas = 0x1f;
 	malaquias->estado = 0;
 	malaquias->aDondeHaLlegado = -6;
 	malaquias->estado2 = 0;
 	malaquias->estaMuerto = 0;
+#endif
 
 	// el abad
 	abad->posX = 0x88;
@@ -1079,6 +1102,10 @@ void Logica::iniciaPuertas()
 	puertas[4]->posY = 0x26;
 	puertas[4]->altura = 0x02;
 	puertas[4]->haciaDentro = false;
+#ifdef LENG
+// para probar a llegar donde la calavera
+//	puertas[4]->estaAbierta = true;
+#endif
 
 	// primera puerta que cierra el paso a la parte izquierda de la planta baja de la abadía
 	puertas[5]->identificador = 0x00;
@@ -1090,8 +1117,8 @@ void Logica::iniciaPuertas()
 	puertas[5]->estaFija = true;
 	puertas[5]->estaAbierta = true;
 #ifdef LENG
-	puertas[5]->orientacion = ARRIBA;
-	puertas[5]->estaAbierta = false;
+//	puertas[5]->orientacion = ARRIBA;
+//	puertas[5]->estaAbierta = false;
 #endif
 
 	// segunda puerta que cierra el paso a la parte izquierda de la planta baja de la abadía
@@ -1104,12 +1131,13 @@ void Logica::iniciaPuertas()
 	puertas[6]->estaFija = true;
 	puertas[6]->estaAbierta = true;
 #ifdef LENG
-	puertas[6]->orientacion = ABAJO;
-	puertas[6]->estaAbierta = false;
+//	puertas[6]->orientacion = ABAJO;
+//	puertas[6]->estaAbierta = false;
 #endif
 
 #ifdef LENG
 //mascaraPuertas=0xdf;
+mascaraPuertas=0x00;
 #endif
 }
 

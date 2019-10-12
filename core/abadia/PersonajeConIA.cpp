@@ -35,12 +35,21 @@ UINT16 PersonajeConIA::comandosAvanzar[5][2] = {
 // tabla con las distancias permisibles según la orientación
 /////////////////////////////////////////////////////////////////////////////
 
+#ifdef LENG
+int PersonajeConIA::distanciasOri[4][4] = {
+	{ 3, 12, 3, 6 },
+	{ 3, 6, 6, 12 },
+	{ 6, 12, 3, 6 },
+	{ 3, 6, 3, 12 }
+};
+#else
 int PersonajeConIA::distanciasOri[4][4] = {
 	{ 6, 24, 6, 12 },
 	{ 6, 12, 12, 24 },
 	{ 12, 24, 6, 12 },
 	{ 6, 12, 6, 24 }
 };
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // inicialización y limpieza

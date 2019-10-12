@@ -22,10 +22,17 @@
 #include "sonidos.h"
 
 #ifdef LENG
-#include <stdio.h>
+#include "Adso.h"
+#include "GestorFrases.h"
+#include "Malaquias.h"
 #endif
 
+
 using namespace Abadia;
+
+#ifdef LENG
+#include <stdio.h>
+#endif
 
 // tabla con las acciones programadas
 AccionProgramada *AccionesDia::acciones[7];
@@ -84,8 +91,12 @@ void AccionesNoche::ejecuta(AccionesDia *ad)
 	// y aquí no haría falta si ya se ha fijado en visperas y completas
 	// pero ojo con los saltos en el tiempo
 	elJuego->puertas[5]->estaFija=false;
-	elJuego->puertas[5]->estaFija=false;
-fprintf(stderr,"LENG AccionesNoche::ejecuta\n");
+	elJuego->puertas[6]->estaFija=false;
+//	if (laLogica->dia == 2){
+//			// dibuja el efecto de la espiral
+//			ad->dibujaEfectoEspiral();
+//	}
+//fprintf(stderr,"LENG AccionesNoche::ejecuta\n");
 #else
 	if (laLogica->dia == 5){
 		// pone las gafas en la habitación iluminada del laberinto
@@ -107,6 +118,34 @@ fprintf(stderr,"LENG AccionesNoche::ejecuta\n");
 void AccionesPrima::ejecuta(AccionesDia *ad)
 {
 #ifdef LENG
+	switch (laLogica->dia) {
+		case 2: 
+fprintf(stderr,"AccionesPrima::ejecuta dia 2\n"); 
+			// coloca a Guillermo en la entrada
+			ad->colocaPersonaje(laLogica->guillermo, 0x88, 0xa8, 0x0, DERECHA);
+			ad->colocaPersonaje(laLogica->adso, 0x88-2, 0xa8+2, 0x0, IZQUIERDA);
+			//ad->colocaPersonaje(laLogica->malaquias, 0x88, 0x84, 0x2, ARRIBA);
+			ad->colocaPersonaje(laLogica->malaquias, 0x89, 0x8D, 0x2, ARRIBA);
+			// dibuja el efecto de la espiral
+			ad->dibujaEfectoEspiral();
+/*
+			laLogica->mascaraPuertas= 0x10;
+				laLogica->guillermo->permisosPuertas= 0x10;
+				laLogica->adso->permisosPuertas= 0x10;
+				laLogica->malaquías->permisosPuertas=0x10; // Pueden abrir la puerta que lleva a la cripta
+*/
+			laLogica->mascaraPuertas=
+				laLogica->guillermo->permisosPuertas=
+				laLogica->adso->permisosPuertas=
+				laLogica->malaquias->permisosPuertas=0x10;
+fprintf(stderr,"laLogica->adso->permisosPuertas %d\n",laLogica->adso->permisosPuertas);
+			elGestorFrases->muestraFrase(0x04);
+		        //while (elGestorFrases->mostrandoFrase) elJuego->timer->sleep(1000);
+		        elJuego->timer->sleep(10000);
+			ad->dibujaEfectoEspiral();
+			
+			break;
+	}
 #else
 	// dibuja el efecto de la espiral
 	ad->dibujaEfectoEspiral();

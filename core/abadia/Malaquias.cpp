@@ -28,6 +28,11 @@ using namespace Abadia;
 /////////////////////////////////////////////////////////////////////////////
 
 PosicionJuego Malaquias::posicionesPredef[9] = {
+#ifdef LENG
+	//PosicionJuego(ARRIBA, 0x88, 0x84, 0x02),	// posición en la entrada de la abadía
+	PosicionJuego(ARRIBA, 0x89, 0x8D, 0x02),	// posición en la entrada de la abadía
+	PosicionJuego(ABAJO, 0x64, 0x2B, 0x00),		// posición en la cripta, junto a las calaveras
+#else
 	PosicionJuego(ABAJO, 0x84, 0x48, 0x02),		// posición en la iglesia
 	PosicionJuego(ARRIBA, 0x2f, 0x37, 0x02),	// posición en el refectorio
 	PosicionJuego(ABAJO, 0x37, 0x38, 0x0f),		// posición en la mesa que está en la entrada del pasillo para poder subir a la biblioteca
@@ -37,6 +42,7 @@ PosicionJuego Malaquias::posicionesPredef[9] = {
 	PosicionJuego(ABAJO, 0x35, 0x37, 0x13),		// posición donde deja la llave en la mesa que está en la entrada del pasillo para poder subir a la biblioteca
 	PosicionJuego(DERECHA, 0xbc, 0x18, 0x02),	// posición en su celda
 	PosicionJuego(DERECHA, 0x68, 0x52, 0x00)	// posición en la celda de severino
+#endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -52,8 +58,14 @@ Malaquias::Malaquias(SpriteMonje *spr) : Monje(spr)
 	datosCara[1] = 0xb1cb + 0x32;
 	*/
 	// VGA
+#ifdef LENG
+	// En LENG Randolph Carter va encapuchado
+	datosCara[0] = 69308;
+	datosCara[1] = 69308+0x32*4;
+#else
         datosCara[0] = 67708;
         datosCara[1] = 67708+0x32*4;
+#endif
 
 	mascarasPuertasBusqueda = 0x3f;
 
@@ -82,9 +94,63 @@ Malaquias::~Malaquias()
 //		0x0a -> estado en el que va a su mesa de trabajo
 //		0x0b -> estado en el que empieza a morirse
 //		0x0c -> va a buscar al abad para que eche a guillermo
+//
+// Estados en LENG
+//		0x00 ->  esperando a que Pickman y Harley lleguen a la abadía el segundo día
+//
 void Malaquias::piensa()
 {
 #ifdef LENG
+	switch (laLogica->dia){
+		case 2:
+			switch (laLogica->momentoDia){
+				case PRIMA:
+					// si está esperando a que el jugador llegue a la abadía
+					switch (estado) {
+						case 0x00: 
+						// si el jugador  está cerca , le da la bienvenida y le dice que le siga
+						if (estaCerca(laLogica->guillermo)){
+							// muestra la frase ESA SOMBRA, SIGAMOSLA
+							elGestorFrases->muestraFrase(0x05);
+
+							// cambia de estado y va a por el jugador // TODO: se acerca o se va a la cripta ... que pasa si el jugador no lo sigue y lo pierde de vista
+							estado = 0x01;
+							aDondeVa = 1; 
+//							aDondeVa = POS_GUILLERMO;
+						} else {
+							// va a la entrada de la abadía
+							aDondeVa = 0;
+						}
+						break;
+						return;
+						case 0x01: 
+							//aDondeVa = 1; 
+							//fprintf(stderr,"Logica->mascaraPuertas %d permisosPuertas %d\n",laLogica->mascaraPuertas,permisosPuertas ); 
+							if ((aDondeHaLlegado==aDondeVa) && estaCerca(laLogica->guillermo) && !elGestorFrases->mostrandoFrase) {
+								elGestorFrases->muestraFrase(0x06);
+								estado=0x02;
+								estaMuerto=1; // para que se vea la animacion de ascender , ver Malaquias::avanzaAnimacionOMueve
+								// TODO, renombrar para LENG la variable a estaFlotando o estaDesapareciendo
+							} 
+							break;
+						case 0x02:
+							if (!elGestorFrases->mostrandoFrase) {
+								if (altura<0x14) {
+									altura++;	
+								} else {
+									posX=posY=altura=0;
+									estado=0x03;
+									estaMuerto=0;
+									//elBuscadorDeRutas->seBuscaRuta = false;
+//TODO : aunque el Sprite ha "ascendido" el hueco sigue "ocupado" y Guillermo no puede pasar por donde estaba Malaquias hasta salir y volver a entrar en la habitación
+								}
+							}	
+							break;
+					}
+					break;
+			}
+			break;
+	}
 return;
 #endif
 	int momentoDia = laLogica->momentoDia;
