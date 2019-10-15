@@ -17,14 +17,18 @@ using namespace Abadia;
 /////////////////////////////////////////////////////////////////////////////
 // posiciones a las que puede ir el personaje según el estado
 /////////////////////////////////////////////////////////////////////////////
-
 PosicionJuego Berengario::posicionesPredef[6] = {
+#ifdef LENG
+	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
+	PosicionJuego(ABAJO, 0x8c, 0x48, 0x02),		// posición en la iglesia
+#else
 	PosicionJuego(ABAJO, 0x8c, 0x48, 0x02),		// posición en la iglesia
 	PosicionJuego(ARRIBA, 0x32, 0x35, 0x02),	// posición en el refectorio
 	PosicionJuego(IZQUIERDA, 0x3d, 0x5c, 0x0f),	// posición de su mesa en el scriptorium
 	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
 	PosicionJuego(ARRIBA, 0x52, 0x67, 0x04),	// posición al pie de las escaleras para subir al scriptorium
 	PosicionJuego(ARRIBA, 0x68, 0x57, 0x02)		// celda de severino
+#endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -34,7 +38,11 @@ PosicionJuego Berengario::posicionesPredef[6] = {
 Berengario::Berengario(SpriteMonje *spr) : Monje(spr)
 {
 	// coloca los datos de la cara de berengario
+#ifdef LENG
+	fijaCapucha(true);
+#else
 	fijaCapucha(false);
+#endif
 
 	mascarasPuertasBusqueda = 0x3f;
 
@@ -59,6 +67,13 @@ Berengario::~Berengario()
 void Berengario::piensa()
 {
 #ifdef LENG
+	switch (laLogica->dia) {
+		case 2: 
+			switch (laLogica->momentoDia) {
+				case TERCIA: aDondeVa=1;
+			}
+			break;
+	}
 return;
 #endif
 	// si no está vivo, sale

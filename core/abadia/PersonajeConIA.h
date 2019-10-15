@@ -74,7 +74,7 @@ protected:
 	void cargaEstado();
 
 	// métodos auxiliares para la lógica
-	bool estaCerca(Personaje *pers);
+	bool estaCerca(Personaje *pers,float multiplier=0.5); // Multiplicar x1 para que deje más distancia
 	bool siHaLlegadoAvanzaEstado();
 };
 

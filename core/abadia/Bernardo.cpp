@@ -18,11 +18,19 @@ using namespace Abadia;
 /////////////////////////////////////////////////////////////////////////////
 
 PosicionJuego Bernardo::posicionesPredef[5] = {
+#ifdef LENG
+	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
+	PosicionJuego(ABAJO, 0x84, 0x4e, 0x02),	// posición en la iglesia
+	// no puede usar la pos del juego original, porque esa es la misma de Berengario
+	// que en el original está muerto cuando Bernardo llega a la abadía
+	// PosicionJuego(ABAJO, 0x8c, 0x48, 0x02),		// posición en la iglesia
+#else
 	PosicionJuego(ABAJO, 0x8c, 0x48, 0x02),		// posición en la iglesia
 	PosicionJuego(ARRIBA, 0x32, 0x35, 0x02),	// posición en el refectorio
 	PosicionJuego(IZQUIERDA, 0x3d, 0x5c, 0x0f),	// posición de su mesa en el scriptorium
 	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
 	PosicionJuego(ARRIBA, 0x88, 0xa8, 0x00)		// salida de la abadía
+#endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -38,8 +46,13 @@ Bernardo::Bernardo(SpriteMonje *spr) : Monje(spr)
 	datosCara[1] = 0xb293 + 0x32;
 	*/
 	// VGA
+#ifdef LENG
+	datosCara[0] = 69308;
+	datosCara[1] = 69308+0x32*4;
+#else
         datosCara[0] = 68508;
-        datosCara[1] = 68508+0x32*4;
+        datosCara[1] = 68508+0x32*4;a
+#endif
 
 	mascarasPuertasBusqueda = 0x3f;
 
@@ -62,6 +75,13 @@ Bernardo::~Bernardo()
 void Bernardo::piensa()
 {
 #ifdef LENG
+	switch (laLogica->dia) {
+		case 2: 
+			switch (laLogica->momentoDia) {
+				case TERCIA: aDondeVa=1;
+			}
+			break;
+	}
 return;
 #endif
 	// si bernardo no está en la abadía, sale

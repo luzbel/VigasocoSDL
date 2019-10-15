@@ -284,8 +284,8 @@ void Adso::piensa()
 	switch (laLogica->dia){
 		case 1:
 			// Empezamos en COMPLETAS y al poco pasamos a DIA 2 NOCHE
-			if (contador>50) {
-			//if (contador>15) {
+			//if (contador>50) {
+			if (contador>15) {
 				contador=0;
 				laLogica->avanzarMomentoDia = true;
 			} else contador++;
@@ -293,8 +293,8 @@ void Adso::piensa()
 			switch (laLogica->momentoDia){
 				case NOCHE: 
 					// si estamos cerca de guillermo y en nuestra celda
-					if ( estado==0 && estaCerca(guillermo) && ( contador> 1500 || elMotorGrafico->numPantalla == 0x3e)){
-					//if ( estado==0 && estaCerca(guillermo) && ( contador> 15 || elMotorGrafico->numPantalla == 0x3e)){ // rapido durante pruebas
+					//if ( estado==0 && estaCerca(guillermo) && ( contador> 1500 || elMotorGrafico->numPantalla == 0x3e)){
+					if ( estado==0 && estaCerca(guillermo) && ( contador> 15 || elMotorGrafico->numPantalla == 0x3e)){ // rapido durante pruebas
 						elGestorFrases->muestraFrase(0x1); 
 						estado=0x1;
 						contador=0;

@@ -83,7 +83,7 @@ void Logica::inicia()
 //	momentoDia = NOCHE;
 	momentoDia = COMPLETAS;
 
-//dia=2; momentoDia=PRIMA; // pruebas seguir sombra
+dia=2; momentoDia=PRIMA; // pruebas seguir sombra
 #else
 	momentoDia = NONA;
 #endif
@@ -411,6 +411,9 @@ void Logica::compruebaCogerDejarObjetos()
 //	guillermo->permisosPuertas = (guillermo->permisosPuertas) | ((guillermo->objetos & LLAVE1) >> 3) | (guillermo->objetos & LLAVE2);
 //	adso->permisosPuertas = (adso->permisosPuertas f) | ((adso->objetos & LLAVE3) << 3);
 //fprintf(stderr,"Logica::compruebaCogerDejarObjetos  adso->permisosPuertas %d\n", adso->permisosPuertas);
+//fprintf(stderr,"Logica::compruebaCogerDejarObjetos  adso->permisosPuertas %d\n", adso->permisosPuertas);
+//fprintf(stderr,"Logica::compruebaCogerDejarObjetos  malaquias->permisosPuertas %d\n", malaquias->permisosPuertas);
+//fprintf(stderr,"Logica::compruebaCogerDejarObjetos  abad->permisosPuertas %d\n", abad->permisosPuertas);
 #else
 	guillermo->permisosPuertas = (guillermo->permisosPuertas) | ((guillermo->objetos & LLAVE1) >> 3) | (guillermo->objetos & LLAVE2);
 	adso->permisosPuertas = (adso->permisosPuertas & 0xef) | ((adso->objetos & LLAVE3) << 3);
@@ -986,9 +989,17 @@ void Logica::iniciaPersonajes()
 #endif
 
 	// el abad
+#ifdef LENG
+	// en su celda
+	abad->posX = 0x54;
+	abad->posY = 0x3c;
+	abad->altura = 0x02;
+	abad->orientacion = DERECHA;
+#else
 	abad->posX = 0x88;
 	abad->posY = 0x84;
 	abad->altura = 0x02;
+#endif
 	abad->mascaraObjetos = PERGAMINO;
 	abad->permisosPuertas = 0x19;
 	abad->puedeQuitarObjetos = true;
@@ -999,12 +1010,24 @@ void Logica::iniciaPersonajes()
 	abad->numFrase = 0;
 
 	// berengario
+#ifdef LENG
+	berengario->posX = 0xbc;
+	berengario->posY = 0x15;
+	berengario->altura = 0x02;
+	berengario->mascaraObjetos = 0x00;
+	berengario->permisosPuertas = 0x02;
+	// TODO, ¿si inicia::Puertas se llamase antes de inicia::Personajes 
+	// se podría decir permisosPuertas=puertas[1].identificador?
+	// cambiando el 1 por un enum igual el código sería más claro
+	berengario->fijaCapucha(true);
+#else
 	berengario->posX = 0x28;
 	berengario->posY = 0x48;
 	berengario->altura = 0x0f;
 	berengario->mascaraObjetos = 0x00;
 	berengario->permisosPuertas = 0x1f;
 	berengario->fijaCapucha(false);
+#endif
 	berengario->estado = 0;
 	berengario->aDondeHaLlegado = -6;
 	berengario->estado2 = 0;
@@ -1012,31 +1035,54 @@ void Logica::iniciaPersonajes()
 	berengario->contadorPergamino = 0;
 
 	// severino
+#ifdef LENG
+	severino->posX = 0xbc;
+	severino->posY = 0x15;
+	severino->altura = 0x02;
+	severino->mascaraObjetos = 0x00;
+	severino->permisosPuertas = 0x02;
+#else
 	severino->posX = 0xc8;
 	severino->posY = 0x28;
 	severino->altura = 0x00;
 	severino->mascaraObjetos = 0x00;
 	severino->permisosPuertas = 0x0c;
+#endif
 	severino->estado = 0;
 	severino->aDondeHaLlegado = -6;
 	severino->estaVivo = true;
 
 	// jorge
+#ifdef LENG
+	jorge->posX = 0xbc;
+	jorge->posY = 0x15;
+	jorge->altura = 0x02;
+	jorge->mascaraObjetos = 0x00;
+	jorge->permisosPuertas = 0x02;
+#else
 	jorge->posX = 0x00;
 	jorge->posY = 0x00;
 	jorge->altura = 0x00;
 	jorge->mascaraObjetos = 0x00;
 	jorge->permisosPuertas = 0x1f;
+#endif
 	jorge->estado = 0;
 	jorge->aDondeHaLlegado = -6;
 	jorge->estaActivo = false;
 	jorge->contadorHuida = 0;
 
 	// bernardo gui
+#ifdef LENG
+	bernardo->posX = 0xbc;
+	bernardo->posY = 0x15;
+	bernardo->altura = 0x02;
+	bernardo->permisosPuertas = 0x02;
+#else
 	bernardo->posX = 0x00;
 	bernardo->posY = 0x00;
 	bernardo->altura = 0x00;
 	bernardo->permisosPuertas = 0x1f;
+#endif
 	bernardo->puedeQuitarObjetos = true;
 	bernardo->estado = 0;
 	bernardo->aDondeHaLlegado = -6;
@@ -1046,15 +1092,15 @@ void Logica::iniciaPersonajes()
 	malaquias->posX = 0x00;
 	malaquias->posY = 0x00;
 	malaquias->altura = 0x00;
-	abad->posX = 0x00;
-	abad->posY = 0x00;
-	abad->altura = 0x00;
-	berengario->posX = 0x00;
-	berengario->posY = 0x00;
-	berengario->altura = 0x00;
-	severino->posX = 0x00;
-	severino->posY = 0x00;
-	severino->altura = 0x00;
+//	abad->posX = 0x00;
+//	abad->posY = 0x00;
+//	abad->altura = 0x00;
+//	berengario->posX = 0x00;
+//	berengario->posY = 0x00;
+//	berengario->altura = 0x00;
+//	severino->posX = 0x00;
+//	severino->posY = 0x00;
+//	severino->altura = 0x00;
 #endif
 }
 

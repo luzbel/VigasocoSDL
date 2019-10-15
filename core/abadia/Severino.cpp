@@ -16,10 +16,15 @@ using namespace Abadia;
 /////////////////////////////////////////////////////////////////////////////
 
 PosicionJuego Severino::posicionesPredef[4] = {
+#ifdef LENG
+	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
+	PosicionJuego(ABAJO, 0x8c, 0x4b, 0x02),		// posición en la iglesia
+#else
 	PosicionJuego(ABAJO, 0x8c, 0x4b, 0x02),		// posición en la iglesia
 	PosicionJuego(ARRIBA, 0x36, 0x35, 0x02),	// posición en el refectorio
 	PosicionJuego(DERECHA, 0x68, 0x55, 0x00),	// posición en su celda
 	PosicionJuego(DERECHA, 0xc9, 0x2a, 0x00)	// pantalla de al lado de las celdas de los monjes
+#endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -35,8 +40,13 @@ Severino::Severino(SpriteMonje *spr) : Monje(spr)
 	datosCara[1] = 0xb103 + 0x32;
 	*/
 	// VGA
+#ifdef LENG
+	datosCara[0] = 69308;
+	datosCara[1] = 69308+0x32*4;
+#else
         datosCara[0] = 66908;
         datosCara[1] = 66908+0x32*4;
+#endif
 
 	mascarasPuertasBusqueda = 0x2f;
 
@@ -59,6 +69,13 @@ Severino::~Severino()
 void Severino::piensa()
 {
 #ifdef LENG
+	switch (laLogica->dia) {
+		case 2: 
+			switch (laLogica->momentoDia) {
+				case TERCIA: aDondeVa=1;
+			}
+			break;
+	}
 return;
 #endif
 	// severino ha muerto, sale

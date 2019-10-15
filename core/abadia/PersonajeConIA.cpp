@@ -35,21 +35,12 @@ UINT16 PersonajeConIA::comandosAvanzar[5][2] = {
 // tabla con las distancias permisibles según la orientación
 /////////////////////////////////////////////////////////////////////////////
 
-#ifdef LENG
-int PersonajeConIA::distanciasOri[4][4] = {
-	{ 3, 12, 3, 6 },
-	{ 3, 6, 6, 12 },
-	{ 6, 12, 3, 6 },
-	{ 3, 6, 3, 12 }
-};
-#else
 int PersonajeConIA::distanciasOri[4][4] = {
 	{ 6, 24, 6, 12 },
 	{ 6, 12, 12, 24 },
 	{ 12, 24, 6, 12 },
 	{ 6, 12, 6, 24 }
 };
-#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // inicialización y limpieza
@@ -413,7 +404,7 @@ void PersonajeConIA::cargaEstado()
 // métodos auxiliares para la lógica
 /////////////////////////////////////////////////////////////////////////////
 
-bool PersonajeConIA::estaCerca(Personaje *pers)
+bool PersonajeConIA::estaCerca(Personaje *pers,float multiplier)
 {
 	// si los 2 personajes no están en la misma planta, devuelve false
 	if (elMotorGrafico->obtenerAlturaBasePlanta(altura) != elMotorGrafico->obtenerAlturaBasePlanta(pers->altura)){
@@ -421,14 +412,14 @@ bool PersonajeConIA::estaCerca(Personaje *pers)
 	}
 
 	// si la distancia en X supera un umbral, devuelve false
-	int dist = pers->posX - posX + distanciasOri[orientacion][0];
-	if ((dist < 0) || (dist >= distanciasOri[orientacion][1])){
+	int dist = pers->posX - posX + (distanciasOri[orientacion][0]*multiplier);
+	if ((dist < 0) || (dist >= (distanciasOri[orientacion][1])*multiplier)){
 		return false;
 	}
 
 	// si la distancia en Y supera un umbral, devuelve false
-	dist = pers->posY - posY + distanciasOri[orientacion][2];
-	if ((dist < 0) || (dist >= distanciasOri[orientacion][3])){
+	dist = pers->posY - posY + (distanciasOri[orientacion][2]*multiplier);
+	if ((dist < 0) || (dist >= (distanciasOri[orientacion][3]*multiplier))){
 		return false;
 	}
 

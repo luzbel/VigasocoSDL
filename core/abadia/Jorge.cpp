@@ -20,7 +20,11 @@ using namespace Abadia;
 
 PosicionJuego Jorge::posicionesPredef[2] = {
 	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
+#ifdef LENG
+	PosicionJuego(ABAJO, 0x84, 0x4b, 0x02),	// en la iglesia (pos de Guillermo en el original)
+#else
 	PosicionJuego(DERECHA, 0x19, 0x2b, 0x1a)	// habitación iluminada de la biblioteca
+#endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -36,8 +40,13 @@ Jorge::Jorge(SpriteMonje *spr) : Monje(spr)
 	datosCara[1] = 0xb2f7 + 0x32;
 	*/
 	// VGA
-        datosCara[0] = 68908;
+#ifdef LENG
+	datosCara[0] = 69308;
+	datosCara[1] = 69308+0x32*4;
+#else
+	datosCara[0] = 68908;
         datosCara[1] = 68908+0x32*4;
+#endif
 	mascarasPuertasBusqueda = 0x3f;
 
 	// asigna las posiciones predefinidas
@@ -65,6 +74,13 @@ Jorge::~Jorge()
 void Jorge::piensa()
 {
 #ifdef LENG
+	switch (laLogica->dia) {
+		case 2: 
+			switch (laLogica->momentoDia) {
+				case TERCIA: aDondeVa=1;
+			}
+			break;
+	}
 return;
 #endif
 	// si jorge no está activo, sale

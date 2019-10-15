@@ -134,10 +134,16 @@ fprintf(stderr,"AccionesPrima::ejecuta dia 2\n");
 				laLogica->adso->permisosPuertas= 0x10;
 				laLogica->malaquías->permisosPuertas=0x10; // Pueden abrir la puerta que lleva a la cripta
 */
-			laLogica->mascaraPuertas=
-				laLogica->guillermo->permisosPuertas=
+			laLogica->mascaraPuertas=	
+				laLogica->abad->permisosPuertas = // 0x11;	
+					0x10   // La puerta de la cripta
+					| 0x2  // La puerta de la celda de los monjes 
+					| 0x1; // La puerta de la celda del abad
+fprintf(stderr,"laLogica->abad->permisosPuertas %d %d\n",laLogica->abad->permisosPuertas,0x10|0x1);
+			laLogica->guillermo->permisosPuertas=
 				laLogica->adso->permisosPuertas=
 				laLogica->malaquias->permisosPuertas=0x10;
+
 fprintf(stderr,"laLogica->adso->permisosPuertas %d\n",laLogica->adso->permisosPuertas);
 			elGestorFrases->muestraFrase(0x04);
 		        //while (elGestorFrases->mostrandoFrase) elJuego->timer->sleep(1000);

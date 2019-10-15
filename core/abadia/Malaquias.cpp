@@ -120,6 +120,8 @@ void Malaquias::piensa()
 						} else {
 							// va a la entrada de la abadía
 							aDondeVa = 0;
+							// TODO: igual tener parte de la lógica del abad hace difícil depurar
+							laLogica->abad->aDondeVa=0;
 						}
 						break;
 						return;
@@ -143,6 +145,10 @@ void Malaquias::piensa()
 									estaMuerto=0;
 									//elBuscadorDeRutas->seBuscaRuta = false;
 //TODO : aunque el Sprite ha "ascendido" el hueco sigue "ocupado" y Guillermo no puede pasar por donde estaba Malaquias hasta salir y volver a entrar en la habitación
+
+									// TODO: igual tener parte de la lógica del abad hace difícil depurar
+									laLogica->abad->aDondeVa=1;
+fprintf(stderr,"elMotorGrafico->numPantalla %d\n",elMotorGrafico->numPantalla);
 								}
 							}	
 							break;

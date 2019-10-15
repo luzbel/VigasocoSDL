@@ -16,7 +16,9 @@
 #include "MotorGrafico.h"
 
 #include "sonidos.h"
-
+#ifdef LENG
+#include <stdio.h>
+#endif
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -24,6 +26,11 @@ using namespace Abadia;
 /////////////////////////////////////////////////////////////////////////////
 
 PosicionJuego Abad::posicionesPredef[10] = {
+#ifdef LENG
+	PosicionJuego(ABAJO, 0x59, 0x24, 0x00),	// posición en la cocina, que ha ido a picar algo antes de la ceremonia
+	PosicionJuego(ABAJO,  0x64, 0x2B, 0x00),	// posición en la cripta, junto a las calaveras
+	PosicionJuego(ARRIBA, 0x88, 0x3c, 0x04),	// posición en el altar de la iglesia
+#else
 	PosicionJuego(ARRIBA, 0x88, 0x3c, 0x04),	// posición en el altar de la iglesia
 	PosicionJuego(IZQUIERDA, 0x3d, 0x37, 0x02),	// posición en el refectorio
 	PosicionJuego(DERECHA, 0x54, 0x3c, 0x02),	// posición en su celda
@@ -34,14 +41,20 @@ PosicionJuego Abad::posicionesPredef[10] = {
 	PosicionJuego(DERECHA, 0xc7, 0x27, 0x00),	// posición en la pantalla en la que presenta a jorge
 	PosicionJuego(ABAJO, 0x68, 0x61, 0x02),		// posición en la puerta de la celda de severino
 	PosicionJuego(DERECHA, 0x3a, 0x34, 0x0f)	// posición a la entrada del pasillo por el que lleva a la biblioteca
+#endif
 };
 
 /////////////////////////////////////////////////////////////////////////////
 // personajes que deben estar en la iglesia o en el refectorio según el día
 /////////////////////////////////////////////////////////////////////////////
 
+#ifdef LENG
+int Abad::monjesIglesiaEnPrima[7] = { 0, 0xf4, 0, 0, 0, 0, 0 };
+int Abad::frasesIglesiaEnPrima[7] = { 0, 0, 0, 0, 0, 0, 0 };
+#else
 int Abad::monjesIglesiaEnPrima[7] = { 0, 0x36, 0x26, 0x26, 0xa6, 0x02, 0x02 };
 int Abad::frasesIglesiaEnPrima[7] = { 0, 0x15, 0x18, 0x1a, 0, 0, 0x17 };
+#endif
 int Abad::monjesEnRefectorio[7] = {	0, 0x32, 0x22, 0x22, 0x02, 0x02, 0 };
 int Abad::monjesIglesiaEnVisperas[7] = { 0x36, 0x36, 0x26, 0xa6, 0, 0x02, 0 };
 
@@ -102,6 +115,54 @@ Abad::~Abad()
 void Abad::piensa()
 {
 #ifdef LENG
+	switch(laLogica->dia) {
+		case 2:
+			switch(laLogica->momentoDia) {
+				case PRIMA:
+// TODO: esto se hace ahora mismo en Malaquias, pero tener parte de la logica del abad allí complica la depuracion
+//					if (laLogica->malaquias->estado==0x03) aDondeVa=1; else aDondeVa=0;
+					// si está recriminando a guillermo
+					if (laLogica->malaquias->estado==0x03 /* &&elMotorGrafico->numPantalla == 0x2a **/) {
+						if (estaCerca(laLogica->guillermo)) {
+							// muestra la frase LA CEREMONIA VA A COMENZAR. ¡SALID DE AQUÍ!
+							elGestorFrases->muestraFrase(0x7);
+							laLogica->avanzarMomentoDia = true;	
+						} else aDondeVa = POS_GUILLERMO;
+					}
+					break;
+				case TERCIA:
+					// si está recriminando a guillermo
+					if (estado >= 0x80){
+						// si ha terminado de reproducirse la frase, vuelve al estado anterior
+						if (!elGestorFrases->mostrandoFrase){
+							estado = estado & 0x7f;
+						} else {
+							// en otro caso va a por guillermo
+							aDondeVa = POS_GUILLERMO;
+
+							return;
+						}
+					}
+					if (!estaCerca(laLogica->guillermo,1.5)) {
+						recriminaAGuillermo();
+						aDondeVa = POS_GUILLERMO;
+					} else {
+						aDondeVa = 2;
+						if (aDondeVa == aDondeHaLlegado) {
+							// comprueba si los personajes con IA están en su sitio para la misa de prima
+							compruebaPosMonjesEnIglesiaEnPrima(laLogica->dia);
+		// si los monjes están listos
+		if (lleganLosMonjes == 0){
+							laLogica->avanzarMomentoDia = true;	
+		}
+
+							// espera a que el abad, guillermo y los personajes con IA estén en su sitio para comenzar la misa o la comida
+//							esperaParaComenzarActo();
+						}
+					}
+					break;
+			}
+	}
 return;
 #endif
 	// si guillermo visita el ala izquierda de la abadía el primer día o cuando es prima, lo echa
@@ -874,6 +935,7 @@ void Abad::compruebaPosMonjesEnIglesiaEnPrima(int numDia)
 			if ((monjesIglesiaEnPrima[numDia - 1] & (1 << i)) != 0){
 				PersonajeConIA *pers = (PersonajeConIA *)elJuego->personajes[i];
 				lleganLosMonjes |= pers->aDondeHaLlegado;
+fprintf(stderr,"Abad::compruebaPosMonjesEnIglesiaEnPrima i %d lleganLosMonjes %d pers->aDondeHaLlegado %d\n",i, lleganLosMonjes , pers->aDondeHaLlegado);
 			}
 		}
 	}
