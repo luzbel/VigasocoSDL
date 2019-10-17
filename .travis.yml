@@ -1,0 +1,30 @@
+language: cpp
+branches:
+  only:
+  - Leng
+matrix:
+  include:
+  - os: linux
+    env: ARTIFACT_FILE="VigasocoSDL-Beta.Travis.Emscripten.zip" MAKE_OPTS=""
+    before_install:
+    - docker run -dit --name emscripten -v $(pwd):/src trzeci/emscripten:sdk-incoming-64bit bash
+script:
+  - docker exec -it emscripten emmake make -f Makefile.static.emscripten
+  - cd VigasocoSDL
+  - mkdir deploy
+  - cp VigasocoSDL.data deploy
+  - cp VigasocoSDL.html deploy
+  - cp VigasocoSDL.html.mem deploy
+  - cp VigasocoSDL.js deploy
+  - cp VigasocoSDL.wasm deploy
+  - cp VigasocoSDL.worker.js deploy
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: VigasocoSDL/deploy
+  github_token:
+    secure: 
+      CISTICABk8ggA7bfDyH2CGnjJjLBkfw71ANBmYnK64qSOO0sXQOBr7OI9in/tL7hoCk9lFuNr94iJsOsUCCzYY9De+AOHDgezgKvoJvxfhzd6niFr6QR1U/4cVDrxwNT1SpyM3fMqAWMfpw07tpdTw03ZU/jelwFqzkaqf/0yJvaKnixpgHkd6Kp09Dgz6b9tCmXziTExxNuRo/CqRQNW893q7C2Rv9l5njOu59OXtxaaO2DwBB7vqw8v6CEhaxmeHurDGTSFWweGG7Sk11hP3kHMlHwr+mjC0EcSnSPkgTahHs9sv6M1kpFX74U+frHnO9katgwcp8OTRO14PGH+xe7XTwvz3u+OZucD6iUEyaYzYac/eqYD7yEXPUjEKcC8l3HKSvXFM94W+mnvjtNDeaXkwN66xfP406sIwFjA/trWECRnBDnozRT3leoIFlyWYwVJyzH/tR9Hsaohg6STan7PxJXkP7Pp+iWNN/iiP8IHm7be/BKQqKziQgaB0fsYQPO7tBRfuQju0QL7qq8rbyBxpB0xIH5n63/aRYkLjFd74NfL3e8PhzLU6siAyy3Zoc7aDmfCqxx+W68/EFeOOo4nIzderwZttBrPE9fYI1bC333FVhqZtKld3FB+eeU0g/c4en9w8Y9uSky/BViYYE2nC5VMGesGt/ivyjtpnU=
+  keep_history: true
+  on:
+    branch: Leng
