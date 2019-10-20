@@ -18,6 +18,7 @@
 
 #ifdef LENG
 #include <stdio.h>
+#include "sonidos.h"
 //#include <cstdio>
 #endif
 
@@ -319,7 +320,7 @@ void Adso::piensa()
 //						laLogica->haFracasado = true;
 					}
 				case NONA:
-fprintf(stderr,"adso dia 2 nona estado %d elMotorGrafico->numPantalla %d mostrandoFrase %d \n",estado,elMotorGrafico->numPantalla,elGestorFrases->mostrandoFrase);
+//fprintf(stderr,"adso dia 2 nona estado %d elMotorGrafico->numPantalla %d mostrandoFrase %d \n",estado,elMotorGrafico->numPantalla,elGestorFrases->mostrandoFrase);
 					switch(estado) {
 						case 3:
 							if ( elMotorGrafico->numPantalla==0xd ) {
@@ -341,12 +342,15 @@ fprintf(stderr,"adso dia 2 nona estado %d elMotorGrafico->numPantalla %d mostran
 							}
 							break;
 						case 7: 
+							VigasocoMain->getAudioPlugin()->Play(SONIDOS::Campanas);
 							elGestorFrases->muestraFrase(0xd); // DEBEMOS VOLVER A ESE ALTAR
 							estado=8;
+							//laLogica->avanzarMomentoDia = true;
 							break;
 					}
-
-				break;
+					break;
+				case VISPERAS:
+					break;
 			}
 			break;
 	}

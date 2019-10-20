@@ -54,6 +54,7 @@ PosicionJuego Abad::posicionesPredef[10] = {
 #ifdef LENG
 // f0 es 1111 0000 , que es revisar la pos de los personajes 4 5 6 7 , que son berengario, severino , jorge y bernardo
 // los 4 sectarios en Leng
+// TODO, sólo está relleno el día 2, faltan el resto
 int Abad::monjesIglesiaEnPrima[7] = { 0, 0xf0, 0, 0, 0, 0, 0 };    
 int Abad::frasesIglesiaEnPrima[7] = { 0, 0, 0, 0, 0, 0, 0 };
 #else
@@ -61,7 +62,12 @@ int Abad::monjesIglesiaEnPrima[7] = { 0, 0x36, 0x26, 0x26, 0xa6, 0x02, 0x02 };
 int Abad::frasesIglesiaEnPrima[7] = { 0, 0x15, 0x18, 0x1a, 0, 0, 0x17 };
 #endif
 int Abad::monjesEnRefectorio[7] = {	0, 0x32, 0x22, 0x22, 0x02, 0x02, 0 };
+#ifdef LENG
+// f0 es 1111 0000 , que es revisar la pos de los personajes 4 5 6 7 , que son berengario, severino , jorge y bernardo
+int Abad::monjesIglesiaEnVisperas[7] = { 0, 0xf0, 0, 0, 0, 0, 0 };
+#else
 int Abad::monjesIglesiaEnVisperas[7] = { 0x36, 0x36, 0x26, 0xa6, 0, 0x02, 0 };
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // inicialización y limpieza
@@ -170,21 +176,24 @@ void Abad::piensa()
 							// muestra la frase de Devuelve los dioses terrestres 
 							estado=1;
 							elGestorFrases->muestraFrase(0x9);
-fprintf(stderr,"AIF 1\n");
+//fprintf(stderr,"AIF 1\n");
 							break;
 						case 1: if (!elGestorFrases->mostrandoFrase) { estado=2; // esperando a que termine la frase dicha en el estado 0
-fprintf(stderr,"AIF 2\n"); }
+//fprintf(stderr,"AIF 2\n"); 
+}
 							break;
 						// espera a que los monjes contesten su frase y entonces va a su celda, dónde se queda hasta NONA en la que sale
 						// y se la deja abierta
 						case 2: if  (!elGestorFrases->mostrandoFrase) { estado=3; aDondeVa=3; // espera a que los monjes contesten su frase
-fprintf(stderr,"AIF 3\n"); } 
+//fprintf(stderr,"AIF 3\n"); 
+} 
 							break;
 						case 3: if(aDondeHaLlegado==3) {
 //laLogica->objetos[3].personaje=3;
 //dejaObjeto(this);
 								laLogica->avanzarMomentoDia = true;// TODO; temporal
-fprintf(stderr,"AIF 4\n"); } 
+//fprintf(stderr,"AIF 4\n"); 
+} 
 							break;
 					}
 					break;
@@ -192,7 +201,7 @@ fprintf(stderr,"AIF 4\n"); }
 					switch (estado) {
 						case 3:
 							if (aDondeHaLlegado==4) {
-fprintf(stderr,"AIF 5 objetos abad %d\n",objetos); 
+//fprintf(stderr,"AIF 5 objetos abad %d\n",objetos); 
 								laLogica->guillermo->permisosPuertas=laLogica->adso->permisosPuertas=
 									laLogica->guillermo->permisosPuertas|0x1; // guillermo y Adso pueden entrar
 								estado=4;
@@ -201,10 +210,58 @@ fprintf(stderr,"AIF 5 objetos abad %d\n",objetos);
 							break;
 						case 4:
 							aDondeVa=0;
+							if (aDondeHaLlegado==0) estado=5;
+							break;
+						case 5:
+							if(laLogica->guillermo->objetos&PERGAMINO)  {
+								aDondeVa=2; // altar
+								estado=6;
+							}
+							break;
+						case 6:
+							if(aDondeHaLlegado==2) 
+								//laLogica->avanzarMomentoDia = true;
+								estado=7;
+							break;
+						case 7:
+							// comprueba si los personajes con IA están en su sitio para la ceremonia de visperas
+							compruebaPosMonjesEnIglesiaEnVisperas(laLogica->dia);
+							// si los monjes están listos
+							if (lleganLosMonjes == 0){
+//fprintf(stderr,"AIF estado 7 han llegado los monjes, avanzar  a visperas\n");
+								estado=8;
+								laLogica->avanzarMomentoDia = true;	
+							}
 							break;
 					}
 					break; 
-	
+				case VISPERAS:
+					switch(estado) {
+						case 8: 
+//fprintf(stderr,"AIF estado 8 frase ceremonia\n");
+							elGestorFrases->muestraFrase(0xe);
+							estado=9;
+							break;
+						case 9: if (!elGestorFrases->mostrandoFrase) estado=0xa; break;
+						case 0xa: if (!elGestorFrases->mostrandoFrase) estado=0xb; break;
+						case 0xb: aDondeVa=3;
+					}
+					break;
+/*
+					// igual que parte de TERCIA (TODO: poner esto en una función común)
+					// pero la función de comprobar Monjes es otra
+					aDondeVa=2; // altar iglesia
+					if (aDondeVa == aDondeHaLlegado) {
+						// comprueba si los personajes con IA están en su sitio para la misa de prima
+						//compruebaPosMonjesEnIglesiaEnPrima(laLogica->dia);
+						compruebaPosMonjesEnIglesiaEnVisperas(laLogica->dia);
+						// si los monjes están listos
+						if (lleganLosMonjes == 0){
+							estado=0;
+							laLogica->avanzarMomentoDia = true;	
+						}
+					}
+*/
 			}
 	}
 return;
@@ -931,6 +988,7 @@ void Abad::compruebaPosGuillermo(int posX, int posY, int orientacion)
 // comprueba que todos los personajes con IA estén en su sitio para la misa de vísperas
 void Abad::compruebaPosMonjesEnIglesiaEnVisperas(int numDia)
 {
+#ifndef LENG
 	// el quinto día tiene un tratamiento especial 
 	if (numDia == 5){
 		// si malaquías se está muriendo
@@ -947,6 +1005,7 @@ void Abad::compruebaPosMonjesEnIglesiaEnVisperas(int numDia)
 
 		return;
 	}
+#endif
 
 	// en otro caso, comprueba que los monjes que deben estar presentes hayan llegado a la iglesia
 	if (monjesIglesiaEnVisperas[numDia - 1] != 0){
@@ -957,6 +1016,7 @@ void Abad::compruebaPosMonjesEnIglesiaEnVisperas(int numDia)
 			if ((monjesIglesiaEnVisperas[numDia - 1] & (1 << i)) != 0){
 				PersonajeConIA *pers = (PersonajeConIA *)elJuego->personajes[i];
 				lleganLosMonjes |= pers->aDondeHaLlegado;
+//fprintf(stderr,"Abad::compruebaPosMonjesEnIglesiaEnVisperas i %d lleganLosMonjes %d pers->aDondeHaLlegado %d\n",i, lleganLosMonjes , pers->aDondeHaLlegado);
 			}
 		}
 	}

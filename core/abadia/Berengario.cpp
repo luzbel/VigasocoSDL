@@ -77,6 +77,8 @@ void Berengario::piensa()
 			switch (laLogica->momentoDia) {
 				case TERCIA: aDondeVa=0; break;
 				case SEXTA: aDondeVa=laLogica->jorge->aDondeVa; break; 
+				case NONA: aDondeVa=laLogica->jorge->aDondeVa; break; 
+				case VISPERAS: aDondeVa=laLogica->jorge->aDondeVa; break; 
 			}
 			break;
 	}
