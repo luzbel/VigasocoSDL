@@ -17,6 +17,19 @@ using namespace Abadia;
 const unsigned char * Pergamino::pergaminoInicio[8] =
 		{ // 0 Castellano
 	(const unsigned char*)
+#ifdef LENG
+	"Versión en desarrollo\x0d"
+	"de La abadía de Leng\x0d"
+	",videojuego ambien-\x0d"
+	"tado en los mitos de\x0d"
+	"Cthluhu y basado en\x0d"
+	"el clásico La abadía\x0d"
+	"del crimen de Paco \x0d"
+	"Menendez y Juan \x0d"
+	"Delcán, y usando\x0d"
+	"los gráficos VGA de \x0d"
+	"Antonio Giner.\x1a",
+#else
 	" Ya al final de mi\x0d"
 	"vida de pecador, mien-\x0d"
 	"tras espero el mo-\x0d"
@@ -92,6 +105,7 @@ const unsigned char * Pergamino::pergaminoInicio[8] =
 	"reingenieria inversa: \x0d"
 	"    Manuel Abadia\x0d\x0d"
 	"version SDL: Luzbel\x1a",
+#endif
 // TODO añadir creditos graficos VGA a Antonio Giner
 		// fin textos 0 castellano
 		// 1 inglés
