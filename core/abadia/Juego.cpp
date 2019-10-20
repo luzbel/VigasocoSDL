@@ -2366,13 +2366,15 @@ void Juego::muestraPresentacion()
 	/* CPC
 	cpc6128->showMode0Screen(roms - 0x4000);
 	*/
-
+#ifdef LENG
+#else
 	//VGA
 	UINT8 *romsVGA = &roms[0x24000-1-0x4000];
 	cpc6128->showVGAScreen(romsVGA + 0x1ADF0);
 
 	// espera 5 segundos
 	timer->sleep(5000);
+#endif
 }
 
 // muestra el pergamino de presentación
