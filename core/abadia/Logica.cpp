@@ -83,7 +83,7 @@ void Logica::inicia()
 //	momentoDia = NOCHE;
 	momentoDia = COMPLETAS;
 
-dia=2; momentoDia=PRIMA; // pruebas seguir sombra
+//dia=2; momentoDia=PRIMA; // pruebas seguir sombra
 #else
 	momentoDia = NONA;
 #endif
@@ -205,6 +205,9 @@ void Logica::actualizaBonusYCamara()
 	// cuando hacemos trampa, hacemos return y salimos para evitar
 	// que se nos vaya a la camara real que corresponde
 
+#ifdef LENG
+#else
+
 	// comprueba si hay que seguir a berengario
 	if (((berengario->aDondeVa == POS_LIBRO) && (berengario->posX < 0x50) && (berengario->estaVivo)) ||	(berengario->aDondeVa == POS_ABAD)){
 		// si va al scriptorium a por el libro o va a avisar al abad, indica el posible cambio de cámara
@@ -245,10 +248,12 @@ void Logica::actualizaBonusYCamara()
 
 		return;
 	}
-
+#endif
 	// en otro caso, la cámara sigue a guillermo
 	opcionPersonajeCamara = 0;
 
+#ifdef LENG
+#else
 	// actualiza los bonus dependiendo de si guillermo y adso tienen los objetos que dan bonus
 	bonus |= (guillermo->objetos & (GUANTES | LLAVE1 | LLAVE2)) | (adso->objetos & LLAVE3);
 
@@ -294,6 +299,7 @@ void Logica::actualizaBonusYCamara()
 	if (elMotorGrafico->numPantalla == 0x72){
 		bonus |= 0x0200;
 	}
+#endif
 }
 
 void Logica::compruebaBonusYCambiosDeCamara()
@@ -937,6 +943,12 @@ void Logica::iniciaPersonajes()
 	guillermo->posX = 0x88;
 	guillermo->posY = 0xa8;
 	guillermo->altura = 0x00;
+
+// pruebas pergamino TODO 666
+//	guillermo->posX = 0x54;
+//	guillermo->posY = 0x3a;
+//	guillermo->altura = 0x02;
+//	guillermo->orientacion = DERECHA;
 #else
 	guillermo->posX = 0x88;
 	guillermo->posY = 0xa8;

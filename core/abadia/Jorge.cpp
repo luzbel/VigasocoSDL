@@ -12,6 +12,11 @@
 #include "MotorGrafico.h"
 #include "Objeto.h"
 
+#ifdef LENG
+#include "Abad.h"
+#include <stdio.h>
+#endif
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -19,10 +24,11 @@ using namespace Abadia;
 /////////////////////////////////////////////////////////////////////////////
 
 PosicionJuego Jorge::posicionesPredef[2] = {
-	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
 #ifdef LENG
 	PosicionJuego(ABAJO, 0x84, 0x4b, 0x02),	// en la iglesia (pos de Guillermo en el original)
+	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
 #else
+	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
 	PosicionJuego(DERECHA, 0x19, 0x2b, 0x1a)	// habitación iluminada de la biblioteca
 #endif
 };
@@ -74,10 +80,28 @@ Jorge::~Jorge()
 void Jorge::piensa()
 {
 #ifdef LENG
+	aDondeVa=1; // Por defecto, ir a la celda
 	switch (laLogica->dia) {
 		case 2: 
 			switch (laLogica->momentoDia) {
-				case TERCIA: aDondeVa=1;
+				case TERCIA: aDondeVa=0; break;
+			case SEXTA: 
+aDondeVa=0;
+					     //if (laLogica->abad->aDondeVa!=0&&!elGestorFrases->mostrandoFrase){ // si ha terminado la frase de introducción el SC
+					     if (laLogica->abad->estado==2){ // si ha terminado la frase de introducción el SC
+						     // muestra la frase de Devuelve los dioses terrestres 
+						     // lo dice Jorge pero podría ser cualquier sectario
+						     elGestorFrases->muestraFrase(0xA);
+//fprintf(stderr,"JIF 1\n");
+						     return;
+					     }	 
+					     // si el SC se va al terminar la ceremonia, el también se va, y el resto de monjes le siguen
+					     //if (laLogica->abad->aDondeVa!=2&&!elGestorFrases->mostrandoFrase){ 
+					     if (laLogica->abad->estado==3){ 
+//fprintf(stderr,"JIF 2\n");
+						     aDondeVa=1; 
+					     }
+					     break;
 			}
 			break;
 	}

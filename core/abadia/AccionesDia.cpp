@@ -25,6 +25,7 @@
 #include "Adso.h"
 #include "GestorFrases.h"
 #include "Malaquias.h"
+#include "Sprite.h" // para trazas
 #endif
 
 
@@ -92,6 +93,7 @@ void AccionesNoche::ejecuta(AccionesDia *ad)
 	// pero ojo con los saltos en el tiempo
 	elJuego->puertas[5]->estaFija=false;
 	elJuego->puertas[6]->estaFija=false;
+//ad->colocaObjeto(elJuego->objetos[3], 0x54, 0x3e, 0x6); //colocar Tablilla de Zanthu en mesa celda SC
 //	if (laLogica->dia == 2){
 //			// dibuja el efecto de la espiral
 //			ad->dibujaEfectoEspiral();
@@ -242,6 +244,7 @@ void AccionesTercia::ejecuta(AccionesDia *ad)
 void AccionesSexta::ejecuta(AccionesDia *ad)
 {
 #ifdef LENG
+fprintf(stderr,"AccionesSexta::ejecuta\n");
 #else
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Campanas);
 
@@ -259,6 +262,32 @@ void AccionesSexta::ejecuta(AccionesDia *ad)
 void AccionesNona::ejecuta(AccionesDia *ad)
 {
 #ifdef LENG
+fprintf(stderr,"AccionesNona::ejecuta\n");
+	if (laLogica->dia == 2){
+		// TODO: ?en acciones anteriores sacar la tablilla de la biblioteca y gestionar bien que lo lleva el Abad???
+laLogica->abad->mascaraObjetos=0; // TODO, si nunca la va a coger, mejor inicializar esto en Logica::inicia o en Abad::inicia
+		ad->colocaObjeto(elJuego->objetos[3], 0x54, 0x3e, 0x6); //colocar Tablilla de Zanthu en mesa celda SC
+		// TODO, esto debería hacerlo colocaObjeto de manera genérico, si se pone un objeto en la pantalla visible, redibujar
+		// para que se vea
+		if(elMotorGrafico->numPantalla==0xd) elMotorGrafico->posXPantalla=elMotorGrafico->posYPantalla=-1;
+//		if (laLogica->opcionPersonajeCamara==3 || 
+// en esa posicion, el abad lo vuelve a coger
+//hay varias alternativas, ¿girar antes al abad? 
+
+
+		//ad->colocaObjeto(elJuego->objetos[3], 95, 58, 2); //colocar Tablilla de Zanthu en  celda SC
+//ad->colocaObjeto(elJuego->objetos[3], 89, 61, 4); //colocar Tablilla de Zanthu en  celda SC
+		//ad->colocaObjeto(elJuego->objetos[3], 84, 62, 6); //colocar Tablilla de Zanthu en mesa celda SC NO SE VE
+//elJuego->objetos[3]->sprite->esVisible=1;
+fprintf(stderr,"AccionesNona::ejecuta dia 2 poner objeto \n");
+fprintf(stderr,"AccionesNona::ejecuta dia 2 esVisble %d haCambiado %d desaparece %d\n",
+elJuego->objetos[3]->sprite->esVisible,
+elJuego->objetos[3]->sprite->haCambiado,
+elJuego->objetos[3]->sprite->desaparece
+);
+fprintf(stderr,"AccionesNona::ejecuta dia 2 a que el listo del abad ha cogido el objeto %d \n",laLogica->abad->objetos);
+fprintf(stderr,"elMotorGrafico->numPantalla %d\n",elMotorGrafico->numPantalla);
+	}
 #else
 	// dibuja el efecto de la espiral
 	ad->dibujaEfectoEspiral();

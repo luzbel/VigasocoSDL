@@ -9,6 +9,10 @@
 #include "Logica.h"
 #include "Severino.h"
 
+#ifdef LENG
+#include "Jorge.h"
+#endif
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -17,8 +21,8 @@ using namespace Abadia;
 
 PosicionJuego Severino::posicionesPredef[4] = {
 #ifdef LENG
-	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
 	PosicionJuego(ABAJO, 0x8c, 0x4b, 0x02),		// posición en la iglesia
+	PosicionJuego(DERECHA, 0xbc, 0x15, 0x02),	// celda de los monjes
 #else
 	PosicionJuego(ABAJO, 0x8c, 0x4b, 0x02),		// posición en la iglesia
 	PosicionJuego(ARRIBA, 0x36, 0x35, 0x02),	// posición en el refectorio
@@ -69,10 +73,12 @@ Severino::~Severino()
 void Severino::piensa()
 {
 #ifdef LENG
+	aDondeVa=1; // Por defecto, ir a la celda
 	switch (laLogica->dia) {
 		case 2: 
 			switch (laLogica->momentoDia) {
-				case TERCIA: aDondeVa=1;
+				case TERCIA: aDondeVa=0; break; 
+				case SEXTA: aDondeVa=laLogica->jorge->aDondeVa; break; 
 			}
 			break;
 	}

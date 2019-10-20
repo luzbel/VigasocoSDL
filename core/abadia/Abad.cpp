@@ -17,6 +17,7 @@
 
 #include "sonidos.h"
 #ifdef LENG
+#include "Adso.h"
 #include <stdio.h>
 #endif
 using namespace Abadia;
@@ -30,6 +31,8 @@ PosicionJuego Abad::posicionesPredef[10] = {
 	PosicionJuego(ABAJO, 0x59, 0x24, 0x00),	// posición en la cocina, que ha ido a picar algo antes de la ceremonia
 	PosicionJuego(ABAJO,  0x64, 0x2B, 0x00),	// posición en la cripta, junto a las calaveras
 	PosicionJuego(ARRIBA, 0x88, 0x3c, 0x04),	// posición en el altar de la iglesia
+	PosicionJuego(ARRIBA, 0x54, 0x3c, 0x02),	// posición en su celda
+	PosicionJuego(DERECHA, 0x63, 0x36, 0x02),	// posición a la salida de la celda, cuando olvida cerrarla
 #else
 	PosicionJuego(ARRIBA, 0x88, 0x3c, 0x04),	// posición en el altar de la iglesia
 	PosicionJuego(IZQUIERDA, 0x3d, 0x37, 0x02),	// posición en el refectorio
@@ -49,7 +52,9 @@ PosicionJuego Abad::posicionesPredef[10] = {
 /////////////////////////////////////////////////////////////////////////////
 
 #ifdef LENG
-int Abad::monjesIglesiaEnPrima[7] = { 0, 0xf4, 0, 0, 0, 0, 0 };
+// f0 es 1111 0000 , que es revisar la pos de los personajes 4 5 6 7 , que son berengario, severino , jorge y bernardo
+// los 4 sectarios en Leng
+int Abad::monjesIglesiaEnPrima[7] = { 0, 0xf0, 0, 0, 0, 0, 0 };    
 int Abad::frasesIglesiaEnPrima[7] = { 0, 0, 0, 0, 0, 0, 0 };
 #else
 int Abad::monjesIglesiaEnPrima[7] = { 0, 0x36, 0x26, 0x26, 0xa6, 0x02, 0x02 };
@@ -151,16 +156,55 @@ void Abad::piensa()
 						if (aDondeVa == aDondeHaLlegado) {
 							// comprueba si los personajes con IA están en su sitio para la misa de prima
 							compruebaPosMonjesEnIglesiaEnPrima(laLogica->dia);
-		// si los monjes están listos
-		if (lleganLosMonjes == 0){
-							laLogica->avanzarMomentoDia = true;	
-		}
-
-							// espera a que el abad, guillermo y los personajes con IA estén en su sitio para comenzar la misa o la comida
-//							esperaParaComenzarActo();
+							// si los monjes están listos
+							if (lleganLosMonjes == 0){
+								estado=0;
+								laLogica->avanzarMomentoDia = true;	
+							}
 						}
 					}
 					break;
+				case SEXTA:
+					switch(estado) {
+						case 0:
+							// muestra la frase de Devuelve los dioses terrestres 
+							estado=1;
+							elGestorFrases->muestraFrase(0x9);
+fprintf(stderr,"AIF 1\n");
+							break;
+						case 1: if (!elGestorFrases->mostrandoFrase) { estado=2; // esperando a que termine la frase dicha en el estado 0
+fprintf(stderr,"AIF 2\n"); }
+							break;
+						// espera a que los monjes contesten su frase y entonces va a su celda, dónde se queda hasta NONA en la que sale
+						// y se la deja abierta
+						case 2: if  (!elGestorFrases->mostrandoFrase) { estado=3; aDondeVa=3; // espera a que los monjes contesten su frase
+fprintf(stderr,"AIF 3\n"); } 
+							break;
+						case 3: if(aDondeHaLlegado==3) {
+//laLogica->objetos[3].personaje=3;
+//dejaObjeto(this);
+								laLogica->avanzarMomentoDia = true;// TODO; temporal
+fprintf(stderr,"AIF 4\n"); } 
+							break;
+					}
+					break;
+				case NONA: 
+					switch (estado) {
+						case 3:
+							if (aDondeHaLlegado==4) {
+fprintf(stderr,"AIF 5 objetos abad %d\n",objetos); 
+								laLogica->guillermo->permisosPuertas=laLogica->adso->permisosPuertas=
+									laLogica->guillermo->permisosPuertas|0x1; // guillermo y Adso pueden entrar
+								estado=4;
+							} else aDondeVa=4; // sale de la celda, pero deja la puerta abierta 
+//fprintf(stderr,"AIF 6\n");
+							break;
+						case 4:
+							aDondeVa=0;
+							break;
+					}
+					break; 
+	
 			}
 	}
 return;
@@ -935,7 +979,7 @@ void Abad::compruebaPosMonjesEnIglesiaEnPrima(int numDia)
 			if ((monjesIglesiaEnPrima[numDia - 1] & (1 << i)) != 0){
 				PersonajeConIA *pers = (PersonajeConIA *)elJuego->personajes[i];
 				lleganLosMonjes |= pers->aDondeHaLlegado;
-fprintf(stderr,"Abad::compruebaPosMonjesEnIglesiaEnPrima i %d lleganLosMonjes %d pers->aDondeHaLlegado %d\n",i, lleganLosMonjes , pers->aDondeHaLlegado);
+//fprintf(stderr,"Abad::compruebaPosMonjesEnIglesiaEnPrima i %d lleganLosMonjes %d pers->aDondeHaLlegado %d\n",i, lleganLosMonjes , pers->aDondeHaLlegado);
 			}
 		}
 	}

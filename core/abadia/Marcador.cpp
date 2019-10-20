@@ -322,7 +322,14 @@ void Marcador::dibujaObjetos(int objetos, int mascara)
 		if ((mascara & (1 << (Juego::numObjetos - 1))) != 0){
 			// si tenemos el objeto, lo dibuja
 			if ((objetos & (1 << (Juego::numObjetos - 1))) != 0){
+#ifdef LENG
+				int numSpr;
+// TODO : convertir a los objetos de LENG
+// por decidir si el objeto 0 no es el libro
 				Sprite *spr = sprites[Juego::primerSpriteObjetos + numHuecos];
+#else
+				Sprite *spr = sprites[Juego::primerSpriteObjetos + numHuecos];
+#endif
 
 				// obtiene un puntero a los gráficos del objeto
 				// CPC UINT8 *data = &roms[spr->despGfx];

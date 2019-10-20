@@ -284,8 +284,8 @@ void Adso::piensa()
 	switch (laLogica->dia){
 		case 1:
 			// Empezamos en COMPLETAS y al poco pasamos a DIA 2 NOCHE
-			//if (contador>50) {
-			if (contador>15) {
+			if (contador>50) {
+			//if (contador>15) {
 				contador=0;
 				laLogica->avanzarMomentoDia = true;
 			} else contador++;
@@ -293,8 +293,8 @@ void Adso::piensa()
 			switch (laLogica->momentoDia){
 				case NOCHE: 
 					// si estamos cerca de guillermo y en nuestra celda
-					//if ( estado==0 && estaCerca(guillermo) && ( contador> 1500 || elMotorGrafico->numPantalla == 0x3e)){
-					if ( estado==0 && estaCerca(guillermo) && ( contador> 15 || elMotorGrafico->numPantalla == 0x3e)){ // rapido durante pruebas
+					if ( estado==0 && estaCerca(guillermo) && ( contador> 1500 || elMotorGrafico->numPantalla == 0x3e)){
+					//if ( estado==0 && estaCerca(guillermo) && ( contador> 15 || elMotorGrafico->numPantalla == 0x3e)){ // rapido durante pruebas
 						elGestorFrases->muestraFrase(0x1); 
 						estado=0x1;
 						contador=0;
@@ -317,6 +317,33 @@ void Adso::piensa()
 						// pone una posición de pantalla inválida para que se redibuje la pantalla
 //						elJuego->motor->posXPantalla = elJuego->motor->posYPantalla = -1; // esto o hay que llamar a Juego::ReiniciaPantalla
 //						laLogica->haFracasado = true;
+					}
+				case NONA:
+fprintf(stderr,"adso dia 2 nona estado %d elMotorGrafico->numPantalla %d mostrandoFrase %d \n",estado,elMotorGrafico->numPantalla,elGestorFrases->mostrandoFrase);
+					switch(estado) {
+						case 3:
+							if ( elMotorGrafico->numPantalla==0xd ) {
+								elGestorFrases->muestraFrase(0xb); // DEBE SER LA CELDA DEL SUMO SACERDOTE
+								estado=4;
+							}
+							break;
+						case 4: if (!elGestorFrases->mostrandoFrase) {
+								estado=5;
+							}
+							break;
+						case 5: if (laLogica->guillermo->objetos & PERGAMINO) {
+								elGestorFrases->muestraFrase(0xc); // LA TABLILLA ...
+								estado=6;
+							}
+							break;
+						case 6: if (!elGestorFrases->mostrandoFrase) {
+								estado=7;
+							}
+							break;
+						case 7: 
+							elGestorFrases->muestraFrase(0xd); // DEBEMOS VOLVER A ESE ALTAR
+							estado=8;
+							break;
 					}
 
 				break;
