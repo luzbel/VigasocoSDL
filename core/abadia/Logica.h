@@ -49,6 +49,10 @@ class BuscadorRutas;			// definido en BuscadorRutas.h
 class GestorFrases;				// definido en GestorFrases.h
 class Guillermo;				// definido en Guillermo.h
 class Jorge;					// definido en Jorge.h
+#ifdef LENG
+class GuardiaBiblioteca1;			// definido en GuardiaBiblioteca1.h
+class GuardiaBiblioteca2;			// definido en GuardiaBiblioteca2.h
+#endif
 class Malaquias;				// definido en Malaquias.h
 class Personaje;				// definido en Personaje.h
 class Severino;					// definido en Severino.h
@@ -73,6 +77,10 @@ public:
 	Berengario *berengario;		// berengario
 	Severino *severino;			// severino
 	Jorge *jorge;				// jorge
+#ifdef LENG
+	GuardiaBiblioteca1 *guardiaBiblioteca1;  // Guardia biblioteca 1
+	GuardiaBiblioteca2 *guardiaBiblioteca2;  // Guardia biblioteca 2
+#endif
 	Bernardo *bernardo;			// bernardo gui
 
 	int dia;					// dia actual

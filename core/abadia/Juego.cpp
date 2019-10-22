@@ -21,6 +21,10 @@
 #include "Guillermo.h"
 #include "InfoJuego.h"
 #include "Jorge.h"
+#ifdef LENG
+#include "GuardiaBiblioteca1.h"
+#include "GuardiaBiblioteca2.h"
+#endif
 #include "Juego.h"
 #include "Logica.h"
 #include "Malaquias.h"
@@ -2525,7 +2529,11 @@ void Juego::creaEntidadesJuego()
 	sprites[1] = new Sprite();
 
 	// sprite de los monjes
+#ifdef LENG
+	for (int i = 2; i < numPersonajes; i++){
+#else
 	for (int i = 2; i < 8; i++){
+#endif
 		sprites[i] = new SpriteMonje();
 	}
 
@@ -2601,9 +2609,17 @@ void Juego::creaEntidadesJuego()
 	personajes[5] = new Severino((SpriteMonje *)sprites[5]);
 	personajes[6] = new Jorge((SpriteMonje *)sprites[6]);
 	personajes[7] = new Bernardo((SpriteMonje *)sprites[7]);
+#ifdef LENG
+	personajes[8] = new GuardiaBiblioteca1((SpriteMonje *)sprites[8]);
+	personajes[9] = new GuardiaBiblioteca2((SpriteMonje *)sprites[9]);
+#endif
 
 	// inicia los valores comunes
+#ifdef LENG
+	for (int i = 0; i < numPersonajes; i++){
+#else
 	for (int i = 0; i < 8; i++){
+#endif
 		personajes[i]->despX = -2;
 		personajes[i]->despY = -34;
 	}

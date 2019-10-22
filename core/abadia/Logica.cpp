@@ -14,6 +14,10 @@
 #include "GestorFrases.h"
 #include "Guillermo.h"
 #include "Jorge.h"
+#ifdef LENG
+#include "GuardiaBiblioteca1.h"
+#include "GuardiaBiblioteca2.h"
+#endif
 #include "Juego.h"
 #include "Logica.h"
 #include "Malaquias.h"
@@ -202,6 +206,14 @@ void Logica::actualizaBonusYCamara()
 		opcionPersonajeCamara=1; // adso
 		return;
 	}
+#ifdef LENG
+	else
+	if (losControles->estaSiendoPulsado(KEYBOARD_8)) 
+	{
+		opcionPersonajeCamara=8; // Guardia biblioteca 1
+		return;
+	}
+#endif
 	// cuando hacemos trampa, hacemos return y salimos para evitar
 	// que se nos vaya a la camara real que corresponde
 
@@ -908,6 +920,8 @@ void Logica::iniciaPersonajes()
 	severino = (Severino *)elJuego->personajes[5];
 	jorge = (Jorge *)elJuego->personajes[6];
 	bernardo = (Bernardo *)elJuego->personajes[7];
+	guardiaBiblioteca1 = (GuardiaBiblioteca1 *)elJuego->personajes[8];
+	guardiaBiblioteca2 = (GuardiaBiblioteca2 *)elJuego->personajes[9];
 
 	// recorre los personajes e inicia sus características comunes
 	for (int i = 0; i < Juego::numPersonajes; i++){
@@ -1082,6 +1096,24 @@ void Logica::iniciaPersonajes()
 	jorge->aDondeHaLlegado = -6;
 	jorge->estaActivo = false;
 	jorge->contadorHuida = 0;
+
+#ifdef LENG
+	guardiaBiblioteca1->posX=0x3a;
+	guardiaBiblioteca1->posY=0x32;
+	guardiaBiblioteca1->altura=0x0f;
+	guardiaBiblioteca1->mascaraObjetos=0x00;
+	guardiaBiblioteca1->permisosPuertas=0x00;
+	guardiaBiblioteca1->estado=0x00;
+	guardiaBiblioteca1->aDondeHaLlegado=-6; 
+
+	guardiaBiblioteca2->posX=0x3a;
+	guardiaBiblioteca2->posY=0x34;
+	guardiaBiblioteca2->altura=0x0f;
+	guardiaBiblioteca2->mascaraObjetos=0x00;
+	guardiaBiblioteca2->permisosPuertas=0x00;
+	guardiaBiblioteca2->estado=0x00;
+	guardiaBiblioteca2->aDondeHaLlegado=-6; 
+#endif
 
 	// bernardo gui
 #ifdef LENG

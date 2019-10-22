@@ -7,9 +7,11 @@ OBJECTS_CORE = AbadiaDriver.o FontManager.o GameDriver.o ICriticalSection.o Inpu
 
 OBJECTS_ABADIA = Abad.o AccionesDia.o Adso.o Berengario.o Bernardo.o BuscadorRutas.o Comandos.o Controles.o EntidadJuego.o FijarOrientacion.o GeneradorPantallas.o GestorFrases.o Guillermo.o InfoJuego.o Jorge.o Juego.o Logica.o Malaquias.o Marcador.o MezcladorSprites.o Monje.o MotorGrafico.o Objeto.o Paleta.o Pergamino.o PergaminoTextos.o PersonajeConIA.o Personaje.o Puerta.o RejillaPantalla.o Severino.o Sprite.o SpriteLuz.o SpriteMonje.o TransformacionesCamara.o Serializar.o
 
+OBJECTS_LENG = GuardiaBiblioteca1.o GuardiaBiblioteca2.o
+
 OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLThread.o VigasocoSDL.o SDLMain.o
 
-OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
+OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_LENG) $(OBJECTS_SDL) 
 
 VigasocoSDL: $(OBJECTS)
 	$(CXX) -g $(OBJECTS) `sdl-config --libs` -o VigasocoSDL

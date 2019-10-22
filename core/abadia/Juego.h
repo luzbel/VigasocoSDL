@@ -35,7 +35,11 @@ class Juego : public Singleton<Juego>
 {
 // constantes
 public:
+#ifdef LENG
+	static const int numPersonajes = 10;
+#else
 	static const int numPersonajes = 8;
+#endif
 	static const int numPuertas = 7;
 	static const int numObjetos = 8;
 
