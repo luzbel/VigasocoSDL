@@ -17,6 +17,13 @@
 #include "Sprite.h"
 #include "TransformacionesCamara.h"
 
+//TODO: borrar
+#ifdef LENG
+#include "Adso.h"
+#include "SpriteLuz.h"
+#include <stdio.h>
+#endif
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -190,6 +197,7 @@ void MotorGrafico::compruebaCambioPantalla(bool forzarCambio)
 	hayQueRedibujar = true;
 	pantallaIluminada = true;
 
+
 	// si está en la segunda planta, comprueba si es una de las pantallas iluminadas
 	if (obtenerPlanta(alturaBasePantalla) == 2){
 		// si no está detrás del espejo o en la habitación iluminada del laberinto
@@ -208,6 +216,11 @@ void MotorGrafico::compruebaCambioPantalla(bool forzarCambio)
 
 	// obtiene el número de pantalla que se va a mostrar
 	numPantalla = plantas[obtenerPlanta(alturaBasePantalla)][posYPantalla | ((posXPantalla  >> 4) & 0x0f)];
+
+#ifdef LENG
+//fprintf(stderr,"np %d\n",numPantalla);//	
+	if (numPantalla==74) pantallaIluminada=false;
+#endif
 
 	// rellena el buffer de alturas con los datos de altura de la pantalla actual
 	rejilla->rellenaAlturasPantalla(personaje);
@@ -304,6 +317,34 @@ void MotorGrafico::dibujaSprites()
 		}
 		
 		// si adso es visible en la pantalla actual y tiene la lámpara, activa el sprite de la luz
+#ifdef LENG
+// temporal, esto es para pruebas de un cutre efecto de pantalla pseudo iluminada
+// reusando el sprite de luz para la lampara
+// habria que crear otro sprite que fuese por separado
+		if (numPantalla==74) {
+
+// basado en SpriteLuz::ajustaAPersonaje(Personaje *pers)
+//			Personaje ficticio; // es abstracta
+			Sprite fakesprite;
+			Adso ficticio(&fakesprite);
+//fprintf(stderr,"pxp %d pyp %d\n", elJuego->sprites[1]->posXPant,elJuego->sprites[1]->posYPant);
+//			fakesprite.posXPant=elJuego->sprites[1]->posXPant;
+//			fakesprite.posYPant=elJuego->sprites[1]->posYPant;
+			fakesprite.posXPant=36;
+			fakesprite.posYPant=48;
+			ficticio.flipX=false;
+
+			((SpriteLuz *)elJuego->sprites[Juego::spriteLuz])->ajustaAPersonaje(&ficticio);
+
+// fin basado en ajustaAPersonaje
+
+			elJuego->sprites[Juego::spriteLuz]->esVisible = true;
+			elJuego->sprites[Juego::spriteLuz]->haCambiado = true;
+
+			// fija una profundidad muy alta para que sea el último sprite que se dibuje
+			elJuego->sprites[Juego::spriteLuz]->profundidad = 0x3c;
+		}
+#endif
 		if ((elJuego->personajes[1]->sprite->esVisible) && ((elJuego->personajes[1]->objetos & LAMPARA) != 0)){
 			elJuego->sprites[Juego::spriteLuz]->esVisible = true;
 			elJuego->sprites[Juego::spriteLuz]->haCambiado = true;

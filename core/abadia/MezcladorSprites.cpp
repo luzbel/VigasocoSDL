@@ -14,6 +14,10 @@
 //memset
 #include <string.h>
 
+#ifdef LENG
+#include <stdio.h>
+#endif
+
 using namespace Abadia;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -60,7 +64,9 @@ void MezcladorSprites::mezclaSprites(Sprite **sprites, int num)
 			}
 		}
 	}
-
+#ifdef LENG
+//fprintf(stderr,"np %d nsr %d\n", numSprites, numSpritesRedib);
+#endif
 	// si no había ningún sprite que redibujar, sale
 	if (numSpritesRedib == 0) return;
 
