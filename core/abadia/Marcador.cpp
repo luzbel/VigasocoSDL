@@ -73,12 +73,16 @@ void Marcador::muestraDiaYMomentoDia()
 		elJuego->paleta->setGamePalette(3);
 	}
 	*/
+#ifdef LENG
+	elJuego->paleta->setGamePalette(3);
+#else
 	if (laLogica->momentoDia == NOCHE ||
 		laLogica->momentoDia == COMPLETAS){
 		elJuego->paleta->setGamePalette(3);
 	} else {
 		elJuego->paleta->setGamePalette(2);
 	}
+#endif
 
 
 	// dibuja el número de día en el marcador
