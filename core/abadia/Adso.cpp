@@ -19,6 +19,8 @@
 #ifdef LENG
 #include <stdio.h>
 #include "sonidos.h"
+#include "../TimingHandler.h"
+#include "Abad.h"
 //#include <cstdio>
 #endif
 
@@ -282,6 +284,14 @@ void Adso::piensa()
 #ifdef LENG
 	Personaje *guillermo = laLogica->guillermo;
 	aDondeVa = POS_GUILLERMO;
+
+	// el scriptorium está a oscuras sin la lámpara. Si han llegado al día 4 VISPERAS la tienen 
+	if (elMotorGrafico->numPantalla==74) {
+		if (((guillermo->objetos & LAMPARA) != LAMPARA) && DecirFraseNecesitoLamparaEnScriptorium) {
+			elGestorFrases->muestraFraseYa(0x15);
+			DecirFraseNecesitoLamparaEnScriptorium=false; // para no repetirla a no ser que salgamos y volvamos a entrar
+		}
+	} else DecirFraseNecesitoLamparaEnScriptorium=true; // TODO: repensar para no hacer esta asignación en cada bucle
 	switch (laLogica->dia){
 		case 1:
 			// Empezamos en COMPLETAS y al poco pasamos a DIA 2 NOCHE
@@ -319,6 +329,49 @@ void Adso::piensa()
 //						elJuego->motor->posXPantalla = elJuego->motor->posYPantalla = -1; // esto o hay que llamar a Juego::ReiniciaPantalla
 //						laLogica->haFracasado = true;
 					}
+				case SEXTA: 
+					if (laLogica->abad->estado==3) {
+						switch(estado) {
+							case 3: 
+						// ¿Qué ha sido esto? ¿Dónde estamos?	
+						elGestorFrases->muestraFrase(0x11); 
+//						while (elGestorFrases->mostrandoFrase) elJuego->timer->sleep(1000);
+estado=4;
+break;
+							case 4:
+if(!elGestorFrases->mostrandoFrase) {
+						// Esa sombra nos dará la respuesta.
+						elGestorFrases->muestraFrase(0x12); 
+//						while (elGestorFrases->mostrandoFrase) elJuego->timer->sleep(1000);
+estado=5;
+}
+break;
+							case 5:
+if(!elGestorFrases->mostrandoFrase) {
+						// Pickman, fíjate en esas extrañas huellas.
+						elGestorFrases->muestraFrase(0x12+1); 
+//						while (elGestorFrases->mostrandoFrase) elJuego->timer->sleep(1000);
+estado=6;
+}
+break;
+							case 6:
+if(!elGestorFrases->mostrandoFrase) {
+						// Como el rastro de mil serpientes.
+						elGestorFrases->muestraFrase(0x14); 
+//						while (elGestorFrases->mostrandoFrase) elJuego->timer->sleep(1000);
+estado=7; 
+}
+break;
+							case 7:
+								if(!elGestorFrases->mostrandoFrase) {
+									// se vuelve a estado 3 en AccionesDia al avanzar a NONA
+									// TODO: renumerar los estados para no tener esta vuelta atrás del 7 al 3
+									estado=8; 
+								}
+								break;
+						}
+					}
+					break;
 				case NONA:
 //fprintf(stderr,"adso dia 2 nona estado %d elMotorGrafico->numPantalla %d mostrandoFrase %d \n",estado,elMotorGrafico->numPantalla,elGestorFrases->mostrandoFrase);
 					switch(estado) {

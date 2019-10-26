@@ -188,7 +188,7 @@ void Abad::piensa()
 //fprintf(stderr,"AIF 3\n"); 
 } 
 							break;
-						case 3: if(aDondeHaLlegado==3) {
+						case 3: if(aDondeHaLlegado==3 and laLogica->adso->estado>=8) {
 //laLogica->objetos[3].personaje=3;
 //dejaObjeto(this);
 								laLogica->avanzarMomentoDia = true;// TODO; temporal

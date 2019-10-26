@@ -287,7 +287,11 @@ elJuego->objetos[3]->sprite->desaparece
 );
 fprintf(stderr,"AccionesNona::ejecuta dia 2 a que el listo del abad ha cogido el objeto %d \n",laLogica->abad->objetos);
 fprintf(stderr,"elMotorGrafico->numPantalla %d\n",elMotorGrafico->numPantalla);
+	} else
+	if (laLogica->dia == 3){
+		laLogica->adso->estado=3; // TODO: ñapa temporal porque metimos nuevos estados en el día 2 y la lógica del 3 ya contaba con empezar en estado 3
 	}
+
 #else
 	// dibuja el efecto de la espiral
 	ad->dibujaEfectoEspiral();
@@ -305,6 +309,13 @@ fprintf(stderr,"elMotorGrafico->numPantalla %d\n",elMotorGrafico->numPantalla);
 void AccionesVisperas::ejecuta(AccionesDia *ad)
 {
 #ifdef LENG
+	if (laLogica->dia == 2){
+		ad->colocaObjeto(elJuego->objetos[0], 137, 62, 8); //colocar De Vermis Mysteriis en altar
+		// TODO, esto debería hacerlo colocaObjeto de manera genérico, si se pone un objeto en la pantalla visible, redibujar
+		// para que se vea
+fprintf(stderr,"AccionesVisperas::ejecuta elMotorGrafico->numPantalla %d\n",elMotorGrafico->numPantalla);
+		if(elMotorGrafico->numPantalla==34||elMotorGrafico->numPantalla==35) elMotorGrafico->posXPantalla=elMotorGrafico->posYPantalla=-1;
+	}
 #else
 	VigasocoMain->getAudioPlugin()->Play(SONIDOS::Campanas);
 #endif

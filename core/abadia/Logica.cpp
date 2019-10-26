@@ -986,6 +986,7 @@ void Logica::iniciaPersonajes()
 	adso->objetos=0;
 #ifdef LENG
 	adso->contador=0;
+	adso->DecirFraseNecesitoLamparaEnScriptorium=true;
 #endif
 	
 	// malaquías

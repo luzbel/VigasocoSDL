@@ -20,6 +20,7 @@ class Adso : public PersonajeConIA
 #ifdef LENG
 //private: // entonces no lo puede reinicar a cero la Logica ... pero es que debería haber un Adso::inicia TODO
 public:
+	bool DecirFraseNecesitoLamparaEnScriptorium=true;
 	int contador; // contador usado en varias ocasiones para avanzar la trama, por ejemplo, si el primer día se pierden por la abadía y no llegan a la celda
 #endif
 public:
