@@ -162,9 +162,9 @@ bool SDLAudioPlugin::LoadWAV_internal(const SDL_AudioSpec &wave,Uint8 *audio_buf
 		return false;
 	}
 			
-	// TODO: esto de AUDIO_S8,1,22050 deberían ser diferente según el tipo
+	// TODO: esto de AUDIO_S8,1,22050 deber?an ser diferente seg?n el tipo
 	// de plugin ...
-	// asi se podrían tener distintos plugins para distintos hardwares...
+	// asi se podr?an tener distintos plugins para distintos hardwares...
 	
 	cvt.buf = NULL;
 	cvt.buf=(Uint8*) malloc(dlen*cvt.len_mult);
@@ -263,11 +263,11 @@ const std::string SDLAudioPlugin::g_properties[] = {
 		// y la frecuencia de muestreo en alguna propiedad ...
 };
 
-const int SDLAudioPlugin::g_paramTypes[] = {
+const unsigned int SDLAudioPlugin::g_paramTypes[] = {
 	PARAM_ARRAY | PARAM_INPUT
 };
 
-const int * SDLAudioPlugin::getPropertiesType() const
+const unsigned int * SDLAudioPlugin::getPropertiesType() const
 {
 	return SDLAudioPlugin::g_paramTypes;
 }
