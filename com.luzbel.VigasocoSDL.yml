@@ -1,0 +1,16 @@
+app-id: com.luzbel.VigasocoSDL
+runtime: org.freedesktop.Platform
+runtime-version: '20.08'
+sdk: org.freedesktop.Sdk
+command: VigasocoSDL
+modules:
+  - shared-modules/SDL/SDL-1.2.15.json
+  - name: VigasocoSDL
+    buildsystem: simple 
+    build-commands:
+      - make -f Makefile.flatpak
+      - make -f Makefile.flatpak install
+    sources:
+      - type: dir 
+        url: ./
+
