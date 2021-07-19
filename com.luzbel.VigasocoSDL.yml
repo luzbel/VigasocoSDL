@@ -8,9 +8,14 @@ modules:
   - name: VigasocoSDL
     buildsystem: simple 
     build-commands:
-      - make -f Makefile.flatpak
+      - make -f Makefile.flatpak 
       - make -f Makefile.flatpak install
     sources:
-      - type: dir 
-        url: ./
+      - type: git 
+        url: https://github.com/JuanjoSalvador/VigasocoSDL.git
+        branch: flatpak
 
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
