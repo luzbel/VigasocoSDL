@@ -2,20 +2,36 @@ app-id: com.luzbel.VigasocoSDL
 runtime: org.freedesktop.Platform
 runtime-version: '20.08'
 sdk: org.freedesktop.Sdk
-command: VigasocoSDL
+command: abadia
 modules:
   - shared-modules/SDL/SDL-1.2.15.json
   - name: VigasocoSDL
     buildsystem: simple 
     build-commands:
-      - make -f Makefile.flatpak 
-      - make -f Makefile.flatpak install
+      - make -f Makefile
+      - cp VigasocoSDL/VigasocoSDL /app/bin/VigasocoSDL
+      - cp abadia-flatpak-wrapper.sh /app/bin/abadia
+      # Librerías dinámicas, no las puede cargar
+      # desde el directorio estándar
+      - mkdir /app/VigasocoSDL
+      - cp -r VigasocoSDL/audio VigasocoSDL/input VigasocoSDL/video /app/VigasocoSDL
     sources:
       - type: git 
         url: https://github.com/JuanjoSalvador/VigasocoSDL.git
         branch: flatpak
-
+  - name: assets
+    buildsystem: simple
+    build-commands:
+      # - cp -r . /app/bin/
+      # El binario debería soportar poner las roms
+      # en cualquier parte sin depender de la ruta
+      # relativa del entorno existente
+      - cp -r roms /app/VigasocoSDL/
+    sources:
+      - type: dir
+        path: ./VigasocoSDL
 finish-args:
   - --share=ipc
-  - --socket=x11
   - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=pulseaudio
