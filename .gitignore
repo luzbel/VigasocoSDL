@@ -5,3 +5,8 @@ VigasocoSDL/audio/
 VigasocoSDL/input/
 VigasocoSDL/video/
 .idea
+.flatpak-builder/
+build-dir/
+metadata
+repo/
+var/
