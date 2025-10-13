@@ -1,14 +1,14 @@
 CXXFLAGS=-s USE_SDL=1 -s USE_SDL_MIXER=1 -D__VIGASOCO_SDL_STATIC__ -O3 -I../core -I../VigasocoSDL/ `sdl-config --cflags` -s USE_PTHREADS=1 
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
-OBJECTS = NULLAudioPlugin.o PluginMain.o
+OBJECTS = SDLAudioPlugin.o NULLAudioPlugin.o PluginMain.o
 
-../VigasocoSDL/audio/libVigasocoNULLAudioPlugin.a: $(OBJECTS)
+../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a: $(OBJECTS)
 	$(AR) cru $@ $(OBJECTS)
 
 # para comprobar que no le faltan dependencias por resolver a la libreria
 test: test.o
-	$(CXX) -g test.o -o test -l../VigasocoSDL/audio/libVigasocoNULLAudioPlugin.a 
+	$(CXX) -g test.o -o test -l../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a `sdl-config --libs`
 
 clean:
-	rm -f $(OBJECTS) ../VigasocoSDL/audio/libVigasocoNULLAudioPlugin.a test test.o
+	rm -f $(OBJECTS) ../VigasocoSDL/audio/libVigasocoSDLAudioPlugin.a test test.o

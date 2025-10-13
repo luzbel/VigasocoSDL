@@ -12,6 +12,10 @@
 
 #include <vector>
 
+#ifdef __EMSCRIPTEN__
+#include <SDL/SDL_mixer.h>
+#endif
+
 typedef struct sample {
 	UINT8 *data;
 	UINT32 dpos;
@@ -31,6 +35,12 @@ class SDLAudioPlugin: public IAudioPlugin
 		tSounds sounds;
 		bool _isInitialized;
 		SDL_AudioSpec fmt_real; //Formato de audio obtenido del hardware
+
+#ifdef __EMSCRIPTEN__
+		// Para SDL_mixer en Emscripten
+		std::vector<Mix_Chunk*> mix_chunks;
+		std::vector<int> sound_channels; // Canal asignado a cada sonido
+#endif
 
 protected:
 	static const std::string g_properties[];

@@ -1,7 +1,7 @@
 // SDLMain.cpp
 //
 // Based on VIGASOCO Project Win32 port (c) 2003 by MAB
-//	SDL port @2006,2007,2008,2009,2010,2011,2012,2012+1,2014 by Luzbel
+//	SDL port @2006,2007,2008,2009,2010,2011,2012,2012+1,2014,2025 by Luzbel
 //
 //	See readme.txt for license and usage information.
 //
@@ -34,7 +34,8 @@ std::string g_drawPlugin("win8");
 //std::string g_drawPlugin("win32");
 
 // Se añade plugin NULLAudio sin salida de sonido
-// para poder compilar en Windows Services for Linux que no tiene soporte ALSA
+// para poder compilar en Windows Services for Linux mientras no tenia soporte ALSA
+// y para emscripten mientras tampoco nos funcionaba el sonido
 // "Audio isnt supported at this time. Were currently focusing on supporting developer scenarios."
 // https://blogs.msdn.microsoft.com/commandline/2016/04/06/bash-on-ubuntu-on-windows-download-now-3/
 // NULLAudio existe como un plugin dentro de la libreria dinámica SDLAudioPlugin
@@ -43,13 +44,9 @@ std::string g_drawPlugin("win8");
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoSDLAudioPlugin.so,NULLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,wingris8 -audio:libVigasocoSDLAudioPlugin.so,SDLAudioPlugin
 // ./VigasocoSDL abadia -video:libVigasocoSDLDrawPlugin.so,win8 -audio:libVigasocoNULLAudioPlugin.so,NULLAudioPlugin
-#ifndef __EMSCRIPTEN__
+// en 2025 ya no es necesario y el SDLAudioPlugin funciona en WSL2 y en emscripten
 std::string g_audioPluginsDLL("libVigasocoSDLAudioPlugin.so");
 std::string g_audioPlugin("SDLAudioPlugin");
-#else
-std::string g_audioPluginsDLL("libVigasocoNULLAudioPlugin.so");
-std::string g_audioPlugin("NULLAudioPlugin");
-#endif
 
 Strings g_inputPluginsDLLs;
 Strings g_inputPlugins;

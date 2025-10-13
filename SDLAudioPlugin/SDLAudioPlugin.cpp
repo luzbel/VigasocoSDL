@@ -15,6 +15,8 @@
 
 SDLAudioPlugin::SDLAudioPlugin()
 {
+	mute = false;
+	_isInitialized = false;
 }
 
 SDLAudioPlugin::~SDLAudioPlugin()
@@ -29,6 +31,24 @@ bool SDLAudioPlugin::init()
 	{
 		//		printf("\n!!! SDL_AUDIO !!!\n\n");
 	}
+#ifdef __EMSCRIPTEN__
+	// En Emscripten usamos SDL_mixer
+	// TODO: estos valores van bien para los sonidos de La abadía pero no son genéricos
+	// debería ser más parametrizable
+	if (Mix_OpenAudio(22050, AUDIO_U8, 1, 512) < 0)
+	{
+		std::cerr << "Mix_OpenAudio failed: " << Mix_GetError() << std::endl;
+		return false;
+	}
+	
+	// Asignar canales suficientes para mezclar múltiples sonidos
+	// TODO: son suficientes para la abadía pero no son genéricos
+	// Debería ser parametrizable
+	Mix_AllocateChannels(16);
+	
+	std::cout << "SDL_mixer initialized for Emscripten" << std::endl;
+#else
+	// Código original para plataformas nativas
 
 	SDL_AudioSpec fmt; // Formato de audio deseado
 
@@ -55,6 +75,7 @@ bool SDLAudioPlugin::init()
 
 
 	SDL_PauseAudio(0);
+#endif
 
 	_isInitialized = true;
 
@@ -64,32 +85,101 @@ bool SDLAudioPlugin::init()
 void SDLAudioPlugin::end()
 {
 	// TODO: faltan los shutdowns necesarios ....
+#ifdef __EMSCRIPTEN__
+	// Detener todos los sonidos
+	Mix_HaltChannel(-1);
+	
+	// Liberar chunks
+	for (size_t i = 0; i < mix_chunks.size(); i++)
+	{
+		if (mix_chunks[i] != NULL)
+		{
+			Mix_FreeChunk(mix_chunks[i]);
+		}
+	}
+	mix_chunks.clear();
+	
+	Mix_CloseAudio();
+#else
 	SDL_CloseAudio();
 	for (tIteratorSounds it=sounds.begin();it!=sounds.end();it++)
 	{
 		free(it->data);
 	}
+#endif
 
 	_isInitialized = false;
 }
 
 void SDLAudioPlugin::Pause(int sample)
 {
+#ifdef __EMSCRIPTEN__
+	if (sample >= mix_chunks.size()) return;
+	if (mix_chunks[sample] != NULL && sound_channels[sample] >= 0)
+	{
+		Mix_Pause(sound_channels[sample]);
+	}
+#else
 	if (sample>=sounds.size() ) return;
-
 	sounds[sample].active=false;
+#endif
 }
 
 void SDLAudioPlugin::Stop(int sample)
 {
+#ifdef __EMSCRIPTEN__
+	if (sample >= mix_chunks.size()) return;
+	if (mix_chunks[sample] != NULL && sound_channels[sample] >= 0)
+	{
+		Mix_HaltChannel(sound_channels[sample]);
+		sound_channels[sample] = -1;
+	}
+#else
 	if (sample>=sounds.size() ) return;
-
 	sounds[sample].active=false;
 	sounds[sample].dpos=0;
+#endif
 }
 
 void SDLAudioPlugin::Play(int sample,bool loop)
 {
+#ifdef __EMSCRIPTEN__
+	if (sample >= mix_chunks.size()) return;
+	if (mix_chunks[sample] == NULL) return;
+	
+	try
+	{
+		// Si ya está sonando (no pausado), no hacer nada
+		if (sound_channels[sample] >= 0 && Mix_Playing(sound_channels[sample]))
+		{
+			// Ya está reproduciéndose, no reiniciar
+			return;
+		}
+		
+		// Si está pausado, reanudar
+		if (sound_channels[sample] >= 0 && Mix_Paused(sound_channels[sample]))
+		{
+			Mix_Resume(sound_channels[sample]);
+			return;
+		}
+		
+		// Si no está sonando ni pausado, reproducir desde el principio
+		//int channel = Mix_PlayChannel(-1, mix_chunks[sample], loop ? -1 : 0);
+		int channel = Mix_PlayChannel(sample, mix_chunks[sample], loop ? -1 : 0);
+		if (channel!=sample) printf("play channel!=sample\n");
+		sound_channels[sample] = channel;
+		
+		// Aplicar mute si está activo
+		if (mute && channel >= 0)
+		{
+			Mix_Volume(channel, 0);
+		}
+	}
+	catch (std::out_of_range o)
+	{
+		std::cerr << "Play " << sample << " " << loop << " " << o.what() << std::endl;
+	}
+#else
 	if (sample>=sounds.size() ) return;
 	try
 	{
@@ -106,10 +196,25 @@ void SDLAudioPlugin::Play(int sample,bool loop)
 	{
 		std::cerr << "Play " << sample << " " << loop << " " << e.what() << std::endl;
 	}*/
+#endif
 }
 
 bool SDLAudioPlugin::LoadWAV(const char* file)
 {
+#ifdef __EMSCRIPTEN__
+	Mix_Chunk *chunk = Mix_LoadWAV(file);
+	if (chunk == NULL)
+	{
+		std::cerr << "Mix_LoadWAV failed for " << file << ": " << Mix_GetError() << std::endl;
+		return false;
+	}
+	
+	mix_chunks.push_back(chunk);
+	sound_channels.push_back(-1);
+	
+	std::cout << "Loaded WAV: " << file << " (index=" << (mix_chunks.size()-1) << ")" << std::endl;
+	return true;
+#else
 	SDL_AudioSpec wave;
 	Uint8 *audio_buf;
 	Uint32 dlen;
@@ -125,10 +230,32 @@ bool SDLAudioPlugin::LoadWAV(const char* file)
 	}
 
 	return LoadWAV_internal(wave,audio_buf,dlen);
+#endif
 }
 
 bool SDLAudioPlugin::LoadWAV(const UINT8 *data, const UINT32 len)
 {
+#ifdef __EMSCRIPTEN__
+	SDL_RWops *rw = SDL_RWFromMem((void*)data, len);
+	if (rw == NULL)
+	{
+		std::cerr << "SDL_RWFromMem failed" << std::endl;
+		return false;
+	}
+	
+	Mix_Chunk *chunk = Mix_LoadWAV_RW(rw, 1); // 1 = free RW automatically
+	if (chunk == NULL)
+	{
+		std::cerr << "Mix_LoadWAV_RW failed: " << Mix_GetError() << std::endl;
+		return false;
+	}
+	
+	mix_chunks.push_back(chunk);
+	sound_channels.push_back(-1);
+	
+	std::cout << "Loaded WAV from memory (index=" << (mix_chunks.size()-1) << ")" << std::endl;
+	return true;
+#else
 	SDL_AudioSpec wave;
 	Uint8 *audio_buf;
 	Uint32 dlen;
@@ -143,6 +270,7 @@ bool SDLAudioPlugin::LoadWAV(const UINT8 *data, const UINT32 len)
 	}
 
 	return LoadWAV_internal(wave,audio_buf,dlen);
+#endif
 }
 
 bool SDLAudioPlugin::LoadWAV_internal(const SDL_AudioSpec &wave,Uint8 *audio_buf,const Uint32 dlen)
@@ -281,6 +409,17 @@ void SDLAudioPlugin::setProperty(std::string prop, int data)
 {
 	if (prop == "mute") {
 		mute=data;
+#ifdef __EMSCRIPTEN__
+		//TODO: Revisar, igual no hace falta
+		// Aplicar mute a todos los canales activos
+		for (size_t i = 0; i < sound_channels.size(); i++)
+		{
+			if (sound_channels[i] >= 0)
+			{
+				Mix_Volume(sound_channels[i], mute ? 0 : MIX_MAX_VOLUME);
+			}
+		}
+#endif
 	} 
 }
 

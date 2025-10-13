@@ -1,4 +1,4 @@
-VIGASOCO (VIdeo GAmes SOurce COde) SDL port (v0.071)
+VIGASOCO (VIdeo GAmes SOurce COde) SDL port (v0.097)
 
 Acerca de:
 ==========
