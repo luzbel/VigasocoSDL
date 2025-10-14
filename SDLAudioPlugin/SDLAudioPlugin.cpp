@@ -168,12 +168,12 @@ void SDLAudioPlugin::Play(int sample,bool loop)
 		int channel = Mix_PlayChannel(sample, mix_chunks[sample], loop ? -1 : 0);
 		if (channel!=sample) printf("play channel!=sample\n");
 		sound_channels[sample] = channel;
-		
-		// Aplicar mute si está activo
-		if (mute && channel >= 0)
+
+		// SIEMPRE aplicar el volumen correcto según estado de mute
+		if (channel >= 0)
 		{
-			Mix_Volume(channel, 0);
-		}
+			Mix_Volume(channel, mute ? 0 : MIX_MAX_VOLUME);
+		}		
 	}
 	catch (std::out_of_range o)
 	{
