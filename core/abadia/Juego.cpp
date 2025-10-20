@@ -46,6 +46,18 @@
 // memcpy
 #include <string.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/threading.h>
+
+// Función C++ que se ejecuta en el hilo principal y llama a la JS global
+extern "C" void call_syncPersist(int callbackPtr) {
+	char cmd[64];
+	snprintf(cmd, sizeof(cmd), "syncPersist(%d)", callbackPtr);
+	emscripten_run_script(cmd);
+}
+#endif
+
 using namespace Abadia;
 
 #ifdef _EE
@@ -60,7 +72,8 @@ const char *Juego::savefile[7] = {
 	"mc0:ABADIA/abadia6.save"
 };
 #else
-#ifdef __native_client__
+//#ifdef __native_client__
+#if defined(__native_client__) || defined(__EMSCRIPTEN__)
 const char *Juego::savefile[7] = {
 	"/save/abadia0.save",
 	"/save/abadia1.save",
@@ -2230,6 +2243,9 @@ void Juego::save(int slot)
 			losControles->actualizaEstado();
 		}while (losControles->estaSiendoPulsado(P1_BUTTON1) == false);
 	}
+#ifdef __EMSCRIPTEN__
+	emscripten_async_run_in_main_runtime_thread(EM_FUNC_SIG_VI, (void*)call_syncPersist, nullptr);
+#endif
 }
 
 // comprueba si se desea grabar la partida

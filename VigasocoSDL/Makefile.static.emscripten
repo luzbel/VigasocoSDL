@@ -1,6 +1,8 @@
 CXXFLAGS=-s USE_SDL=1 -s USE_SDL_MIXER=1 -D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl-config --cflags` -s USE_PTHREADS=1
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
+EMSCRIPTEN_WEB_DIR := emscripten
+
 # en OBJECTS_CORE falta Operations.o ??
 OBJECTS_CORE = AbadiaDriver.o FontManager.o GameDriver.o ICriticalSection.o InputPort.o IThread.o TimingHandler.o Vigasoco.o FileLoader.o GameDataEntity.o GfxData.o InputHandler.o IPalette.o NormalLoadHandler.o UncompressedLoader.o cpc6128.o DskReader.o
 
@@ -8,21 +10,31 @@ OBJECTS_ABADIA = Abad.o AccionesDia.o Adso.o Berengario.o Bernardo.o BuscadorRut
 
 OBJECTS_SDL = PluginHandler.o SDLTimer.o SDLCriticalSection.o SDLPalette.o SDLThread.o VigasocoSDL.o SDLMain.o
 
-OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL)
+OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL) 
 
 OBJECTS_STATIC_PLUGINS = video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a audio/libVigasocoSDLAudioPlugin.a
 
-VigasocoSDL.html: $(OBJECTS) $(OBJECTS_STATIC_PLUGINS)
+all: $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.html $(EMSCRIPTEN_WEB_DIR)/coi-serviceworker.min.js $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.wasm $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.data $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.js
+
+$(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.js $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.data $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.wasm $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.html: pre.js $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) | $(EMSCRIPTEN_WEB_DIR) 
 #	$(CXX) --emrun -s PROXY_TO_PTHREAD=1 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4 -g -static $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) `sdl-config --static-libs` -o VigasocoSDL.html --preload-file roms
 #	$(CXX) --emrun -s PROXY_TO_PTHREAD=1 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4 -static $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) `sdl-config --static-libs` -o VigasocoSDL.html --preload-file roms/abadia.emscripten@/roms/abadia
-	$(CXX) --emrun -s USE_SDL=1 -s USE_SDL_MIXER=1 -s PROXY_TO_PTHREAD=1 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4 -static $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) `sdl-config --static-libs` -o VigasocoSDL.html --preload-file roms/abadia@/roms/abadia 
+	$(CXX) --emrun -s USE_SDL=1 -s USE_SDL_MIXER=1 -s PROXY_TO_PTHREAD=1 -s USE_PTHREADS=1 -s PTHREAD_POOL_SIZE=4 --pre-js pre.js -s FORCE_FILESYSTEM -lidbfs.js -static $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) `sdl-config --static-libs` -o emscripten/VigasocoSDL.html --preload-file roms/abadia@/roms/abadia 
 	# TODO: no funciona poner en el código EM_ASM("SDL.defaults.copyOnLock = false; SDL.defaults.discardOnLock = true; SDL.defaults.opaqueFrontBuffer = false;");
 	# así que parcheo el JS generado por el compilador
-	mv VigasocoSDL.js VigasocoSDL.original.js
+	mv $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.js VigasocoSDL.original.js
 	# en recientes versiones de emscripten esto va en multilinea y ya no es problema discard ni opaque
 #	sed s/copyOnLock:true,discardOnLock:false,opaqueFrontBuffer:true/copyOnLock:false,discardOnLock:true,opaqueFrontBuffer:false/g VigasocoSDL.original.js > VigasocoSDL.js
-	sed s/copyOnLock:true/copyOnLock:false/g VigasocoSDL.original.js > VigasocoSDL.js
-	#strip VigasocoSDL
+	sed s/copyOnLock:true/copyOnLock:false/g VigasocoSDL.original.js > $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.js
+	# para que funcione en gh-pages hay que añadir cabeceras para "Cross-origin isolation"
+	# uso https://github.com/gzuidhof/coi-serviceworker 
+	mv $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.html VigasocoSDL.original.html
+	sed -e "/<script type='text\\/javascript'>/i\\\\    <script src=\"coi-serviceworker.min.js\"><\\/script>" VigasocoSDL.original.html > $(EMSCRIPTEN_WEB_DIR)/VigasocoSDL.html 
 
+$(EMSCRIPTEN_WEB_DIR)/coi-serviceworker.min.js: coi-serviceworker.min.js
+	cp coi-serviceworker.min.js $(EMSCRIPTEN_WEB_DIR)/coi-serviceworker.min.js
+
+$(EMSCRIPTEN_WEB_DIR):
+	mkdir $@
 clean:
-	rm -f $(OBJECTS) VigasocoSDL.html VigasocoSDL.data VigasocoSDL.html.mem VigasocoSDL.worker.js VigasocoSDL.wasm VigasocoSDL.js VigasocoSDL.original.js
+	rm -f $(OBJECTS) $(EMSCRIPTEN_WEB_DIR)/* VigasocoSDL.original.js VigasocoSDL.original.html
