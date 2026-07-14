@@ -1,5 +1,5 @@
-#CXXFLAGS=-g -D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl-config --cflags` 
-CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl-config --cflags` 
+#CXXFLAGS=-g -D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl2-config --cflags` 
+CXXFLAGS=-D__VIGASOCO_SDL_STATIC__ -O3 -I../core `sdl2-config --cflags` 
 VPATH=.:../core:../core/abadia:../core/util:../core/systems
 
 # en OBJECTS_CORE falta Operations.o ??
@@ -14,8 +14,10 @@ OBJECTS = $(OBJECTS_CORE) $(OBJECTS_ABADIA) $(OBJECTS_SDL)
 OBJECTS_STATIC_PLUGINS = video/libVigasocoSDLDrawPlugin.a input/libVigasocoSDLInputPlugin.a audio/libVigasocoSDLAudioPlugin.a
 
 VigasocoSDL: $(OBJECTS) $(OBJECTS_STATIC_PLUGINS)
-#	$(CXX) -g -static $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) `sdl-config --static-libs` -ldl -o VigasocoSDL
-	$(CXX) -static $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) `sdl-config --static-libs` -ldl -o VigasocoSDL
+# los plugins van enlazados estaticamente en el binario, pero SDL2 se enlaza
+# dinamicamente (el enlazado -static de SDL2 no es viable en Linux de escritorio)
+#	$(CXX) -g $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) `sdl2-config --libs` -ldl -o VigasocoSDL
+	$(CXX) $(OBJECTS) $(OBJECTS_STATIC_PLUGINS) `sdl2-config --libs` -ldl -o VigasocoSDL
 	strip VigasocoSDL
 
 clean:

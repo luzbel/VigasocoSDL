@@ -58,7 +58,7 @@ template <class T>
 class SDLDrawPluginFullScreen: public T
 {
 	public:
-		SDLDrawPluginFullScreen() { T::_flags|=SDL_FULLSCREEN; }
+		SDLDrawPluginFullScreen() { T::_flags|=SDL_WINDOW_FULLSCREEN_DESKTOP; }
 };
 
 typedef SDLDrawPluginFullScreen<SDLDrawPlugin8bpp> SDLDrawPluginFullScreen8bpp;

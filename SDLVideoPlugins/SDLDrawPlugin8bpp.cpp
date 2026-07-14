@@ -10,7 +10,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 void SDLDrawPlugin8bpp::updateFullPalette(IPalette *palette)
-{ 
+{
 	SDL_Color colors[256];
 
 	for (int i = 0; i < palette->getTotalColors(); i++){
@@ -20,14 +20,15 @@ void SDLDrawPlugin8bpp::updateFullPalette(IPalette *palette)
 		colors[i].r=r;
 		colors[i].g=g;
 		colors[i].b=b;
+		colors[i].a=255;
 	}
-	SDL_mutexP(cs);
-	SDL_SetColors(screen, colors, 0, 256); 
-	SDL_mutexV(cs);
+	SDL_LockMutex(cs);
+	SDL_SetPaletteColors(screen->format->palette, colors, 0, palette->getTotalColors());
+	SDL_UnlockMutex(cs);
 }
 
 void SDLDrawPlugin8bpp::update(IPalette *palette, int data)
-{ 
+{
 	if (data != -1){
 		// single color update
 		UINT8 r, g, b;
@@ -37,20 +38,21 @@ void SDLDrawPlugin8bpp::update(IPalette *palette, int data)
 		color.r=r;
 		color.g=g;
 		color.b=b;
+		color.a=255;
 
-		SDL_mutexP(cs);
-		SDL_SetColors(screen, &color, data, 1);
-		SDL_mutexV(cs);
+		SDL_LockMutex(cs);
+		SDL_SetPaletteColors(screen->format->palette, &color, data, 1);
+		SDL_UnlockMutex(cs);
 	} else {
 		// full palette update
 		updateFullPalette(palette);
-	} 
+	}
 }
 void SDLDrawPlugin8bpp::render(bool throttle)
 {
-	SDL_mutexP(cs);
+	SDL_LockMutex(cs);
 	SDLBasicDrawPlugin<UINT8>::render(throttle);
-	SDL_mutexV(cs);
+	SDL_UnlockMutex(cs);
 }
 
 

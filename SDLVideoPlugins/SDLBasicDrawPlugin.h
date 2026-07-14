@@ -20,12 +20,16 @@ template<typename T>
 class SDLBasicDrawPlugin : public SDLDrawPlugin
 {
 protected:
-	SDL_Rect *SDLRects;
-	bool **updated_rect;
-	int xrects,yrects;
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+	SDL_Texture *texture;
 
-        SDL_Surface *screen;
-	
+	// superficie donde dibuja el juego, con el bpp del plugin
+	// (para 8bpp mantiene la paleta indexada como en SDL 1.2)
+	SDL_Surface *screen;
+	// copia en ARGB8888 que se sube a la textura en cada render
+	SDL_Surface *rgbaScreen;
+
 	bool _isInitialized;
 	UINT32 _flags;
 	int _bpp;
@@ -33,7 +37,7 @@ protected:
 private:
 	IPalette *_originalPalette;
 public:
-	SDLBasicDrawPlugin(){ screen = NULL; _isInitialized=false; _flags = DEFAULT::flags; _bpp = DEFAULT::bpp ; _palette = NULL; _originalPalette=NULL; }
+	SDLBasicDrawPlugin(){ window = NULL; renderer = NULL; texture = NULL; screen = NULL; rgbaScreen = NULL; _isInitialized=false; _flags = DEFAULT::flags; _bpp = DEFAULT::bpp ; _palette = NULL; _originalPalette=NULL; }
 	virtual ~SDLBasicDrawPlugin(){ }
 	virtual bool init(const VideoInfo *vi, IPalette *pal);
 	virtual void end(void);
@@ -80,9 +84,12 @@ public:
 	 virtual const int *getPropertiesType() const {};
 	 virtual void setProperty(std::string prop, int data) {
 		std::string ToggleFullScreen("ToggleFullScreen");
-		if ( prop == ToggleFullScreen )
+		if ( prop == ToggleFullScreen && window )
 		{
-			SDL_WM_ToggleFullScreen(screen);
+			Uint32 fullscreen = SDL_GetWindowFlags(window) &
+				(SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
+			SDL_SetWindowFullscreen(window,
+				fullscreen ? 0 : SDL_WINDOW_FULLSCREEN_DESKTOP);
 		}
 	};
 	 virtual void setProperty(std::string prop, int index, int data) {};

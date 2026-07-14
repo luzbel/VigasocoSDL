@@ -5,10 +5,6 @@
 #include "SDLBasicDrawPlugin.h"
 #include "IPalette.h"
 
-// 6 para cuadricula de 64*64 pixeles (2^6)
-// 7 para cuadricula de 128*128 pixeles (2^7)
-#define FACTOR_REJILLA 6
-
 template<typename T>
 bool SDLBasicDrawPlugin<T>::init(const VideoInfo *vi, IPalette *pal)
 {
@@ -18,15 +14,45 @@ bool SDLBasicDrawPlugin<T>::init(const VideoInfo *vi, IPalette *pal)
 		return false;
 	}
 
-	screen = SDL_SetVideoMode(vi->width, vi->height, _bpp, _flags);
-//	screen = SDL_SetVideoMode(640, 480, 8, SDL_SWSURFACE|SDL_ANYFORMAT);
+	window = SDL_CreateWindow("VigasocoSDL",
+			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+			vi->width, vi->height, _flags);
+	if ( window == NULL ) {
+		fprintf(stderr, "Couldn't create %dx%d window: %s\n",
+				vi->width,vi->height,SDL_GetError());
+		return false;
+	}
+
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	if ( renderer == NULL ) {
+		fprintf(stderr, "Couldn't create renderer: %s\n", SDL_GetError());
+		return false;
+	}
+
+	// escalado con relacion de aspecto correcta en fullscreen/resize
+	SDL_RenderSetLogicalSize(renderer, vi->width, vi->height);
+
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+			SDL_TEXTUREACCESS_STREAMING, vi->width, vi->height);
+	if ( texture == NULL ) {
+		fprintf(stderr, "Couldn't create texture: %s\n", SDL_GetError());
+		return false;
+	}
+
+	screen = SDL_CreateRGBSurface(0, vi->width, vi->height, _bpp, 0, 0, 0, 0);
 	if ( screen == NULL ) {
-		fprintf(stderr, "Couldn't set %dx%dx%d video mode: %s\n",
+		fprintf(stderr, "Couldn't create %dx%dx%d surface: %s\n",
 				vi->width,vi->height,_bpp,SDL_GetError());
 		return false;
 	}
-//	printf("set %dx%dx%d video mode(%s): %s\n",
-//				vi->width,vi->height,_bpp,screen->flags & SDL_DOUBLEBUF?"DOUBLEBUFF":"No double buffer",SDL_GetError());
+
+	rgbaScreen = SDL_CreateRGBSurfaceWithFormat(0, vi->width, vi->height,
+			32, SDL_PIXELFORMAT_ARGB8888);
+	if ( rgbaScreen == NULL ) {
+		fprintf(stderr, "Couldn't create conversion surface: %s\n",
+				SDL_GetError());
+		return false;
+	}
 
 	_originalPalette=pal;
 
@@ -34,37 +60,42 @@ bool SDLBasicDrawPlugin<T>::init(const VideoInfo *vi, IPalette *pal)
 	pal->attach(this);
 	updateFullPalette(pal);
 
-#ifndef _EE
-	xrects=(vi->width>>FACTOR_REJILLA);
-	yrects=(vi->height>>FACTOR_REJILLA);
-	int nrects=xrects*yrects;
-
-	updated_rect = new bool*[xrects];
-	for (int i=0;i<xrects;i++)
-	{
-		updated_rect[i]=new bool[yrects];
-	}  
-	for(int i=0;i<xrects;i++)
-	{
-		for(int j=0;j<yrects;j++)
-		{
-			updated_rect[i][j]=false;
-		}
-	}
-
-	SDLRects = new SDL_Rect[nrects];
-#endif
-
 	_isInitialized = true;
-	
+
 	return _isInitialized;
 };
 
 
 template<typename T>
-void SDLBasicDrawPlugin<T>::end()  { 
+void SDLBasicDrawPlugin<T>::end()  {
 	if ( _originalPalette )
 		_originalPalette->detach(this);
+
+    if ( rgbaScreen ) {
+        SDL_FreeSurface(rgbaScreen);
+        rgbaScreen = NULL;
+    }
+
+	if ( screen ) {
+        SDL_FreeSurface(screen);
+        screen = NULL;
+    }
+
+	if ( texture ) {
+        SDL_DestroyTexture(texture);
+        texture = NULL;
+    }
+
+	if ( renderer ) {
+        SDL_DestroyRenderer(renderer);
+        renderer = NULL;
+    }
+
+	if ( window ) {
+        SDL_DestroyWindow(window);
+        window = NULL;
+    }
+
 	_isInitialized = false;
 };
 
@@ -102,47 +133,21 @@ void SDLBasicDrawPlugin<T>::update(IPalette *palette, int data)
 template<typename T>
 inline void SDLBasicDrawPlugin<T>::updateRect(int x,int y)
 {
-//	fprintf(stderr,"%d %d -> rect %d,%d\n",x,y,x>>FACTOR_REJILLA,y>>FACTOR_REJILLA);
-
-#ifndef _EE
-	updated_rect[x>>FACTOR_REJILLA][y>>FACTOR_REJILLA]=true;
-#endif
+	// con SDL2 se sube la textura completa y se presenta en cada render,
+	// por lo que ya no hace falta llevar la cuenta de zonas modificadas
 }
 
 // drawing methods
 template<typename T>
 void SDLBasicDrawPlugin<T>::render(bool throttle)
 {
-#ifdef _EE
-	SDL_UpdateRects(screen,0,NULL);
-#else
-
-	int n=0;
-	for(int i=0;i<xrects;i++)
-	{
-		for(int j=0;j<yrects;j++)
-		{
-			if (updated_rect[i][j])
-			{
-				SDLRects[n].x=i<<FACTOR_REJILLA;
-				SDLRects[n].y=j<<FACTOR_REJILLA;
-				SDLRects[n].w=1<<FACTOR_REJILLA;
-				SDLRects[n++].h=1<<FACTOR_REJILLA;
-			}
-		}
-	}
-	if(n)
-	{
-		SDL_UpdateRects(screen,n,SDLRects);
-                for(int i=0;i<xrects;i++)
-                {
-                        for(int j=0;j<yrects;j++)
-                        {
-                                updated_rect[i][j]=false;
-                        }
-                }
-	}
-#endif
+	// el juego dibuja en la superficie con paleta; se convierte a
+	// ARGB8888, se sube a la textura y se presenta
+	SDL_BlitSurface(screen, NULL, rgbaScreen, NULL);
+	SDL_UpdateTexture(texture, NULL, rgbaScreen->pixels, rgbaScreen->pitch);
+	SDL_RenderClear(renderer);
+	SDL_RenderCopy(renderer, texture, NULL, NULL);
+	SDL_RenderPresent(renderer);
 };
 
 template<typename T>
