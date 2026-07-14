@@ -19,9 +19,10 @@ bool SDLDrawPluginPaletaGrises8bpp::init(const VideoInfo *vi, IPalette *pal)
 			colors[i].r=i;
 			colors[i].g=i;
 			colors[i].b=i;
-			} 
+			colors[i].a=255;
+			}
 
-		SDL_SetColors(screen, colors, 0, 256); 
+		SDL_SetPaletteColors(screen->format->palette, colors, 0, 256);
 
 		pal->attach(this);
 		updateFullPalette(pal);

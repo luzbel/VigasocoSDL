@@ -38,13 +38,9 @@ bool SDLThread::start()
 	}
 
 	// creates the thread
-#ifndef __EMSCRIPTEN_PTHREADS__ 
-	_handle = SDL_CreateThread((int (*)(void*))ThreadProc, this);
+#ifndef _VIGASOCO_SDL_THREAD_PTHREADS_
+	_handle = SDL_CreateThread((SDL_ThreadFunction)ThreadProc, "VigasocoGameLogic", this);
 #else
-	// SDL 1.2 en emscripten aún no hace uso de pthreads
-	// aunque emscripten ya tiene soporte pthreads
-	// cambiar si migramos a SDL2 o actulizan el 1.2 en emscripten
-	// Valorar si tener una clas POSIX_THREAD que implemente iThread
 	pthread_create(&_handle,NULL,(void *(*)(void *))ThreadProc,this);
 #endif
 
@@ -63,11 +59,15 @@ void SDLThread::end()
 	if (_handle != NULL){
 		_isRunning = false;
 
-		// kill the thread
-#ifndef __EMSCRIPTEN_PTHREADS__ 
-		SDL_KillThread(_handle);
+		// el hilo de lógica no tiene parada cooperativa: hay que matarlo
+		// antes de que se liberen los plugins que está usando
+#ifndef _VIGASOCO_SDL_THREAD_PTHREADS_
+		// SDL2 eliminó SDL_KillThread; sin pthreads solo se puede separar
+		// el hilo y dejar que el sistema operativo lo recoja al salir
+		SDL_DetachThread(_handle);
 #else
 		pthread_cancel(_handle);
+		pthread_join(_handle,NULL);
 #endif
 
 		_handle = NULL;

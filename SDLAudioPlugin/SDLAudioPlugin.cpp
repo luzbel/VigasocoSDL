@@ -15,6 +15,8 @@
 
 SDLAudioPlugin::SDLAudioPlugin()
 {
+	mute = false;
+	_isInitialized = false;
 }
 
 SDLAudioPlugin::~SDLAudioPlugin()
@@ -218,6 +220,11 @@ void SDLAudioPlugin::process(int *inputs)
 
 void SDLAudioPlugin::mix(UINT8 *stream,int len)
 {
+	// en SDL 1.2 el buffer llegaba inicializado a silencio; en SDL2 llega
+	// con el contenido del callback anterior, asi que si no se limpia aqui
+	// las mezclas se acumulan hasta saturar y el audio degenera en ruido
+	SDL_memset(stream, fmt_real.silence, len);
+
 	UINT32 amount;
 	for (tIteratorSounds it=sounds.begin();it!=sounds.end();it++)
 	{

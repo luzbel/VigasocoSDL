@@ -208,7 +208,15 @@ void VigasocoSDL::createAsyncThread()
 void VigasocoSDL::initCompleted()
 {
 	std::string titulo_ventana = "VigasocoSDL v0.096: " + _driver->getFullName();
-	SDL_WM_SetCaption(titulo_ventana.c_str(),titulo_ventana.c_str());
+	// en SDL2 el titulo es por ventana; la ventana la crea el plugin de video,
+	// asi que se localiza a traves del foco de teclado (o su id)
+	SDL_Window *window = SDL_GetKeyboardFocus();
+	if (window == NULL)
+		window = SDL_GetWindowFromID(1);
+
+	if (window != NULL)
+		SDL_SetWindowTitle(window, titulo_ventana.c_str());
+
 	SDL_ShowCursor(SDL_DISABLE);
 }
 

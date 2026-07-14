@@ -32,10 +32,10 @@ void SDLCriticalSection::destroy()
 
 void SDLCriticalSection::enter()
 {
-	SDL_mutexP(cs);
+	SDL_LockMutex(cs);
 }
 
 void SDLCriticalSection::leave()
 {
-	SDL_mutexV(cs);
+	SDL_UnlockMutex(cs);
 }

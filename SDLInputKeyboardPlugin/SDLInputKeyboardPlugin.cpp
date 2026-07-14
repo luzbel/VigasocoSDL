@@ -7,7 +7,18 @@
 
 #include <vector>
 
-SDLKey SDLInputKeyboardPlugin::g_keyMapping[END_OF_INPUTS];
+SDL_Scancode SDLInputKeyboardPlugin::g_keyMapping[END_OF_INPUTS];
+
+// en SDL2 el grab es por ventana; se usa la que tiene el foco de teclado
+static void SDLInputKeyboardPlugin_setGrab(SDL_bool grab)
+{
+	SDL_Window *window = SDL_GetKeyboardFocus();
+	if (window == NULL)
+		window = SDL_GetWindowFromID(1);
+
+	if (window != NULL)
+		SDL_SetWindowGrab(window, grab);
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // initialization and cleanup
@@ -73,17 +84,17 @@ void SDLInputKeyboardPlugin::end()
 		}
 	}
 #endif
-	SDL_WM_GrabInput(SDL_GRAB_OFF);
+	SDLInputKeyboardPlugin_setGrab(SDL_FALSE);
 }
 
 void SDLInputKeyboardPlugin::acquire()
 {
-	SDL_WM_GrabInput(SDL_GRAB_ON);
+	SDLInputKeyboardPlugin_setGrab(SDL_TRUE);
 }
 
 void SDLInputKeyboardPlugin::unAcquire()
 {
-	SDL_WM_GrabInput(SDL_GRAB_OFF);
+	SDLInputKeyboardPlugin_setGrab(SDL_FALSE);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -159,13 +170,8 @@ enum ps3_sixaxis_sdl_axis
 
 void SDLInputKeyboardPlugin::process(int *inputs)
 {
-	//Uint8 *keystate = SDL_GetKeyState(NULL);
 	int size;
-#ifndef __EMSCRIPTEN__
-	Uint8 *keystate_tmp=SDL_GetKeyState(&size);
-#else
-	Uint8 *keystate_tmp=SDL_GetKeyboardState(&size);
-#endif
+	const Uint8 *keystate_tmp=SDL_GetKeyboardState(&size);
 	std::vector<Uint8> keystate(keystate_tmp,keystate_tmp+size);
 
 #if defined _EE || defined _PS3
@@ -268,83 +274,83 @@ void SDLInputKeyboardPlugin::initRemapTable()
 
 	// game driver inputs
 
-	g_keyMapping[P1_UP] = SDLK_UP;
-	g_keyMapping[P1_LEFT] = SDLK_LEFT;
-	g_keyMapping[P1_DOWN] = SDLK_DOWN;
-	g_keyMapping[P1_RIGHT] = SDLK_RIGHT;
+	g_keyMapping[P1_UP] = SDL_SCANCODE_UP;
+	g_keyMapping[P1_LEFT] = SDL_SCANCODE_LEFT;
+	g_keyMapping[P1_DOWN] = SDL_SCANCODE_DOWN;
+	g_keyMapping[P1_RIGHT] = SDL_SCANCODE_RIGHT;
 
-	g_keyMapping[P1_BUTTON1] = SDLK_LCTRL;
-	g_keyMapping[P1_BUTTON1] = SDLK_SPACE;
-	g_keyMapping[P1_BUTTON2] = SDLK_LSUPER;
+	g_keyMapping[P1_BUTTON1] = SDL_SCANCODE_LCTRL;
+	g_keyMapping[P1_BUTTON1] = SDL_SCANCODE_SPACE;
+	g_keyMapping[P1_BUTTON2] = SDL_SCANCODE_LGUI;
 
-	g_keyMapping[P2_UP] = SDLK_w;
-	g_keyMapping[P2_LEFT] = SDLK_a; 
-	g_keyMapping[P2_DOWN] = SDLK_s;
-	g_keyMapping[P2_RIGHT] = SDLK_d;
-	g_keyMapping[P2_BUTTON1] = SDLK_y;
-	g_keyMapping[P2_BUTTON2] = SDLK_u;
+	g_keyMapping[P2_UP] = SDL_SCANCODE_W;
+	g_keyMapping[P2_LEFT] = SDL_SCANCODE_A;
+	g_keyMapping[P2_DOWN] = SDL_SCANCODE_S;
+	g_keyMapping[P2_RIGHT] = SDL_SCANCODE_D;
+	g_keyMapping[P2_BUTTON1] = SDL_SCANCODE_Y;
+	g_keyMapping[P2_BUTTON2] = SDL_SCANCODE_U;
 
-	g_keyMapping[START_1] = SDLK_1;
-	g_keyMapping[START_2] = SDLK_2;
-	g_keyMapping[COIN_1] = SDLK_5;
-	g_keyMapping[COIN_2] = SDLK_6;
-	g_keyMapping[SERVICE_1] = SDLK_9;
-	g_keyMapping[SERVICE_2] = SDLK_0;
+	g_keyMapping[START_1] = SDL_SCANCODE_1;
+	g_keyMapping[START_2] = SDL_SCANCODE_2;
+	g_keyMapping[COIN_1] = SDL_SCANCODE_5;
+	g_keyMapping[COIN_2] = SDL_SCANCODE_6;
+	g_keyMapping[SERVICE_1] = SDL_SCANCODE_9;
+	g_keyMapping[SERVICE_2] = SDL_SCANCODE_0;
 
 	// keyboard inputs
-	g_keyMapping[KEYBOARD_A] = SDLK_a;
-	g_keyMapping[KEYBOARD_B] = SDLK_b;
-	g_keyMapping[KEYBOARD_C] = SDLK_c;
-	g_keyMapping[KEYBOARD_D] = SDLK_d;
-	g_keyMapping[KEYBOARD_E] = SDLK_e;
-	g_keyMapping[KEYBOARD_F] = SDLK_f;
-	g_keyMapping[KEYBOARD_G] = SDLK_g;
-	g_keyMapping[KEYBOARD_H] = SDLK_h;
-	g_keyMapping[KEYBOARD_I] = SDLK_i;
-	g_keyMapping[KEYBOARD_J] = SDLK_j;
-	g_keyMapping[KEYBOARD_K] = SDLK_k;
-	g_keyMapping[KEYBOARD_L] = SDLK_l;
-	g_keyMapping[KEYBOARD_M] = SDLK_m;
-	g_keyMapping[KEYBOARD_N] = SDLK_n;
-	g_keyMapping[KEYBOARD_O] = SDLK_o;
-	g_keyMapping[KEYBOARD_P] = SDLK_p;
-	g_keyMapping[KEYBOARD_Q] = SDLK_q;
-	g_keyMapping[KEYBOARD_R] = SDLK_r;
-	g_keyMapping[KEYBOARD_S] = SDLK_s;
-	g_keyMapping[KEYBOARD_T] = SDLK_t;
-	g_keyMapping[KEYBOARD_U] = SDLK_u;
-	g_keyMapping[KEYBOARD_V] = SDLK_v;
-	g_keyMapping[KEYBOARD_W] = SDLK_w;
-	g_keyMapping[KEYBOARD_X] = SDLK_x;
-	g_keyMapping[KEYBOARD_Y] = SDLK_y;
-	g_keyMapping[KEYBOARD_Z] = SDLK_z;
-	g_keyMapping[KEYBOARD_0] = SDLK_0;
-	g_keyMapping[KEYBOARD_1] = SDLK_1;
-	g_keyMapping[KEYBOARD_2] = SDLK_2;
-	g_keyMapping[KEYBOARD_3] = SDLK_3;
-	g_keyMapping[KEYBOARD_4] = SDLK_4;
-	g_keyMapping[KEYBOARD_5] = SDLK_5;
-	g_keyMapping[KEYBOARD_6] = SDLK_6;
-	g_keyMapping[KEYBOARD_7] = SDLK_7;
-	g_keyMapping[KEYBOARD_8] = SDLK_8;
-	g_keyMapping[KEYBOARD_9] = SDLK_9; 
-	g_keyMapping[KEYBOARD_SPACE] = SDLK_SPACE;
-	g_keyMapping[KEYBOARD_INTRO] = SDLK_RETURN; // SDLK_KP_ENTER;
-	g_keyMapping[KEYBOARD_SUPR] = SDLK_DELETE;
+	g_keyMapping[KEYBOARD_A] = SDL_SCANCODE_A;
+	g_keyMapping[KEYBOARD_B] = SDL_SCANCODE_B;
+	g_keyMapping[KEYBOARD_C] = SDL_SCANCODE_C;
+	g_keyMapping[KEYBOARD_D] = SDL_SCANCODE_D;
+	g_keyMapping[KEYBOARD_E] = SDL_SCANCODE_E;
+	g_keyMapping[KEYBOARD_F] = SDL_SCANCODE_F;
+	g_keyMapping[KEYBOARD_G] = SDL_SCANCODE_G;
+	g_keyMapping[KEYBOARD_H] = SDL_SCANCODE_H;
+	g_keyMapping[KEYBOARD_I] = SDL_SCANCODE_I;
+	g_keyMapping[KEYBOARD_J] = SDL_SCANCODE_J;
+	g_keyMapping[KEYBOARD_K] = SDL_SCANCODE_K;
+	g_keyMapping[KEYBOARD_L] = SDL_SCANCODE_L;
+	g_keyMapping[KEYBOARD_M] = SDL_SCANCODE_M;
+	g_keyMapping[KEYBOARD_N] = SDL_SCANCODE_N;
+	g_keyMapping[KEYBOARD_O] = SDL_SCANCODE_O;
+	g_keyMapping[KEYBOARD_P] = SDL_SCANCODE_P;
+	g_keyMapping[KEYBOARD_Q] = SDL_SCANCODE_Q;
+	g_keyMapping[KEYBOARD_R] = SDL_SCANCODE_R;
+	g_keyMapping[KEYBOARD_S] = SDL_SCANCODE_S;
+	g_keyMapping[KEYBOARD_T] = SDL_SCANCODE_T;
+	g_keyMapping[KEYBOARD_U] = SDL_SCANCODE_U;
+	g_keyMapping[KEYBOARD_V] = SDL_SCANCODE_V;
+	g_keyMapping[KEYBOARD_W] = SDL_SCANCODE_W;
+	g_keyMapping[KEYBOARD_X] = SDL_SCANCODE_X;
+	g_keyMapping[KEYBOARD_Y] = SDL_SCANCODE_Y;
+	g_keyMapping[KEYBOARD_Z] = SDL_SCANCODE_Z;
+	g_keyMapping[KEYBOARD_0] = SDL_SCANCODE_0;
+	g_keyMapping[KEYBOARD_1] = SDL_SCANCODE_1;
+	g_keyMapping[KEYBOARD_2] = SDL_SCANCODE_2;
+	g_keyMapping[KEYBOARD_3] = SDL_SCANCODE_3;
+	g_keyMapping[KEYBOARD_4] = SDL_SCANCODE_4;
+	g_keyMapping[KEYBOARD_5] = SDL_SCANCODE_5;
+	g_keyMapping[KEYBOARD_6] = SDL_SCANCODE_6;
+	g_keyMapping[KEYBOARD_7] = SDL_SCANCODE_7;
+	g_keyMapping[KEYBOARD_8] = SDL_SCANCODE_8;
+	g_keyMapping[KEYBOARD_9] = SDL_SCANCODE_9;
+	g_keyMapping[KEYBOARD_SPACE] = SDL_SCANCODE_SPACE;
+	g_keyMapping[KEYBOARD_INTRO] = SDL_SCANCODE_RETURN; // SDL_SCANCODE_KP_ENTER;
+	g_keyMapping[KEYBOARD_SUPR] = SDL_SCANCODE_DELETE;
 
 	// core inputs
-	g_keyMapping[FUNCTION_1] = SDLK_F1;
-	g_keyMapping[FUNCTION_2] = SDLK_F2;
-	g_keyMapping[FUNCTION_3] = SDLK_F3;
-	g_keyMapping[FUNCTION_4] = SDLK_F4;
-	g_keyMapping[FUNCTION_5] = SDLK_F5;
-	g_keyMapping[FUNCTION_6] = SDLK_F6;
-	g_keyMapping[FUNCTION_7] = SDLK_F7;
-	g_keyMapping[FUNCTION_8] = SDLK_F8;
-	g_keyMapping[FUNCTION_9] = SDLK_F9;
-	g_keyMapping[FUNCTION_10] = SDLK_F10;
-	g_keyMapping[FUNCTION_11] = SDLK_F11;
-	g_keyMapping[FUNCTION_12] = SDLK_F12;
+	g_keyMapping[FUNCTION_1] = SDL_SCANCODE_F1;
+	g_keyMapping[FUNCTION_2] = SDL_SCANCODE_F2;
+	g_keyMapping[FUNCTION_3] = SDL_SCANCODE_F3;
+	g_keyMapping[FUNCTION_4] = SDL_SCANCODE_F4;
+	g_keyMapping[FUNCTION_5] = SDL_SCANCODE_F5;
+	g_keyMapping[FUNCTION_6] = SDL_SCANCODE_F6;
+	g_keyMapping[FUNCTION_7] = SDL_SCANCODE_F7;
+	g_keyMapping[FUNCTION_8] = SDL_SCANCODE_F8;
+	g_keyMapping[FUNCTION_9] = SDL_SCANCODE_F9;
+	g_keyMapping[FUNCTION_10] = SDL_SCANCODE_F10;
+	g_keyMapping[FUNCTION_11] = SDL_SCANCODE_F11;
+	g_keyMapping[FUNCTION_12] = SDL_SCANCODE_F12;
 
 	// check that all inputs have been mapped (for safety)
 	for (int i = 0; i < END_OF_INPUTS; i++){
@@ -383,7 +389,7 @@ void SDLInputKeyboardPlugin::setProperty(std::string prop, int index, int data)
 {
 	if (prop == "keyConfig"){
 		if ((index >= 0) && (index < END_OF_INPUTS)){
-			g_keyMapping[index] = (SDLKey)data;
+			g_keyMapping[index] = (SDL_Scancode)data;
 		}
 	}
 }

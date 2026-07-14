@@ -6,6 +6,7 @@ VPATH=.:../core:../core/abadia:../core/util:../core/systems
 OBJECTS = NULLAudioPlugin.o PluginMain.o
 
 ../VigasocoSDL/audio/libVigasocoNULLAudioPlugin.a: $(OBJECTS)
+	mkdir -p $(dir $@)
 	$(AR) cru $@ $(OBJECTS)
 
 # para comprobar que no le faltan dependencias por resolver a la libreria
